@@ -39,6 +39,7 @@
 
 <script>
   function searchBar() {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     var input, filter, ul, li, a, i, txtValue;
     input = document.getElementById('searchBar');
     filter = input.value.toUpperCase();
@@ -55,6 +56,7 @@
     }
   }
   function searchBar2() {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     var input, filter, ul, li, a, i, txtValue;
     input = document.getElementById('searchBar2');
     filter = input.value.toUpperCase();
@@ -145,6 +147,7 @@
 
   menuFunc = false
   function openMenuFunc(id, menu) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (menuFunc) {
       menuFunc = false
       document.getElementById('menuFuncs').style.display = 'none'
@@ -220,6 +223,7 @@
 
   var limpando = false
   function limpar(user, menu) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (limpando) return alert('Você já está com um limpamento em andamento...')
     limpando = true
     $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/clearCounts`,
@@ -246,6 +250,7 @@
 
   var salavando = false
   function salvar(user) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (salavando) return alert('Você já está com um salvamento em andamento...')
     salavando = true
     $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/editLogin`,
@@ -273,6 +278,7 @@
   }
   var creating = false
   function createFunc() {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (creating) return alert('Você já está com um criamento em andamento...')
     creating = true
     $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/newLogin`,
@@ -297,6 +303,7 @@
   }
   var deleting = false
   function deleteFunc(user) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (deleting) return alert('Você já está com um deletamento em andamento...')
     deleting = true
     $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/deleteLogin`,
