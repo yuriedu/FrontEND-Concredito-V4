@@ -228,7 +228,7 @@
     if (sino && document.getElementById('bellIcon').classList.contains('bellBlock')) return;
     if (sino) document.getElementById('bellIcon').classList.add('bellBlock');
     if (sino) document.getElementById('bellLoader').style.display = 'flex'
-    $.ajax({ type: "post",url: `http://localhost:3000/funcionarios/verifyLogin`,
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/verifyLogin`,
     data: JSON.stringify({
       user: localStorage.getItem('user'),
       password: localStorage.getItem('password'),
@@ -356,7 +356,7 @@
     if (document.getElementById('newPass').value == document.getElementById('actualPass').value) return alert('Você não pode deixar sua nova senha igual a atual...')
     document.getElementById('alterUser').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('alterUser').classList.add("buttonBlock");
-    $.ajax({ type: "post",url: `http://localhost:3000/funcionarios/editLogin`,
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/editLogin`,
     data: JSON.stringify({
       user: localStorage.getItem('user'),
       password: document.getElementById('actualPass').value,

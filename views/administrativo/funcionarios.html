@@ -78,7 +78,7 @@
   function getUser() {
     if (getingUser) return alert('Você já está com um puxamento em andamento...')
     getingUser = true
-    $.ajax({ type: "post",url: `http://localhost:3000/funcionarios/getLogins`,
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/getLogins`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -222,7 +222,7 @@
   function limpar(user, menu) {
     if (limpando) return alert('Você já está com um limpamento em andamento...')
     limpando = true
-    $.ajax({ type: "post",url: `http://localhost:3000/funcionarios/clearCounts`,
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/clearCounts`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -248,7 +248,7 @@
   function salvar(user) {
     if (salavando) return alert('Você já está com um salvamento em andamento...')
     salavando = true
-    $.ajax({ type: "post",url: `http://localhost:3000/funcionarios/editLogin`,
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/editLogin`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -275,7 +275,7 @@
   function createFunc() {
     if (creating) return alert('Você já está com um criamento em andamento...')
     creating = true
-    $.ajax({ type: "post",url: `http://localhost:3000/funcionarios/newLogin`,
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/newLogin`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -299,7 +299,7 @@
   function deleteFunc(user) {
     if (deleting) return alert('Você já está com um deletamento em andamento...')
     deleting = true
-    $.ajax({ type: "post",url: `http://localhost:3000/funcionarios/deleteLogin`,
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/deleteLogin`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),

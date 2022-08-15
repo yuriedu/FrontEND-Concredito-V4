@@ -151,7 +151,7 @@
     cpf = cpf.length == 10 ? `0${cpf}` : cpf.length == 9 ? `00${cpf}` : cpf.length == 8 ? `000${cpf}` : cpf.length == 7 ? `0000${cpf}` : cpf.length == 6 ? `00000${cpf}` : cpf
     if (csv.Sucessos.find(r=> r.cpf == cpf && r.bank == bank.name)) return nextCPF(i, bank)
     if (csv.Erros.find(r=> r.cpf == cpf && r.bank == bank.name)) return nextCPF(i, bank)
-    $.ajax({ type: "post",url: `http://localhost:3000/consultas/fgts`,
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/consultas/fgts`,
     data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
