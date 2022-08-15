@@ -1,0 +1,99 @@
+<div style="position: relative; background-image: linear-gradient(to bottom right, #08436b, #52cbcf); width: 100vw; height: 100vh">
+  <div id="loginMenu" class="width74 left10" style="display: inline; position: absolute; left: 35vw; top: 25vh; padding-inline: 3vw; width: 24vw; height: 50vh; background: white; border-radius: 1vh; box-shadow: 0.4vh 0.4vh 1.5vh 1vh #00000080; text-align: center;">
+    <div class="font-3" style="font-size: 5vh; font-weight: 600; margin-top: 4vh; border-bottom: 0.1vh solid rgba(180,180,180); padding-bottom: 2vh">
+      <img class="width35" src="/public/images/logo_blue.png" style="width: 15vw;">
+    </div>
+    <div style="margin-inline: 2.5vh; margin-top: 6vh;">
+      <div style="display: flex; flex-direction: row; border-bottom: 0.1vh solid black; align-items: center;">
+        <i style="width: 10%; font-size: 3.8vh;" class="fas fa-user-headset"></i>
+        <input id="user" style="margin: 0; padding: 0; width: 100%; margin-left: 3%; font-size: 3vh; height: 4.4vh; border: 0" placeholder="Digite seu usuário">
+      </div>
+      <div style="margin-top: 4vh; display: flex; flex-direction: row; border-bottom: 0.1vh solid black; align-items: center;">
+        <i style="width: 10%; font-size: 3.8vh" class="fas fa-lock"></i>
+        <input id="password" type="password" style="margin: 0; padding: 0; width: 100%; margin-left: 3%; font-size: 3vh; height: 4.4vh; border: 0" placeholder="Digite sua senha">
+      </div>
+      <div id="login" onclick="login()" class="buttonLogin2" style="margin-inline: 2vw; padding-block: 1.5vh; font-size: 4vh; border-radius: 8vh; margin-top: 3vh;">
+        <p class="font-1">Login</p>
+      </div>
+    </div>
+  </div>
+  <div id="codeMenu" class="width74 left10" style="display: none; position: absolute; left: 35vw; top: 27.5vh; padding-inline: 3vw; width: 24vw; height: 45vh; background: white; border-radius: 1vh; box-shadow: 0.4vh 0.4vh 1.5vh 1vh #00000080; text-align: center;">
+    <div class="font-3" style="font-size: 5vh; font-weight: 600; margin-top: 4vh; border-bottom: 0.1vh solid rgba(180,180,180); padding-bottom: 2vh">
+      <img class="width35" src="/public/images/logo_blue.png" style="width: 15vw;">
+    </div>
+    <div style=" margin-top: 2.5vh; display: flex;width: 100%; text-align: center; justify-content: center;">
+      <div style="margin-top: 2vh; display: flex; flex-direction: row; font-size: 1.9vh">
+        <a>Um codigo de verificação foi enviado para seu email</a>
+      </div>
+    </div>
+    <div style="margin-top: 1vh; display: flex; width: 99.5%; justify-content: center;">
+      <div style="margin-top: 2vh; display: flex; flex-direction: row; border-bottom: 0.1vh solid black; align-items: center;">
+        <i class="fas fa-envelope-open-dollar" style="width: 10%; font-size: 3.2vh"></i>
+        <input class="removeIcon" id="code" type="number" style="margin: 0; padding: 0; width: 100%; margin-left: 3%; font-size: 3vh; height: 4.4vh; border: 0" placeholder="Codigo de Verificação">
+      </div>
+    </div>
+    <div id="checkCode" onclick="login()" class="buttonLogin2" style="margin-inline: 2vw; padding-block: 1.5vh; font-size: 4vh; border-radius: 8vh; margin-top: 3vh; margin-bottom: 0.5vh;">
+      <p class="font-1">Verificar</p>
+    </div>
+    <a onclick="openLogin()" style="font-size: 1.4vh; text-decoration: underline; cursor: pointer">Não recebeu o codigo? Refaça o login novamente daqui 5 minutos...</a>
+  </div>
+</div>
+<script>
+  var pages = {
+    dashboard: ['destaque'],
+    administrativo: ['funcionarios'],
+    consultas: ['fgts','lotes'],
+    propostas: ['lista'],
+  }
+  function openLogin() {
+    document.getElementById('loginMenu').style.display = 'inline'
+    document.getElementById('codeMenu').style.display = 'none'
+  }
+  function login() {
+    if (document.getElementById('login').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (document.getElementById('checkCode').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (!document.getElementById('user').value) return alert('Você não colocou seu usuário...')
+    if (!document.getElementById('password').value) return alert('Você não colocou sua senha...')
+    if (document.getElementById('codeMenu').style.display == 'inline' && !document.getElementById('code').value)  return alert('Você não colocou o codigo de verificação...')
+    document.getElementById('login').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('login').classList.add("buttonBlock");
+    document.getElementById('checkCode').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('checkCode').classList.add("buttonBlock");
+    $.ajax({ type: "post", url: `http://localhost:3000/funcionarios/login`, data: JSON.stringify({
+      user: document.getElementById('user').value, 
+      password: document.getElementById('password').value,
+      code: document.getElementById('code') && document.getElementById('code').value ? document.getElementById('code').value : false
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        document.getElementById('login').innerHTML = `<p class="font-1">Login</p>`
+        document.getElementById('checkCode').innerHTML = `<p class="font-1">Verificar</p>`
+        document.getElementById('login').classList.remove("buttonBlock");
+        document.getElementById('checkCode').classList.remove("buttonBlock");
+        if (s.code && s.error) {
+          alert(s.error)
+        } else if (s.error) return alert(s.error)
+        if (s.login) {
+          localStorage.setItem('user', document.getElementById('user').value)
+          localStorage.setItem('password', document.getElementById('password').value)
+          if (s.alert) alert(s.alert)
+          var url = window.location.pathname.split('/')
+          if (url[1] == "login") return window.location = "/"
+          if (url[1]) return $(document.body).load(`/views/${url[1]}${url[2] ? '/'+url[2] : ''}.html`)
+          return $(document.body).load(`/views/dashboard/destaques.html`)
+        } else {
+          document.getElementById('loginMenu').style.display = 'none'
+          document.getElementById('codeMenu').style.display = 'inline'
+        }
+      },
+      error: function(e) {
+        document.getElementById('login').innerHTML = `<p class="font-1">Login</p>`
+        document.getElementById('checkCode').innerHTML = `<p class="font-1">Verificar</p>`
+        document.getElementById('login').classList.remove("buttonBlock");
+        document.getElementById('checkCode').classList.remove("buttonBlock");
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    });
+  }
+</script>

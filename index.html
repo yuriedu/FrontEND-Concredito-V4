@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Em Construção..." />
+    <meta name="author" content="Yuri Eduardo" />
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.1.2/css/all.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+    <link href="/public/css/style.css" rel="stylesheet" />
+    <link href="/public/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" type="/image/icon" href="/public/images/Icon.png" />
+    <title>Concredito Dashboard</title>
+    <script src="/public/js/jquery.min.js"></script>
+  </head>
+  <body>
+    <div style="position: relative; background-image: linear-gradient(to bottom right, #08436b, #52cbcf); width: 100vw; height: 100vh">
+      <div style="position: absolute; top: 43vh; left: 50%; margin-top: 0vh; margin-left: -2vh; text-align: center">
+        <div class="loader-wheel"></div>
+        <div class="loader-text font-5"></div>
+      </div>
+    </div>
+    <script>
+      var pages = {
+        dashboard: ['destaque'],
+        administrativo: ['funcionarios','configs'],
+        consultas: ['fgts','lotes'],
+        propostas: ['lista'],
+      }
+      function load() {
+        document.documentElement.className = 'orange'
+        if (!localStorage.getItem('user') || !localStorage.getItem('password')) return $(document.body).load(`/views/login.html`)
+        var url = window.location.pathname.split('/')
+        if (url[1] == "login") {
+          localStorage.setItem('user', '')
+          localStorage.setItem('password', '')
+          return $(document.body).load(`/views/login.html`)
+        } else if (url[1] == "logout") return logout()
+        if (url[1] && (!pages[url[1]] || !pages[url[1]].find(r=> r == url[2]))) return window.location = "/"
+        $.ajax({ type: "post", url: `http://localhost:3000/funcionarios/verifyLogin`,
+          data: JSON.stringify({
+            user: localStorage.getItem('user'),
+            password: localStorage.getItem('password')
+          }), contentType:"application/json; charset=utf-8",
+          success: function(s) {
+            if (s.logout && s.error) {
+              alert(s.error)
+              return logout()
+            } else if (s.error) {
+              alert(s.error)
+              return $(document.body).load(`/views/login.html`)
+            } else if (url[1]) {
+              if (s.alert) alert(s.alert)
+              $(document.body).load(`/views/${url[1]}${url[2] ? '/'+url[2] : ''}.html`)
+            } else {
+              if (s.alert) alert(s.alert)
+              return $(document.body).load(`/views/dashboard/destaques.html`)
+            }
+          },
+          error: function(e) { return $(document.body).load(`/views/login.html`) }
+        })
+        function logout() {
+          localStorage.setItem('user', '')
+          localStorage.setItem('password', '')
+          return window.location = "/login"
+        }
+      }(function () { load() })()
+    </script>
+  </body>
+</html>
