@@ -1,0 +1,85 @@
+<div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
+  <navbar id="navbar"></navbar>
+  <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
+
+  <div class="background-image left18-5 width79" style="position: relative; top: 12.5vh; left: 6vw; width: 92.5vw; height: 85.5vh; border-radius: 2vh; display: flex; justify-content: center; align-items: center;">
+
+    <div class="background-Propostas width90p" style="width: 70%; border-radius: 3vh; padding-top: 4vh; padding-bottom: 3vh">
+      <div style="max-height: 62vh; overflow-y: scroll;">
+        <div id="newConsultar" style="display: inline;">
+          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <a class="font-size2" style="font-size: 4vh; width: 100%;">Nova Lista:</a>
+            <fieldset title="CPF do cliente..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Lista</legend>
+              <textarea rows="4" class="font-1" placeholder="CPF,Nome,Mãe,RG,Matricula,Espécie,Cidade,UF,CEP,Endereço,Número,Bairro,Telefone,Nascimento,Sexo,Email,Banco,Agência,Conta,Poupança-&#10;CPF,Nome,Mãe,RG,Matricula,Espécie,Cidade,UF,CEP,Endereço,Número,Bairro,Telefone,Nascimento,Sexo,Email,Banco,Agência,Conta,Poupança-" id="dados" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
+            </fieldset>
+            <fieldset title="CPF do cliente..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Lista</legend>
+              <select rows="4" class="font-1" id="dados" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0">
+                <option value="dados" style="color: black; font-weight: 600">Dados</option>
+              </select>
+            </fieldset>
+          </div>
+          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <a id="adicionar" onclick="adicionar()" class="buttonLogin width50p" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Adicionar</a>
+          </div>
+          <a id="queueText" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 2vh; margin-top: 2vh"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function consultar() {
+    if (document.getElementById('consultar').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (!document.getElementById('cpf') || !document.getElementById('cpf').value) return alert('Coloque o CPF...')
+    document.getElementById('consultar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('consultar').classList.add("buttonBlock");
+    $.ajax({ type: "post",url: `http://localhost:3000/consultas/dados`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        cpf: document.getElementById('cpf').value
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        document.getElementById('consultar').innerHTML = `<p class="font-1">Consultar</p>`
+        document.getElementById('consultar').classList.remove("buttonBlock");
+        if (s.error) return alert(s.error)
+        document.getElementById('title').innerHTML = `Resultado - ${s.type}:`
+        document.getElementById('nome').value = s.dados.nome
+        document.getElementById('mae').value = s.dados.nomeMae
+        document.getElementById('cpfR').value = s.dados.cpf
+        document.getElementById('rg').value = s.dados.rg
+        document.getElementById('matricula').value = s.dados.matricula
+        document.getElementById('especie').value = s.dados.especie
+        document.getElementById('cidade').value = s.dados.cidade
+        document.getElementById('uf').value = s.dados.uf
+        document.getElementById('cep').value = s.dados.cep
+        document.getElementById('endereco').value = s.dados.endereco
+        document.getElementById('numero').value = s.dados.numeroEnd
+        document.getElementById('bairro').value = s.dados.bairro
+        document.getElementById('telefone').value = s.dados.telefone
+        document.getElementById('nascimento').value = s.dados.dataNascimento
+        document.getElementById('sexo').value = s.dados.sexo
+        document.getElementById('email').value = s.dados.email
+        document.getElementById('banco').value = s.dados.banco
+        document.getElementById('agencia').value = s.dados.agencia
+        document.getElementById('conta').value = s.dados.conta
+        document.getElementById('poupanca').value = s.dados.poupanca ? 'Sim' : 'Não'
+        document.getElementById('newConsultar').style.display = `none`
+        document.getElementById('result').style.display = `flex`
+      },
+      error: function(e) {
+        document.getElementById('consultar').innerHTML = `<p class="font-1">Consultar</p>`
+        document.getElementById('consultar').classList.remove("buttonBlock");
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
+      }
+    })
+  }
+  function newConsulta() {
+    document.getElementById('result').style.display = `none`
+    document.getElementById('newConsultar').style.display = `inline`
+  }
+</script>

@@ -107,9 +107,18 @@
       })
     }
     if (!copy) return alert('Não encontrei esse CPF nas minhas listas CSV...')
-    navigator.clipboard.writeText(copy);
-    alert('O resultado foi copiado com sucesso!')
+    if (window.clipboardData) {
+      return window.clipboardData.setData("Text", copy);
+    } else {
+      navigator.clipboard.writeText(copy).then(()=>{
+        alert('O resultado foi copiado com sucesso!')
+      }).catch(()=>{
+        alert('O seu navegador não suporta o sistema de copia...')
+      })
+    }
+
   }
+
   var banks = [
     { name: 'FACTA FINANCEIRA', active: false, option1: 'GOLD' },
     { name: 'BANCO C6', active: false, option1: 'POR_VALOR_TOTAL' },

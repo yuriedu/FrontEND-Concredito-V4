@@ -23,12 +23,12 @@
             <a id="bellOper_nao_digitado" style="width: 10%; display: flex; justify-content: right;">0</a>
           </div>
           <div style="width: 90%; display: flex; align-items: center; padding-block: 1vh; font-size: 1.9vh; margin-inline: 5%">
-            <i class="fa-light fa-file-circle-check width15p" style="color: aqua; width: 10%; font-size: 4vh"></i>
-            <a class="width70p" style="margin-left: 5%; width: 75%">Propostas em Digitado Sucesso</a>
+            <i class="fa-light fa-file-circle-exclamation width15p" style="color: cyan; width: 10%; font-size: 4vh"></i>
+            <a class="width70p" style="margin-left: 5%; width: 75%">Propostas em Verificação OP</a>
             <a id="bellOper_digitado" style="width: 10%; display: flex; justify-content: right;">0</a>
           </div>
           <div style="width: 90%; display: flex; align-items: center; padding-block: 1vh; font-size: 1.9vh; margin-inline: 5%">
-            <i class="fa-light fa-file-circle-exclamation width15p" style="color: brown; width: 10%; font-size: 4vh"></i>
+            <i class="fa-light fa-file-circle-check width15p" style="color: brown; width: 10%; font-size: 4vh"></i>
             <a class="width70p" style="margin-left: 5%; width: 75%">Propostas em Pendência Resolvida</a>
             <a id="bellOper_pendencia_resolvida" style="width: 10%; display: flex; justify-content: right;">0</a>
           </div>
@@ -120,7 +120,7 @@
     <div id="sub-administrativo" class="font-size2" style="display: none; flex-direction: column; font-size: 2.5vh; margin-inline: 2.6vw; padding-block: 0.5vh">
       <a id="administrativo_funcionarios" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Funcionários</a>
       <a id="administrativo_configs" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Configurações</a>
-      <a id="administrativo_relatorios" class="navbar-color-select-block font-color-reverse navbar-color-select" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Relatórios</a>
+      <a id="administrativo_newlist" class="navbar-color-select-block font-color-reverse navbar-color-select" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Nova Lista</a>
     </div>
   </div>
 
@@ -151,6 +151,7 @@
       <a class="font-size2-5" style="font-size: 3vh; display: flex; width: 100%">Consultas <i id="arrow-consultas" class="fas fa-caret-left" style="width: 90%; margin-right: 10%; font-size: 3.5vh; display: flex; justify-content: right;"></i></a>
     </div>
     <div id="sub-consultas" class="font-size2" style="display: none; flex-direction: column; font-size: 2.5vh; margin-inline: 2.6vw; padding-block: 0.5vh">
+      <a id="consultas_dados" class="navbar-color-select-block navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Dados</a>
       <a id="consultas_fgts" class="navbar-color-select-block navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> FGTS</a>
       <a id="consultas_lotes" class="navbar-color-select-block navbar-color-select font-color-reverse" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Lotes</a>
     </div>
@@ -163,7 +164,7 @@
   </div>
 
 </div>
-<div class="invisibleAndroid" style="z-index: 999; position: fixed; left: 6vw; height: 10vh; display: flex; align-items: center;"">
+<div class="invisibleAndroid" style="z-index: 999; position: fixed; left: 6vw; height: 10vh; display: flex; align-items: center;">
   <a href="/"><img id="logo" class="zoom" src="/public/images/logo_white.png" style="z-index: 2; width: 10vw;"></a>
 </div>
 <script>
@@ -238,23 +239,34 @@
         setTimeout(function(){document.getElementById('bellIcon').classList.remove('bellBlock')},5000)
         if (s.error) return alert(s.error)
         if (s.login.user) document.getElementById('userNAVBAR').innerHTML = s.login.user
-        if (s.login.role == "Vendedor") {
-          document.getElementById('bellOper_button').onclick = ''
-          document.getElementById('bellOper_button').style.color = 'gray'
-          document.getElementById('bellOper_button').style.cursor = 'not-allowed'
-          openBell('bellVend')
-        }
         for (var key in s.perms) {
           if(s.perms[key] == 1 && document.getElementById(key)) {
             document.getElementById(key).classList.remove('navbar-color-select-block');
             document.getElementById(key).href = `/${key.replace(`_`,`/`)}`
           }
         }
-        if (s.perms && (s.perms.administrativo_roles || s.perms.administrativo_configs || s.perms.administrativo_logs)) {
-          document.getElementById('administrativo_configs').classList.remove('navbar-color-select-block');
-          document.getElementById('administrativo_configs').href = `/administrativo/configs`
+        if (s.perms) {
+          if (s.perms.administrativo_roles || s.perms.administrativo_configs || s.perms.administrativo_logs) {
+            document.getElementById('administrativo_configs').classList.remove('navbar-color-select-block');
+            document.getElementById('administrativo_configs').href = `/administrativo/configs`
+          }
+          if (s.perms.administrativo_configs) {
+            document.getElementById('administrativo_newlist').classList.remove('navbar-color-select-block');
+            document.getElementById('administrativo_newlist').href = `/administrativo/newlist`
+          }
+          if (s.perms.consultas_fgts) {
+            document.getElementById('consultas_dados').classList.remove('navbar-color-select-block');
+            document.getElementById('consultas_dados').href = `/consultas/dados`
+          }
         }
+
         var color = false
+        if (s.login.role == "Vendedor") {
+          document.getElementById('bellOper_button').onclick = ''
+          document.getElementById('bellOper_button').style.color = 'gray'
+          document.getElementById('bellOper_button').style.cursor = 'not-allowed'
+          openBell('bellVend')
+        }
         for (var key in s.bellOper) {
           if(s.bellOper[key] != 0 && document.getElementById(`bellOper_${key}`)) {
             document.getElementById(`bellOper_${key}`).innerHTML = s.bellOper[key]
@@ -267,7 +279,7 @@
         }
         if (s.login.role != "Vendedor") {
           if (s.bellOper.inclusao >= 1) color = 'olivedrab'
-          if (s.bellOper.digitado >= 1) color = 'aqua'
+          if (s.bellOper.digitado >= 1) color = 'cyan'
           if (s.bellOper.assinado >= 1) color = 'palevioletred'
           if (s.bellOper.pendencia_resolvida >= 1) color = 'brown'
           if (s.bellOper.nao_digitado >= 1) color = 'red'

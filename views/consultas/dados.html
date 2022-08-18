@@ -1,0 +1,180 @@
+<div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
+  <navbar id="navbar"></navbar>
+  <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
+
+  <div class="background-image left18-5 width79" style="position: relative; top: 12.5vh; left: 6vw; width: 92.5vw; height: 85.5vh; border-radius: 2vh; display: flex; justify-content: center; align-items: center;">
+
+    <div class="background-Propostas width90p" style="width: 70%; border-radius: 3vh; padding-top: 4vh; padding-bottom: 3vh">
+      <div style="max-height: 62vh; overflow-y: scroll;">
+        <div id="newConsultar" style="display: inline;">
+          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <a class="font-size2" style="font-size: 4vh; width: 100%;">Consultas de Dados:</a>
+            <fieldset title="CPF do cliente..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
+              <input class="font-1" placeholder="000.000.000-00" id="cpf" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <div id="options" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;"></div>
+          </div>
+          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <a id="consultar" onclick="consultar()" class="buttonLogin width50p" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Consultar</a>
+          </div>
+          <a id="queueText" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 2vh; margin-top: 2vh"></a>
+        </div>
+        <div id="result" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; display: none;">
+            <a id="title" class="font-size2" style="font-size: 4vh; width: 100%;">Resultado:</a>
+            <div style="display: flex; width: 100%; justify-content: center;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Nome</legend>
+              <input class="font-1" id="nome" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Mãe</legend>
+              <input class="font-1" id="mae" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+          </div>
+          <div style="display: flex; width: 100%; justify-content: center;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
+              <input class="font-1" id="cpfR" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">RG</legend>
+              <input class="font-1" id="rg" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Matricula</legend>
+              <input class="font-1" id="matricula" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Espécie</legend>
+              <input class="font-1" id="especie" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+          </div>
+          <div style="display: flex; width: 100%; justify-content: center;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Cidade</legend>
+              <input class="font-1" id="cidade" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">UF</legend>
+              <input class="font-1" id="uf" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CEP</legend>
+              <input class="font-1" id="cep" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+          </div>
+          <div style="display: flex; width: 100%; justify-content: center;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Endereço</legend>
+              <input class="font-1" id="endereco" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Número</legend>
+              <input class="font-1" id="numero" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Bairro</legend>
+              <input class="font-1" id="bairro" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+          </div>
+          <div style="display: flex; width: 100%; justify-content: center;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Telefone</legend>
+              <input class="font-1" id="telefone" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Nascimento</legend>
+              <input class="font-1" id="nascimento" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Sexo</legend>
+              <input class="font-1" id="sexo" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Email</legend>
+              <input class="font-1" id="email" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+          </div>
+          <div style="display: flex; width: 100%; justify-content: center;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
+              <input class="font-1" id="banco" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Agência</legend>
+              <input class="font-1" id="agencia" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Conta</legend>
+              <input class="font-1" id="conta" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 10%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Poupança</legend>
+              <input class="font-1" id="poupanca" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+          </div>
+          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <a onclick="newConsulta()" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Nova Consulta</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function consultar() {
+    if (document.getElementById('consultar').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (!document.getElementById('cpf') || !document.getElementById('cpf').value) return alert('Coloque o CPF...')
+    document.getElementById('consultar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('consultar').classList.add("buttonBlock");
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/consultas/dados`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        cpf: document.getElementById('cpf').value
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        document.getElementById('consultar').innerHTML = `<p class="font-1">Consultar</p>`
+        document.getElementById('consultar').classList.remove("buttonBlock");
+        if (s.error) return alert(s.error)
+        document.getElementById('title').innerHTML = `Resultado - ${s.type}:`
+        document.getElementById('nome').value = s.dados.nome
+        document.getElementById('mae').value = s.dados.nomeMae
+        document.getElementById('cpfR').value = s.dados.cpf
+        document.getElementById('rg').value = s.dados.rg
+        document.getElementById('matricula').value = s.dados.matricula
+        document.getElementById('especie').value = s.dados.especie
+        document.getElementById('cidade').value = s.dados.cidade
+        document.getElementById('uf').value = s.dados.uf
+        document.getElementById('cep').value = s.dados.cep
+        document.getElementById('endereco').value = s.dados.endereco
+        document.getElementById('numero').value = s.dados.numeroEnd
+        document.getElementById('bairro').value = s.dados.bairro
+        document.getElementById('telefone').value = s.dados.telefone
+        document.getElementById('sexo').value = s.dados.sexo
+        document.getElementById('email').value = s.dados.email
+        document.getElementById('banco').value = s.dados.banco
+        document.getElementById('agencia').value = s.dados.agencia
+        document.getElementById('conta').value = s.dados.conta
+        document.getElementById('poupanca').value = s.dados.poupanca ? 'Sim' : 'Não'
+        var date = s.dados.dataNascimento.slice(0, 10)
+        document.getElementById('nascimento').value = `${date.slice(8,10)}/${date.slice(5,7)}/${date.slice(0,4)}`
+
+        document.getElementById('newConsultar').style.display = `none`
+        document.getElementById('result').style.display = `flex`
+      },
+      error: function(e) {
+        document.getElementById('consultar').innerHTML = `<p class="font-1">Consultar</p>`
+        document.getElementById('consultar').classList.remove("buttonBlock");
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
+      }
+    })
+  }
+  function newConsulta() {
+    document.getElementById('result').style.display = `none`
+    document.getElementById('newConsultar').style.display = `inline`
+  }
+</script>
