@@ -250,7 +250,7 @@
             document.getElementById('administrativo_configs').classList.remove('navbar-color-select-block');
             document.getElementById('administrativo_configs').href = `/administrativo/configs`
           }
-          if (s.perms.administrativo_configs) {
+          if (s.perms.administrativo_funcionarios) {
             document.getElementById('administrativo_newlist').classList.remove('navbar-color-select-block');
             document.getElementById('administrativo_newlist').href = `/administrativo/newlist`
           }
@@ -259,7 +259,6 @@
             document.getElementById('consultas_dados').href = `/consultas/dados`
           }
         }
-
         var color = false
         if (s.login.role == "Vendedor") {
           document.getElementById('bellOper_button').onclick = ''

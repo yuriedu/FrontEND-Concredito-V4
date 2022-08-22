@@ -9,11 +9,11 @@
         <div id="newConsultar" style="display: inline;">
           <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
             <a class="font-size2" style="font-size: 4vh; width: 100%;">Nova Lista:</a>
-            <fieldset title="CPF do cliente..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Lista</legend>
-              <textarea rows="4" class="font-1" placeholder="CPF,Nome,Mãe,RG,Matricula,Espécie,Cidade,UF,CEP,Endereço,Número,Bairro,Telefone,Nascimento,Sexo,Email,Banco,Agência,Conta,Poupança-&#10;CPF,Nome,Mãe,RG,Matricula,Espécie,Cidade,UF,CEP,Endereço,Número,Bairro,Telefone,Nascimento,Sexo,Email,Banco,Agência,Conta,Poupança-" id="dados" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
+            <fieldset title="Coloque sua lista aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Dados</legend>
+              <textarea rows="4" class="font-1" placeholder="CPF;Nome;Mãe;RG;Matricula;Espécie;Cidade;UF;CEP;Endereço;Número;Bairro;Telefone;Nascimento;Sexo;Email;Banco;Agência;Conta;Poupança|&#10;CPF;Nome;Mãe;RG;Matricula;Espécie;Cidade;UF;CEP;Endereço;Número;Bairro;Telefone;Nascimento;Sexo;Email;Banco;Agência;Conta;Poupança|" id="lista" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
             </fieldset>
-            <fieldset title="CPF do cliente..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset title="Coloque sua lista aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Lista</legend>
               <select rows="4" class="font-1" id="dados" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0">
                 <option value="dados" style="color: black; font-weight: 600">Dados</option>
@@ -23,63 +23,71 @@
           <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
             <a id="adicionar" onclick="adicionar()" class="buttonLogin width50p" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Adicionar</a>
           </div>
-          <a id="queueText" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 2vh; margin-top: 2vh"></a>
+          <a id="actualText" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 2vh; margin-top: 2vh"></a>
         </div>
       </div>
     </div>
   </div>
 </div>
 <script>
-  function consultar() {
-    if (document.getElementById('consultar').classList.contains('buttonBlock')) return alert('Aguarde...')
-    if (!document.getElementById('cpf') || !document.getElementById('cpf').value) return alert('Coloque o CPF...')
-    document.getElementById('consultar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
-    document.getElementById('consultar').classList.add("buttonBlock");
-    $.ajax({ type: "post",url: `http://localhost:3000/consultas/dados`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        cpf: document.getElementById('cpf').value
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        document.getElementById('consultar').innerHTML = `<p class="font-1">Consultar</p>`
-        document.getElementById('consultar').classList.remove("buttonBlock");
-        if (s.error) return alert(s.error)
-        document.getElementById('title').innerHTML = `Resultado - ${s.type}:`
-        document.getElementById('nome').value = s.dados.nome
-        document.getElementById('mae').value = s.dados.nomeMae
-        document.getElementById('cpfR').value = s.dados.cpf
-        document.getElementById('rg').value = s.dados.rg
-        document.getElementById('matricula').value = s.dados.matricula
-        document.getElementById('especie').value = s.dados.especie
-        document.getElementById('cidade').value = s.dados.cidade
-        document.getElementById('uf').value = s.dados.uf
-        document.getElementById('cep').value = s.dados.cep
-        document.getElementById('endereco').value = s.dados.endereco
-        document.getElementById('numero').value = s.dados.numeroEnd
-        document.getElementById('bairro').value = s.dados.bairro
-        document.getElementById('telefone').value = s.dados.telefone
-        document.getElementById('nascimento').value = s.dados.dataNascimento
-        document.getElementById('sexo').value = s.dados.sexo
-        document.getElementById('email').value = s.dados.email
-        document.getElementById('banco').value = s.dados.banco
-        document.getElementById('agencia').value = s.dados.agencia
-        document.getElementById('conta').value = s.dados.conta
-        document.getElementById('poupanca').value = s.dados.poupanca ? 'Sim' : 'Não'
-        document.getElementById('newConsultar').style.display = `none`
-        document.getElementById('result').style.display = `flex`
-      },
-      error: function(e) {
-        document.getElementById('consultar').innerHTML = `<p class="font-1">Consultar</p>`
-        document.getElementById('consultar').classList.remove("buttonBlock");
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
-      }
-    })
+  var dados = []
+  function adicionar() {
+    dados = []
+    if (document.getElementById('adicionar').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (!document.getElementById('lista') || !document.getElementById('lista').value) return alert('Coloque a lista...')
+    dados = document.getElementById('lista').value.replaceAll(/\r?\n|\r/g, "").split("|");
+    document.getElementById('adicionar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('adicionar').classList.add("buttonBlock");
+    return adicionarRow()
   }
-  function newConsulta() {
-    document.getElementById('result').style.display = `none`
-    document.getElementById('newConsultar').style.display = `inline`
+  async function adicionarRow() {
+    dados[0] = dados[0].replaceAll(/\r?\n|\r/g,"").split(";");
+    dados[0][0] = dados[0][0].replaceAll('.',"").replaceAll('-',"")
+    if (dados[0][0] && dados[0][0].length == 11 && Number(dados[0][0])) {
+      document.getElementById('actualText').innerHTML = `Adicionado: ${dados[0][0]} - Faltam: ${dados.length}`
+      $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/newList`,
+        data: JSON.stringify({
+          user: localStorage.getItem('user'),
+          password: localStorage.getItem('password'),
+          row: dados[0]
+        }), contentType:"application/json; charset=utf-8",
+        success: async function(s) {
+          if (s.error) alert(s.error)
+          dados.splice(0,1)
+          if (dados[0]) {
+            return setTimeout(()=>{ return adicionarRow() }, 1000)
+          } else {
+            dados = []
+            document.getElementById('adicionar').innerHTML = `Adicionar`
+            document.getElementById('adicionar').classList.remove("buttonBlock");
+            alert('Lista Finalizada...')
+          }
+        },
+        error: function(e) {
+          if (e.error) alert(e.error)
+          if (e && e.responseJSON && e.responseJSON.error) alert(e.responseJSON.error)
+          alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
+          dados.splice(0,1)
+          if (dados[0]) {
+            return setTimeout(()=>{ return adicionarRow() }, 1000)
+          } else {
+            dados = []
+            document.getElementById('adicionar').innerHTML = `Adicionar`
+            document.getElementById('adicionar').classList.remove("buttonBlock");
+            alert('Lista Finalizada...')
+          }
+        }
+      })
+    } else {
+      dados.splice(0,1)
+      if (dados[0]) {
+        return setTimeout(()=>{ return adicionarRow() }, 1)
+      } else {
+        dados = []
+        document.getElementById('adicionar').innerHTML = `Adicionar`
+        document.getElementById('adicionar').classList.remove("buttonBlock");
+        alert('Lista Finalizada...')
+      }
+    }
   }
 </script>

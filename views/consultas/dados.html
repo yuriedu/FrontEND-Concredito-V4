@@ -154,12 +154,14 @@
         document.getElementById('telefone').value = s.dados.telefone
         document.getElementById('sexo').value = s.dados.sexo
         document.getElementById('email').value = s.dados.email
-        document.getElementById('banco').value = s.dados.banco
+        document.getElementById('banco').value = s.dados.banco ? s.dados.banco : s.dados.codBanco
         document.getElementById('agencia').value = s.dados.agencia
         document.getElementById('conta').value = s.dados.conta
         document.getElementById('poupanca').value = s.dados.poupanca ? 'Sim' : 'Não'
-        var date = s.dados.dataNascimento.slice(0, 10)
-        document.getElementById('nascimento').value = `${date.slice(8,10)}/${date.slice(5,7)}/${date.slice(0,4)}`
+        if (s.dados.dataNascimento) {
+          var date = s.dados.dataNascimento.slice(0, 10)
+          document.getElementById('nascimento').value = `${date.slice(8,10)}/${date.slice(5,7)}/${date.slice(0,4)}`
+        }
 
         document.getElementById('newConsultar').style.display = `none`
         document.getElementById('result').style.display = `flex`
