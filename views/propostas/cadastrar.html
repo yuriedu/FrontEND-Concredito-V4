@@ -241,15 +241,15 @@
 <script>
   var tabelas = {
     'FACTA FINANCEIRA': { 
-      '23': [ { name: 'GOLD', value: '100-19957' }, { name: 'NORMAL', value: '100-22686' }, { name: 'PLUS', value: '100-22687' } ],
+      '23': [ { name: 'GOLD', value: '6' }, { name: 'NORMAL', value: '7' }, { name: 'PLUS', value: '9' } ],
       '7': [ { name: 'CARTÃO BENEFICIO', value: '116-1975' } ],
     },
     'BANCO C6': { 
-      '23': [ { name: 'SAQUE ANIVERSARIO', value: '103-8538' } ]
+      '23': [ { name: 'SAQUE ANIVERSARIO', value: '1' } ]
     },
     'PANAMERICANO': { 
-      '23': [ { name: 'CORBAN', value: '102-1851' },{ name: 'CORBAN FLEX 1', value: '102-1849' },{ name: 'CORBAN FLEX 2', value: '102-1850' } ],
-      '1': [ { name: '', value: '12-' } ]
+      '23': [ { name: 'CORBAN', value: '1' },{ name: 'CORBAN FLEX 1', value: '2' },{ name: 'CORBAN FLEX 2', value: '3' } ],
+      '1': [ { name: 'NOVO INSS', value: '433' },{ name: 'NORMAL', value: '450' },{ name: 'BEN88', value: '451' },{ name: 'BEN89', value: '452' } ]
     },
     'BMG': { 
       '23': [ { name: '', value: '108-' } ]
@@ -319,7 +319,6 @@
           document.getElementById('endereco').value = s.dados.endereco
           document.getElementById('numero').value = s.dados.numeroEnd
           document.getElementById('bairro').value = s.dados.bairro
-          document.getElementById('nascimento').value = s.dados.dataNascimento.slice(0, 10)
           document.getElementById('sexo').value = s.dados.sexo
           document.getElementById('email').value = s.dados.email
           document.getElementById('banco').value = s.dados.codBanco
@@ -327,6 +326,9 @@
           document.getElementById('conta').value = s.dados.conta
           document.getElementById('poupanca').value = s.dados.poupanca ? '1' : '0'
           document.getElementById('telefone').value = s.dados.telefone.replaceAll("(","").replaceAll(")","").replaceAll(" ","").replaceAll("-","")
+          if (s.dados.dataNascimento) {
+            document.getElementById('nascimento').value = s.dados.dataNascimento.slice(0, 10)
+          }
         }
         document.getElementById('newConsultar').style.display = `none`
         document.getElementById('clienteDados').style.display = `flex`
