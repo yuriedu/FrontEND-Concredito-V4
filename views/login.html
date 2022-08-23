@@ -35,7 +35,7 @@
     <div id="checkCode" onclick="login()" class="buttonLogin2" style="margin-inline: 2vw; padding-block: 1.5vh; font-size: 4vh; border-radius: 8vh; margin-top: 3vh; margin-bottom: 0.5vh;">
       <p class="font-1">Verificar</p>
     </div>
-    <a onclick="openLogin()" style="font-size: 1.4vh; text-decoration: underline; cursor: pointer">Não recebeu o codigo? Refaça o login novamente daqui 5 minutos...</a>
+    <a onclick="openLogin()" style="font-size: 1.4vh; text-decoration: underline; cursor: pointer">Não recebeu o codigo? Refaça o login novamente daqui 3 minutos...</a>
   </div>
 </div>
 <script>
@@ -59,7 +59,7 @@
     document.getElementById('login').classList.add("buttonBlock");
     document.getElementById('checkCode').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('checkCode').classList.add("buttonBlock");
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/funcionarios/login`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `http://localhost:3000/funcionarios/login`, data: JSON.stringify({
       user: document.getElementById('user').value, 
       password: document.getElementById('password').value,
       code: document.getElementById('code') && document.getElementById('code').value ? document.getElementById('code').value : false

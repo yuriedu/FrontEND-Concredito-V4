@@ -8,17 +8,64 @@
       <div style="max-height: 62vh; overflow-y: scroll;">
         <div id="newConsultar" style="display: inline;">
           <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
-            <a class="font-size2" style="font-size: 4vh; width: 100%;">Verificar Cliente:</a>
+            <a class="font-size2" style="font-size: 4vh; width: 100%;">Nova Proposta:</a>
+            <fieldset title="Banco que da simulação..." style="text-align: left; padding: 0; border-radius: 0.6vh; width: 80%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Banco AF</legend>
+              <select onchange="setBank(this.value,true)" class="font-1" id="banks" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+                <option value="false" style="color: black;" selected>Não Selecionado</option>
+                <option value="FACTA FINANCEIRA" style="color: black; font-weight: 600;">Facta Financeira</option>
+                <option value="BANCO C6" style="color: black; font-weight: 600;">Banco C6</option>
+                <option value="PANAMERICANO" style="color: black; font-weight: 600">Panamericano</option>
+                <option value="SAFRA" style="color: black; font-weight: 600;">Safra</option>
+                <option value="MERCANTIL" style="color: black; font-weight: 600;">Mercantil</option>
+                <option value="BMG" style="color: black; font-weight: 600;" >BMG</option>
+              </select>
+            </fieldset>
             <fieldset title="CPF do cliente..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
               <input class="font-1" placeholder="000.000.000-00" id="cpf" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
             <div id="options" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;"></div>
           </div>
-          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
-            <a id="consultar" onclick="consultar()" class="buttonLogin width50p" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Verificar</a>
+          <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center;text-align: center;">
+            <a id="consultar" onclick="consultar()" class="buttonLogin width50p" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 2vw;">Simular FGTS</a>
+            <a id="nextClient" onclick="nextClient()" class="buttonLogin width50p" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Proximo</a>
           </div>
-          <a id="queueText" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 2vh; margin-top: 2vh"></a>
+        </div>
+        <div id="simularFGTS" style="display: none">
+          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <a class="font-size2" style="font-size: 4vh; width: 100%;">Resultado da Consulta FGTS:</a>
+            <fieldset title="CPF do cliente..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
+              <input id="cpfResult" class="font-1" value="???" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0" disabled>
+            </fieldset>
+            <div style="width: 100%; display: flex; flex-direction: row; justify-content: center">
+              <fieldset title="Valor Liberado do cliente..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Saldo Liberado</legend>
+                <input id="liberadoResult" class="font-1" value="???" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0" disabled>
+              </fieldset>
+              <fieldset title="Valor Total do cliente..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Saldo Total</legend>
+                <input id="totalResult" class="font-1" value="???" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0" disabled>
+              </fieldset>
+            </div>
+            <div style="width: 100%; display: flex; flex-direction: row; justify-content: center">
+              <fieldset title="Data da Solicitado da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Data da Solicitação</legend>
+                <input id="dataResult" class="font-1" value="???" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0" disabled>
+              </fieldset>
+              <fieldset title="Parcelas Adiantadas do cliente..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Parcelas Adiantadas</legend>
+                <input id="parcelasResult" class="font-1" value="???" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0" disabled>
+              </fieldset>
+            </div>
+            <a style="margin-top: 3vh; font-size: 2vh; width: 100%;">Parcelas:</a>
+            <div id="parcs" class="borderColor" style="min-height: 8vh; margin-block: 1vh; width: 80%; border-radius: 1.5vh;"></div>
+          </div>
+          <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center; text-align: center;">
+            <a onclick="mainPage()" class="buttonLogin width50p" style="width: 30%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 2vw;">Voltar</a>
+            <a id="nextClient2" onclick="nextClient()" class="buttonLogin width50p" style="width: 30%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Proximo</a>
+          </div>
         </div>
         <div id="clienteDados" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; display: none;">
           <a id="title" class="font-size2" style="font-size: 4vh; width: 100%;">Dados do Cliente:</a>
@@ -149,8 +196,8 @@
             </fieldset>
           </div>
           <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; text-align: center;">
-            <a onclick="newConsulta()" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 2vw">Voltar</a>
-            <a onclick="createClient()" id="newCliente" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh;">Proximo</a>
+            <a onclick="mainPage()" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 2vw">Voltar</a>
+            <a onclick="nextAF()" id="nextAF" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh;">Proximo</a>
           </div>
         </div>
         <div id="propostaDados" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; display: none;">
@@ -171,10 +218,7 @@
             <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Orgão</legend>
               <select onchange="setOrgao(this.value)" class="font-1" id="codOrgaoAF" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-                <option value="false" style="color: black;" selected>Não Selecionado</option>
-                <option value="23" style="color: black; font-weight: 600;">FGTS</option>
-                <option value="1" style="color: black; font-weight: 600;">INSS</option>
-                <option value="7" style="color: black; font-weight: 600">CARTÃO INSS</option>
+                <option value="false" style="color: black;" selected>Selecione o Banco</option>
               </select>
             </fieldset>
           </div>
@@ -229,19 +273,27 @@
             </fieldset>
           </div>
           <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; text-align: center;">
-            <a onclick="backCliente()" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Voltar</a>
+            <a onclick="backClient()" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Voltar</a>
             <a onclick="cadastrar()" id="newCliente" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Cadastrar</a>
-            <a onclick="operador()" id="newCliente" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh;" title="Envie sua proposta para os operadores cadastrarem...">Operador</a>
           </div>
+          <a class="font-color-navbar" style="cursor: pointer; margin-top: 2vh; font-size: 1.5vh; text-decoration: underline">Ocorreu algum problema? Clique aqui para enviar a proposta para algum OPERADOR...</a>
         </div>
       </div>
     </div>
   </div>
 </div>
 <script>
+  var orgaos = {
+    'FACTA FINANCEIRA': [{ name: 'FGTS', value: '23' },{ name: 'CARTÃO INSS', value: '7' }],
+    'BANCO C6': [{ name: 'FGTS', value: '23' }],
+    'PANAMERICANO': [{ name: 'FGTS', value: '23' },{ name: 'INSS', value: '1' }],
+    'BMG': [{ name: 'FGTS', value: '23' }],
+    'MERCANTIL': [{ name: 'FGTS', value: '23' }],
+    'SAFRA': [{ name: 'FGTS', value: '23' }],
+  }
   var tabelas = {
     'FACTA FINANCEIRA': { 
-      '23': [ { name: 'GOLD', value: '6' }, { name: 'NORMAL', value: '7' }, { name: 'PLUS', value: '9' } ],
+      '23': [ { name: 'GOLD', value: '6' }, { name: 'NORMAL', value: '7' }, /*{ name: 'PLUS', value: '9' }*/ ],
       '7': [ { name: 'CARTÃO BENEFICIO', value: '116-1975' } ],
     },
     'BANCO C6': { 
@@ -252,21 +304,98 @@
       '1': [ { name: 'NOVO INSS', value: '433' },{ name: 'NORMAL', value: '450' },{ name: 'BEN88', value: '451' },{ name: 'BEN89', value: '452' } ]
     },
     'BMG': { 
-      '23': [ { name: '', value: '108-' } ]
+      '23': [ { name: 'SAQUE ANIVERSARIO', value: '2' } ]
     },
     'MERCANTIL': { 
-      '23': [ { name: '', value: '109-' } ]
+      '23': [ { name: 'SAQUE ANIVERSARIO', value: '1' } ]
     },
     'SAFRA': { 
-      '23': [ { name: '', value: '101-' } ]
+      '23': [ { name: 'SAQUE ANIVERSARIO', value: '1' } ]
     },
   }
-  function setBank(bank) {
-
+  var banks = [
+    { name:'FACTA FINANCEIRA', options: '<fieldset title="Tabela da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tabela</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="GOLD" style="color: black; font-weight: 600;">GOLD</option><option value="NORMAL" style="color: black; font-weight: 600;">NORMAL</option></select></fieldset>' },
+    { name:'BANCO C6', options: '<div style="display: flex; width: 100%; justify-content: center;"><fieldset title="Tipo da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tipo</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="POR_VALOR_TOTAL" style="color: black; font-weight: 600;">Valor Total</option><option value="POR_VALOR_SOLICITADO" style="color: black; font-weight: 600;">Valor Solicitado</option><option value="POR_QUANTIDADE_DE_PARCELAS" style="color: black; font-weight: 600;">Quantidade de Parcelas</option></select></fieldset><fieldset title="Valor da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Valor</legend><input class="font-1" id="option2" placeholder="00" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset></div>' },
+    { name:'PANAMERICANO', options: '<div style="display: flex; width: 100%; justify-content: center;"><fieldset title="Tipo da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tipo</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="POR_VALOR_TOTAL" style="color: black; font-weight: 600;">Valor Total</option><option value="POR_VALOR_SOLICITADO" style="color: black; font-weight: 600;">Valor Solicitado</option></select></fieldset><fieldset title="Valor da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Valor</legend><input class="font-1" id="option2" placeholder="00" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset></div><fieldset title="Tabela da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tabela</legend><select class="font-1" id="option3" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="900001" style="color: black; font-weight: 600;">GTS_CORBAN</option><option value="900006" style="color: black; font-weight: 600;">FGTS_CORBAN_FLEX1</option><option value="900007" style="color: black; font-weight: 600;">FGTS_CORBAN_FLEX2</option></select></fieldset>' },
+    { name:'BMG', options: false },
+    { name:'MERCANTIL', options: '<div style="display: flex; width: 100%; justify-content: center;"><fieldset title="Tipo da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tipo</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="POR_VALOR_TOTAL" style="color: black; font-weight: 600;">Valor Total</option><option value="POR_QUANTIDADE_DE_PARCELAS" style="color: black; font-weight: 600;">Quantidade de Parcelas</option></select></fieldset><fieldset title="Parcelas da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Parcelas</legend><input class="font-1" id="option2" placeholder="00" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset></div>' },
+    { name:'SAFRA', options: '<fieldset title="Parcelas da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Parcelas</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="1" style="color: black; font-weight: 600;">1 / 7</option><option value="2" style="color: black; font-weight: 600;">6 / 7</option></select></fieldset>' },
+  ]
+  function setBank(bank, aux) {
+    if (bank && aux) {
+      if (banks.findIndex(r=>r.name==bank) >= 0 && banks[banks.findIndex(r=>r.name==bank)].options) {
+        document.getElementById('options').innerHTML = `${banks[banks.findIndex(r=>r.name==bank)].options}`
+        document.getElementById('bancoAF').value = `${banks[banks.findIndex(r=>r.name==bank)].name}`
+        document.getElementById('codOrgaoAF').value = 'FGTS'
+      } else document.getElementById('options').innerHTML = ``
+    } else document.getElementById('options').innerHTML = ``
+    if (orgaos[bank]) {
+      document.getElementById('codOrgaoAF').innerHTML = ``
+      orgaos[bank].forEach((element,index) => {
+        document.getElementById('codOrgaoAF').innerHTML += `<option value="${element.value}" style="color: black; font-weight: 600;">${element.name}</option>`
+        if (index == 0) setOrgao(element.value)
+      });
+    } else {
+      document.getElementById('codOrgaoAF').innerHTML = `<option value="" style="color: black; font-weight: 600;">Selecione o Banco</option>`
+      setOrgao()
+    }
+  }
+  function setOrgao(orgao) {
+    if (tabelas[document.getElementById('bancoAF').value] && tabelas[document.getElementById('bancoAF').value][orgao]) {
+      document.getElementById('tabela').innerHTML = ``
+      tabelas[document.getElementById('bancoAF').value][orgao].forEach((element,index) => {
+        document.getElementById('tabela').innerHTML += `<option value="${element.value}" style="color: black; font-weight: 600;">${element.name}</option>`
+      });
+    } else document.getElementById('tabela').innerHTML = `<option value="" style="color: black; font-weight: 600;">Selecione o Banco/Orgão</option>`
   }
 
-  function createClient() {
-    if (document.getElementById('newCliente').classList.contains('buttonBlock')) return alert('Aguarde...')
+  function consultar() {
+    if (document.getElementById('consultar').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (!document.getElementById('banks').value || document.getElementById('banks').value == 'false') return alert('Selecione o banco em que será feito a consulta!')
+    if (!document.getElementById('cpf').value) return alert('Colque o CPF que será consultado!')
+    document.getElementById('cpf').value = document.getElementById('cpf').value.replaceAll(".","").replaceAll("-","")
+    if (document.getElementById('cpf').value.length != 11) return alert('O CPF é invalido, verifique e tente novamente...')
+    document.getElementById('consultar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('consultar').classList.add("buttonBlock");
+    setTimeout(function(){ queue(document.getElementById('banks').value) }, 1500)
+    $.ajax({ type: "post", url: `https://api.concredito.com.br/consultas/fgts`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        cpf: document.getElementById('cpf').value,
+        bank: document.getElementById('banks').value,
+        option1: document.getElementById('option1') ? document.getElementById('option1').value : false,
+        option2: document.getElementById('option2') ? document.getElementById('option2').value : false,
+        option3: document.getElementById('option3') ? document.getElementById('option3').value : false,
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        document.getElementById('consultar').innerHTML = `<p class="font-1">Simular FGTS</p>`
+        document.getElementById('consultar').classList.remove("buttonBlock");
+        if (s.error) return alert(s.error) 
+        document.getElementById('cpfResult').value = s.cpf
+        document.getElementById('totalResult').value = s.saldoTotal
+        document.getElementById('liberadoResult').value = s.saldoLiberado
+        document.getElementById('valorAF').value = Number(s.saldoLiberado.replaceAll(',','.').replaceAll(" ", "").replaceAll("R$",""))
+        document.getElementById('dataResult').value = s.data
+        document.getElementById('parcelasResult').value = s.parcelas.length
+        document.getElementById('parcs').innerHTML = `<div class="line-bottom" style="width: 100%; display: flex; justify-content: center; text-align: center; padding-block: 0.8vh; font-size: 2.5vh; align-items: center;"><input type="checkbox" style="width: 10%; height: 2vh; margin: 0"><a style="width: 50%;">Data</a><a style="width: 40%;">Valor</a></div>`
+        s.parcelas.forEach((element)=>{
+          document.getElementById('parcs').innerHTML += `<div class="line-top" style="width: 100%; display: flex; justify-content: center; text-align: center; padding-block: 0.8vh; font-size: 2.5vh; align-items: center;"><input name="checks" type="checkbox" style="width: 10%; height: 2vh; margin: 0"><a class="font-size2" style="width: 50%;">${element.data}</a><a class="font-size2" style="width: 40%;">${element.valor}</a></div>`
+        })
+        document.getElementById('newConsultar').style.display = `none`
+        document.getElementById('simularFGTS').style.display = `inline`
+      },
+      error: function(e) {
+        document.getElementById('consultar').innerHTML = `<p class="font-1">Simular FGTS</p>`
+        document.getElementById('consultar').classList.remove("buttonBlock");
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
+  }
+
+  function nextAF() {
     if (!document.getElementById('nome').value || document.getElementById('nome').value.length <= 5 || !document.getElementById('nome').value.includes(" ")) return alert('O nome do cliente está invalido...')
     if (!document.getElementById('mae').value || document.getElementById('mae').value.length <= 5 || !document.getElementById('mae').value.includes(" ")) return alert('O nome da mãe do cliente está invalido...')
     if (!document.getElementById('rg').value) return alert('O RG é invalido...')
@@ -287,13 +416,16 @@
     document.getElementById('propostaDados').style.display = `flex`
   }
 
-  function consultar() {
-    if (document.getElementById('consultar').classList.contains('buttonBlock')) return alert('Aguarde...')
+  function nextClient() {
+    if (document.getElementById('nextClient').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (document.getElementById('nextClient2').classList.contains('buttonBlock')) return alert('Aguarde...')
     if (!document.getElementById('cpf') || !document.getElementById('cpf').value) return alert('Coloque o CPF...')
     document.getElementById('cpf').value = document.getElementById('cpf').value.replaceAll(".","").replaceAll("-","")
     if (document.getElementById('cpf').value.length != 11) return alert('O CPF deve ter 11 digitos...')
-    document.getElementById('consultar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
-    document.getElementById('consultar').classList.add("buttonBlock");
+    document.getElementById('nextClient').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('nextClient').classList.add("buttonBlock");
+    document.getElementById('nextClient2').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('nextClient2').classList.add("buttonBlock");
     $.ajax({ type: "post",url: `https://api.concredito.com.br/consultas/dados`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
@@ -302,8 +434,10 @@
         newProposta: true
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
-        document.getElementById('consultar').innerHTML = `<p class="font-1">Verificar</p>`
-        document.getElementById('consultar').classList.remove("buttonBlock");
+        document.getElementById('nextClient').innerHTML = `<p class="font-1">Proximo</p>`
+        document.getElementById('nextClient').classList.remove("buttonBlock");
+        document.getElementById('nextClient2').innerHTML = `<p class="font-1">Proximo</p>`
+        document.getElementById('nextClient2').classList.remove("buttonBlock");
         if (s.error && !s.not) return alert(s.error)
         document.getElementById('cpfR').value = document.getElementById('cpf').value
         if (s.dados) {
@@ -331,24 +465,29 @@
           }
         }
         document.getElementById('newConsultar').style.display = `none`
+        document.getElementById('simularFGTS').style.display = `none`
         document.getElementById('clienteDados').style.display = `flex`
       },
       error: function(e) {
-        document.getElementById('consultar').innerHTML = `<p class="font-1">Verificar</p>`
-        document.getElementById('consultar').classList.remove("buttonBlock");
+        document.getElementById('nextClient').innerHTML = `<p class="font-1">Proximo</p>`
+        document.getElementById('nextClient').classList.remove("buttonBlock");
+        document.getElementById('nextClient2').innerHTML = `<p class="font-1">Proximo</p>`
+        document.getElementById('nextClient2').classList.remove("buttonBlock");
         if (e.error) return alert(e.error)
         if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
       }
     })
   }
-  function newConsulta() {
+  function mainPage() {
     document.getElementById('clienteDados').style.display = `none`
+    document.getElementById('simularFGTS').style.display = `none`
     document.getElementById('propostaDados').style.display = `none`
     document.getElementById('newConsultar').style.display = `inline`
   }
-  function backCliente() {
+  function backClient() {
     document.getElementById('propostaDados').style.display = `none`
+    document.getElementById('simularFGTS').style.display = `none`
     document.getElementById('newConsultar').style.display = `none`
     document.getElementById('clienteDados').style.display = `flex`
   }
