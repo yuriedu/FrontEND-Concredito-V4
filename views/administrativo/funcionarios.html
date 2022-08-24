@@ -88,6 +88,8 @@
       success: async function(s) {
         getingUser = false
         if (s.error) return alert(s.error)
+        document.getElementById('loading').style.display = 'none'
+        document.getElementById(`funcionarios`).style.display = 'inline'
         s.logins.forEach((element,index)=>{
           document.getElementById('funcionarios').innerHTML += `<proposta><a style="display:none">${JSON.stringify(element)}</a><div id="user_${element.user}" class="background-Propostas" style="z-index: 1; position: relative; border-radius: 1.5vh; margin-block: 2.5vh"><div class="line-bottom navbar-font-color font-4" style="display: flex; flex-direction: row; align-items: center; height: 6vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center; position: relative">
 
@@ -125,8 +127,7 @@
         })
         fgtsList = s.fgts
         cadastrosList = s.cadastros
-        document.getElementById('loading').style.display = 'none'
-        document.getElementById(`funcionarios`).style.display = 'inline'
+
       },
       error: function(e) {
         getingUser = false

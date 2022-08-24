@@ -177,7 +177,10 @@
           <div style="display: flex; width: 100%; justify-content: center;">
             <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
-              <input class="font-1" type="number" id="banco" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+              <input class="font-1" list="banksList" id="banco" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+              <datalist id="banksList">
+
+              </datalist>  
             </fieldset>
             <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Agência</legend>
@@ -274,15 +277,23 @@
           </div>
           <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; text-align: center;">
             <a onclick="backClient()" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Voltar</a>
-            <a onclick="cadastrar()" id="newCliente" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Cadastrar</a>
+            <a onclick="cadastrar()" id="cadastrar" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Cadastrar</a>
           </div>
-          <a class="font-color-navbar" style="cursor: pointer; margin-top: 2vh; font-size: 1.5vh; text-decoration: underline">Ocorreu algum problema? Clique aqui para enviar a proposta para algum OPERADOR...</a>
+          <a id="operador" onclick="operador()" class="font-color-navbar" style="cursor: pointer; margin-top: 2vh; font-size: 1.5vh; text-decoration: underline">Ocorreu algum problema? Clique aqui para enviar a proposta para algum OPERADOR...</a>
         </div>
       </div>
     </div>
   </div>
 </div>
 <script>
+  var banksID = {
+    'FACTA FINANCEIRA': "2020",
+    'BANCO C6': "626",
+    'PANAMERICANO': "623",
+    'BMG': "318",
+    'MERCANTIL': "389",
+    'SAFRA': "422",
+  }
   var orgaos = {
     'FACTA FINANCEIRA': [{ name: 'FGTS', value: '23' },{ name: 'CARTÃO INSS', value: '7' }],
     'BANCO C6': [{ name: 'FGTS', value: '23' }],
@@ -322,11 +333,12 @@
     { name:'SAFRA', options: '<fieldset title="Parcelas da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Parcelas</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="1" style="color: black; font-weight: 600;">1 / 7</option><option value="2" style="color: black; font-weight: 600;">6 / 7</option></select></fieldset>' },
   ]
   function setBank(bank, aux) {
-    if (bank && aux) {
+    if (bank) {
       if (banks.findIndex(r=>r.name==bank) >= 0 && banks[banks.findIndex(r=>r.name==bank)].options) {
         document.getElementById('options').innerHTML = `${banks[banks.findIndex(r=>r.name==bank)].options}`
         document.getElementById('bancoAF').value = `${banks[banks.findIndex(r=>r.name==bank)].name}`
         document.getElementById('codOrgaoAF').value = 'FGTS'
+        setOrgao('23')
       } else document.getElementById('options').innerHTML = ``
     } else document.getElementById('options').innerHTML = ``
     if (orgaos[bank]) {
@@ -376,6 +388,8 @@
         document.getElementById('totalResult').value = s.saldoTotal
         document.getElementById('liberadoResult').value = s.saldoLiberado
         document.getElementById('valorAF').value = Number(s.saldoLiberado.replaceAll(',','.').replaceAll(" ", "").replaceAll("R$",""))
+        document.getElementById('parcela').value = s.parcelas.length
+        document.getElementById('valorParcela').value = 1
         document.getElementById('dataResult').value = s.data
         document.getElementById('parcelasResult').value = s.parcelas.length
         document.getElementById('parcs').innerHTML = `<div class="line-bottom" style="width: 100%; display: flex; justify-content: center; text-align: center; padding-block: 0.8vh; font-size: 2.5vh; align-items: center;"><input type="checkbox" style="width: 10%; height: 2vh; margin: 0"><a style="width: 50%;">Data</a><a style="width: 40%;">Valor</a></div>`
@@ -409,13 +423,14 @@
     if (!document.getElementById('telefone').value || document.getElementById('telefone').value.length != 11) return alert('O telefone é invalido...')
     if (!document.getElementById('nascimento').value) return alert('A data de nascimento é invalida...')
     if (!document.getElementById('email').value || !document.getElementById('email').value.includes('@') || !document.getElementById('email').value.includes('.com')) return alert('O Email está invalido!')
-    if (!document.getElementById('banco').value) return alert('O banco é invalido...')
+    if (!document.getElementById('banco').value) return alert('O banco não colocado...')
     if (!document.getElementById('agencia').value) return alert('A agência é invalida...')
     if (!document.getElementById('conta').value) return alert('A conta é invalida...')
+    if (!banksList || !banksList.find(r=> r.bcolib_descricao == document.getElementById('banco').value)) return alert('O banco inserido não foi encontrado na minha lista! Selecione o banco conforme a lista mostrada...')
     document.getElementById('clienteDados').style.display = `none`
     document.getElementById('propostaDados').style.display = `flex`
   }
-
+  var banksList = false
   function nextClient() {
     if (document.getElementById('nextClient').classList.contains('buttonBlock')) return alert('Aguarde...')
     if (document.getElementById('nextClient2').classList.contains('buttonBlock')) return alert('Aguarde...')
@@ -455,7 +470,7 @@
           document.getElementById('bairro').value = s.dados.bairro
           document.getElementById('sexo').value = s.dados.sexo
           document.getElementById('email').value = s.dados.email
-          document.getElementById('banco').value = s.dados.codBanco
+          document.getElementById('banco').value = s.dados.banco
           document.getElementById('agencia').value = s.dados.agencia
           document.getElementById('conta').value = s.dados.conta
           document.getElementById('poupanca').value = s.dados.poupanca ? '1' : '0'
@@ -463,6 +478,13 @@
           if (s.dados.dataNascimento) {
             document.getElementById('nascimento').value = s.dados.dataNascimento.slice(0, 10)
           }
+        }
+        if (s.banks) {
+          banksList = s.banks
+          document.getElementById('banksList').innerHTML = ``
+          s.banks.forEach((element,index) => {
+            document.getElementById('banksList').innerHTML += `<option value="${element.bcolib_descricao}">`
+          });
         }
         document.getElementById('newConsultar').style.display = `none`
         document.getElementById('simularFGTS').style.display = `none`
@@ -473,6 +495,163 @@
         document.getElementById('nextClient').classList.remove("buttonBlock");
         document.getElementById('nextClient2').innerHTML = `<p class="font-1">Proximo</p>`
         document.getElementById('nextClient2').classList.remove("buttonBlock");
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
+      }
+    })
+  }
+  var operadorIng = false
+  function operador() {
+    if (operadorIng || document.getElementById('cadastrar').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (!document.getElementById('nome').value || document.getElementById('nome').value.length <= 5 || !document.getElementById('nome').value.includes(" ")) return alert('O nome do cliente está invalido...')
+    if (!document.getElementById('mae').value || document.getElementById('mae').value.length <= 5 || !document.getElementById('mae').value.includes(" ")) return alert('O nome da mãe do cliente está invalido...')
+    if (!document.getElementById('rg').value) return alert('O RG é invalido...')
+    if (!document.getElementById('cidade').value) return alert('A cidade é invalida...')
+    if (!document.getElementById('cep').value) return alert('O CEP é invalido...')
+    if (!document.getElementById('endereco').value) return alert('O endereço é invalido...')
+    if (!document.getElementById('numero').value) return alert('O número do endereço é invalido...')
+    if (!document.getElementById('bairro').value) return alert('O bairro é invalido...')
+    if (!document.getElementById('telefone').value || document.getElementById('telefone').value.length != 11) return alert('O telefone é invalido...')
+    if (!document.getElementById('nascimento').value) return alert('A data de nascimento é invalida...')
+    if (!document.getElementById('email').value || !document.getElementById('email').value.includes('@') || !document.getElementById('email').value.includes('.com')) return alert('O Email está invalido!')
+    if (!document.getElementById('banco').value) return alert('O banco não colocado...')
+    if (!document.getElementById('agencia').value) return alert('A agência é invalida...')
+    if (!document.getElementById('conta').value) return alert('A conta é invalida...')
+    if (!banksList || !banksList.find(r=> r.bcolib_descricao == document.getElementById('banco').value)) return alert('O banco inserido não foi encontrado na minha lista! Selecione o banco conforme a lista mostrada...')
+    if (!document.getElementById('bancoAF').value) return alert('O Banco AF é invalido...')
+    if (!document.getElementById('codOrgaoAF').value) return alert('O Orgão AF é invalido...')
+    if (!document.getElementById('valorAF').value) return alert('O Valor AF é invalido...')
+    if (!document.getElementById('parcela').value) return alert('A Parcela é invalida...')
+    if (!document.getElementById('valorParcela').value) return alert('O Valor da Parcela é invalido...')
+    if (!document.getElementById('tabela').value) return alert('A Tabela é invalida...')
+    document.getElementById('cadastrar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('cadastrar').classList.add("buttonBlock");
+    operadorIng = true
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/propostas/newAF`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        "cpf": document.getElementById('cpfR').value,
+        "matricula": document.getElementById('matricula').value,
+        "especie": document.getElementById('especie').value,
+        "nome": document.getElementById('nome').value,
+        "endereco": document.getElementById('endereco').value,
+        "numeroEnd": document.getElementById('numero').value,
+        "bairro": document.getElementById('bairro').value,
+        "cidade": document.getElementById('cidade').value,
+        "uf": document.getElementById('uf').value,
+        "cep": document.getElementById('cep').value,
+        "rg": document.getElementById('rg').value,
+        "dataNascimento": document.getElementById('nascimento').value,
+        "sexo": document.getElementById('sexo').value,
+        "codBanco": banksList.find(r=> r.bcolib_descricao == document.getElementById('banco').value).Bcolib_codigo,
+        "agencia": document.getElementById('agencia').value,
+        "contaCorrente": document.getElementById('conta').value,
+        "poupanca": document.getElementById('poupanca').value,
+        "mae": document.getElementById('mae').value,
+        "email": document.getElementById('email').value,
+        "telefone": document.getElementById('telefone').value,
+        "valorAF": document.getElementById('valorAF').value,
+        "parcela": document.getElementById('parcela').value,
+        "valorParcela": document.getElementById('valorParcela').value,
+        "codBancoAF": banksID[document.getElementById('bancoAF').value],
+        "codOrgaoAF": document.getElementById('codOrgaoAF').value,
+        "Tabela": document.getElementById('tabela').value,
+        "midia": document.getElementById('midia').value,
+        "liberacao": document.getElementById('liberacao').value
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        operadorIng = false
+        document.getElementById('cadastrar').innerHTML = `<p class="font-1">Cadastrar</p>`
+        document.getElementById('cadastrar').classList.remove("buttonBlock");
+        if (s.error) return alert(s.error)
+        alert(`Sua proposta foi cadastrada no agilus com sucesso! Aguarde algum operador atuar...\nCodigo AF: ${s.codAF}\nCodigo Cliente: ${s.codCliente}`)
+        return window.location.reload();
+      },
+      error: function(e) {
+        operadorIng = false
+        document.getElementById('cadastrar').innerHTML = `<p class="font-1">Cadastrar</p>`
+        document.getElementById('cadastrar').classList.remove("buttonBlock");
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
+      }
+    })
+  }
+  function cadastrar() {
+    if (operadorIng || document.getElementById('cadastrar').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (!document.getElementById('nome').value || document.getElementById('nome').value.length <= 5 || !document.getElementById('nome').value.includes(" ")) return alert('O nome do cliente está invalido...')
+    if (!document.getElementById('mae').value || document.getElementById('mae').value.length <= 5 || !document.getElementById('mae').value.includes(" ")) return alert('O nome da mãe do cliente está invalido...')
+    if (!document.getElementById('rg').value) return alert('O RG é invalido...')
+    if (!document.getElementById('cidade').value) return alert('A cidade é invalida...')
+    if (!document.getElementById('cep').value) return alert('O CEP é invalido...')
+    if (!document.getElementById('endereco').value) return alert('O endereço é invalido...')
+    if (!document.getElementById('numero').value) return alert('O número do endereço é invalido...')
+    if (!document.getElementById('bairro').value) return alert('O bairro é invalido...')
+    if (!document.getElementById('telefone').value || document.getElementById('telefone').value.length != 11) return alert('O telefone é invalido...')
+    if (!document.getElementById('nascimento').value) return alert('A data de nascimento é invalida...')
+    if (!document.getElementById('email').value || !document.getElementById('email').value.includes('@') || !document.getElementById('email').value.includes('.com')) return alert('O Email está invalido!')
+    if (!document.getElementById('banco').value) return alert('O banco não colocado...')
+    if (!document.getElementById('agencia').value) return alert('A agência é invalida...')
+    if (!document.getElementById('conta').value) return alert('A conta é invalida...')
+    if (!banksList || !banksList.find(r=> r.bcolib_descricao == document.getElementById('banco').value)) return alert('O banco inserido não foi encontrado na minha lista! Selecione o banco conforme a lista mostrada...')
+    if (!document.getElementById('bancoAF').value) return alert('O Banco AF é invalido...')
+    if (!document.getElementById('codOrgaoAF').value) return alert('O Orgão AF é invalido...')
+    if (!document.getElementById('valorAF').value) return alert('O Valor AF é invalido...')
+    if (!document.getElementById('parcela').value) return alert('A Parcela é invalida...')
+    if (!document.getElementById('valorParcela').value) return alert('O Valor da Parcela é invalido...')
+    if (!document.getElementById('tabela').value) return alert('A Tabela é invalida...')
+    document.getElementById('cadastrar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('cadastrar').classList.add("buttonBlock");
+    operadorIng = true
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/propostas/newCadastrar`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        "cpf": document.getElementById('cpfR').value,
+        "matricula": document.getElementById('matricula').value,
+        "especie": document.getElementById('especie').value,
+        "nome": document.getElementById('nome').value,
+        "endereco": document.getElementById('endereco').value,
+        "numeroEnd": document.getElementById('numero').value,
+        "bairro": document.getElementById('bairro').value,
+        "cidade": document.getElementById('cidade').value,
+        "uf": document.getElementById('uf').value,
+        "cep": document.getElementById('cep').value,
+        "rg": document.getElementById('rg').value,
+        "dataNascimento": document.getElementById('nascimento').value,
+        "sexo": document.getElementById('sexo').value,
+        "codBanco": banksList.find(r=> r.bcolib_descricao == document.getElementById('banco').value).Bcolib_codigo,
+        "agencia": document.getElementById('agencia').value,
+        "contaCorrente": document.getElementById('conta').value,
+        "poupanca": document.getElementById('poupanca').value,
+        "mae": document.getElementById('mae').value,
+        "email": document.getElementById('email').value,
+        "telefone": document.getElementById('telefone').value,
+        "valorAF": document.getElementById('valorAF').value,
+        "parcela": document.getElementById('parcela').value,
+        "valorParcela": document.getElementById('valorParcela').value,
+        "bancoAF": document.getElementById('bancoAF').value,
+        "codBancoAF": banksID[document.getElementById('bancoAF').value],
+        "codOrgaoAF": document.getElementById('codOrgaoAF').value,
+        "Tabela": document.getElementById('tabela').value,
+        "midia": document.getElementById('midia').value,
+        "liberacao": document.getElementById('liberacao').value,
+        "fase": 9232,
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        operadorIng = false
+        document.getElementById('cadastrar').innerHTML = `<p class="font-1">Cadastrar</p>`
+        document.getElementById('cadastrar').classList.remove("buttonBlock");
+        if (s.error) return alert(s.error)
+        alert(`Sua proposta foi cadastrada e adicionada no agilus com sucesso!\nLink: ${s.link}\nCodigo AF: ${s.codAF}\nCodigo Cliente: ${s.codCliente}`)
+        return window.location.reload();
+      },
+      error: function(e) {
+        operadorIng = false
+        document.getElementById('cadastrar').innerHTML = `<p class="font-1">Cadastrar</p>`
+        document.getElementById('cadastrar').classList.remove("buttonBlock");
         if (e.error) return alert(e.error)
         if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
