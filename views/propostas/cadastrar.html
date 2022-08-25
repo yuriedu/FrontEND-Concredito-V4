@@ -276,7 +276,7 @@
             </fieldset>
           </div>
           <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; text-align: center;">
-            <a onclick="backClient()" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Voltar</a>
+            <a onclick="backClient()" id="backClient" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Voltar</a>
             <a onclick="cadastrar()" id="cadastrar" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Cadastrar</a>
           </div>
           <a id="operador" onclick="operador()" class="font-color-navbar" style="cursor: pointer; margin-top: 2vh; font-size: 1.5vh; text-decoration: underline">Ocorreu algum problema? Clique aqui para enviar a proposta para algum OPERADOR...</a>
@@ -363,6 +363,8 @@
 
   function consultar() {
     if (document.getElementById('consultar').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (document.getElementById('nextClient').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (document.getElementById('nextClient2').classList.contains('buttonBlock')) return alert('Aguarde...')
     if (!document.getElementById('banks').value || document.getElementById('banks').value == 'false') return alert('Selecione o banco em que será feito a consulta!')
     if (!document.getElementById('cpf').value) return alert('Colque o CPF que será consultado!')
     document.getElementById('cpf').value = document.getElementById('cpf').value.replaceAll(".","").replaceAll("-","")
@@ -432,6 +434,7 @@
   }
   var banksList = false
   function nextClient() {
+    if (document.getElementById('consultar').classList.contains('buttonBlock')) return alert('Aguarde...')
     if (document.getElementById('nextClient').classList.contains('buttonBlock')) return alert('Aguarde...')
     if (document.getElementById('nextClient2').classList.contains('buttonBlock')) return alert('Aguarde...')
     if (!document.getElementById('cpf') || !document.getElementById('cpf').value) return alert('Coloque o CPF...')
@@ -659,12 +662,14 @@
     })
   }
   function mainPage() {
+    if (operadorIng || document.getElementById('cadastrar').classList.contains('buttonBlock')) return alert('Aguarde...')
     document.getElementById('clienteDados').style.display = `none`
     document.getElementById('simularFGTS').style.display = `none`
     document.getElementById('propostaDados').style.display = `none`
     document.getElementById('newConsultar').style.display = `inline`
   }
   function backClient() {
+    if (operadorIng || document.getElementById('cadastrar').classList.contains('buttonBlock')) return alert('Aguarde...')
     document.getElementById('propostaDados').style.display = `none`
     document.getElementById('simularFGTS').style.display = `none`
     document.getElementById('newConsultar').style.display = `none`
