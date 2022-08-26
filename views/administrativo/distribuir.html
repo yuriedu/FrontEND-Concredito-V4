@@ -1,0 +1,90 @@
+<div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
+  <navbar id="navbar"></navbar>
+  <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
+
+  <div class="background-image left18-5 width79" style="position: relative; top: 12.5vh; left: 6vw; width: 92.5vw; height: 85.5vh; border-radius: 2vh; display: flex; justify-content: center; align-items: center;">
+
+    <div class="background-Propostas width90p" style="width: 70%; border-radius: 3vh; padding-top: 4vh; padding-bottom: 3vh">
+      <div style="max-height: 62vh; overflow-y: scroll;">
+        <div id="newConsultar" style="display: inline;">
+          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <a class="font-size2" style="font-size: 4vh; width: 100%;">Distribuir Lista:</a>
+            <fieldset title="Coloque sua lista aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Dados</legend>
+              <textarea rows="4" class="font-1" placeholder="CPF,NOME,TELEFONE|&#10;CPF,NOME,TELEFONE|&#10;CPF,NOME,TELEFONE|&#10;CPF,NOME,TELEFONE|" id="lista" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
+            </fieldset>
+            <div style="display: flex; flex-direction: row; width: 100%; align-items: center; justify-content: center;">
+              <fieldset title="Coloque sua lista aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Agentes</legend>
+                <input class="font-1" list="agentesList" id="agente" placeholder="Carregando..." style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+                <datalist id="agentesList"></datalist> 
+              </fieldset>
+              <i onclick="addAgente()" style="font-size: 3vh; margin-top: 3vh; cursor: pointer" class="fa-solid fa-user-plus"></i>
+            </div>
+            <div class="borderColor" id="agentes" style="width: 70%; max-width: 70%; overflow: auto; display: flex; padding-block: 0.8vh; border-radius: 1vh; margin-top: 3vh; padding-inline: 0.2v">
+            </div>
+          </div>
+          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <a id="adicionar" onclick="distribuir()" class="buttonLogin width50p" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Distribuir</a>
+          </div>
+          <a id="actualText" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 2vh; margin-top: 2vh"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var agentes = false
+  var agentesBlock = false
+  function getAgentes() {
+    if (agentesBlock) return alert('Aguarde...')
+    agentesBlock = true
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/getLogins`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password')
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        agentesBlock = false
+        document.getElementById('agente').placeholder = 'Selecione o Agente...'
+        agentes = s.logins
+        s.logins.forEach((element,index) => {
+          document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
+        });
+      },
+      error: function(e) {
+        agentesBlock = false
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
+      }
+    })
+  }
+  var agentesList = []
+  function addAgente() {
+    if (!document.getElementById('agente').value) return alert('Selecione o nome do agente...')
+    if (!agentes || !agentes.find(r=>r.user == document.getElementById('agente').value)) return alert('Não encontrei esse agente...')
+    if (agentesList.find(r=>r == document.getElementById('agente').value)) return alert('Esse agente ja foi selecionado...')
+    agentesList[agentesList.length] = document.getElementById('agente').value
+    if (document.getElementById(`agente_${document.getElementById('agente').value}`)) {
+      document.getElementById(`agente_${document.getElementById('agente').value}`).innerHTML += `<a onclick="remAgente('${document.getElementById('agente').value}')" style="cursor: pointer; margin-inline: 0.2vw; padding-inline: 0.5vw; font-size: 2.1vh; border: 0.1vh solid #52cbcf; border-radius: 5vh">${document.getElementById('agente').value}<span style="color: red; font-weight: 600; font-size: 1.8vh; padding-left: 0.5vw">X</span></a>`
+    } else {
+      document.getElementById('agentes').innerHTML += `<agente id="agente_${document.getElementById('agente').value}"><a onclick="remAgente('${document.getElementById('agente').value}')" style="cursor: pointer; margin-inline: 0.2vw; padding-inline: 0.5vw; font-size: 2.1vh; border: 0.1vh solid #52cbcf; border-radius: 5vh">${document.getElementById('agente').value}<span style="color: red; font-weight: 600; font-size: 1.8vh; padding-left: 0.5vw">X</span></a></agente>`
+    }
+    document.getElementById('agente').value = ''
+  }
+  function remAgente(agente) {
+    if (!agentesList.find(r=>r == agente)) return alert('Esse agente não está em minha lista...')
+    agentesList.splice(agentesList.findIndex(r=>r == agente),1)
+    document.getElementById(`agente_${agente}`).innerHTML = ''
+  }
+  function distribuir() {
+    if (agentesList.length <= 0) return alert('Selecione os agentes que sera retribuido...')
+    if (!document.getElementById('lista').value) return alert('Coloque a lista...')
+    var list = await document.getElementById('lista').value.replaceAll(/\r?\n|\r/g, "").split("|");
+    if (list.length <= 0) return alert('Lista vazia! Verifique o molde e tente novamente...')
+    
+  }
+
+  (function () { getAgentes() })();
+</script>

@@ -125,7 +125,8 @@
     <div id="sub-administrativo" class="font-size2" style="display: none; flex-direction: column; font-size: 2.5vh; margin-inline: 2.6vw; padding-block: 0.5vh">
       <a id="administrativo_funcionarios" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Funcionários</a>
       <a id="administrativo_configs" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Configurações</a>
-      <a id="administrativo_newlist" class="navbar-color-select-block font-color-reverse navbar-color-select" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Nova Lista</a>
+      <a id="administrativo_newlist" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Nova Lista</a>
+      <a id="administrativo_distribuir" class="navbar-color-select-block font-color-reverse navbar-color-select" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Distribuir Lista</a>
     </div>
   </div>
 
@@ -189,10 +190,10 @@
     }
   }
   var submenus = {
-    administrativo: { active: false, submenus: ['funcionarios', 'relatorios', 'configs'] },
-    dashboard: { active: false, submenus: ['destaques', 'relatorios'] },
-    propostas: { active: false, submenus: ['cadastrar', 'lista'] },
-    consultas: { active: false, submenus: ['fgts', 'lotes'] },
+    administrativo: { active: false, submenus: ['funcionarios','configs','newlist','distribuir'] },
+    dashboard: { active: false, submenus: ['destaques'] },
+    propostas: { active: false, submenus: ['cadastrar','lista'] },
+    consultas: { active: false, submenus: ['fgts','lotes','dados'] },
   }
   function openSubMenu(submenu) {
     if (!sidebar) openSideBar()
@@ -264,6 +265,8 @@
           if (s.perms.administrativo_funcionarios) {
             document.getElementById('administrativo_newlist').classList.remove('navbar-color-select-block');
             document.getElementById('administrativo_newlist').href = `/administrativo/newlist`
+            document.getElementById('administrativo_distribuir').classList.remove('navbar-color-select-block');
+            document.getElementById('administrativo_distribuir').href = `/administrativo/distribuir`
           }
           if (s.perms.consultas_fgts) {
             document.getElementById('consultas_dados').classList.remove('navbar-color-select-block');

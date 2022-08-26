@@ -145,7 +145,7 @@
     if (document.getElementById('consultar').classList.contains('buttonBlock')) return alert('Sua consulta já está na fila! Aguarde um pouco, por favor...')
     if (!document.getElementById('cpfs').value) return alert("Colque a lista de CPF's que será consultado...")
     if (banks.filter(r=>r.active).length <= 0) return alert('Selecione algum dos bancos que será consultado...')
-    cpfs = await document.getElementById('cpfs').value.replace(/\r?\n|\r/g, "").split(",");
+    cpfs = await document.getElementById('cpfs').value.replaceAll(/\r?\n|\r/g, "").split(",");
     if (cpfs.length <= 0) return alert("Lista de Cpf's invalido! Verifique e tente novamente...")
     document.getElementById(`consultar`).innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById(`consultar`).classList.add("buttonBlock");
@@ -182,9 +182,7 @@
         return nextCPF(i, bank)
       },
       error: function(e) {
-        alert(JSON.stringify(e))
         if (e.error) return alert(e.error)
-        alert(`Ocorreu algum erro ao enviar o CPF: ${cpf} para minha API! Clique em OK para tentar com um novo CPF...`)
         return nextCPF(i, bank)
       }
     })

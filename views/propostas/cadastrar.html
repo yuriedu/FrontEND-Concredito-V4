@@ -281,6 +281,27 @@
           </div>
           <a id="operador" onclick="operador()" class="font-color-navbar" style="cursor: pointer; margin-top: 2vh; font-size: 1.5vh; text-decoration: underline">Ocorreu algum problema? Clique aqui para enviar a proposta para algum OPERADOR...</a>
         </div>
+
+        <div id="propostaResult" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; display: none;">
+          <a id="title" class="font-size2" style="font-size: 4vh; width: 100%;">Proposta Cadastrada:</a>
+          <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 80%; margin-inline: 1%; padding-inline: 1%;">
+            <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Cod. AF</legend>
+            <input disabled class="font-1" id="codigoAF" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+          </fieldset>
+          <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 80%; margin-inline: 1%; padding-inline: 1%;">
+            <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Cod. Cliente</legend>
+            <input disabled class="font-1" id="codigoCliente" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+          </fieldset>
+          <fieldset onclick="copyLink()" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 80%; margin-inline: 1%; padding-inline: 1%;">
+            <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Link Form.</legend>
+            <input disabled class="font-1" id="linkForm" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+          </fieldset>
+
+          <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; text-align: center;">
+            <a onclick="mainPage()" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Nova Proposta</a>
+          </div>
+        </div>
+      
       </div>
     </div>
   </div>
@@ -648,8 +669,11 @@
         document.getElementById('cadastrar').innerHTML = `<p class="font-1">Cadastrar</p>`
         document.getElementById('cadastrar').classList.remove("buttonBlock");
         if (s.error) return alert(s.error)
-        alert(`Sua proposta foi cadastrada e adicionada no agilus com sucesso!\nLink: ${s.link}\nCodigo AF: ${s.codAF}\nCodigo Cliente: ${s.codCliente}`)
-        return window.location.reload();
+        document.getElementById('codigoAF').value = s.codAF
+        document.getElementById('codigoCliente').value = s.codCliente
+        document.getElementById('linkForm').value = s.link
+        document.getElementById('propostaDados').style.display = `none`
+        document.getElementById('propostaResult').style.display = `flex`
       },
       error: function(e) {
         operadorIng = false
@@ -674,5 +698,19 @@
     document.getElementById('simularFGTS').style.display = `none`
     document.getElementById('newConsultar').style.display = `none`
     document.getElementById('clienteDados').style.display = `flex`
+  }
+
+  function copyLink() {
+    if (!document.getElementById('linkForm').value) alert('Link não encontrado...')
+    if (window.clipboardData) {
+      return window.clipboardData.setData("Text", document.getElementById('linkForm').value);
+    } else {
+      navigator.clipboard.writeText(document.getElementById('linkForm').value).then(()=>{
+        alert('Link copiado com sucesso!')
+      }).catch((e)=>{
+        alert(e)
+        alert('O seu navegador não suporta o sistema de copia...')
+      })
+    }
   }
 </script>
