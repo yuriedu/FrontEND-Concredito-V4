@@ -8,10 +8,10 @@
       <div style="max-height: 62vh; overflow-y: scroll;">
         <div id="newConsultar" style="display: inline;">
           <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
-            <a class="font-size2" style="font-size: 4vh; width: 100%;">Distribuir Lista:</a>
+            <a class="font-size2" style="font-size: 4vh; width: 100%;">Distribuir Leads:</a>
             <fieldset title="Coloque sua lista aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Dados</legend>
-              <textarea rows="4" class="font-1" placeholder="CPF,NOME,TELEFONE|&#10;CPF,NOME,TELEFONE|&#10;CPF,NOME,TELEFONE|&#10;CPF,NOME,TELEFONE|" id="lista" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
+              <textarea rows="4" class="font-1" placeholder="CPF,NOME,TELEFONE,BANCO,VALOR|&#10;CPF,NOME,TELEFONE,BANCO,VALOR|&#10;CPF,NOME,TELEFONE,BANCO,VALOR|&#10;CPF,NOME,TELEFONE,BANCO,VALOR|" id="lista" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
             </fieldset>
             <div style="display: flex; flex-direction: row; width: 100%; align-items: center; justify-content: center;">
               <fieldset title="Coloque sua lista aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
@@ -25,7 +25,7 @@
             </div>
           </div>
           <div style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
-            <a id="adicionar" onclick="distribuir()" class="buttonLogin width50p" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Distribuir</a>
+            <a id="distribuir" onclick="distribuir()" class="buttonLogin width50p" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Distribuir</a>
           </div>
           <a id="actualText" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 2vh; margin-top: 2vh"></a>
         </div>
@@ -56,7 +56,7 @@
         agentesBlock = false
         if (e.error) return alert(e.error)
         if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
       }
     })
   }
@@ -78,12 +78,46 @@
     agentesList.splice(agentesList.findIndex(r=>r == agente),1)
     document.getElementById(`agente_${agente}`).innerHTML = ''
   }
-  function distribuir() {
+  var distribuirBlock = false
+  async function distribuir(i) {
+    if (!i) i = 0
+    if (distribuirBlock) return alert('Aguarde...')
     if (agentesList.length <= 0) return alert('Selecione os agentes que sera retribuido...')
     if (!document.getElementById('lista').value) return alert('Coloque a lista...')
     var list = await document.getElementById('lista').value.replaceAll(/\r?\n|\r/g, "").split("|");
+    if (list[list.length-1].length <= 11) list.splice(list.length-1, 1)
     if (list.length <= 0) return alert('Lista vazia! Verifique o molde e tente novamente...')
-    
+    document.getElementById('distribuir').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('distribuir').classList.add("buttonBlock");
+    distribuirBlock = true
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/distribuir`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        list: list.slice(i,i+35000),
+        agentes: agentesList,
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        distribuirBlock = false
+        document.getElementById('distribuir').innerHTML = `Distribuir`
+        document.getElementById('distribuir').classList.remove("buttonBlock");
+        if (s.error) return alert(s.error)
+        if (list.length > (i+35000)) {
+          distribuir(i+35000)
+        } else {
+          alert('Distribuição Finalizada...')
+          return window.location.reload()
+        }
+      },
+      error: function(e) {
+        document.getElementById('distribuir').innerHTML = `Distribuir`
+        document.getElementById('distribuir').classList.remove("buttonBlock");
+        distribuirBlock = false
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
   }
 
   (function () { getAgentes() })();

@@ -108,7 +108,8 @@
     }
     if (!copy) return alert('Não encontrei esse CPF nas minhas listas CSV...')
     if (window.clipboardData) {
-      return window.clipboardData.setData("Text", copy);
+      window.clipboardData.setData("Text", copy);
+      alert('O resultado foi copiado com sucesso!')
     } else {
       navigator.clipboard.writeText(copy).then(()=>{
         alert('O resultado foi copiado com sucesso!')

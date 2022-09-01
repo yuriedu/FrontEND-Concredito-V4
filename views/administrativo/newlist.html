@@ -11,12 +11,14 @@
             <a class="font-size2" style="font-size: 4vh; width: 100%;">Nova Lista:</a>
             <fieldset title="Coloque sua lista aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Dados</legend>
-              <textarea rows="4" class="font-1" placeholder="CPF;Nome;Mãe;RG;Matricula;Espécie;Cidade;UF;CEP;Endereço;Número;Bairro;Telefone;Nascimento;Sexo;Email;Banco;Agência;Conta;Poupança|&#10;CPF;Nome;Mãe;RG;Matricula;Espécie;Cidade;UF;CEP;Endereço;Número;Bairro;Telefone;Nascimento;Sexo;Email;Banco;Agência;Conta;Poupança|" id="lista" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
+              <textarea rows="4" class="font-1" disabled placeholder="Selecione a lista antes..." id="lista" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
             </fieldset>
             <fieldset title="Coloque sua lista aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Lista</legend>
-              <select rows="4" class="font-1" id="dados" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0">
+              <select onchange="changeList(this.value)" rows="4" class="font-1" id="dados" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0">
+                <option value="" style="color: black; font-weight: 600" selected>Selecione a Lista</option>
                 <option value="dados" style="color: black; font-weight: 600">Dados</option>
+                <option value="leads" style="color: black; font-weight: 600">Leads</option>
               </select>
             </fieldset>
           </div>
@@ -30,64 +32,54 @@
   </div>
 </div>
 <script>
-  var dados = []
-  function adicionar() {
-    dados = []
+  var lista = {
+    dados: { type: ';', placeholder: "CPF;Nome;Mãe;RG;Matricula;Espécie;Cidade;UF;CEP;Endereço;Número;Bairro;Telefone;Nascimento;Sexo;Email;Banco;Agência;Conta;Poupança|" },
+    leads: { type: ',', placeholder: "CPF,Nome,Telefone,Banco,Valor|" }
+  }
+  function changeList(list) {
+    if (list && lista[list]) {
+      document.getElementById('lista').placeholder = `${lista[list].placeholder}\n${lista[list].placeholder}\n${lista[list].placeholder}\n${lista[list].placeholder}`
+      document.getElementById('lista').disabled = false
+    } else {
+      document.getElementById('lista').value = ''
+      document.getElementById('lista').placeholder = `Selecione a lista antes...`
+      document.getElementById('lista').disabled = true
+    }
+  }
+  
+  function adicionar(i) {
     if (document.getElementById('adicionar').classList.contains('buttonBlock')) return alert('Aguarde...')
-    if (!document.getElementById('lista') || !document.getElementById('lista').value) return alert('Coloque a lista...')
-    dados = document.getElementById('lista').value.replaceAll(/\r?\n|\r/g, "").split("|");
+    if (!document.getElementById('dados').value) return alert('Coloque o tipo da lista...')
+    if (!document.getElementById('lista').value) return alert('Coloque a lista...')
+    var list = document.getElementById('lista').value.replaceAll(/\r?\n|\r/g, "").split("|");
+    if (list.length <= 0) return alert('A lista é invalida! Veja o molde e tente novamente...')
+    if (list[list.length-1].length <= 5) list.splice(list.length-1, 1)
     document.getElementById('adicionar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('adicionar').classList.add("buttonBlock");
-    return adicionarRow()
-  }
-  async function adicionarRow() {
-    dados[0] = dados[0].replaceAll(/\r?\n|\r/g,"").split(";");
-    dados[0][0] = dados[0][0].replaceAll('.',"").replaceAll('-',"")
-    if (dados[0][0] && dados[0][0].length == 11 && Number(dados[0][0])) {
-      document.getElementById('actualText').innerHTML = `Adicionado: ${dados[0][0]} - Faltam: ${dados.length}`
-      $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/newList`,
-        data: JSON.stringify({
-          user: localStorage.getItem('user'),
-          password: localStorage.getItem('password'),
-          row: dados[0]
-        }), contentType:"application/json; charset=utf-8",
-        success: async function(s) {
-          if (s.error) alert(s.error)
-          dados.splice(0,1)
-          if (dados[0]) {
-            return setTimeout(()=>{ return adicionarRow() }, 1000)
-          } else {
-            dados = []
-            document.getElementById('adicionar').innerHTML = `Adicionar`
-            document.getElementById('adicionar').classList.remove("buttonBlock");
-            alert('Lista Finalizada...')
-          }
-        },
-        error: function(e) {
-          if (e.error) alert(e.error)
-          if (e && e.responseJSON && e.responseJSON.error) alert(e.responseJSON.error)
-          alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
-          dados.splice(0,1)
-          if (dados[0]) {
-            return setTimeout(()=>{ return adicionarRow() }, 1000)
-          } else {
-            dados = []
-            document.getElementById('adicionar').innerHTML = `Adicionar`
-            document.getElementById('adicionar').classList.remove("buttonBlock");
-            alert('Lista Finalizada...')
-          }
-        }
-      })
-    } else {
-      dados.splice(0,1)
-      if (dados[0]) {
-        return setTimeout(()=>{ return adicionarRow() }, 1)
-      } else {
-        dados = []
+    if (!i) i = 0
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/newlist`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        type: document.getElementById('dados').value,
+        virgula: lista[document.getElementById('dados').value].type,
+        list: list.slice(i,i+1000),
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
         document.getElementById('adicionar').innerHTML = `Adicionar`
         document.getElementById('adicionar').classList.remove("buttonBlock");
-        alert('Lista Finalizada...')
+        if (s.error) return alert(s.error)
+        if (list.length > (i+1000)) return adicionar(i+1000)
+        alert('Lista adicionada com sucesso...')
+        return window.location.reload()
+      },
+      error: function(e) {
+        document.getElementById('adicionar').innerHTML = `Adicionar`
+        document.getElementById('adicionar').classList.remove("buttonBlock");
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
       }
-    }
+    })
   }
 </script>

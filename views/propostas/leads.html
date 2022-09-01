@@ -1,0 +1,513 @@
+<div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
+  <navbar id="navbar"></navbar>
+  <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
+
+  <div class="background-image margin-left18-5 width79 min-height33" style="margin-top: 12.5vh; margin-left: 6vw; width: 92.5vw; min-height: 36vh; border-radius: 2vh">
+    <a style="display: flex; width: 100%; justify-content: center; padding-top: 2vh; font-size: 3vh">Filtro de Leads:</a>
+    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; font-size: 1.7vh;">
+      <fieldset title="Coloque o CPF aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
+        <input class="font-1" id="cpf" placeholder="12345678901" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+      </fieldset>
+      <fieldset title="Coloque o Telefone aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Telefone</legend>
+        <input class="font-1" id="telefone" placeholder="519123456789" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+      </fieldset>
+      <fieldset title="Coloque a Flag aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">OBS</legend>
+        <select class="font-1" id="obsFilter" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+          <option value="" style="color: black" selected>Todas</option>
+          <option value="1" style="color: black">SEM SALDO</option>
+          <option value="2" style="color: black">CLIENTE AUTORIZAR</option>
+          <option value="3" style="color: black">CLIENTE FECHADO</option>
+          <option value="4" style="color: black">PEDIR INDICAÇÃO</option>
+          <option value="5" style="color: black">CLIENTE NÃO QUIS FECHAR</option>
+        </select>
+      </fieldset>
+      <fieldset title="Coloque a Flag aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Flags</legend>
+        <select class="font-1" id="flag" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+          <option value="" style="color: black" selected>Todas</option>
+          <option value="copy" style="color: black">Copiado</option>
+          <option value="block" style="color: black">Bloqueado</option>
+        </select>
+      </fieldset>
+    </div>
+    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; font-size: 1.7vh;">
+      <fieldset title="Coloque o Banco aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
+        <select class="font-1" id="bank" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+          <option value="" style="color: black">Todos</option>
+          <option value="facta" style="color: black">Facta</option>
+          <option value="c6" style="color: black">C6</option>
+          <option value="pan" style="color: black">Panamericano</option>
+          <option value="merc" style="color: black">Mercantil</option>
+          <option value="safra" style="color: black">Safra</option>
+        </select>
+      </fieldset>
+    </div>
+    <div style="width: 100%; display: flex; justify-content: center">
+      <div id="filter" onclick="filter()" class="buttonLogin" style="width: 30%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">
+        <a>Filtrar</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="background-image margin-left18-5 width79" style="margin-top: 3vh; display: flex; margin-left: 6vw; width: 92.5vw; height: 10vh; border-radius: 2vh; text-align: center; justify-content: center; align-items: center; font-size: 1.7vh;">
+    <fieldset title="Pesquise alguma lead por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
+      <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
+      <input onkeyup="searchBar()" id="searchBar" placeholder="Pesquise alguma lead aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+    </fieldset>
+    <i onclick="searchBar()" class="fa-regular fa-magnifying-glass-dollar" style="font-size: 3.5vh; margin-top: 1.5vh; cursor: pointer"></i>
+  </div>
+
+  <div class="background-image margin-left18-5 width79 min-height36-5" style="margin-top: 3vh; margin-left: 6vw; width: 92.5vw; min-height: 35.5vh; border-top-left-radius: 2vh; border-top-right-radius: 2vh;">
+    <div id="menuPropostas"></div>
+    <div id="leads-load" style="margin-inline: 3%; padding-block: 4vh;">
+      <div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>
+    </div>
+    <div id="leads-list" style="display: none; margin-inline: 3%; padding-block: 2%; justify-content: center;">
+      <div style="display: flex; width: 92%; margin-inline: 4%">
+        <div style="width: 40%; display: flex;">
+          <a class="font-size1-5" style="font-size: 2.2vh; margin-top: 0.3vh">Selecionar </a>
+          <input id="selectQuanty" placeholder="0" type="number" style="background: none; width: 2.5vw; border-radius: 1vh; height: 3vh; margin-inline: 0.5vw">
+          <a class="font-size1-5 invisibleAndroid" style="font-size: 2.2vh; margin-top: 0.3vh">Primeiras</a>
+          <i onclick="select()" class="fa-regular fa-hexagon-check font-size2 font-color-navbar" style="font-size: 2.8vh; margin-top: 0.3vh; margin-left: 0.3vw; cursor: pointer"></i>
+        </div>
+        <div style="width: 20%; display: flex; justify-content: center">
+          <a class="font-color-navbar font-size1-5" style="font-size: 2.5vh; font-weight: 600;">Total: <span id="totalList">???</span></a>
+          <a class="font-color-navbar font-size1-5" style="margin-left: 3vw; font-size: 2.5vh; font-weight: 600;">Visivel: <span id="viewList">0</span></a>
+        </div>
+        <div style="width: 40%; display: flex; justify-content: right;">
+          <div onclick="copyLotes()" id="copy" class="buttonLogin width80p font-size1-5" style="width: 25%; font-size: 2.2vh; padding-block: 1vh; border-radius: 1.5vh; margin-right: 2vw">
+            <a>Copiar</a>
+          </div>
+          <div onclick="downloadCSV()" id="download" class="buttonLogin width80p font-size1-5" style="width: 35%; font-size: 2.2vh; padding-block: 1vh; border-radius: 1.5vh">
+            <a>Download<span class="invisibleAndroid"> CSV</span></a>
+          </div>
+        </div>
+      </div>
+      
+      <div style="display: flex; width: 100%; justify-content: center">
+        <div id="leads-result" class="borderColor" style="min-height: 8vh; margin-block: 1vh; width: 90%; border-radius: 1.5vh;">
+          
+        </div>
+      </div>
+      <div id="more" style="display: flex; width: 100%; justify-content: center">
+        <a onclick="more()" class="font-color-navbar" style="cursor: pointer; font-size: 2.5vh; font-weight: 600; text-decoration: underline">Carregar Mais...</a>
+      </div>
+    </div>
+  </div>
+  <div id="openOBS" style="display: none; z-index: 10; position: fixed; height: 100vh; width: 100vw; top: 0; left: 0; align-items: center; justify-content: center">
+    <div class="background-reverse" style="width: 60vw; padding-block: 3vh; border-radius: 3vh;">
+      <div style="max-height: 60vh; overflow: auto; display: flex; flex-direction: column; align-items: center;">
+        <div style="display: flex; width: 100%;">
+          <div style="width: 10%;"></div>
+          <a style="font-size: 2.5vh; font-weight: 600; width: 80%; text-align: center;">Observação:</a>
+          <div style="display: flex; width: 10%; justify-content: right;">
+            <i onclick="openOBS(false,'close')" class="fas fa-times" style="cursor: pointer; font-size: 3.5vh; margin-right: 2vw"></i>
+          </div>
+        </div>
+        <div style="display: flex; width: 100%; justify-content: center">
+          <fieldset id="fieldset" title="Coloque uma observação aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
+            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">OBS</legend>
+            <select id="obs" class="font-color-reverse" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+              <option value="0" style="color: black">Selecione alguma observação</option>
+              <option value="1" style="color: black">SEM SALDO</option>
+              <option value="2" style="color: black">CLIENTE AUTORIZAR</option>
+              <option value="3" style="color: black">CLIENTE FECHADO</option>
+              <option value="4" style="color: black">PEDIR INDICAÇÃO</option>
+              <option value="5" style="color: black">CLIENTE NÃO QUIS FECHAR</option>
+            </select>
+          </fieldset>
+          <i onclick="saveOBS()" title="Salvar" class="fa-regular fa-file-export font-color-navbar-reverse" style="font-size: 3.5vh; margin-top: 2.5vh; cursor: pointer"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var leads = []
+  var cpfs = []
+  var telefones = []
+  var agentes = []
+
+  var menuPropostaActual = false
+  function menuPropostas(icon, id) {
+    if (menuPropostaActual) {
+      document.getElementById(`menuProposta`).innerHTML = ``
+      if (menuPropostaActual == id) return menuPropostaActual = false
+      menuPropostaActual = false
+    }
+    menuPropostaActual = id
+    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="copy('${id}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Copiar</a><a onclick="block('${id}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Block/UnBlock</a><a onclick="openOBS('${id}')" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">OBS</a></div></div>`
+  }
+
+  var listMax = 100
+  function filter() {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (document.getElementById('filter').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (document.getElementById('cpf').value) {
+      if (document.getElementById('cpf').value.length != 11) return alert('CPF invalido...')
+    }
+    if (document.getElementById('telefone').value) {
+      if (document.getElementById('telefone').value.length != 11) return alert('Telefone invalido...')
+    }
+    document.getElementById('leads-list').style.display = 'none'
+    document.getElementById('leads-load').style.display = 'flex'
+    document.getElementById('filter').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('filter').classList.add("buttonBlock");
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/getLeads`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        agente: localStorage.getItem('user'),
+        cpf: document.getElementById('cpf').value ? document.getElementById('cpf').value : false,
+        telefone: document.getElementById('telefone').value ? document.getElementById('telefone').value : false,
+        flag: document.getElementById('flag').value ? document.getElementById('flag').value : false,
+        obs: document.getElementById('obsFilter').value ? document.getElementById('obsFilter').value : false,
+        bank: document.getElementById('bank').value ? document.getElementById('bank').value : false,
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        document.getElementById('leads-load').style.display = 'none'
+        document.getElementById('leads-list').style.display = 'inline'
+        document.getElementById('filter').innerHTML = `Filtrar`
+        document.getElementById('filter').classList.remove("buttonBlock");
+        if (s.error) return alert(s.error)
+        leads = s.leads
+        document.getElementById('totalList').innerHTML = s.leads.length
+        // await s.leads.map(r=> {
+        //   if (!cpfs.find(element=> element==r.cpf)) cpfs[cpfs.length] = r.cpf;
+        //   if (!telefones.find(element=> element==r.telefone)) telefones[telefones.length] = r.telefone
+        // })
+        listMax = 100
+        document.getElementById(`leads-result`).innerHTML = `
+          <div class="line-bottom" style="width: 100%; display: flex; padding-block: 0.8vh; font-size: 2.5vh; align-items: center; text-align: center;">
+            <input onclick="toggle(this)" class="width5p max-width5p" type="checkbox" style="max-width: 3%; overflow: hidden; width: 3%; height: 2vh; margin: 0">
+            <i title="Já Copiado" class="font-size1-5 width5p max-width5p fa-light fa-copy font-color-navbar" style="font-weight: 600; max-width: 3%; overflow: hidden; width: 3%"></i>
+            <i title="Cliente Bloqueado" class="font-size1-5 width5p max-width5p fa-solid fa-ban" style="color: red; font-weight: 600; max-width: 3%; overflow: hidden; width: 3%"></i>
+            <a class="width23p max-width23p font-size1-5" style="max-width: 9%; width: 9%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">CPF</a>
+            <a class="width20p max-width20p font-size1-5" style="max-width: 19%; width: 19%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Nome</a>
+            <a class="width23p max-width23p font-size1-5" style="max-width: 9%; width: 9%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Telefone</a>
+            <a class="invisibleAndroid" style="max-width: 17%; width: 17%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Data</a>
+            <a class="font-size1-5 width15p max-width15p" style="max-width: 12%; width: 12%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Agente</a>
+            <a class="font-size1-5 invisibleAndroid" style="max-width: 12%; width: 12%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Banco</a>
+            <a class="font-size1-5 invisibleAndroid" style="max-width: 10%; width: 10%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Valor</a>
+            <i class=" font-color-navbar" style="font-weight: 600; max-width: 3%; overflow: hidden; width: 3%; cursor: pointer;"></i>
+          </div>
+        `
+        if (leads.length >= 100) {
+          document.getElementById('viewList').innerHTML = 100
+        } else document.getElementById('viewList').innerHTML = leads.length
+        leads.slice(0,100).forEach((element,index) => {
+          document.getElementById(`leads-result`).innerHTML += `
+            <lead><div class="line-bottom" style="width: 100%; display: flex; padding-block: 0.8vh; font-size: 2.5vh; align-items: center; text-align: center;">
+              <a style="display: none">${JSON.stringify(element)}</a>
+              <input id="${element.id}" name="foo" class="width5p max-width5p" type="checkbox" style="max-width: 3%; overflow: hidden; width: 3%; height: 2vh; margin: 0">
+              <i id="${element.id}_copy" title="Já Copiado" class="width5p max-width5p font-size1-5 ${element.flag_copy ? 'fa-light fa-copy' : ''} font-color-navbar" style="font-weight: 600; max-width: 3%; overflow: hidden; width: 3%"></i>
+              <i id="${element.id}_block" title="Cliente Bloqueado" class="width5p max-width5p font-size1-5 ${element.flag_block ? 'fa-solid fa-ban' : ''}" style=" color: red; font-weight: 600; max-width: 3%; overflow: hidden; width: 3%"></i>
+              <a class="font-size1-5 width23p max-width23p" style="max-width: 9%; width: 9%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.cpf}">${element.cpf}</a>
+              <a class="font-size1-5 width20p max-width20p" style="max-width: 19%; width: 19%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.nome}">${element.nome}</a>
+              <a class="font-size1-5 width23p max-width23p" style="max-width: 9%; width: 9%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.telefone}">${element.telefone}</a>
+              <a class="invisibleAndroid"style="max-width: 17%; width: 17%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.data.replace('T', " - ").replace('Z',"")}">${element.data.replace('T', " - ").replace('Z',"")}</a>
+              <a id="${element.id}_agente" class="font-size1-5 width15p max-width15p" style="max-width: 12%; width: 12%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.agente}">${element.agente}</a>
+              <a class="font-size1-5 invisibleAndroid" style="max-width: 12%; width: 12%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.bank}">${element.bank}</a>
+              <a class="invisibleAndroid font-size1-5" style="max-width: 10%; width: 10%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.valor}">${element.valor}</a>
+              <i class="fa-solid fa-ellipsis-vertical font-color-navbar" style="font-weight: 600; max-width: 3%; overflow: hidden; width: 3%; cursor: pointer; ${element.obs ? 'color: red!important;' : ''}" onclick="menuPropostas(this, '${element.id}')"></i>
+            </div></lead>
+          `
+        });
+        if (leads.length > 100) {
+          document.getElementById('more').style.display = 'flex'
+        } else document.getElementById('more').style.display = 'none'
+      },
+      error: function(e) {
+        document.getElementById('leads-load').style.display = 'none'
+        document.getElementById('filter').innerHTML = `Filtrar`
+        document.getElementById('filter').classList.remove("buttonBlock");
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
+  }
+
+  var moreBlock = false
+  function more() {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (moreBlock) return alert('Aguarde...')
+    document.getElementById('more').style.display = 'none'
+    document.getElementById('viewList').innerHTML = Number(document.getElementById('viewList').innerHTML)+100
+    moreBlock = true
+    leads.slice(listMax,listMax+100).forEach((element,index) => {
+      document.getElementById(`leads-result`).innerHTML += `
+        <lead><div class="line-bottom" style="width: 100%; display: flex; padding-block: 0.8vh; font-size: 2.5vh; align-items: center; text-align: center;">
+          <a style="display: none">${JSON.stringify(element)}</a>
+          <input id="${element.id}" name="foo" class="width5p max-width5p" type="checkbox" style="max-width: 3%; overflow: hidden; width: 3%; height: 2vh; margin: 0">
+          <i id="${element.id}_copy" title="Já Copiado" class="width5p max-width5p font-size1-5 ${element.flag_copy ? 'fa-light fa-copy' : ''} font-color-navbar" style="font-weight: 600; max-width: 3%; overflow: hidden; width: 3%"></i>
+          <i id="${element.id}_block" title="Cliente Bloqueado" class="width5p max-width5p font-size1-5 ${element.flag_block ? 'fa-solid fa-ban' : ''}" style=" color: red; font-weight: 600; max-width: 3%; overflow: hidden; width: 3%"></i>
+          <a class="font-size1-5 width23p max-width23p" style="max-width: 9%; width: 9%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.cpf}">${element.cpf}</a>
+          <a class="font-size1-5 width20p max-width20p" style="max-width: 19%; width: 19%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.nome}">${element.nome}</a>
+          <a class="font-size1-5 width23p max-width23p" style="max-width: 9%; width: 9%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.telefone}">${element.telefone}</a>
+          <a class="invisibleAndroid"style="max-width: 17%; width: 17%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.data.replace('T', " - ").replace('Z',"")}">${element.data.replace('T', " - ").replace('Z',"")}</a>
+          <a id="${element.id}_agente" class="font-size1-5 width15p max-width15p" style="max-width: 12%; width: 12%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.agente}">${element.agente}</a>
+          <a class="font-size1-5 invisibleAndroid" style="max-width: 12%; width: 12%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.bank}">${element.bank}</a>
+          <a class="invisibleAndroid font-size1-5" style="max-width: 10%; width: 10%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${element.valor}">${element.valor}</a>
+          <i class="fa-solid fa-ellipsis-vertical font-color-navbar" style="font-weight: 600; max-width: 3%; overflow: hidden; width: 3%; cursor: pointer; ${element.obs ? 'color: red!important;' : ''}" onclick="menuPropostas(this, '${element.id}')"></i>
+        </div></lead>
+      `
+    })
+    moreBlock = false
+    if (leads.length >= (listMax+100)) {
+        document.getElementById('more').style.display = 'flex'
+    } else document.getElementById('more').style.display = 'none'
+  }
+
+  function select() {
+    if (!document.getElementById('selectQuanty').value) return alert('Coloque a quantidade')
+    if (!Number(document.getElementById('selectQuanty').value)) return alert('Quantidade invalida...')
+    if (Number(document.getElementById('selectQuanty').value) > 50) return alert('Quantidade maxima 50...')
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    var quanty = Number(document.getElementById('selectQuanty').value)
+    checkboxes = document.getElementsByName('foo');
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+      if (quanty > 0) {
+        if (leads.find(r=>r.id==checkboxes[i].id && r.flag_copy != 1 && r.flag_block != 1)) {
+          checkboxes[i].checked = true;
+          quanty -= 1
+        }
+      }
+    }
+  }
+
+  var copyBlock = false
+  function copy(id) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (document.getElementById('copy').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (copyBlock) return alert('Aguarde...')
+    if (!id || !leads.find(r=>r.id==id)) return alert(`Lead ID: ${id} não encontrada...`)
+    if (!leads.find(r=>r.id==id).telefone) return alert(`Lead ID: ${id} não possui telefone...`)
+    if (leads.find(r=>r.id==id).flag_block == 1) return alert(`Lead ID: ${id} está bloqueada...`)
+    copyBlock = true
+    document.getElementById('copy').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('copy').classList.add("buttonBlock");
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/editLeads`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        id: id,
+        copy: 1,
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        copyBlock = false
+        document.getElementById('copy').innerHTML = `Copiar`
+        document.getElementById('copy').classList.remove("buttonBlock");
+        if (s.error) return alert(s.error)
+        document.getElementById(`${id}_copy`).classList.add('fa-light')
+        document.getElementById(`${id}_copy`).classList.add('fa-copy')
+        if (window.clipboardData) {
+        window.clipboardData.setData("Text", leads.find(r=>r.id==id).telefone);
+          alert('O Telefone foi copiado com sucesso!')
+        } else {
+          navigator.clipboard.writeText(leads.find(r=>r.id==id).telefone).then(()=>{
+            alert('O Telefone foi copiado com sucesso!')
+          }).catch(()=>{
+            alert('O seu navegador não suporta o sistema de copia...')
+          })
+        }
+      },
+      error: function(e) {
+        copyBlock = false
+        document.getElementById('copy').innerHTML = `Copiar`
+        document.getElementById('copy').classList.remove("buttonBlock");
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
+  }
+
+  function copyLotes() {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (document.getElementById('copy').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (copyBlock) return alert('Aguarde...')
+    checkboxes = document.getElementsByName('foo');
+    copyBlock = true
+    document.getElementById('copy').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('copy').classList.add("buttonBlock");
+    var copyList = []
+    var copy = false
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+      if (checkboxes[i].checked && leads.find(r=>r.id==checkboxes[i].id && r.flag_block != 1)) {
+        copyList[copyList.length] = checkboxes[i].id
+        document.getElementById(`${checkboxes[i].id}_copy`).classList.add('fa-light')
+        document.getElementById(`${checkboxes[i].id}_copy`).classList.add('fa-copy')
+        if (!copy) {
+          copy = `${leads.find(r=>r.id==checkboxes[i].id).telefone}`
+        } else copy += `\n${leads.find(r=>r.id==checkboxes[i].id).telefone}`
+      }
+    }
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/editLeadsLotes`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        copy: 1,
+        list: copyList
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        copyBlock = false
+        document.getElementById('copy').innerHTML = `Copiar`
+        document.getElementById('copy').classList.remove("buttonBlock");
+        if (s.error) return alert(s.error)
+        if (window.clipboardData) {
+        window.clipboardData.setData("Text", copy);
+          alert('O Telefone foi copiado com sucesso!')
+        } else {
+          navigator.clipboard.writeText(copy).then(()=>{
+            alert('O Telefone foi copiado com sucesso!')
+          }).catch(()=>{
+            alert('O seu navegador não suporta o sistema de copia...')
+          })
+        }
+      },
+      error: function(e) {
+        copyBlock = false
+        document.getElementById('copy').innerHTML = `Copiar`
+        document.getElementById('copy').classList.remove("buttonBlock");
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
+  }
+
+  function block(id) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (copyBlock) return alert('Aguarde...')
+    if (!id || !leads.find(r=>r.id==id)) return alert(`Lead ID: ${id} não encontrada...`)
+    if (!leads.find(r=>r.id==id).telefone) return alert(`Lead ID: ${id} não possui telefone...`)
+    copyBlock = true
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/editLeads`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        id: id,
+        block: document.getElementById(`${id}_block`).classList.contains('fa-ban') ? 0 : 1,
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        copyBlock = false
+        if (s.error) return alert(s.error)
+        if (document.getElementById(`${id}_block`).classList.contains('fa-ban')) {
+          document.getElementById(`${id}_block`).classList.remove('fa-solid')
+          document.getElementById(`${id}_block`).classList.remove('fa-ban')
+          return alert('Lead desbloqueada com sucesso!')
+        } else {
+          document.getElementById(`${id}_block`).classList.add('fa-solid')
+          document.getElementById(`${id}_block`).classList.add('fa-ban')
+          return alert('Lead bloqueada com sucesso!')
+        }
+      },
+      error: function(e) {
+        copyBlock = false
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
+  }
+
+  async function downloadCSV(id) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (document.getElementById('download').classList.contains('buttonBlock')) return alert('Aguarde...')
+    document.getElementById('download').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('download').classList.add("buttonBlock");
+    var csv = `CPF,Nome,Telefone,Agente,Banco,Valor,Data,Copy,Block\n`
+    await leads.forEach((r,i)=>{
+      csv += `${r.cpf},${r.nome},${r.telefone},${r.agente},${r.bank},${r.valor},${r.data.replace('T', " - ").replace('Z',"")},${r.flag_copy},${r.flag_block}\n` 
+    })
+    var a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    a.target = '_blank';
+    a.download = `Leads.csv`;
+    a.click();
+    document.getElementById('download').innerHTML = `Download`
+    document.getElementById('download').classList.remove("buttonBlock");
+
+  }
+
+  var obsActual = false
+  function openOBS(id, close) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (copyBlock) return alert('Aguarde...')
+    if (close) {
+      obsActual = false
+      return document.getElementById('openOBS').style.display = 'none'
+    }
+    if (!id || !leads.find(r=>r.id==id)) return alert(`Lead ID: ${id} não encontrada...`)
+    obsActual = id
+    document.getElementById('obs').value = `${leads.find(r=>r.id==id).obs ? leads.find(r=>r.id==id).obs : '0'}`
+    document.getElementById('openOBS').style.display = 'flex'
+  }
+
+  function saveOBS() {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (copyBlock) return alert('Aguarde...')
+    if (!obsActual) return alert('Abra a observação antes...')
+    if (!document.getElementById('obs').value) return alert('Coloque alguma observação antes...')
+    var id = obsActual
+    if (!id || !leads.find(r=>r.id==id)) return alert(`Lead ID: ${id} não encontrada...`)
+    if (document.getElementById('obs').value == leads.find(r=>r.id==id).obs) return alert('A OBS já é essa! Altere para salvar...')
+    copyBlock = true
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/editLeads`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        id: id,
+        obs: document.getElementById('obs').value,
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        copyBlock = false
+        if (s.error) return alert(s.error)
+        leads.find(r=>r.id==id).obs =  document.getElementById('obs').value
+        return alert('OBS salva com sucesso!')
+      },
+      error: function(e) {
+        copyBlock = false
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
+  }
+
+  (function () { filter() })();
+</script>
+
+<script>
+  function searchBar() {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById('searchBar');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("leads-result");
+    li = ul.getElementsByTagName('lead');
+    for (i = 0; i < li.length; i++) {
+      a = li[i]
+      txtValue = a.textContent || a.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "inline";
+      } else {
+        li[i].style.display = "none";
+      }
+    }
+  }
+
+  function toggle(source) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    checkboxes = document.getElementsByName('foo');
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+      checkboxes[i].checked = source.checked;
+    }
+  }
+</script>

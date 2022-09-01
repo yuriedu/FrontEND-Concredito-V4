@@ -126,7 +126,8 @@
       <a id="administrativo_funcionarios" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Funcionários</a>
       <a id="administrativo_configs" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Configurações</a>
       <a id="administrativo_newlist" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Nova Lista</a>
-      <a id="administrativo_distribuir" class="navbar-color-select-block font-color-reverse navbar-color-select" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Distribuir Lista</a>
+      <a id="administrativo_distribuir" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Distribuir Leads</a>
+      <a id="administrativo_leads" class="navbar-color-select-block font-color-reverse navbar-color-select" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Listas de Leads</a>
     </div>
   </div>
 
@@ -148,7 +149,9 @@
     </div>
     <div id="sub-propostas" class="font-size2" style="display: none; flex-direction: column; font-size: 2.5vh; margin-inline: 2.6vw; padding-block: 0.5vh">
       <a id="propostas_cadastrar" class="navbar-color-select-block navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Nova Proposta</a>
-      <a id="propostas_lista" class="navbar-color-select-block navbar-color-select font-color-reverse" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Lista de Propostas</a>
+      <a id="propostas_lista" class="navbar-color-select-block navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Lista de Propostas</a>
+      <a id="propostas_minhas" class="navbar-color-select-block navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Minhas Propostas</a>
+      <a id="propostas_leads" href="/propostas/leads" class="navbar-color-select font-color-reverse" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Minhas Leads</a>
     </div>
   </div>
   <div id="consultas">
@@ -190,10 +193,10 @@
     }
   }
   var submenus = {
-    administrativo: { active: false, submenus: ['funcionarios','configs','newlist','distribuir'] },
-    dashboard: { active: false, submenus: ['destaques'] },
-    propostas: { active: false, submenus: ['cadastrar','lista'] },
-    consultas: { active: false, submenus: ['fgts','lotes','dados'] },
+    administrativo: { active: false },
+    dashboard: { active: false },
+    propostas: { active: false },
+    consultas: { active: false },
   }
   function openSubMenu(submenu) {
     if (!sidebar) openSideBar()
@@ -267,14 +270,15 @@
             document.getElementById('administrativo_newlist').href = `/administrativo/newlist`
             document.getElementById('administrativo_distribuir').classList.remove('navbar-color-select-block');
             document.getElementById('administrativo_distribuir').href = `/administrativo/distribuir`
+            document.getElementById('administrativo_leads').classList.remove('navbar-color-select-block');
+            document.getElementById('administrativo_leads').href = `/administrativo/leads`
           }
           if (s.perms.consultas_fgts) {
             document.getElementById('consultas_dados').classList.remove('navbar-color-select-block');
             document.getElementById('consultas_dados').href = `/consultas/dados`
           }
         }
-        var color = false
-        if (s.login.role == "Vendedor") {
+        if (s.perms.propostas_lista != 1) {
           document.getElementById('bellOper_button').onclick = ''
           document.getElementById('bellOper_button').style.color = 'gray'
           document.getElementById('bellOper_button').style.cursor = 'not-allowed'
@@ -290,12 +294,14 @@
             document.getElementById(`bellVend_${key}`).innerHTML = s.bellVend[key]
           }
         }
-        if (s.login.role != "Vendedor") {
+        var color = false
+        if (s.perms.propostas_lista == 1) {
           if (s.bellOper.inclusao >= 1) color = 'olivedrab'
           if (s.bellOper.digitado >= 1) color = 'cyan'
           if (s.bellOper.assinado >= 1) color = 'palevioletred'
           if (s.bellOper.pendencia_resolvida >= 1) color = 'brown'
           if (s.bellOper.nao_digitado >= 1) color = 'red'
+          if (s.bellOper.bellOper_assinar >= 1) color = 'gray'
         }
         if (s.bellVend.inclusao >= 1) color = 'olivedrab'
         if (s.bellVend.analise >= 1) color = 'mediumseagreen'
@@ -312,7 +318,7 @@
         if (sino) document.getElementById('bellLoader').style.display = 'none'
         setTimeout(function(){document.getElementById('bellIcon').classList.remove('bellBlock')},5000)
         if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
       }
     })
   }
@@ -397,7 +403,7 @@
       },
       error: function(e) {
         if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
       }
     })
   }

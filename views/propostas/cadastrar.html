@@ -521,7 +521,7 @@
         document.getElementById('nextClient2').classList.remove("buttonBlock");
         if (e.error) return alert(e.error)
         if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
       }
     })
   }
@@ -599,7 +599,7 @@
         document.getElementById('cadastrar').classList.remove("buttonBlock");
         if (e.error) return alert(e.error)
         if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
       }
     })
   }
@@ -681,7 +681,7 @@
         document.getElementById('cadastrar').classList.remove("buttonBlock");
         if (e.error) return alert(e.error)
         if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Mande print do erro para o Yuri:\n ${JSON.stringify(e)}`)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
       }
     })
   }

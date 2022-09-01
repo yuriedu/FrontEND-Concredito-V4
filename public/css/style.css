@@ -186,6 +186,7 @@
   .body { margin-left: 17vw; width: 83vw; max-width: 83vw; overflow-x: hidden!important; }
   .width3 { width: 3vw!important }
   .width5 { width: 17vw!important; min-width: 17vw!important; }
+  .width5p { width: 5%!important }
   .width10 { width: 6vw!important }
   .width10-5 { width: 10.5vw!important; max-width: 10.5vw!important; }
   .width16 { width: 16vw!important; }
@@ -193,9 +194,12 @@
   .width16 { width: 16vw!important }
   .width18 { width: 18vw!important; }
   .width20-5 { width: 20.5vw!important; max-width: 20.5vw!important }  /* */
+  .width20p { width: 20%!important }
+  .width23p { width: 23%!important }
   .width27-5 { width: 27.5vw!important; }  /* */
   .width30 { width: 30vw!important }
   .width30p { width: 30%!important }
+  .width35p { width: 35%!important }
   .width35 { width: 35vw!important; }
   .width40 { width: 40vw!important; }
   .width56-5 { width: 56.5vw!important; max-width: 56.5vw!important } /* */
@@ -219,9 +223,14 @@
   .height10 { height: 10vh }
   .height70 { height: 70vh!important }
   .min-width16-1 { min-width: 16.1vw!important }
+  .max-width5p { max-width: 5%!important }
   .max-width14 { max-width: 14vw!important }
+  .max-width15p { max-width: 15%!important }
   .max-width18 { max-width: 18vw!important }
+  .max-width20p { max-width: 20%!important }
+  .max-width23p { max-width: 23%!important }
   .max-width30p { max-width: 30%!important; }
+  .max-width35p { max-width: 35%!important }
   .max-width22-5 { max-width: 22.5vw!important }
   .max-height50 { max-height: 50vh!important; }
   .min-height33 { min-height: 33vh!important; }
