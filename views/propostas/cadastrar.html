@@ -393,7 +393,7 @@
     document.getElementById('consultar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('consultar').classList.add("buttonBlock");
     setTimeout(function(){ queue(document.getElementById('banks').value) }, 1500)
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/consultas/fgts`,
+    $.ajax({ type: "post", url: `${apiURL}/consultas/fgts`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -485,7 +485,7 @@
     document.getElementById('poupanca').value = ''
     document.getElementById('telefone').value = ''
     document.getElementById('nascimento').value = ''
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/consultas/dados`,
+    $.ajax({ type: "post",url: `${apiURL}/consultas/dados`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -573,7 +573,7 @@
     document.getElementById('cadastrar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('cadastrar').classList.add("buttonBlock");
     operadorIng = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/propostas/newAF`,
+    $.ajax({ type: "post",url: `${apiURL}/propostas/newAF`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -650,7 +650,7 @@
     document.getElementById('cadastrar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('cadastrar').classList.add("buttonBlock");
     operadorIng = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/propostas/newCadastrar`,
+    $.ajax({ type: "post",url: `${apiURL}/propostas/newCadastrar`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),

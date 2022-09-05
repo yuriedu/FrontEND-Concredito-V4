@@ -14,6 +14,11 @@
     <title>Concredito Dashboard</title>
     <script src="/public/js/jquery.min.js"></script>
   </head>
+  <script>
+    var urlAPI = 'https://api.concredito.com.br'
+    var urlLocal = 'http://localhost:3000'
+    var apiURL = urlAPI
+  </script>
   <body>
     <div style="position: relative; background-image: linear-gradient(to bottom right, #08436b, #52cbcf); width: 100vw; height: 100vh">
       <div style="position: absolute; top: 43vh; left: 50%; margin-top: 0vh; margin-left: -2vh; text-align: center">
@@ -38,7 +43,7 @@
           return $(document.body).load(`/views/login.html`)
         } else if (url[1] == "logout") return logout()
         if (url[1] && (!pages[url[1]] || !pages[url[1]].find(r=> r == url[2]))) return window.location = "/"
-        $.ajax({ type: "post", url: `https://api.concredito.com.br/funcionarios/verifyLogin`,
+        $.ajax({ type: "post", url: `${apiURL}/funcionarios/verifyLogin`,
           data: JSON.stringify({
             user: localStorage.getItem('user'),
             password: localStorage.getItem('password')

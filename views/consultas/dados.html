@@ -153,7 +153,7 @@
     document.getElementById('poupanca').value = ''
     document.getElementById('telefone').value = ''
     document.getElementById('nascimento').value = ''
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/consultas/dados`,
+    $.ajax({ type: "post",url: `${apiURL}/consultas/dados`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),

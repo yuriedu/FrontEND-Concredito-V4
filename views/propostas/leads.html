@@ -160,7 +160,7 @@
     document.getElementById('leads-load').style.display = 'flex'
     document.getElementById('filter').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('filter').classList.add("buttonBlock");
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/getLeads`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/getLeads`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -295,7 +295,7 @@
     copyBlock = true
     document.getElementById('copy').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('copy').classList.add("buttonBlock");
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/editLeads`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/editLeads`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -351,7 +351,7 @@
         } else copy += `\n${leads.find(r=>r.id==checkboxes[i].id).telefone}`
       }
     }
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/editLeadsLotes`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/editLeadsLotes`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -391,7 +391,7 @@
     if (!id || !leads.find(r=>r.id==id)) return alert(`Lead ID: ${id} não encontrada...`)
     if (!leads.find(r=>r.id==id).telefone) return alert(`Lead ID: ${id} não possui telefone...`)
     copyBlock = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/editLeads`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/editLeads`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -462,7 +462,7 @@
     if (!id || !leads.find(r=>r.id==id)) return alert(`Lead ID: ${id} não encontrada...`)
     if (document.getElementById('obs').value == leads.find(r=>r.id==id).obs) return alert('A OBS já é essa! Altere para salvar...')
     copyBlock = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/editLeads`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/editLeads`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),

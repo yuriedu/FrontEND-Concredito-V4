@@ -84,7 +84,7 @@
     actualMenu = menu
     document.getElementById('loading').style.display = 'flex'
     document.getElementById(`${actualMenu}Button`).classList.add('buttonBlock')
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/${postURL}`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/${postURL}`,
     data: JSON.stringify({
       user: localStorage.getItem('user'),
       password: localStorage.getItem('password'),
@@ -220,7 +220,7 @@
   function saveFases(id) {
     if (salvandoConfig) return alert('Você já está com um salvamento em andamento...')
     salvandoConfig = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/editConfigs`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/editConfigs`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -246,7 +246,7 @@
   function saveConfigs(key, menu) {
     if (salvandoConfig) return alert('Você já está com um salvamento em andamento...')
     salvandoConfig = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/editConfigs`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/editConfigs`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -271,7 +271,7 @@
   function createRole(i) {
     if (criando) return alert('Você já está com uma criação em andamento...')
     criando = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/newRole`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/newRole`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -297,7 +297,7 @@
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (salvando) return alert('Você já está com um salvamento em andamento...')
     salvando = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/editRole`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/editRole`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -331,7 +331,7 @@
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (deletando) return alert('Você já está com um deletamento em andamento...')
     deletando = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/deleteRole`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/deleteRole`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -358,7 +358,7 @@
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (agentesBlock) return alert('Aguarde...')
     agentesBlock = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/getLogins`,
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/getLogins`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password')
@@ -381,7 +381,7 @@
   }
 
   (function () {
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/verifyLogin`,
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/verifyLogin`,
     data: JSON.stringify({
       user: localStorage.getItem('user'),
       password: localStorage.getItem('password'),

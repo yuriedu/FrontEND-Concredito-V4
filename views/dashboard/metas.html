@@ -29,7 +29,7 @@
     document.getElementById('result').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel-reverse"></div><div class="loader-text font-5"></div></div>`
     document.getElementById('metaMenuName').innerHTML = menu
     document.getElementById('metas').style.display = 'inline'
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/getMetas`,
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/getMetas`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),

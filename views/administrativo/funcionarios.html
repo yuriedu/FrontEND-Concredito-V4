@@ -64,7 +64,7 @@
   function getUser() {
     if (loginsBlock) return alert('Você já está com um puxamento em andamento...')
     loginsBlock = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/getLogins`,
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/getLogins`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -124,7 +124,7 @@
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (saveBlock) return alert('Você já está salvando algum funcionario...')
     saveing = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/editLogin`,
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/editLogin`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -154,7 +154,7 @@
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (newBlock) return alert('Você já está criando algum funcionario...')
     newBlock = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/newLogin`,
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/newLogin`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -180,7 +180,7 @@
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (deleteBlock) return alert('Você já está deletando algum funcionario...')
     deleteBlock = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/deleteLogin`,
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/deleteLogin`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -206,7 +206,7 @@
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (clearBlock) return alert('Você já está limpando algum funcionario...')
     clearBlock = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/clearCounts`,
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/clearCounts`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -268,7 +268,7 @@
     document.getElementById('nameFunc').innerHTML = `${user}`
     document.getElementById('openFunc').style.display = 'flex'
     openBlock = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/get${menu}`,
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/get${menu}`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),

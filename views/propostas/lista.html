@@ -177,7 +177,7 @@ var agentes = []
     if (agentes && document.getElementById('agente').value && !agentes.find(r=>r.user==document.getElementById('agente').value)) return alert('Agente não encontrado...')
     if (agentes && document.getElementById('agente').value && !agentes.find(r=>r.user==document.getElementById('agente').value && r.codigo)) return alert('Codigo do Agente é invalido, peça para o "Breno" configurar...')
     document.getElementById('propostas-lista').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/lista`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/lista`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       fase: document.getElementById('fase') && document.getElementById('fase').value ? document.getElementById('fase').value : false,
@@ -220,7 +220,7 @@ var agentes = []
   function newToken() {
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (!document.getElementById(`tokenBMG`).value) return alert('Coloque o Token...')
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/newToken`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/newToken`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       token: document.getElementById('tokenBMG').value,
@@ -244,7 +244,7 @@ var agentes = []
     document.getElementById(`situation_${codAF}`).style.color = `blue`
     document.getElementById(`situation_${codAF}`).value = 'Entrando na fila...'
     setTimeout(function(){ situation(codAF, false, bankAF) }, 1500)
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/cadastrar`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/cadastrar`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF
@@ -272,7 +272,7 @@ var agentes = []
   }
   function situation(codAF, aux, bank) {
     if (document.getElementById(`situation_${codAF}`).style.color == 'red' || document.getElementById(`situation_${codAF}`).style.color == "green" || document.getElementById(`situation_${codAF}`).style.color == "orange") return;
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/situation`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/situation`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF,
@@ -316,7 +316,7 @@ var agentes = []
     if (sendLinking) return alert('Você já está enviando o link de alguma proposta! Aguarde...')
     sendLinking = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/sendLink`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/sendLink`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF
@@ -340,7 +340,7 @@ var agentes = []
     if (changeFaseActive) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
     changeFaseActive = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/changeFase`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/changeFase`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF,
@@ -365,7 +365,7 @@ var agentes = []
     if (changeEsteira) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
     changeEsteira = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/esteira`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/esteira`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF
@@ -394,7 +394,7 @@ var agentes = []
     if (generatorCod || generatorMenu) return alert('Você já está gerando um cadastro! Aguarde...')
     generatorCod = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/generator`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/generator`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF
@@ -430,7 +430,7 @@ var agentes = []
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (agentesBlock) return alert('Aguarde...')
     agentesBlock = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/getLogins`,
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/getLogins`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password')

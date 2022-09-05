@@ -59,7 +59,7 @@
     document.getElementById('login').classList.add("buttonBlock");
     document.getElementById('checkCode').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('checkCode').classList.add("buttonBlock");
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/funcionarios/login`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/funcionarios/login`, data: JSON.stringify({
       user: document.getElementById('user').value, 
       password: document.getElementById('password').value,
       code: document.getElementById('code') && document.getElementById('code').value ? document.getElementById('code').value : false

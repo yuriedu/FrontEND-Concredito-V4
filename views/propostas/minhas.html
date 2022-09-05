@@ -141,7 +141,7 @@ const fasesName = {
     document.getElementById('filter').classList.add("buttonBlock");
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     document.getElementById('propostas-lista').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/lista`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/lista`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       agente: localStorage.getItem('user'),
@@ -183,7 +183,7 @@ const fasesName = {
 
   function situation(codAF, aux, bank) {
     if (document.getElementById(`situation_${codAF}`).style.color == 'red' || document.getElementById(`situation_${codAF}`).style.color == "green" || document.getElementById(`situation_${codAF}`).style.color == "orange") return;
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/situation`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/situation`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF,
@@ -227,7 +227,7 @@ const fasesName = {
     if (changeFaseActive) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
     changeFaseActive = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/changeFase`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/changeFase`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF,

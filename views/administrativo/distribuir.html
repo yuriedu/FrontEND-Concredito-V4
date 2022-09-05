@@ -39,7 +39,7 @@
   function getAgentes() {
     if (agentesBlock) return alert('Aguarde...')
     agentesBlock = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/getLogins`,
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/getLogins`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password')
@@ -90,7 +90,7 @@
     document.getElementById('distribuir').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('distribuir').classList.add("buttonBlock");
     distribuirBlock = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/distribuir`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/distribuir`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),

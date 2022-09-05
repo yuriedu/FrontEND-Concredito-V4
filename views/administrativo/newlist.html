@@ -57,7 +57,7 @@
     document.getElementById('adicionar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('adicionar').classList.add("buttonBlock");
     if (!i) i = 0
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/administrativo/newlist`,
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/newlist`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
