@@ -25,6 +25,8 @@
             <option style="color: black" value="4002">Assinado/Respondido</option>
             <option style="color: black" value="1111">Atuação Master</option>
             <option style="color: black" value="90000">Aguarda Liberar Assinar</option>
+            <option style="color: black" value="9923">Link Enviado ao Cliente</option>
+            <option style="color: black" value="9232">Aguarda Assinatura Digital</option>
           </optgroup>
         </select>
       </fieldset>
@@ -145,6 +147,8 @@ const fasesName = {
   '1111': 'AGUARDANDO ATUAÇÃO MASTER',
   '3920': 'PROPOSTA PAGA',
   '4002': 'ASSINADO / RESPONDIDO',
+  '9232': 'AGUARDA ASSINATURA DIGITAL',
+  '9923': 'LINK ENVIADO AO CLIENTE',
   '10293': 'Verificação manual OP',
   '90000': 'Aguarda Liberar Assinar',
   '100023': 'PAGAMENTO DEVOLVIDO',
@@ -170,8 +174,8 @@ var agentes = []
     document.getElementById('filter').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('filter').classList.add("buttonBlock");
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (document.getElementById('agente').value && !agentes.find(r=>r.user==document.getElementById('agente').value)) return alert('Agente não encontrado...')
-    if (!agentes.find(r=>r.user==document.getElementById('agente').value).codigo) return alert('Codigo do Agente é invalido, peça para o "Breno" configurar...')
+    if (agentes && document.getElementById('agente').value && !agentes.find(r=>r.user==document.getElementById('agente').value)) return alert('Agente não encontrado...')
+    if (agentes && document.getElementById('agente').value && !agentes.find(r=>r.user==document.getElementById('agente').value && r.codigo)) return alert('Codigo do Agente é invalido, peça para o "Breno" configurar...')
     document.getElementById('propostas-lista').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/lista`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
@@ -434,10 +438,10 @@ var agentes = []
       success: async function(s) {
         agentesBlock = false
         agentes = s.logins
-        document.getElementById('agente').placeholder = 'Selecione o Agente...'
         s.logins.forEach((element,index) => {
           document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
         });
+        document.getElementById('agente').placeholder = 'Selecione o Agente...'
       },
       error: function(e) {
         agentesBlock = false

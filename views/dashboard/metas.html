@@ -6,7 +6,73 @@
 
 <div style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column;">
   <a class="font-1 font-color-reverse" style="font-size: 10vh; font-weight: 800">METAS DA CON</a>
-  <a class="font-1 buttonLogin" style="margin-top: 5vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh">Meta Consultor</a>
-  <a class="font-1 buttonLogin" style="margin-top: 2vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh">Meta Empresa</a>
-  <a class="font-1 buttonLogin" style="margin-top: 2vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh">Ranking Novo</a>
+  <a onclick="openMetas('Consultor')" class="font-1 buttonLogin" style="margin-top: 5vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh; width: 13vw">Meta Consultor</a>
+  <a onclick="openMetas('Empresa')" class="font-1 buttonLogin" style="margin-top: 2vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh; width: 13vw">Meta Empresa</a>
+  <a onclick="openMetas('Equipe')" class="font-1 buttonLogin" style="margin-top: 2vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh; width: 13vw">Meta Equipe</a>
 </div>
+
+<div id="metas" class="navbar-color" style="display: none; position: fixed; top: 12vh; left: 30vw; width: 40vw; height: 88vh; border-top-left-radius: 5vh; border-top-right-radius: 5vh;">
+  <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;">
+    <i onclick="openMetas('',true)" class="far fa-times" style="cursor: pointer; position: absolute; font-size: 5vh; right: 2vw; top: 3vh"></i>
+    <a style="font-size: 5vh; margin-top: 3vh; font-weight: 800;">Metas <span id="metaMenuName">?????</span></a>
+    <div id="result" style="width: 92%; height: 96%; padding-inline: 4%; padding-block: 2vh; max-height: 96%; overflow-y: auto;">
+
+    </div>
+  </div>
+</div>
+
+<script>
+  var metasBlock = false
+  function openMetas(menu,close) {
+    if (metasBlock) return alert('Aguarde...')
+    if (close) return document.getElementById('metas').style.display = 'none'
+    document.getElementById('result').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel-reverse"></div><div class="loader-text font-5"></div></div>`
+    document.getElementById('metaMenuName').innerHTML = menu
+    document.getElementById('metas').style.display = 'inline'
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/getMetas`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        metasBlock = false
+        if (s.error) {
+          openMetas('',true)
+          return alert(s.error)
+        } else if (s[menu] && s[menu].length >= 1) {
+          document.getElementById('result').innerHTML = `<div style="margin-bottom: 1vh; display: flex; width: 100%; text-align: center;">
+            <div style="width: 50%">
+              <a style="font-size: 2.8vh; font-weight: 400">Nome</a>
+            </div>
+            <div style="width: 30%"></div>
+            <div style="width: 20%; text-align: center">
+              <a style="font-size: 2.8vh; font-weight: 600">Meta</a>
+            </div>
+          </div>`
+          s[menu].forEach((element,index)=>{
+            document.getElementById('result').innerHTML += `<div style="margin-block: 1vh; display: flex; width: 100%;">
+              <div style="display: flex; width: 80%; max-width: 80%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                <nobr style="margin-right: 0.5vw">${index+1}º</nobr>
+                <img src="/public/images/meta${ index == 0 ? '1' : index == 1 ? '2' : index == 2 ? '3' : ''}.png" style=" width: 5vh; height: 5vh; margin-right: 0.5vh; margin-top: -1vh">
+                <nobr style="font-size: 2.8vh; font-weight: 400;">${element.nome}</nobr>
+              </div>
+              <div style="width: 20%; text-align: center">
+                <a style="font-size: 2.8vh; font-weight: 600">${element.meta}</a>
+              </div>
+            </div>`
+          })
+        } else {
+          openMetas('',true)
+          return alert('A meta selecionada não foi encontrado...')
+        }
+      },
+      error: function(e) {
+        metasBlock = false
+        openMetas('',true)
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
+  }
+</script>

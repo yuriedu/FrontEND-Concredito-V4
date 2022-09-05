@@ -133,6 +133,26 @@
     if (!document.getElementById('cpf').value && !document.getElementById('telefoneFind').value) return alert('Coloque o CPF ou Telefone...')
     document.getElementById('consultar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('consultar').classList.add("buttonBlock");
+    document.getElementById('nome').value = ''
+    document.getElementById('mae').value = ''
+    document.getElementById('cpfR').value = ''
+    document.getElementById('rg').value = ''
+    document.getElementById('matricula').value = ''
+    document.getElementById('especie').value = ''
+    document.getElementById('cidade').value = ''
+    document.getElementById('uf').value = ''
+    document.getElementById('cep').value = ''
+    document.getElementById('endereco').value = ''
+    document.getElementById('numero').value = ''
+    document.getElementById('bairro').value = ''
+    document.getElementById('sexo').value = ''
+    document.getElementById('email').value = ''
+    document.getElementById('banco').value = ''
+    document.getElementById('agencia').value = ''
+    document.getElementById('conta').value = ''
+    document.getElementById('poupanca').value = ''
+    document.getElementById('telefone').value = ''
+    document.getElementById('nascimento').value = ''
     $.ajax({ type: "post",url: `https://api.concredito.com.br/consultas/dados`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
@@ -145,30 +165,30 @@
         document.getElementById('consultar').classList.remove("buttonBlock");
         if (s.error) return alert(s.error)
         document.getElementById('title').innerHTML = `Resultado - ${s.type}:`
-        document.getElementById('nome').value = s.dados.nome
-        document.getElementById('mae').value = s.dados.nomeMae
-        document.getElementById('cpfR').value = s.dados.cpf
-        document.getElementById('rg').value = s.dados.rg
-        document.getElementById('matricula').value = s.dados.matricula
-        document.getElementById('especie').value = s.dados.especie
-        document.getElementById('cidade').value = s.dados.cidade
-        document.getElementById('uf').value = s.dados.uf
-        document.getElementById('cep').value = s.dados.cep
-        document.getElementById('endereco').value = s.dados.endereco
-        document.getElementById('numero').value = s.dados.numeroEnd
-        document.getElementById('bairro').value = s.dados.bairro
-        document.getElementById('telefone').value = s.dados.telefone
-        document.getElementById('sexo').value = s.dados.sexo
-        document.getElementById('email').value = s.dados.email
-        document.getElementById('banco').value = s.dados.banco ? s.dados.banco : s.dados.codBanco
-        document.getElementById('agencia').value = s.dados.agencia
-        document.getElementById('conta').value = s.dados.conta
-        document.getElementById('poupanca').value = s.dados.poupanca ? 'Sim' : 'Não'
+        if (s.dados.nome) document.getElementById('nome').value = s.dados.nome
+        if (s.dados.nomeMae) document.getElementById('mae').value = s.dados.nomeMae
+        if (s.dados.cpf) document.getElementById('cpfR').value = s.dados.cpf
+        if (s.dados.rg) document.getElementById('rg').value = s.dados.rg
+        if (s.dados.matricula) document.getElementById('matricula').value = s.dados.matricula
+        if (s.dados.especie) document.getElementById('especie').value = s.dados.especie
+        if (s.dados.cidade) document.getElementById('cidade').value = s.dados.cidade
+        if (s.dados.uf) document.getElementById('uf').value = s.dados.uf
+        if (s.dados.cep) document.getElementById('cep').value = s.dados.cep
+        if (s.dados.endereco) document.getElementById('endereco').value = s.dados.endereco
+        if (s.dados.numeroEnd) document.getElementById('numero').value = s.dados.numeroEnd
+        if (s.dados.bairro) document.getElementById('bairro').value = s.dados.bairro
+        if (s.dados.sexo) document.getElementById('sexo').value = s.dados.sexo
+        if (s.dados.email) document.getElementById('email').value = s.dados.email
+        if (s.dados.banco) document.getElementById('banco').value = s.dados.banco
+        if (s.dados.agencia) document.getElementById('agencia').value = s.dados.agencia
+        if (s.dados.conta) document.getElementById('conta').value = s.dados.conta
+        if (s.dados.poupanca) document.getElementById('poupanca').value = s.dados.poupanca ? '1' : '0'
+        if (s.dados.telefone) document.getElementById('telefone').value = s.dados.telefone
+
         if (s.dados.dataNascimento) {
           var date = s.dados.dataNascimento.slice(0, 10)
           document.getElementById('nascimento').value = `${date.slice(8,10)}/${date.slice(5,7)}/${date.slice(0,4)}`
         }
-
         document.getElementById('newConsultar').style.display = `none`
         document.getElementById('result').style.display = `flex`
       },

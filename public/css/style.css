@@ -278,6 +278,14 @@
   height: 6vh;
   width: 6vh;
 }
+.loader-wheel-reverse {
+  animation: spin 1s infinite linear;
+  /* border: 0.5vh solid rgba(50, 50, 50, 0.7); */
+  border-left: 0.7vh solid var(--navbar-background-reverse);
+  border-radius: 50%;
+  height: 6vh;
+  width: 6vh;
+}
 .loader-text:after {
   font-size: 3vh;
   animation: load 2s linear infinite;
