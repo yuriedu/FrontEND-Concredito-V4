@@ -25,11 +25,13 @@
     <div id="roles" style="display: none; margin-inline: 3vw"></div>
     <div id="configs" style="display: none; margin-inline: 3vw"></div>
     <div id="logs" style="display: none; margin-inline: 3vw"></div>
-    <div id="menuPropostas"></div>
+    <div id="menuPropostas">
+    </div>
   </div>
 </div>
 
 <script>
+  var agentes = []
   function inputChecked(button) {
     if (document.getElementById(button).value == '1') {
       document.getElementById(button).value = '0'
@@ -71,6 +73,7 @@
     var type = document.getElementById('type') ? document.getElementById('type').value : false
     var dataIni = document.getElementById('dataIni') ? document.getElementById('dataIni').value : false
     var dataEnd = document.getElementById('dataEnd') ? document.getElementById('dataEnd').value : false
+    var agente = document.getElementById('agente') ? document.getElementById('agente').value : false
     if (document.getElementById(`${actualMenu}Button`)) {
       if (menu == actualMenu && !aux) return;
       if (document.getElementById(`${actualMenu}Button`).classList.contains('buttonBlock')) return alert('Aguarde...');
@@ -87,13 +90,14 @@
       password: localStorage.getItem('password'),
       type: type,
       dataIni: dataIni,
-      dataEnd: dataEnd
+      dataEnd: dataEnd,
+      agente: agente,
     }), contentType:"application/json; charset=utf-8",
     success: async function(s) {
       if (s.error) return alert(s.error)
       if (menu == "logs") {
         document.getElementById(menu).innerHTML += `<div style="display: flex; width: 100%; justify-content: center; align-items: center">
-            <fieldset class="width60p" style="padding: 0; width: 30%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
+            <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
               <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo</legend>
               <select class="font-1" id="type" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
                 <option style="color: black" value="" selected>Todas</option>
@@ -106,16 +110,22 @@
                 <option style="color: black" value="propostas">Propostas</option>
                 <option style="color: black" value="system">Sistema</option>
                 <option style="color: black" value="login">Login</option>
+                <option style="color: black" value="leads">Leads</option>
               </select>
             </fieldset>
-            <fieldset class="width60p" style="padding: 0; width: 30%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
+            <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
               <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Minima</legend>
               <input class="font-1" id="dataIni" type="datetime-local" id="type" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
-            <fieldset class="width60p" style="padding: 0; width: 30%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
+            <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
               <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Maxima</legend>
               <input class="font-1" id="dataEnd" type="datetime-local" id="type" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
+            <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
+              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Agentes</legend>
+              <input class="font-1" id="agente" placeholder="Carregando..." list="agentesList" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <datalist id="agentesList"></datalist>
             <i onclick="changeMenu('logs', true)" style="font-size: 3vh; margin-left: 0.5vw; cursor: pointer" class="fa-regular fa-magnifying-glass"></i>
           </div>`
         s.logs.forEach((element,index)=>{
@@ -136,6 +146,7 @@
         if (type) document.getElementById('type').value = type
         if (dataIni) document.getElementById('dataIni').value = dataIni
         if (dataEnd) document.getElementById('dataEnd').value = dataEnd
+        getAgentes()
       }
       if (menu == "configs") {
         s.configs.forEach((element,index)=>{
@@ -341,6 +352,34 @@
       }
     })
   }
+
+  var agentesBlock = false
+  function getAgentes() {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (agentesBlock) return alert('Aguarde...')
+    agentesBlock = true
+    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/getLogins`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password')
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        agentesBlock = false
+        agentes = s.logins
+        document.getElementById('agente').placeholder = 'Selecione o Agente...'
+        s.logins.forEach((element,index) => {
+          document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
+        });
+      },
+      error: function(e) {
+        agentesBlock = false
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
+  }
+
   (function () {
     $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/verifyLogin`,
     data: JSON.stringify({

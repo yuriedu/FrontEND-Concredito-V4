@@ -76,11 +76,6 @@
         <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Data Final</legend>
         <input id="dateEnd" type="date" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
       </fieldset>
-      <fieldset title="Coloque o Agente aqui..." style="padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
-        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Agentes</legend>
-        <input class="font-1" list="agentesList" id="agente" placeholder="Carregando..." style="font-size: 2.4vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
-        <datalist id="agentesList"></datalist>
-      </fieldset>
     </div>
     <div style="width: 100%; display: flex; justify-content: center">
       <div id="filter" onclick="filter()" class="buttonLogin" style="width: 30%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">
@@ -103,29 +98,6 @@
     </div>
   </div>
   <div id="menuPropostas"></div>
-  <div class="font-color-navbar background-reverse left17p" style="z-index: 5; cursor: pointer; position: fixed; bottom: 2vh; left: 6vw; padding-block: 1vh; display: flex; align-items: center; justify-content: center; border-radius: 2vh"><fieldset id="fieldset" title="Token BMG" style="text-align: left; padding: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%; margin-right: 1vw;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Token BMG</legend><input class="font-1 font-color-reverse" placeholder="Token BMG" id="tokenBMG" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset> <i class="fa-solid fa-floppy-disk" style="font-size: 4vh" onclick="newToken()"></i> </div></div>
-  <div id="generator" class="background-reverse left18-5 width79 font-color-reverse" style="z-index: 5;display: none; position: fixed; top: 20%; left: 20%; width: 60%; height: 60%; border-radius: 5vh;">
-    <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-      <div style="position:absolute; top: 2vh; right: 3vh; cursor: pointer">
-        <i onclick="closeGenerator()" class="far fa-times" style="cursor: pointer; font-size: 3.5vh;"></i>
-      </div>
-      <a style="font-size: 3vh">Gerador de Cadastros:</a>
-      <div style="display: flex; width: 65%;">
-        <fieldset id="fieldset" title="Codigo 2" style="margin-top: 5vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 95%; margin-inline: 1%; padding-inline: 1%;">
-          <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Codigo 1</legend>
-          <textarea rows="4" class="font-1 font-color-reverse" placeholder="Nenhum codigo gerado..." id="code1" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0" disabled></textarea>
-        </fieldset>
-        <i onclick="copyGenerator('code1')" class="fas fa-copy" style="margin-top:7vh; cursor: pointer; font-size: 3vh;"></i>
-      </div>
-      <div style="display: flex; width: 65%;">
-        <fieldset id="fieldset" title="Codigo 1" style="margin-top: 3vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 95%; margin-inline: 1%; padding-inline: 1%;">
-          <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Codigo 2</legend>
-          <textarea rows="4" class="font-1 font-color-reverse" placeholder="Nenhum codigo gerado..." id="code2" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0" disabled></textarea>
-        </fieldset>
-        <i onclick="copyGenerator('code2')" class="fas fa-copy" style="margin-top: 6vh; cursor: pointer; font-size: 3vh;"></i>
-      </div>
-    </div>
-  </div>
 </div>
 
 <script>
@@ -152,8 +124,6 @@ const fasesName = {
   '202552': 'Envia Requisição CIP',
 }
 
-var agentes = []
-
   var menuPropostaActual = false
   function menuPropostas(icon, codAF, bank) {
     if (menuPropostaActual) {
@@ -162,7 +132,7 @@ var agentes = []
       menuPropostaActual = false
     }
     menuPropostaActual = codAF
-    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="cadastrar('${codAF}','${bank}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastrar</a><a onclick="sendLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Enviar Link</a><a onclick="checkEsteira('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Esteira</a><a onclick="generator('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Gerar Cadastro</a><a onclick="changeFase('${codAF}',1)" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Inclusão</a></div></div>`
+    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="changeFase('${codAF}',1)" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Inclusão</a></div></div>`
   }
 
   function filter() {
@@ -170,19 +140,17 @@ var agentes = []
     document.getElementById('filter').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('filter').classList.add("buttonBlock");
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (document.getElementById('agente').value && !agentes.find(r=>r.user==document.getElementById('agente').value)) return alert('Agente não encontrado...')
-    if (!agentes.find(r=>r.user==document.getElementById('agente').value).codigo) return alert('Codigo do Agente é invalido, peça para o "Breno" configurar...')
     document.getElementById('propostas-lista').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/lista`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
+      agente: localStorage.getItem('user'),
       fase: document.getElementById('fase') && document.getElementById('fase').value ? document.getElementById('fase').value : false,
       bank: document.getElementById('bank') && document.getElementById('bank').value ? document.getElementById('bank').value : false,
       orgao: document.getElementById('orgao') && document.getElementById('orgao').value ? document.getElementById('orgao').value : false,
       cpf: document.getElementById('cpf') && document.getElementById('cpf').value ? document.getElementById('cpf').value : false,
       codAF: document.getElementById('codAF') && document.getElementById('codAF').value ? document.getElementById('codAF').value : false,
       codContrato: document.getElementById('codContrato') && document.getElementById('codContrato').value ? document.getElementById('codContrato').value : false,
-      agente: document.getElementById('agente') && document.getElementById('agente').value ? agentes.find(r=>r.user==document.getElementById('agente').value).codigo : false,
       dateIni: document.getElementById('dateIni') && document.getElementById('dateIni').value ? document.getElementById('dateIni').value : false,
       dateEnd: document.getElementById('dateEnd') && document.getElementById('dateEnd').value ? document.getElementById('dateEnd').value : false,
     }),contentType:"application/json; charset=utf-8",
@@ -213,59 +181,6 @@ var agentes = []
     });
   }
 
-  function newToken() {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (!document.getElementById(`tokenBMG`).value) return alert('Coloque o Token...')
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/newToken`, data: JSON.stringify({
-      user: localStorage.getItem('user'), 
-      password: localStorage.getItem('password'),
-      token: document.getElementById('tokenBMG').value,
-      bank: "BMG",
-    }),contentType:"application/json; charset=utf-8",
-      success: function(s) {
-        if (s.error) return alert(s.error)
-        return alert('Token alterado com sucesso!')
-      },
-      error: function(e) {
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    });
-  }
-
-  function cadastrar(codAF, bankAF) {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (document.getElementById(`situation_${codAF}`).style.color == `blue`) return alert('Proposta já está sendo cadastrada...')
-    document.getElementById(`situation_${codAF}`).style.color = `blue`
-    document.getElementById(`situation_${codAF}`).value = 'Entrando na fila...'
-    setTimeout(function(){ situation(codAF, false, bankAF) }, 1500)
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/cadastrar`, data: JSON.stringify({
-      user: localStorage.getItem('user'), 
-      password: localStorage.getItem('password'),
-      proposta: codAF
-    }),contentType:"application/json; charset=utf-8",
-      success: function(s) {
-        if (s.error) {
-          document.getElementById(`situation_${codAF}`).style.color = `red`
-          document.getElementById(`situation_${codAF}`).value = s.error
-          return document.getElementById(`title_${codAF}`).title = s.error
-        }
-        document.getElementById(`situation_${codAF}`).style.color = `green`
-        document.getElementById(`situation_${codAF}`).value = s.data
-        return document.getElementById(`title_${codAF}`).title = s.data
-      },
-      error: function(e) {
-        if (e.error) {
-          document.getElementById(`situation_${codAF}`).style.color = `red`
-          document.getElementById(`situation_${codAF}`).value = e.error
-          return document.getElementById(`title_${codAF}`).title = s.error
-        }
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    });
-  }
   function situation(codAF, aux, bank) {
     if (document.getElementById(`situation_${codAF}`).style.color == 'red' || document.getElementById(`situation_${codAF}`).style.color == "green" || document.getElementById(`situation_${codAF}`).style.color == "orange") return;
     $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/situation`, data: JSON.stringify({
@@ -307,30 +222,6 @@ var agentes = []
     });
   }
 
-  var sendLinking = false
-  function sendLink(codAF,fase) {
-    if (sendLinking) return alert('Você já está enviando o link de alguma proposta! Aguarde...')
-    sendLinking = true
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/sendLink`, data: JSON.stringify({
-      user: localStorage.getItem('user'), 
-      password: localStorage.getItem('password'),
-      proposta: codAF
-    }),contentType:"application/json; charset=utf-8",
-      success: function(s) {
-        sendLinking = false
-        if (s.error) return alert(s.error)
-        alert(`O link foi enviado com sucesso para o cliente!`)
-      },
-      error: function(e) {
-        sendLinking = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    });
-  }
-
   var changeFaseActive = false
   function changeFase(codAF,fase) {
     if (changeFaseActive) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
@@ -340,7 +231,7 @@ var agentes = []
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF,
-      fase: fase,
+      fase: 1,
     }),contentType:"application/json; charset=utf-8",
       success: function(s) {
         changeFaseActive = false
@@ -355,99 +246,7 @@ var agentes = []
       }
     });
   }
-
-  var changeEsteira = false
-  function checkEsteira(codAF) {
-    if (changeEsteira) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
-    changeEsteira = true
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/esteira`, data: JSON.stringify({
-      user: localStorage.getItem('user'), 
-      password: localStorage.getItem('password'),
-      proposta: codAF
-    }),contentType:"application/json; charset=utf-8",
-      success: function(s) {
-        changeEsteira = false
-        if (s.error) return alert(s.error)
-        return alert(s.data)
-      },
-      error: function(e) {
-        changeEsteira = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    });
-  }
-  var generatorMenu = false
-  function closeGenerator() {
-    generatorMenu = false
-    document.getElementById('generator').style.display = 'none'
-  }
-
-  var generatorCod = false
-  function generator(codAF) {
-    if (generatorCod || generatorMenu) return alert('Você já está gerando um cadastro! Aguarde...')
-    generatorCod = true
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    $.ajax({ type: "post", url: `https://api.concredito.com.br/propostas/generator`, data: JSON.stringify({
-      user: localStorage.getItem('user'), 
-      password: localStorage.getItem('password'),
-      proposta: codAF
-    }),contentType:"application/json; charset=utf-8",
-      success: function(s) {
-        generatorCod = false
-        if (s.error) return alert(s.error)
-        generatorMenu = true
-        document.getElementById('code1').value = s.code1
-        document.getElementById('code2').value = s.code2
-        document.getElementById('generator').style.display = 'flex'
-      },
-      error: function(e) {
-        generatorCod = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    });
-  }
-
-  function copyGenerator(code) {
-    if (document.getElementById(code)) {
-      if (document.getElementById(code).value) {
-        navigator.clipboard.writeText(document.getElementById(code).value);
-        return alert('Codigo copiado com sucesso!')
-      } else return alert('Não a nada aqui para ser copiado...')
-    } else return alert('Não encontrei o codigo...')
-  }
-
-  var agentesBlock = false
-  function getAgentes() {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (agentesBlock) return alert('Aguarde...')
-    agentesBlock = true
-    $.ajax({ type: "post",url: `https://api.concredito.com.br/funcionarios/getLogins`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password')
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        agentesBlock = false
-        agentes = s.logins
-        document.getElementById('agente').placeholder = 'Selecione o Agente...'
-        s.logins.forEach((element,index) => {
-          document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
-        });
-      },
-      error: function(e) {
-        agentesBlock = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-  (function () { getAgentes() })();
+  (function () { filter() })();
 </script>
 <script>
     function searchBar() {
