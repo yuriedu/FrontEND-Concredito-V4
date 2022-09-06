@@ -22,6 +22,7 @@
           <option value="3" style="color: black">CLIENTE FECHADO</option>
           <option value="4" style="color: black">PEDIR INDICAÇÃO</option>
           <option value="5" style="color: black">CLIENTE NÃO QUIS FECHAR</option>
+          <option value="6" style="color: black">COM SALDO</option>
         </select>
       </fieldset>
       <fieldset title="Coloque a Flag aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
@@ -120,6 +121,7 @@
               <option value="3" style="color: black">CLIENTE FECHADO</option>
               <option value="4" style="color: black">PEDIR INDICAÇÃO</option>
               <option value="5" style="color: black">CLIENTE NÃO QUIS FECHAR</option>
+              <option value="6" style="color: black">COM SALDO</option>
             </select>
           </fieldset>
           <i onclick="saveOBS()" title="Salvar" class="fa-regular fa-file-export font-color-navbar-reverse" style="font-size: 3.5vh; margin-top: 2.5vh; cursor: pointer"></i>
@@ -307,6 +309,7 @@
         document.getElementById('copy').innerHTML = `Copiar`
         document.getElementById('copy').classList.remove("buttonBlock");
         if (s.error) return alert(s.error)
+        leads.find(r=>r.id==id).flag_copy = 1
         document.getElementById(`${id}_copy`).classList.add('fa-light')
         document.getElementById(`${id}_copy`).classList.add('fa-copy')
         if (window.clipboardData) {
@@ -344,6 +347,7 @@
     for(var i=0, n=checkboxes.length;i<n;i++) {
       if (checkboxes[i].checked && leads.find(r=>r.id==checkboxes[i].id && r.flag_block != 1)) {
         copyList[copyList.length] = checkboxes[i].id
+        leads.find(r=>r.id==checkboxes[i].id).flag_copy = 1
         document.getElementById(`${checkboxes[i].id}_copy`).classList.add('fa-light')
         document.getElementById(`${checkboxes[i].id}_copy`).classList.add('fa-copy')
         if (!copy) {

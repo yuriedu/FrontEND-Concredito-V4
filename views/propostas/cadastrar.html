@@ -325,24 +325,24 @@
   }
   var tabelas = {
     'FACTA FINANCEIRA': { 
-      '23': [ { name: 'GOLD', value: '6' }, { name: 'NORMAL', value: '7' }, /*{ name: 'PLUS', value: '9' }*/ ],
-      '7': [ { name: 'CARTÃO BENEFICIO', value: '116-1975' } ],
+      '23': [ { name: 'GOLD', value: '6-GOLD' }, { name: 'NORMAL', value: '7-NORMAL' }, /*{ name: 'PLUS', value: '9' }*/ ],
+      '7': [ { name: 'CARTÃO BENEFICIO', value: '1-NOT' } ],
     },
     'BANCO C6': { 
-      '23': [ { name: 'SAQUE ANIVERSARIO', value: '1' } ]
+      '23': [ { name: 'SAQUE ANIVERSARIO', value: '1-NOT' } ]
     },
     'PANAMERICANO': { 
-      '23': [ { name: 'CORBAN', value: '1' },{ name: 'CORBAN FLEX 1', value: '2' },{ name: 'CORBAN FLEX 2', value: '3' } ],
-      '1': [ { name: 'NOVO INSS', value: '433' },{ name: 'NORMAL', value: '450' },{ name: 'BEN88', value: '451' },{ name: 'BEN89', value: '452' } ]
+      '23': [ { name: 'CORBAN', value: '1-900001' },{ name: 'CORBAN FLEX 1', value: '2-900006' },{ name: 'CORBAN FLEX 2', value: '3-900007' } ],
+      '1': [ { name: 'NOVO INSS', value: '433-NOT' },{ name: 'NORMAL', value: '450-NOT' },{ name: 'BEN88', value: '451-NOT' },{ name: 'BEN89', value: '452-NOT' } ]
     },
     'BMG': { 
-      '23': [ { name: 'SAQUE ANIVERSARIO', value: '2' } ]
+      '23': [ { name: 'SAQUE ANIVERSARIO', value: '2-NOT' } ]
     },
     'MERCANTIL': { 
-      '23': [ { name: 'SAQUE ANIVERSARIO', value: '1' } ]
+      '23': [ { name: 'SAQUE ANIVERSARIO', value: '1-NOT' } ]
     },
     'SAFRA': { 
-      '23': [ { name: 'SAQUE ANIVERSARIO', value: '1' } ]
+      '23': [ { name: 'SAQUE ANIVERSARIO', value: '1-NOT' } ]
     },
   }
   var banks = [
@@ -519,10 +519,7 @@
           if (s.dados.conta) document.getElementById('conta').value = s.dados.conta
           if (s.dados.poupanca) document.getElementById('poupanca').value = s.dados.poupanca ? '1' : '0'
           if (s.dados.telefone) document.getElementById('telefone').value = s.dados.telefone.replaceAll("(","").replaceAll(")","").replaceAll(" ","").replaceAll("-","")
-          if (s.dados.dataNascimento) {
-            var date = s.dados.dataNascimento.slice(0, 10)
-            document.getElementById('nascimento').value = `${date.slice(8,10)}/${date.slice(5,7)}/${date.slice(0,4)}`
-          }
+          if (s.dados.dataNascimento) document.getElementById('nascimento').value = s.dados.dataNascimento.slice(0, 10)
         }
         if (s.banks) {
           banksList = s.banks
@@ -602,7 +599,8 @@
         "valorParcela": document.getElementById('valorParcela').value,
         "codBancoAF": banksID[document.getElementById('bancoAF').value],
         "codOrgaoAF": document.getElementById('codOrgaoAF').value,
-        "Tabela": document.getElementById('tabela').value,
+        "TabelaCod": document.getElementById('tabela').value.split('-')[0],
+        "Tabela": document.getElementById('tabela').value.split('-')[1],
         "midia": document.getElementById('midia').value,
         "liberacao": document.getElementById('liberacao').value
       }), contentType:"application/json; charset=utf-8",
@@ -680,7 +678,8 @@
         "bancoAF": document.getElementById('bancoAF').value,
         "codBancoAF": banksID[document.getElementById('bancoAF').value],
         "codOrgaoAF": document.getElementById('codOrgaoAF').value,
-        "Tabela": document.getElementById('tabela').value,
+        "TabelaCod": document.getElementById('tabela').value.split('-')[0],
+        "Tabela": document.getElementById('tabela').value.split('-')[1],
         "midia": document.getElementById('midia').value,
         "liberacao": document.getElementById('liberacao').value,
         "fase": 9232,
@@ -708,6 +707,7 @@
   }
   function mainPage() {
     if (operadorIng || document.getElementById('cadastrar').classList.contains('buttonBlock')) return alert('Aguarde...')
+    document.getElementById('propostaResult').style.display = `none`
     document.getElementById('clienteDados').style.display = `none`
     document.getElementById('simularFGTS').style.display = `none`
     document.getElementById('propostaDados').style.display = `none`
@@ -715,6 +715,7 @@
   }
   function backClient() {
     if (operadorIng || document.getElementById('cadastrar').classList.contains('buttonBlock')) return alert('Aguarde...')
+    document.getElementById('propostaResult').style.display = `none`
     document.getElementById('propostaDados').style.display = `none`
     document.getElementById('simularFGTS').style.display = `none`
     document.getElementById('newConsultar').style.display = `none`
