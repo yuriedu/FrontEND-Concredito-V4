@@ -2,7 +2,8 @@
   <navbar id="navbar"></navbar>
   <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
 
-  <div class="background-image margin-left18-5 width79 " style="margin-top: 12.5vh; margin-left: 6vw; width: 92.5vw; height: 13%; border-radius: 2vh;display: flex; flex-direction: row; justify-content: center; align-items: center;">
+  <div class="background-image margin-left18-5 width79 " style="position: relative; margin-top: 12.5vh; margin-left: 6vw; width: 92.5vw; height: 13%; border-radius: 2vh;display: flex; flex-direction: row; justify-content: center; align-items: center;">
+    <i onclick="openFunc('Todos','FGTS')" title="FGTS de os todos funcionarios!" class="fa-solid fa-users font-color-navbar" style="cursor: pointer; font-size: 3vh; position: absolute; right: 1vw; top: 1vh"></i>
     <fieldset title="Pesquise algum funcionario por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
       <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
       <input onkeyup="searchBar()" id="searchBar" placeholder="Pesquise algum funcionario aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
@@ -34,6 +35,26 @@
             <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
             <input onkeyup="searchBar2()" class="font-color-reverse" id="searchBar2" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
           </fieldset>
+          <div style="display: flex; justify-content: center; width: 100%; margin-top: 1vh;">
+            <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Minima</legend>
+              <input class="font-color-reverse" type="datetime-local" id="dataMinF" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+            </fieldset>
+            <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Maxima</legend>
+              <input class="font-color-reverse" type="datetime-local" id="dataMaxF" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+            </fieldset>
+            <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo</legend>
+              <select class="font-color-reverse" id="typeF" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+                <option value="" style="color: black" selected>Todos</option>
+                <option value="sucess" style="color: black">Sucessos</option>
+                <option value="error" style="color: black">Erros</option>
+              </select>
+            </fieldset>
+            <i onclick="openFunc(document.getElementById('userOpen').value,'FGTS')" class="fa-regular fa-magnifying-glass-dollar" style="font-size: 3.5vh; margin-top: 2.5vh; cursor: pointer"></i>
+            <input id="userOpen" type="hidden">
+          </div>
           <div id="listFunc" style="margin-top: 3vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
             <div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>
           </div>
@@ -263,6 +284,7 @@
     if (menu == 'close') return document.getElementById('openFunc').style.display = 'none'
     list = false
     listMax = 100
+    document.getElementById('userOpen').value = user
     document.getElementById('loadMore').style.display = 'none'
     document.getElementById('listFunc').innerHTML = `<div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     document.getElementById('nameFunc').innerHTML = `${user}`
@@ -272,7 +294,10 @@
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
-        newUser: user
+        newUser: user == 'Todos' ? false : user,
+        dataMin: document.getElementById('dataMinF').value,
+        dataMax: document.getElementById('dataMaxF').value,
+        type: document.getElementById('typeF').value,
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
         openBlock = false
@@ -288,6 +313,7 @@
               <a onclick="downloadCSV('sucess')" title="CSV Sucessos" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer">Sucessos: <span class="font-color-navbar-reverse">${s.fgts.filter(r=>!r.error).length}</span></a>
               <a onclick="downloadCSV('error')" title="CSV Erros" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer">Erros: <span class="font-color-navbar-reverse">${s.fgts.filter(r=>r.error).length}</span></a>
               <a onclick="downloadCSV('total')" title="CSV Total" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer">Total: <span class="font-color-navbar-reverse">${s.fgts.length}</span></a>
+              <a title="${s.liberado}" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Liberado: <span class="font-color-navbar-reverse">${s.liberado}</span></a>
             </div>
             <div style="margin-bottom: 2vh; width: 100%; display: flex; justify-content: center;">
               <a title="Limpar lista" onclick="clearFunc('${user}','fgts')" class="font-color-navbar-reverse" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer; text-decoration: underline">Limpar</a>
@@ -455,7 +481,10 @@
     if (list.length >= listMax) document.getElementById('loadMore').style.display = 'flex'
   }
 
-  (function () { getUser() })();
+  (function () {
+    getUser();
+    document.getElementById('dataMinF').value = new Date().toISOString().slice(0, 10)+`T00:00`
+  })();
 </script>
 <script>
   function searchBar() {
