@@ -17,7 +17,6 @@
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Lista</legend>
               <select onchange="changeList(this.value)" rows="4" class="font-1" id="dados" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0">
                 <option value="" style="color: black; font-weight: 600" selected>Selecione a Lista</option>
-                <option value="dados" style="color: black; font-weight: 600">Dados</option>
                 <option value="leads" style="color: black; font-weight: 600">Leads</option>
               </select>
             </fieldset>
@@ -33,12 +32,11 @@
 </div>
 <script>
   var lista = {
-    dados: { type: ';', placeholder: "CPF;Nome;Mãe;RG;Matricula;Espécie;Cidade;UF;CEP;Endereço;Número;Bairro;Telefone;Nascimento;Sexo;Email;Banco;Agência;Conta;Poupança|" },
-    leads: { type: ',', placeholder: "CPF,Nome,Telefone,Banco,Valor|" }
+    leads: { type: ',', placeholder: "CPF,Nome,Telefone,BancoAF,Valor,RG,Matricula,Especie,Cidade,UF,CEP,Endereço,Número,Bairro,Nascimento,Sexo,Email,Banco,Agência,Conta,Poupança|" }
   }
   function changeList(list) {
     if (list && lista[list]) {
-      document.getElementById('lista').placeholder = `${lista[list].placeholder}\n${lista[list].placeholder}\n${lista[list].placeholder}\n${lista[list].placeholder}`
+      document.getElementById('lista').placeholder = `${lista[list].placeholder}`
       document.getElementById('lista').disabled = false
     } else {
       document.getElementById('lista').value = ''
@@ -53,10 +51,11 @@
     if (!document.getElementById('lista').value) return alert('Coloque a lista...')
     var list = document.getElementById('lista').value.replaceAll(/\r?\n|\r/g, "").split("|");
     if (list.length <= 0) return alert('A lista é invalida! Veja o molde e tente novamente...')
-    if (list[list.length-1].length <= 5) list.splice(list.length-1, 1)
+    if (list[list.length-1].length <= 20) list.splice(list.length-1, 1)
     document.getElementById('adicionar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('adicionar').classList.add("buttonBlock");
     if (!i) i = 0
+    document.getElementById('actualText').innerHTML = `Adicionando: ${i+1000 > list.length ? list.length : i+1000}`
     $.ajax({ type: "post",url: `${apiURL}/administrativo/newlist`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),

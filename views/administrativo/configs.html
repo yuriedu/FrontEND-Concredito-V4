@@ -19,7 +19,7 @@
   </div>
 
   <div class="background-image margin-left18-5 width79 " style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; min-height: 42.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: column; padding-block: 4vh">
-    <div id="loading">
+    <div id="loading" style="display: none">
       <div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>
     </div>
     <div id="roles" style="display: none; margin-inline: 3vw"></div>
@@ -391,7 +391,7 @@
         if (s.perms.administrativo_roles) document.getElementById('rolesButton').classList.remove('buttonBlock')
         if (s.perms.administrativo_logs) document.getElementById('logsButton').classList.remove('buttonBlock')
         if (s.perms.administrativo_configs) document.getElementById('configsButton').classList.remove('buttonBlock')
-        changeMenu('configs')
+        // changeMenu('configs')
       },
       error: function(e) {
         if (e.error) return alert(e.error)

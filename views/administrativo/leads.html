@@ -208,6 +208,7 @@
         bank: document.getElementById('bank').value ? document.getElementById('bank').value : false,
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
+        if (s.error) return alert(s.error)
         document.getElementById('leads-load').style.display = 'none'
         document.getElementById('leads-list').style.display = 'inline'
         document.getElementById('filter').innerHTML = `Filtrar`
@@ -283,6 +284,7 @@
         password: localStorage.getItem('password')
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
+        if (s.error) return alert(s.error)
         agentesBlock = false
         document.getElementById('agente').placeholder = 'Selecione o Agente...'
         document.getElementById('agenteADD').placeholder = 'Selecione o Agente...'
@@ -349,8 +351,7 @@
       success: async function(s) {
         addAgenteBlock = false
         if (s.error) return alert(s.error)
-        alert('Quantidade distribuida para o agente com sucesso!')
-        return window.location.reload()
+        alert('Quantidade distribuida para o agente com sucesso! Atualize a pagina para ver as leads com o agente atualizado...')
       },
       error: function(e) {
         addAgenteBlock = false
@@ -397,6 +398,7 @@
         copy: 1,
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
+        if (s.error) return alert(s.error)
         copyBlock = false
         document.getElementById('copy').innerHTML = `Copiar`
         document.getElementById('copy').classList.remove("buttonBlock");
@@ -455,6 +457,7 @@
         list: copyList
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
+        if (s.error) return alert(s.error)
         copyBlock = false
         document.getElementById('copy').innerHTML = `Copiar`
         document.getElementById('copy').classList.remove("buttonBlock");
@@ -495,6 +498,7 @@
         block: document.getElementById(`${id}_block`).classList.contains('fa-ban') ? 0 : 1,
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
+        if (s.error) return alert(s.error)
         copyBlock = false
         if (s.error) return alert(s.error)
         if (document.getElementById(`${id}_block`).classList.contains('fa-ban')) {
@@ -594,6 +598,7 @@
         obs: document.getElementById('obs').value,
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
+        if (s.error) return alert(s.error)
         copyBlock = false
         if (s.error) return alert(s.error)
         leads.find(r=>r.id==id).obs =  document.getElementById('obs').value
