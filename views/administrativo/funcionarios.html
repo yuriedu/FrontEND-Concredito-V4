@@ -254,19 +254,19 @@
     var csv = `CPF,BANCO`
     if (menu == "sucess") {
       if (list.filter(r=>!r.error).length <= 0) return alert('A lista de Sucessos está vazia...')
-      csv = `CPF,BANCO,LIBERADO,TOTAL,DATA - HORARIO`
-      list.filter(r=>!r.error).map(r=> { csv += `\n${r.cpf},${r.bank},${r.liberado},${r.total},${r.data.replace('T',' - ').replace('Z','')}` })
+      csv = `CPF,BANCO,LIBERADO,TOTAL,TELEFONE,AGENTE,DATA - HORARIO`
+      list.filter(r=>!r.error).map(r=> { csv += `\n${r.cpf},${r.bank},${r.liberado},${r.total},${r.telefone},${r.user},${r.data.replace('T',' - ').replace('Z','')}` })
     } else if (menu == "error") {
       if (list.filter(r=>r.error).length <= 0) return alert('A lista de Erros está vazia...')
-      csv = `CPF,BANCO,ERRO,DATA - HORARIO`
-      list.filter(r=>r.error).map(r=> { csv += `\n${r.cpf},${r.bank},${r.error},${r.data.replace('T',' - ').replace('Z','')}` })
+      csv = `CPF,BANCO,ERRO,TELEFONE,AGENTE,DATA - HORARIO`
+      list.filter(r=>r.error).map(r=> { csv += `\n${r.cpf},${r.bank},${r.error},${r.telefone},${r.user},${r.data.replace('T',' - ').replace('Z','')}` })
     } else if (menu == "total") {
-      csv = `CPF,BANCO,LIBERADO,TOTAL,ERRO,DATA - HORARIO`
-      list.filter(r=>!r.error).map(r=> { csv += `\n${r.cpf},${r.bank},${r.liberado},${r.total},${r.data.replace('T',' - ').replace('Z','')}` })
-      list.filter(r=>r.error).map(r=> { csv += `\n${r.cpf},${r.bank},0.00,0.00,${r.error},${r.data.replace('T',' - ').replace('Z','')}` })
+      csv = `CPF,BANCO,LIBERADO,TOTAL,ERRO,TELEFONE,AGENTE,DATA - HORARIO`
+      list.filter(r=>!r.error).map(r=> { csv += `\n${r.cpf},${r.bank},${r.liberado},${r.total},NULL,${r.telefone},${r.user},${r.data.replace('T',' - ').replace('Z','')}` })
+      list.filter(r=>r.error).map(r=> { csv += `\n${r.cpf},${r.bank},0.00,0.00,${r.error},${r.telefone},${r.user},${r.data.replace('T',' - ').replace('Z','')}` })
     } else if (menu == "af") {
-      csv = `AF,DATA - HORARIO`
-      list.map((r)=>{ csv += `\n${r.af},${r.data.replace('T',' - ').replace('Z','')}` })
+      csv = `AF,AGENTE,DATA - HORARIO`
+      list.map((r)=>{ csv += `\n${r.af},${r.user},${r.data.replace('T',' - ').replace('Z','')}` })
     }
     var a = document.createElement('a');
     a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
