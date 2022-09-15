@@ -313,10 +313,18 @@
               <a onclick="downloadCSV('sucess')" title="CSV Sucessos" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer">Sucessos: <span class="font-color-navbar-reverse">${s.fgts.filter(r=>!r.error).length}</span></a>
               <a onclick="downloadCSV('error')" title="CSV Erros" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer">Erros: <span class="font-color-navbar-reverse">${s.fgts.filter(r=>r.error).length}</span></a>
               <a onclick="downloadCSV('total')" title="CSV Total" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer">Total: <span class="font-color-navbar-reverse">${s.fgts.length}</span></a>
-              <a title="${s.liberado}" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Liberado: <span class="font-color-navbar-reverse">${s.liberado}</span></a>
+            </div>
+            <div style="width: 100%; display: flex; justify-content: center;">
+              <a title="VALOR TOTAL LIBERADO" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh;">Liberado: <span class="font-color-navbar-reverse">${s.liberado}</span></a>
+              <a title="QUANTIDADE MEDIA DE CONSULTAS POR DIA" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh">MED. P/DIA QNT.: <span class="font-color-navbar-reverse">${s.grafico.medQnt}</span></a>
+              <a title="VALOR MEDIO POR DIA" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh">MED. P/DIA VAL.: <span class="font-color-navbar-reverse">${s.grafico.medValor}</span></a>
+              <a title="TICKET MEDIO CONSULTADO" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh">TICKET MED.: <span class="font-color-navbar-reverse">${s.grafico.medTicket}</span></a>
             </div>
             <div style="margin-bottom: 2vh; width: 100%; display: flex; justify-content: center;">
               <a title="Limpar lista" onclick="clearFunc('${user}','fgts')" class="font-color-navbar-reverse" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer; text-decoration: underline">Limpar</a>
+            </div>
+            <div style="width: 100%; display: flex; justify-content: center;">
+              <canvas id="grafico" style="width: 20vw; height: 20vw"></canvas>
             </div>
           `
           s.fgts.slice(0, listMax).filter(r=>!r.error).forEach((element,index)=>{
@@ -370,6 +378,16 @@
             `
           })
           if (s.fgts.length >= listMax) document.getElementById('loadMore').style.display = 'flex'
+          var data = [
+            { value: s.grafico.banks['FACTA FINANCEIRA'], color: '#ffa500', highlight: "#ffa500", label: "FACTA FINANCEIRA" },
+            { value: s.grafico.banks['BANCO C6'], color: '#FFFF00', highlight: "#FFFF00", label: "BANCO C6" },
+            { value: s.grafico.banks['PANAMERICANO'], color: '#808080', highlight: "#808080", label: "PANAMERICANO" },
+            { value: s.grafico.banks['MERCANTIL'], color: '#0000FF', highlight: "#0000FF", label: "MERCANTIL" },
+            { value: s.grafico.banks['BMG'], color: '#FF0000', highlight: "#FF0000", label: "BMG" },
+            { value: s.grafico.banks['SAFRA'], color: '#00008b', highlight: "#00008b", label: "SAFRA" },
+          ];
+          var ctx = document.getElementById("grafico").getContext("2d");
+          new Chart(ctx).Pie(data);
         } else if (menu == "Cadastros") {
           list = s.cadastros
           document.getElementById('listFunc').innerHTML += `
