@@ -213,14 +213,21 @@
   .width79 { width: 79vw!important; max-width: 79vw!important; }
   .width80 { width: 80vw!important; }
   .width80p { width: 80%!important; }
+  .width85 { width: 85vw!important; }
   .width90p { width: 90%!important; }
   .width92-5 { width: 92.5vw!important }
+  .width100p { width: 100%!important }
   .height3vw { height: 3vw!important }
   .height4vw { height: 17vw }
   .height5vw { height: 17vw }
   .height5vw { height: 17vw }
   .height8 { height: 8vh }
   .height10 { height: 10vh }
+  .height15 { height: 15vh!important }
+  .height18 { height: 18vh!important }
+  .height20 { height: 20vh!important }
+  .height30 { height: 30vh!important }
+  .height50 { height: 50vh!important }
   .height70 { height: 70vh!important }
   .min-width16-1 { min-width: 16.1vw!important }
   .max-width5p { max-width: 5%!important }
@@ -253,9 +260,11 @@
   .margin-left7-5 { margin-left: 7.5vw!important }
   .margin-left15p { margin-left: 15%!important }
   .margin-left18-5 { margin-left: 18.5vw!important }
+  .margin-left38 { margin-left: 38vw!important }
   .margin-left20p { margin-left: 20%!important }
   .margin-top2 { margin-top: 2vh!important }
   .margin-top15 { margin-top: 15vh!important }
+  .margin-top25 { margin-top: 25vh!important }
   .padding-left2 { padding-left: 2vw!important }
   .padding-left15 { padding-left: 15vw!important }
   .padding-right5 { padding-right: 5vw!important }

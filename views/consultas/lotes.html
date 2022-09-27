@@ -161,6 +161,16 @@
     cpf = cpf.length == 10 ? `0${cpf}` : cpf.length == 9 ? `00${cpf}` : cpf.length == 8 ? `000${cpf}` : cpf.length == 7 ? `0000${cpf}` : cpf.length == 6 ? `00000${cpf}` : cpf
     if (csv.Sucessos.find(r=> r.cpf == cpf && r.bank == bank.name)) return nextCPF(i, bank)
     if (csv.Erros.find(r=> r.cpf == cpf && r.bank == bank.name)) return nextCPF(i, bank)
+    if (String(cpf).length == 10) cpf = `0${cpf}`
+    if (String(cpf).length == 9) cpf = `00${cpf}`
+    if (String(cpf).length == 8) cpf = `000${cpf}`
+    if (String(cpf).length == 7) cpf = `0000${cpf}`
+    if (String(cpf).length == 6) cpf = `00000${cpf}`
+    if (String(cpf).length == 5) cpf = `000000${cpf}`
+    if (String(cpf).length == 4) cpf = `0000000${cpf}`
+    if (String(cpf).length == 3) cpf = `00000000${cpf}`
+    if (String(cpf).length == 2) cpf = `000000000${cpf}`
+    if (String(cpf).length == 1) cpf = `0000000000${cpf}`
     $.ajax({ type: "post",url: `${apiURL}/consultas/fgts`,
     data: JSON.stringify({
         user: localStorage.getItem('user'),

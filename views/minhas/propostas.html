@@ -24,6 +24,7 @@
             <option style="color: black" value="692">Analise Banco</option>
             <option style="color: black" value="4002">Assinado/Respondido</option>
             <option style="color: black" value="1111">Atuação Master</option>
+            <option style="color: black" value="1234">OP - CADASTRAR MANUAL</option>
             <option style="color: black" value="90000">Aguarda Liberar Assinar</option>
           </optgroup>
         </select>
@@ -116,6 +117,7 @@ const fasesName = {
   '823': 'DIGITADO SUCESSO - ROBÔ',
   '824': 'NÃO DIGITADO --ERRO-- ROBÔ',
   '1111': 'AGUARDANDO ATUAÇÃO MASTER',
+  '1234': 'OP - CADASTRAR MANUAL',
   '2002': 'CLIENTE RECEBEU',
   '3920': 'PROPOSTA PAGA',
   '4002': 'ASSINADO / RESPONDIDO',
@@ -136,9 +138,9 @@ const fasesName = {
       menuPropostaActual = false
     }
     menuPropostaActual = codAF
-    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="changeFase('${codAF}',1)" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Inclusão</a></div></div>`
+    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="changeFase('${codAF}',1)" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Inclusão</a><a onclick="changeFase('${codAF}',1)" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">FGTS</a></div></div>`
   }
-
+  var propostas = []
   function filter() {
     if (document.getElementById('filter').classList.contains('buttonBlock')) return alert('Aguarde...')
     document.getElementById('filter').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
@@ -165,6 +167,7 @@ const fasesName = {
         if (s.error) return alert(s.error)
         if (s.propostas && s.propostas.length >= 1) {
           document.getElementById('propostas-lista').innerHTML = ``
+          propostas = s.propostas
           s.propostas.forEach((element,index)=>{
             if (element.codOrgaoAF == 23) element.orgaoName = "FGTS"
             if (element.codOrgaoAF == 1) element.orgaoName = "INSS"
@@ -228,9 +231,9 @@ const fasesName = {
 
   var changeFaseActive = false
   function changeFase(codAF,fase) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (changeFaseActive) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
     changeFaseActive = true
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     $.ajax({ type: "post", url: `${apiURL}/propostas/changeFase`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
@@ -241,6 +244,44 @@ const fasesName = {
         changeFaseActive = false
         if (s.error) return alert(s.error)
         alert(`A proposta: ${codAF} teve sua fase alterada com sucesso!`)
+      },
+      error: function(e) {
+        changeFaseActive = false
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    });
+  }
+
+  var banks = {
+    "FACTA FINANCEIRA": { option1: "GOLD" },
+    "BANCO C6": { option1: 'POR_VALOR_TOTAL' },
+    "PANAMERICANO": { option1: 'POR_VALOR_TOTAL', option3: '900001' },
+    "SAFRA": { option1: 'POR_VALOR_TOTAL', option1: '1' },
+    "MERCANTIL": { option1: 'POR_VALOR_TOTAL' },
+    "BMG": { option1: 'POR_VALOR_TOTAL' },
+  }
+
+  function changeFase(codAF,fase) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (changeFaseActive) return alert('Você já está com algo em andamento! Aguarde...')
+    var proposta = propostas.find(r=>r.codAF == codAF)
+    if (!proposta || !banks[proposta.bancoAF]) return alert('Banco não encontrado em minha API...')
+    changeFaseActive = true
+    $.ajax({ type: "post", url: `${apiURL}/consultas/fgts`, data: JSON.stringify({
+      user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        cpf: proposta.cpf,
+        bank: proposta.bancoAF,
+        option1: banks[proposta.bancoAF].option1 ? banks[proposta.bancoAF].option1 : false,
+        option2: banks[proposta.bancoAF].option2 ? banks[proposta.bancoAF].option2 : false,
+        option3: banks[proposta.bancoAF].option3 ? banks[proposta.bancoAF].option3 : false,
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        changeFaseActive = false
+        if (s.error) return alert(s.error)
+        alert(`CPF consultado com sucesso...\nSaldo Liberado: ${s.saldoLiberado}\nSaldo Total: ${s.saldoTotal}`)
       },
       error: function(e) {
         changeFaseActive = false

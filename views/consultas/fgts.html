@@ -99,6 +99,16 @@
     document.getElementById('consultar').classList.add("buttonBlock");
     document.getElementById(`queueText`).innerHTML = `Entrando na fila de consultas FGTS...`
     setTimeout(function(){ queue(document.getElementById('banks').value) }, 1500)
+    if (String(document.getElementById('cpf').value).length == 10) cpf = `0${document.getElementById('cpf').value}`
+    if (String(document.getElementById('cpf').value).length == 9) cpf = `00${document.getElementById('cpf').value}`
+    if (String(document.getElementById('cpf').value).length == 8) cpf = `000${document.getElementById('cpf').value}`
+    if (String(document.getElementById('cpf').value).length == 7) cpf = `0000${document.getElementById('cpf').value}`
+    if (String(document.getElementById('cpf').value).length == 6) cpf = `00000${document.getElementById('cpf').value}`
+    if (String(document.getElementById('cpf').value).length == 5) cpf = `000000${document.getElementById('cpf').value}`
+    if (String(document.getElementById('cpf').value).length == 4) cpf = `0000000${document.getElementById('cpf').value}`
+    if (String(document.getElementById('cpf').value).length == 3) cpf = `00000000${document.getElementById('cpf').value}`
+    if (String(document.getElementById('cpf').value).length == 2) cpf = `000000000${document.getElementById('cpf').value}`
+    if (String(document.getElementById('cpf').value).length == 1) cpf = `0000000000${document.getElementById('cpf').value}`
     $.ajax({ type: "post", url: `${apiURL}/consultas/fgts`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),

@@ -14,6 +14,7 @@
     <title>Concredito Dashboard</title>
     <script src="/public/js/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
   <script>
     var urlAPI = 'https://api.concredito.com.br'
@@ -31,8 +32,9 @@
       var pages = {
         dashboard: ['metas'],
         administrativo: ['funcionarios','configs','newlist','distribuir','leads'],
+        minhas: ['propostas','leads','relatorios'],
         consultas: ['fgts','lotes','dados'],
-        propostas: ['lista','cadastrar','minhas','leads'],
+        propostas: ['lista','cadastrar'],
       }
       function load() {
         document.documentElement.className = 'orange'

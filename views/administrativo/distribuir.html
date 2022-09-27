@@ -11,7 +11,7 @@
             <a class="font-size2" style="font-size: 4vh; width: 100%;">Distribuir Leads:</a>
             <fieldset title="Coloque sua lista aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Dados</legend>
-              <textarea rows="4" class="font-1" placeholder="CPF,NOME,TELEFONE,BANCO,VALOR|&#10;CPF,NOME,TELEFONE,BANCO,VALOR|&#10;CPF,NOME,TELEFONE,BANCO,VALOR|&#10;CPF,NOME,TELEFONE,BANCO,VALOR|" id="lista" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
+              <textarea rows="4" class="font-1" placeholder="CPF,Nome,Telefone,BancoAF,Valor,RG,Matricula,Especie,Cidade,UF,CEP,Endereço,Número,Bairro,Nascimento,Sexo,Email,Banco,Agência,Conta,Poupança|" id="lista" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
             </fieldset>
             <div style="display: flex; flex-direction: row; width: 100%; align-items: center; justify-content: center;">
               <fieldset title="Coloque sua lista aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
@@ -79,7 +79,7 @@
     document.getElementById(`agente_${agente}`).innerHTML = ''
   }
   var distribuirBlock = false
-  async function distribuir(i) {
+  async function distribuirOLD(i) {
     if (!i) i = 0
     if (distribuirBlock) return alert('Aguarde...')
     if (agentesList.length <= 0) return alert('Selecione os agentes que sera retribuido...')
@@ -119,6 +119,46 @@
       }
     })
   }
+
+
+  function distribuir(i) {
+    if (document.getElementById('distribuir').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (!document.getElementById('lista').value) return alert('Coloque o tipo da lista...')
+    if (agentesList.length <= 0) return alert('Selecione os agentes que sera retribuido...')
+    var list = document.getElementById('lista').value.replaceAll(/\r?\n|\r/g, "").split("|");
+    if (list.length <= 0) return alert('A lista é invalida! Veja o molde e tente novamente...')
+    if (list[list.length-1].length <= 20) list.splice(list.length-1, 1)
+    document.getElementById('distribuir').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('distribuir').classList.add("buttonBlock");
+    if (!i) i = 0
+    document.getElementById('actualText').innerHTML = `Adicionando: ${i+200 > list.length ? list.length : i+200}`
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/distribuir`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        list: list.slice(i,i+200),
+        virgula: ',',
+        agentes: agentesList,
+        type: 'oportunidade'
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        document.getElementById('distribuir').innerHTML = `Adicionar`
+        document.getElementById('distribuir').classList.remove("buttonBlock");
+        if (s.error) return alert(s.error)
+        if (list.length > (i+200)) return adicionar(i+200)
+        alert('Lista distribuida com sucesso...')
+        return window.location.reload()
+      },
+      error: function(e) {
+        document.getElementById('distribuir').innerHTML = `Adicionar`
+        document.getElementById('distribuir').classList.remove("buttonBlock");
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
+  }
+
 
   (function () { getAgentes() })();
 </script>

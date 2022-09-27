@@ -1,0 +1,154 @@
+<div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; max-width: 100vw; overflow-x: hidden;">
+  <navbar id="navbar"></navbar>
+  <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
+
+  <div class="flex-direction-column margin-left38" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 12.5vh;">
+    <div class="background-image width40 height15" style="margin-bottom: 0.5vh; width: 30vw; border-radius: 2vh; height: 5vw; margin-inline: 0.6vw; display: flex; flex-direction: row; justify-content: center; align-items: center">
+      <fieldset title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 65%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Objetivo</legend>
+        <input type="number" placeholder="Coloque o objetivo em porcentagem..." value="100" id="objetivo" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+      </fieldset>
+      <i onclick="getRelatorio()" class="fa-regular fa-magnifying-glass-dollar font-color-navbar" style="font-size: 3.5vh; margin-left: 0.8vw; margin-top: 1vh; cursor: pointer"></i>
+    </div>
+  </div>
+
+  <div class="flex-direction-column margin-left38" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
+    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i class="fa-sharp fa-solid fa-bullseye-arrow font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.5vh; margin-top: 2vh; font-weight: 600;">Meta:</a>
+      <a id="topMeta" class="font-color-navbar" style="font-size: 2.6vh; margin-top: 0vh; font-weight: 600;">0</a>
+    </div>
+    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i class="fa-regular fa-scale-balanced font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.5vh; margin-top: 2vh; font-weight: 600;">Med. AF's Dia:</a>
+      <a id="topAFsDia" class="font-color-navbar" style="font-size: 2.6vh; margin-top: 0vh; font-weight: 600;">0</a>
+    </div>
+    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i class="fa-solid fa-ticket font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.5vh; margin-top: 2vh; font-weight: 600;">Tck. Médio:</a>
+      <a id="topTicket" class="font-color-navbar" style="font-size: 2.6vh; margin-top: 0vh; font-weight: 600;">0</a>
+    </div>
+    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i class="fa-solid fa-projector font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.5vh; margin-top: 2vh; font-weight: 600;">Projeção:</a>
+      <a id="topProjecao" class="font-color-navbar" style="font-size: 2.6vh; margin-top: 0vh; font-weight: 600;">0</a>
+    </div>
+    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i class="far fa-money-check-edit font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.5vh; margin-top: 2vh; font-weight: 600;">AF's Restante:</a>
+      <a id="topAFsRestante" class="font-color-navbar" style="font-size: 2.6vh; margin-top: 0vh; font-weight: 600;">0</a>
+    </div>
+    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i class="fa-solid fa-money-check-dollar font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.5vh; margin-top: 2vh; font-weight: 600;">Valor Restante:</a>
+      <a id="topValorRestante" class="font-color-navbar" style="font-size: 2.6vh; margin-top: 0vh; font-weight: 600;">0</a>
+    </div>
+    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i class="fa-sharp fa-solid fa-sack-dollar font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.5vh; margin-top: 2vh; font-weight: 600;">Valor Rest. Dia:</a>
+      <a id="topValorDia" class="font-color-navbar" style="font-size: 2.6vh; margin-top: 0vh; font-weight: 600;">0</a>
+    </div>
+  </div>
+
+  <div class="flex-direction-column margin-left18-5 width79" style="margin-block: 0.5vh; width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
+    <div id="grafico1" class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 54vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
+    
+    </div>
+    <div id="grafico2" class="background-image width79 height30" style="margin-block: 0.5vh; position: relative; height: 54vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 55vw; overflow-x: hidden">
+      
+    </div>
+  </div>
+</div>
+<script>
+  var block = false
+  function getRelatorio() {
+    if (block) return alert('Aguarde...')
+    document.getElementById('grafico1').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+    document.getElementById('grafico2').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+    block = true
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/getAcomp`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        objetivo: document.getElementById('objetivo').value,
+        newUser: localStorage.getItem('user'),
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        block = false
+        if (s.error) return alert(s.error)
+        document.getElementById('topMeta').innerHTML = s.meta+`%`
+        document.getElementById('topAFsDia').innerHTML = s.afsPorDia
+        document.getElementById('topTicket').innerHTML = `R$ `+s.ticketMed.replace('.',',')
+        document.getElementById('topProjecao').innerHTML = `R$ `+s.metaMes.replace('.',',')
+        document.getElementById('topAFsRestante').innerHTML = s.AFsRestante
+        document.getElementById('topValorRestante').innerHTML = `R$ `+s.valorRestante.replace('.',',')
+        document.getElementById('topValorDia').innerHTML = `R$ `+s.valorDia.replace('.',',')
+        document.getElementById('grafico1').innerHTML = `
+          <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Mídias</a>
+          <canvas id="graficoMidias" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
+          <div id="midiasComment" class="margin-top25" style="display: flex; margin-top: 30vh; width: 80%; margin-inline: 10%">
+            <div style="display: flex; flex-direction: column; min-width: 50%; text-align: left">
+              ${s.midias.slice(0,s.midias.length/2).map(r=>`<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 2.2vh;">${r.label}</a>`).join('')}
+            </div>
+            <div style="display: flex; flex-direction: column; width: 40% text-align: right; margin-left: 10%">
+              ${s.midias.slice(s.midias.length/2,s.midias.length).map(r=>`<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 2.2vh;">${r.label}</a>`).join('')}
+            </div>
+          </div>
+        `
+
+        var graficoMidias = document.getElementById("graficoMidias").getContext("2d");
+        new Chart(graficoMidias).Doughnut(s.midias);
+
+        var months = {
+          '1': 'Janeiro',
+          '2': 'Fevereiro',
+          '3': 'Março',
+          '4': 'Abril',
+          '5': 'Maio',
+          '6': 'Junho',
+          '7': 'Julho',
+          '8': 'Agosto',
+          '9': 'Setembro',
+          '10': 'Outubro',
+          '11': 'Novembro',
+          '12': 'Dezembro'
+        }
+        document.getElementById('grafico2').innerHTML = `
+          <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Pago por Dia</a>
+          <div id="graficoMeses" class="width85 height18" style="position: absolute; left: -1vw; top: 15vh; width:60vw; height: 23vw; margin-top: -6vh; font-weight: 600"></div>
+        `
+        google.charts.load('current', {packages: ['corechart', 'line']});
+        google.charts.setOnLoadCallback(drawCurveTypes);
+        function drawCurveTypes() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('number', 'X');
+          data.addColumn('number', months[s.mes-2]);
+          data.addColumn('number', months[s.mes-1]);
+          data.addColumn('number', months[s.mes]);
+          data.addRows(s.months);
+          var optionsGraficoMeses = {
+            legend: { position: 'bottom', textStyle: {color: '#01579b'} },
+            hAxis: { 
+              textStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+              titleTextStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+            },
+            vAxis: {
+              textStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+              titleTextStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+            },
+            backgroundColor: 'transparent',
+          };
+          var graficoMeses = new google.visualization.LineChart(document.getElementById('graficoMeses'));
+          graficoMeses.draw(data, optionsGraficoMeses);
+        }
+      },
+      error: function(e) {
+        block = false
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
+  }
+  (function () { getRelatorio() })();
+</script>

@@ -47,6 +47,13 @@
           <option value="safra" style="color: black">Safra</option>
         </select>
       </fieldset>
+      <fieldset title="Coloque o tipo aqui..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo</legend>
+        <select class="font-1" id="type" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+          <option value="" style="color: black">Todos</option>
+          <option value="oportunidade" style="color: black">Oportunidade</option>
+        </select>
+      </fieldset>
     </div>
     <div style="width: 100%; display: flex; justify-content: center">
       <div id="filter" onclick="filter()" class="buttonLogin" style="width: 30%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">
@@ -172,6 +179,7 @@
         flag: document.getElementById('flag').value ? document.getElementById('flag').value : false,
         obs: document.getElementById('obsFilter').value ? document.getElementById('obsFilter').value : false,
         bank: document.getElementById('bank').value ? document.getElementById('bank').value : false,
+        type: document.getElementById('type').value ? document.getElementById('type').value : false,
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
         document.getElementById('leads-load').style.display = 'none'
@@ -440,7 +448,6 @@
     a.click();
     document.getElementById('download').innerHTML = `Download`
     document.getElementById('download').classList.remove("buttonBlock");
-
   }
 
   var obsActual = false

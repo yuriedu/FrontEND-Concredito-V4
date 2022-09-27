@@ -3,6 +3,10 @@
   <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
 
   <div class="background-image left18-5 width79" style="position: relative; top: 12.5vh; left: 6vw; width: 92.5vw; height: 85.5vh; border-radius: 2vh; display: flex; justify-content: center; align-items: center;">
+    <div onclick="openAgencias()" id="agenciaButton" style="display: none; position: absolute; right: 1.5vw; top: 2vh; font-size: 3vh; color: rgb(200, 0, 0);">
+      <i title="Informações sobre agências" class="fa-solid fa-building-columns" style="cursor: pointer;"></i>
+    </div>
+    <img id="agenciaImg" src="/public/images/agencias.png" style="display: none; width: 60%; position: absolute; right: 4vw; top: 5vh; border-top-left-radius: 5vh; border-bottom-left-radius: 5vh; border-bottom-right-radius: 5vh;">
 
     <div class="background-Propostas width90p" style="width: 70%; border-radius: 3vh; padding-top: 4vh; padding-bottom: 3vh">
       <div style="max-height: 62vh; overflow-y: scroll;">
@@ -80,6 +84,27 @@
             </fieldset>
           </div>
           <div style="display: flex; width: 100%; justify-content: center;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Telefone</legend>
+              <input class="font-1" id="telefone" type="number" placeholder="51 912341234" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Nascimento</legend>
+              <input class="font-1" type="date" id="nascimento" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Sexo</legend>
+              <select class="font-1" id="sexo" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+                <option value="M" style="color: black">Masculino</option>
+                <option value="F" style="color: black">Feminino</option>
+              </select>
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Email</legend>
+              <input class="font-1" type="email" id="email" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+          </div>
+          <div style="display: flex; width: 100%; justify-content: center;">
             <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
               <input class="font-1" id="cpfR" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0" disabled>
@@ -98,11 +123,11 @@
             </fieldset>
           </div>
           <div style="display: flex; width: 100%; justify-content: center;">
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Cidade</legend>
-              <input class="font-1" id="cidade" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CEP</legend>
+              <input class="font-1" id="cep" type="number" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">UF</legend>
               <select class="font-1" id="uf" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
                 <option value="AC" style="color: black">Acre</option>
@@ -135,8 +160,8 @@
               </select>
             </fieldset>
             <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CEP</legend>
-              <input class="font-1" id="cep" type="number" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Cidade</legend>
+              <input class="font-1" id="cidade" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
           </div>
           <div style="display: flex; width: 100%; justify-content: center;">
@@ -154,48 +179,31 @@
             </fieldset>
           </div>
           <div style="display: flex; width: 100%; justify-content: center;">
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Telefone</legend>
-              <input class="font-1" id="telefone" type="number" placeholder="51 912341234" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-            </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Nascimento</legend>
-              <input class="font-1" type="date" id="nascimento" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-            </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Sexo</legend>
-              <select class="font-1" id="sexo" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-                <option value="M" style="color: black">Masculino</option>
-                <option value="F" style="color: black">Feminino</option>
-              </select>
-            </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Email</legend>
-              <input class="font-1" type="email" id="email" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-            </fieldset>
-          </div>
-          <div style="display: flex; width: 100%; justify-content: center;">
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
               <input class="font-1" list="banksList" id="banco" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
               <datalist id="banksList">
 
               </datalist>  
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 5%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Agência</legend>
               <input class="font-1" type="number" id="agencia" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Conta</legend>
               <input class="font-1" type="number" id="conta" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 10%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 8%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Poupança</legend>
               <select class="font-1" id="poupanca" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-                <option value="0" style="color: black">Não</option>
+                <option value="0" style="color: black" selected>Não</option>
                 <option value="1" style="color: black">Sim</option>
               </select>
+            </fieldset>
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Cargo</legend>
+              <input class="font-1" id="cargo" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
           </div>
           <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; text-align: center;">
@@ -243,16 +251,17 @@
             <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo Liberação</legend>
               <select class="font-1" id="liberacao" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-                <option value="1" style="color: black; font-weight: 600;" selected>Cartão em C/C</option>
-                <option value="2" style="color: black; font-weight: 600;">Crédito em Poupança</option>
-                <option value="3" style="color: black; font-weight: 600;">Ordem de Pagamento</option>
-                <option value="4" style="color: black; font-weight: 600">Cartão Magnético</option>
+                <option value="1" style="color: black; font-weight: 600;" selected>Conta Corrente</option>
+                <option value="2" style="color: black; font-weight: 600;">Conta Poupança</option>
+                <option value="3" style="color: black; font-weight: 600;">Ordem de Pagamento(INSS)</option>
+                <option value="4" style="color: black; font-weight: 600">Cartão Magnético(INSS)</option>
               </select>
             </fieldset>
             <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo Mídia</legend>
               <select class="font-1" id="midia" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-                <option value="1" style="color: black; font-weight: 600;" selected>Fechado em Ligação</option>
+                <option value="" style="color: black; font-weight: 600;" selected>Selecione alguma Midia</option>
+                <option value="1" style="color: black; font-weight: 600;">Fechado em Ligação</option>
                 <option value="2" style="color: black; font-weight: 600;">WhatsApp</option>
                 <option value="3" style="color: black; font-weight: 600;">MKT Digital</option>
                 <option value="4" style="color: black; font-weight: 600">Indicação</option>
@@ -268,11 +277,16 @@
             </fieldset>
           </div>
           <div style="display: flex; width: 100%; justify-content: center;">
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 85%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Tabela</legend>
               <select class="font-1" id="tabela" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
                 <option value="" style="color: black; font-weight: 600;" selected>Selecione o Banco/Orgão</option>
               </select>
+            </fieldset>
+            <fieldset title="Apenas Gêrentes..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Agente(GERENTES)</legend>
+              <input list="agentesList" class="font-1" id="agentes" placeholder="Carregando..." style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+              <datalist id="agentesList"></datalist>
             </fieldset>
           </div>
           <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; text-align: center;">
@@ -444,13 +458,16 @@
     if (!document.getElementById('numero').value) return alert('O número do endereço é invalido...')
     if (!document.getElementById('bairro').value) return alert('O bairro é invalido...')
     if (!document.getElementById('telefone').value || document.getElementById('telefone').value.length != 11) return alert('O telefone é invalido...')
+    if (!document.getElementById('cargo').value) return alert('O cargo é invalido...')
     if (!document.getElementById('nascimento').value) return alert('A data de nascimento é invalida...')
     if (!document.getElementById('email').value || !document.getElementById('email').value.includes('@') || !document.getElementById('email').value.includes('.com')) return alert('O Email está invalido!')
     if (!document.getElementById('banco').value) return alert('O banco não colocado...')
-    if (!document.getElementById('agencia').value) return alert('A agência é invalida...')
+    if (!document.getElementById('agencia').value || !Number(document.getElementById('agencia').value) || String(document.getElementById('agencia').value).length != 4) return alert('A agência é invalida, ela deve ser um número e ter 4 digitos! Clique no emoji no canto superior direito para ver as informações sobre agências...')
     if (!document.getElementById('conta').value) return alert('A conta é invalida...')
     if (!banksList || !banksList.find(r=> r.bcolib_descricao == document.getElementById('banco').value)) return alert('O banco inserido não foi encontrado na minha lista! Selecione o banco conforme a lista mostrada...')
     document.getElementById('clienteDados').style.display = `none`
+    document.getElementById('agenciaImg').style.display = 'none'
+    document.getElementById('agenciaButton').style.display = 'none'
     document.getElementById('propostaDados').style.display = `flex`
   }
   var banksList = false
@@ -482,9 +499,10 @@
     document.getElementById('banco').value = ''
     document.getElementById('agencia').value = ''
     document.getElementById('conta').value = ''
-    document.getElementById('poupanca').value = ''
+    document.getElementById('poupanca').value = '0'
     document.getElementById('telefone').value = ''
     document.getElementById('nascimento').value = ''
+    document.getElementById('cargo').value = ''
     $.ajax({ type: "post",url: `${apiURL}/consultas/dados`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
@@ -517,7 +535,10 @@
           if (s.dados.banco) document.getElementById('banco').value = s.dados.banco
           if (s.dados.agencia) document.getElementById('agencia').value = s.dados.agencia
           if (s.dados.conta) document.getElementById('conta').value = s.dados.conta
-          if (s.dados.poupanca) document.getElementById('poupanca').value = s.dados.poupanca ? '1' : '0'
+          if (s.dados.cargo) document.getElementById('cargo').value = s.dados.cargo
+          if (s.dados.poupanca) {
+            document.getElementById('poupanca').value = s.dados.poupanca ? '1' : '0'
+          } else document.getElementById('poupanca').value = '0'
           if (s.dados.telefone) document.getElementById('telefone').value = s.dados.telefone.replaceAll("(","").replaceAll(")","").replaceAll(" ","").replaceAll("-","")
           if (s.dados.dataNascimento) document.getElementById('nascimento').value = s.dados.dataNascimento.slice(0, 10)
         }
@@ -530,6 +551,9 @@
         }
         document.getElementById('newConsultar').style.display = `none`
         document.getElementById('simularFGTS').style.display = `none`
+        document.getElementById('agenciaImg').style.display = 'none'
+        document.getElementById('agenciaImg').style.display = 'none'
+        document.getElementById('agenciaButton').style.display = 'inline'
         document.getElementById('clienteDados').style.display = `flex`
       },
       error: function(e) {
@@ -567,6 +591,8 @@
     if (!document.getElementById('parcela').value) return alert('A Parcela é invalida...')
     if (!document.getElementById('valorParcela').value) return alert('O Valor da Parcela é invalido...')
     if (!document.getElementById('tabela').value) return alert('A Tabela é invalida...')
+    if (!document.getElementById('cargo').value) return alert('O cargo é invalido...')
+    if (!document.getElementById('midia').value) return alert('Selecione o tipo de midia...')
     document.getElementById('cadastrar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('cadastrar').classList.add("buttonBlock");
     operadorIng = true
@@ -602,15 +628,20 @@
         "TabelaCod": document.getElementById('tabela').value.split('-')[0],
         "Tabela": document.getElementById('tabela').value.split('-')[1],
         "midia": document.getElementById('midia').value,
-        "liberacao": document.getElementById('liberacao').value
+        "liberacao": document.getElementById('liberacao').value,
+        "agentes": document.getElementById('agentes').value,
+        "cargo": document.getElementById('cargo').value,
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
         operadorIng = false
         document.getElementById('cadastrar').innerHTML = `<p class="font-1">Cadastrar</p>`
         document.getElementById('cadastrar').classList.remove("buttonBlock");
         if (s.error) return alert(s.error)
-        alert(`Sua proposta foi cadastrada no agilus com sucesso! Aguarde algum operador atuar...\nCodigo AF: ${s.codAF}\nCodigo Cliente: ${s.codCliente}`)
-        return window.location.reload();
+        document.getElementById('codigoAF').value = s.codAF
+        document.getElementById('codigoCliente').value = s.codCliente
+        document.getElementById('linkForm').value = `Proposta não Cadastrada!`
+        document.getElementById('propostaDados').style.display = `none`
+        document.getElementById('propostaResult').style.display = `flex`
       },
       error: function(e) {
         operadorIng = false
@@ -645,6 +676,8 @@
     if (!document.getElementById('parcela').value) return alert('A Parcela é invalida...')
     if (!document.getElementById('valorParcela').value) return alert('O Valor da Parcela é invalido...')
     if (!document.getElementById('tabela').value) return alert('A Tabela é invalida...')
+    if (!document.getElementById('cargo').value) return alert('O cargo é invalido...')
+    if (!document.getElementById('midia').value) return alert('Selecione o tipo de midia...')
     document.getElementById('cadastrar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('cadastrar').classList.add("buttonBlock");
     operadorIng = true
@@ -683,6 +716,8 @@
         "midia": document.getElementById('midia').value,
         "liberacao": document.getElementById('liberacao').value,
         "fase": 9232,
+        "agentes": document.getElementById('agentes').value,
+        "cargo": document.getElementById('cargo').value,
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
         operadorIng = false
@@ -711,8 +746,11 @@
     document.getElementById('clienteDados').style.display = `none`
     document.getElementById('simularFGTS').style.display = `none`
     document.getElementById('propostaDados').style.display = `none`
+    document.getElementById('agenciaImg').style.display = 'none'
+    document.getElementById('agenciaButton').style.display = 'none'
     document.getElementById('newConsultar').style.display = `inline`
   }
+
   function backClient() {
     if (operadorIng || document.getElementById('cadastrar').classList.contains('buttonBlock')) return alert('Aguarde...')
     document.getElementById('propostaResult').style.display = `none`
@@ -720,6 +758,8 @@
     document.getElementById('simularFGTS').style.display = `none`
     document.getElementById('newConsultar').style.display = `none`
     document.getElementById('clienteDados').style.display = `flex`
+    document.getElementById('agenciaImg').style.display = 'none'
+    document.getElementById('agenciaButton').style.display = 'inline'
   }
 
   function copyLink() {
@@ -735,4 +775,42 @@
       })
     }
   }
+  var agentesBlock = false
+  function getAgentes() {
+    if (agentesBlock) return alert('Aguarde...')
+    agentesBlock = true
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/getLogins`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password')
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        if (s.error) return alert(s.error)
+        agentesBlock = false
+        document.getElementById('agentes').placeholder = 'Opção somente para gerentes...'
+        s.logins.forEach((element,index) => {
+          document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
+        });
+      },
+      error: function(e) {
+        agentesBlock = false
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
+  }
+
+  var openAgencia = false
+  function openAgencias() {
+    if (openAgencia) {
+      openAgencia = false
+      document.getElementById('agenciaImg').style.display = 'none'
+    } else {
+      openAgencia = true
+      document.getElementById('agenciaImg').style.display = 'flex'
+    }
+  }
+
+  (function () { getAgentes() })();
 </script>

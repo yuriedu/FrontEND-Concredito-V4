@@ -119,7 +119,7 @@
 
   <div id="administrativo">
     <div onclick="openSubMenu('administrativo')" id="button-administrativo" class="navbar-background-select font-size3" style="border-top: 0.1vh solid rgba(0,0,0, 0.3); height: 7.5vh; display: flex; align-items: center; cursor: pointer">
-      <i class="fas fa-cog min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
+      <i class="fa-regular fa-gear min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
       <a class="font-size2-5" style="font-size: 3vh; display: flex; width: 100%">Administrativo <i id="arrow-administrativo" class="fas fa-caret-left" style="width: 90%; margin-right: 10%; font-size: 3.5vh; display: flex; justify-content: right;"></i></a>
     </div>
     <div id="sub-administrativo" class="font-size2" style="display: none; flex-direction: column; font-size: 2.5vh; margin-inline: 2.6vw; padding-block: 0.5vh">
@@ -133,7 +133,7 @@
 
   <div id="dashboard">
     <div onclick="openSubMenu('dashboard')" id="button-dashboard" class="navbar-background-select font-size3" style="border-top: 0.1vh solid rgba(0,0,0, 0.3); height: 7.5vh; display: flex; align-items: center; cursor: pointer">
-      <i class="fas fa-chart-line min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
+      <i class="fa-regular fa-chart-user min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
       <a class="font-size2-5" style="font-size: 3vh; display: flex; width: 100%">Dashboard <i id="arrow-dashboard" class="fas fa-caret-left" style="width: 90%; margin-right: 10%; font-size: 3.5vh; display: flex; justify-content: right;"></i></a>
     </div>
     <div id="sub-dashboard" class="font-size2" style="display: none; flex-direction: column; font-size: 2.5vh; margin-inline: 2.6vw; padding-block: 0.5vh">
@@ -142,21 +142,29 @@
       <a id="dashboard_relatorios" class="navbar-color-select-block navbar-color-select font-color-reverse" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Relatórios</a>
     </div>
   </div>
-
+  <div id="minhas">
+    <div onclick="openSubMenu('minhas')" id="button-minhas" class="navbar-background-select font-size3" style="border-top: 0.1vh solid rgba(0,0,0, 0.3); height: 7.5vh; display: flex; align-items: center; cursor: pointer">
+      <i class="far fa-memo-circle-info min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
+      <a class="font-size2-5" style="font-size: 3vh; display: flex; width: 100%">Minhas <span style="padding-left: 0.7vw">Infs.</span> <i id="arrow-minhas" class="fas fa-caret-left" style="width: 90%; margin-right: 10%; font-size: 3.5vh; display: flex; justify-content: right;"></i></a>
+    </div>
+    <div id="sub-minhas" class="font-size2" style="display: none; flex-direction: column; font-size: 2.5vh; margin-inline: 2.6vw; padding-block: 0.5vh">
+      <a id="minhas_propostas" href="/minhas/propostas" class="navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Minhas Propostas</a>
+      <a id="minhas_leads" href="/minhas/leads" class="navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Meus Leads</a>
+      <a id="minhas_relatorios" href="/minhas/relatorios" class="navbar-color-select font-color-reverse" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Meus Relatórios</a>
+    </div>
+  </div>
   <div id="propostas">
     <div onclick="openSubMenu('propostas')" id="button-propostas" class="navbar-background-select font-size3" style="border-top: 0.1vh solid rgba(0,0,0, 0.3); height: 7.5vh; display: flex; align-items: center; cursor: pointer">
-      <i class="far fa-money-check-edit min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
+      <i class="fa-regular fa-money-check-pen min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
       <a class="font-size2-5" style="font-size: 3vh; display: flex; width: 100%">Propostas <i id="arrow-propostas" class="fas fa-caret-left" style="width: 90%; margin-right: 10%; font-size: 3.5vh; display: flex; justify-content: right;"></i></a>
     </div>
     <div id="sub-propostas" class="font-size2" style="display: none; flex-direction: column; font-size: 2.5vh; margin-inline: 2.6vw; padding-block: 0.5vh">
       <a id="propostas_cadastrar" class="navbar-color-select-block navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Nova Proposta</a>
-      <a id="propostas_lista" class="navbar-color-select-block navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Lista de Propostas</a>
-      <a id="propostas_minhas" href="/propostas/minhas" class="navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Minhas Propostas</a>
-      <a id="propostas_leads" href="/propostas/leads" class="navbar-color-select font-color-reverse" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Meus Leads</a>
+      <a id="propostas_lista" class="navbar-color-select-block navbar-color-select font-color-reverse" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Lista de Propostas</a>
     </div>
   </div>
   <div id="consultas">
-    <div onclick="openSubMenu('consultas')" id="button-consultas" class="navbar-background-select font-size3" style="border-top: 0.1vh solid rgba(0,0,0, 0.3); height: 7.5vh; display: flex; align-items: center; cursor: pointer">
+    <div onclick="openSubMenu('consultas')" id="button-consultas" class="navbar-background-select font-size3" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); border-top: 0.1vh solid rgba(0,0,0, 0.3); height: 7.5vh; display: flex; align-items: center; cursor: pointer">
       <i class="far fa-file-search min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
       <a class="font-size2-5" style="font-size: 3vh; display: flex; width: 100%">Consultas <i id="arrow-consultas" class="fas fa-caret-left" style="width: 90%; margin-right: 10%; font-size: 3.5vh; display: flex; justify-content: right;"></i></a>
     </div>
@@ -164,12 +172,6 @@
       <a id="consultas_dados" class="navbar-color-select-block navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Dados</a>
       <a id="consultas_fgts" class="navbar-color-select-block navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> FGTS</a>
       <a id="consultas_lotes" class="navbar-color-select-block navbar-color-select font-color-reverse" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Lotes</a>
-    </div>
-  </div>
-  <div id="ajuda">
-    <div onclick="window.location = '/help'" id="button-ajuda" class="navbar-color-select-block navbar-background-select font-size3" style="border-top: 0.1vh solid rgba(0,0,0, 0.3); border-bottom: 0.1vh solid rgba(0,0,0, 0.3); height: 7.5vh; display: flex; align-items: center; cursor: pointer">
-      <i class="far fa-question-circle min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
-      <a class="font-size2-5" style="font-size: 3vh; display: flex; width: 100%">Ajuda <i id="arrow-ajuda" class="fas fa-caret-left" style="width: 90%; margin-right: 10%; font-size: 3.5vh; display: flex; justify-content: right;"></i></a>
     </div>
   </div>
 
@@ -196,6 +198,7 @@
   var submenus = {
     administrativo: { active: false },
     dashboard: { active: false },
+    minhas: { active: false },
     propostas: { active: false },
     consultas: { active: false },
   }
@@ -286,13 +289,13 @@
           openBell('bellVend')
         }
         for (var key in s.bellOper) {
-          if(s.bellOper[key] != 0 && document.getElementById(`bellOper_${key}`)) {
-            document.getElementById(`bellOper_${key}`).innerHTML = s.bellOper[key]
+          if(document.getElementById(`bellOper_${key}`)) {
+            document.getElementById(`bellOper_${key}`).innerHTML = s.bellOper[key] ? s.bellOper[key] : 0
           }
         }
         for (var key in s.bellVend) {
-          if(s.bellVend[key] != 0 && document.getElementById(`bellVend_${key}`)) {
-            document.getElementById(`bellVend_${key}`).innerHTML = s.bellVend[key]
+          if(document.getElementById(`bellVend_${key}`)) {
+            document.getElementById(`bellVend_${key}`).innerHTML = s.bellVend[key] ? s.bellVend[key] : 0
           }
         }
         var color = false
@@ -312,7 +315,7 @@
         if (color) {
           document.getElementById('bellIcon').classList.remove('fa-bell');
           document.getElementById('bellIcon').classList.add('fa-bell-on');
-          document.getElementById('bellIcon').style.color = color
+          document.getElementById('bellIcon').style.color = color ? color : 'white'
         }
       },
       error: function(e) {

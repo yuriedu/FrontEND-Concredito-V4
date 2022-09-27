@@ -3,7 +3,8 @@
   <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
 
   <div class="background-image margin-left18-5 width79 " style="position: relative; margin-top: 12.5vh; margin-left: 6vw; width: 92.5vw; height: 13%; border-radius: 2vh;display: flex; flex-direction: row; justify-content: center; align-items: center;">
-    <i onclick="openFunc('Todos','FGTS')" title="FGTS de os todos funcionarios!" class="fa-solid fa-users font-color-navbar" style="cursor: pointer; font-size: 3vh; position: absolute; right: 1vw; top: 1vh"></i>
+    <i onclick="openFunc('Todos','FGTS')" title="FGTS de os todos funcionarios!" class="fa-sharp fa-solid fa-money-check-dollar-pen font-color-navbar" style="cursor: pointer; font-size: 3vh; position: absolute; right: 4vw; top: 1vh"></i>
+    <i onclick="openFunc('Todos','CountConsultas')" title="Contador de Consultas dos funcionarios!" class="fa-solid fa-users font-color-navbar" style="cursor: pointer; font-size: 3vh; position: absolute; right: 1vw; top: 1vh"></i>
     <fieldset title="Pesquise algum funcionario por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
       <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
       <input onkeyup="searchBar()" id="searchBar" placeholder="Pesquise algum funcionario aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
@@ -26,39 +27,55 @@
 
     <div id="funcionarios" style="display: none; margin-inline: 3vw"></div>
     <div id="menuPropostas"></div>
-    <div id="openFunc" style="z-index: 10; position: fixed; display: none; height: 100vh; width: 100vw; top: 0; left: 0; align-items: center; justify-content: center">
-      <div class="background-reverse" style="width: 60vw; padding-block: 3vh; border-radius: 3vh;">
-        <div style="max-height: 60vh; overflow: auto; display: flex; flex-direction: column; align-items: center;">
+    <div id="openFunc" style="z-index: 10; position: fixed; display: none; height: 100vh; width: 100vw; top: 0; left: 0; align-items: center; justify-content: center;">
+      <div class="background-reverse" style="width: 60vw; max-width: 60vw; overflow: hidden; padding-block: 3vh; border-radius: 3vh;">
+        <div style="max-height: 60vh; min-height: 60vh; overflow: auto; display: flex; flex-direction: column; align-items: center; max-width: 100%; overflow-x: hidden;">
           <i onclick="openFunc(false,'close')" class="fas fa-times" style="width: 95%; cursor: pointer; display: flex; justify-content: right; font-size: 3.5vh"></i>
           <a style="font-size: 3.5vh">Funcionário: <span class="font-color-navbar-reverse" id="nameFunc">???</span></a>
-          <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%;">
-            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
-            <input onkeyup="searchBar2()" class="font-color-reverse" id="searchBar2" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-          </fieldset>
-          <div style="display: flex; justify-content: center; width: 100%; margin-top: 1vh;">
-            <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Minima</legend>
-              <input class="font-color-reverse" type="datetime-local" id="dataMinF" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+          <div id="funcFGTS" style="display: none; flex-direction: column; align-items: center;">
+            <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%;">
+              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
+              <input onkeyup="searchBar2()" class="font-color-reverse" id="searchBar2" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
             </fieldset>
-            <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Maxima</legend>
-              <input class="font-color-reverse" type="datetime-local" id="dataMaxF" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-            <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo</legend>
-              <select class="font-color-reverse" id="typeF" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                <option value="" style="color: black" selected>Todos</option>
-                <option value="sucess" style="color: black">Sucessos</option>
-                <option value="error" style="color: black">Erros</option>
-              </select>
-            </fieldset>
-            <i onclick="openFunc(document.getElementById('userOpen').value,'FGTS')" class="fa-regular fa-magnifying-glass-dollar" style="font-size: 3.5vh; margin-top: 2.5vh; cursor: pointer"></i>
-            <input id="userOpen" type="hidden">
+            <div style="display: flex; justify-content: center; width: 100%; margin-top: 1vh;">
+              <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Minima</legend>
+                <input class="font-color-reverse" type="datetime-local" id="dataMinF" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+              </fieldset>
+              <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Maxima</legend>
+                <input class="font-color-reverse" type="datetime-local" id="dataMaxF" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+              </fieldset>
+              <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo</legend>
+                <select class="font-color-reverse" id="typeF" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+                  <option value="" style="color: black" selected>Todos</option>
+                  <option value="sucess" style="color: black">Sucessos</option>
+                  <option value="error" style="color: black">Erros</option>
+                </select>
+              </fieldset>
+              <i onclick="openFunc(document.getElementById('userOpen').value)" class="fa-regular fa-magnifying-glass-dollar" style="font-size: 3.5vh; margin-top: 2.5vh; cursor: pointer"></i>
+              <input id="userOpen" type="hidden">
+              <input id="menuOpen" type="hidden">
+            </div>
+
+            <div id="listFunc" style="margin-top: 3vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+              <div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>
+            </div>
+            <a id="loadMore" onclick="listMore()" class="font-color-navbar-reverse" style="display: none; font-size: 3vh; margin-top: 3vh; text-decoration: underline; cursor: pointer">Carregar mais...</a>
           </div>
-          <div id="listFunc" style="margin-top: 3vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>
+          <div id="funcAcomp" style="display: none; width: 100%">
+            <div style="display: flex; justify-content: center; width: 100%; margin-top: 1vh;">
+              <fieldset id="fieldset" title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Objetivo</legend>
+                <input class="font-color-reverse" type="number" placeholder="Coloque o objetivo em porcentagem..." value="100" id="objetivo" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+              </fieldset>
+              <i onclick="openFunc(document.getElementById('userOpen').value,'Acomp')" class="fa-regular fa-magnifying-glass-dollar" style="font-size: 3.5vh; margin-left: 0.8vw; margin-top: 2.5vh; cursor: pointer"></i>
+            </div>
+            <div id="listFuncAcomp" style="margin-top: 3vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+              <div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>
+            </div>
           </div>
-          <a id="loadMore" onclick="listMore()" class="font-color-navbar-reverse" style="display: none; font-size: 3vh; margin-top: 3vh; text-decoration: underline; cursor: pointer">Carregar mais...</a>
         </div>
       </div>
     </div>
@@ -77,7 +94,8 @@
       <a onclick="saveFunc('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Salvar</a>
       <a onclick="deleteFunc('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Deletar</a>
       <a onclick="openFunc('${codAF}','FGTS')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">FGTS</a>
-      <a onclick="openFunc('${codAF}','Cadastros')" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastros</a>
+      <a onclick="openFunc('${codAF}','Cadastros')" class="line-bottom-reverse navbar-color-select navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastros</a>
+      <a onclick="openFunc('${codAF}','Acomp')" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Acomp/ Sem.</a>
     </div></div>`
   }
 
@@ -250,7 +268,7 @@
   }
 
   function downloadCSV(menu) {
-    if (list.length <= 0) return alert('A lista está vazia...')
+    if (!list || list.length <= 0) return alert('A lista está vazia...')
     var csv = `CPF,BANCO`
     if (menu == "sucess") {
       if (list.filter(r=>!r.error).length <= 0) return alert('A lista de Sucessos está vazia...')
@@ -267,12 +285,30 @@
     } else if (menu == "af") {
       csv = `AF,AGENTE,DATA - HORARIO`
       list.map((r)=>{ csv += `\n${r.af},${r.user},${r.data.replace('T',' - ').replace('Z','')}` })
+    } else if (menu == "count") {
+      csv = `AGENTE,QUANTIDADE,VALOR`
+      list.map((r)=>{ csv += `\n${r.user},${r.qnt},${(r.valor.toFixed(2)).replace('.',',')}` })
     }
     var a = document.createElement('a');
     a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
     a.target = '_blank';
     a.download = `CSV-${menu}.csv`;
     a.click();
+  }
+
+  var months = {
+    '1': 'Janeiro',
+    '2': 'Fevereiro',
+    '3': 'Março',
+    '4': 'Abril',
+    '5': 'Maio',
+    '6': 'Junho',
+    '7': 'Julho',
+    '8': 'Agosto',
+    '9': 'Setembro',
+    '10': 'Outubro',
+    '11': 'Novembro',
+    '12': 'Dezembro'
   }
 
   var list = false
@@ -285,10 +321,23 @@
     list = false
     listMax = 100
     document.getElementById('userOpen').value = user
+    if (menu) {
+      document.getElementById('menuOpen').value = menu
+    } else if (document.getElementById('menuOpen').value) {
+      menu = document.getElementById('menuOpen').value
+    } else { document.getElementById('menuOpen').value = 'FGTS' }
     document.getElementById('loadMore').style.display = 'none'
     document.getElementById('listFunc').innerHTML = `<div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+    document.getElementById('listFuncAcomp').innerHTML = `<div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     document.getElementById('nameFunc').innerHTML = `${user}`
     document.getElementById('openFunc').style.display = 'flex'
+    document.getElementById(`funcFGTS`).style.display = 'none'
+    document.getElementById(`funcAcomp`).style.display = 'none'
+    if (menu == "Acomp") {
+      document.getElementById(`funcAcomp`).style.display = 'inline'
+    } else if (menu == "FGTS" || menu == "Cadastros" || "CountConsultas") {
+      document.getElementById(`funcFGTS`).style.display = 'flex'
+    }
     openBlock = true
     $.ajax({ type: "post",url: `${apiURL}/funcionarios/get${menu}`,
       data: JSON.stringify({
@@ -298,6 +347,7 @@
         dataMin: document.getElementById('dataMinF').value,
         dataMax: document.getElementById('dataMaxF').value,
         type: document.getElementById('typeF').value,
+        objetivo: document.getElementById('objetivo').value
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
         openBlock = false
@@ -315,10 +365,10 @@
               <a onclick="downloadCSV('total')" title="CSV Total" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer">Total: <span class="font-color-navbar-reverse">${s.fgts.length}</span></a>
             </div>
             <div style="width: 100%; display: flex; justify-content: center;">
-              <a title="VALOR TOTAL LIBERADO" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh;">Liberado: <span class="font-color-navbar-reverse">${s.liberado}</span></a>
+              <a title="VALOR TOTAL LIBERADO" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh;">Liberado: <span class="font-color-navbar-reverse">R$ ${s.liberado.replace('.',',')}</span></a>
               <a title="QUANTIDADE MEDIA DE CONSULTAS POR DIA" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh">MED. P/DIA QNT.: <span class="font-color-navbar-reverse">${s.grafico.medQnt}</span></a>
-              <a title="VALOR MEDIO POR DIA" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh">MED. P/DIA VAL.: <span class="font-color-navbar-reverse">${s.grafico.medValor}</span></a>
-              <a title="TICKET MEDIO CONSULTADO" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh">TICKET MED.: <span class="font-color-navbar-reverse">${s.grafico.medTicket}</span></a>
+              <a title="VALOR MEDIO POR DIA" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh">MED. P/DIA VAL.: <span class="font-color-navbar-reverse">R$ ${s.grafico.medValor.replace('.',',')}</span></a>
+              <a title="TICKET MEDIO CONSULTADO" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh">TICKET MED.: <span class="font-color-navbar-reverse">R$ ${s.grafico.medTicket.replace('.',',')}</span></a>
             </div>
             <div style="margin-bottom: 2vh; width: 100%; display: flex; justify-content: center;">
               <a title="Limpar lista" onclick="clearFunc('${user}','fgts')" class="font-color-navbar-reverse" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer; text-decoration: underline">Limpar</a>
@@ -414,6 +464,95 @@
             `
           })
           if (s.cadastros.length >= listMax) document.getElementById('loadMore').style.display = 'flex'
+        } else if (menu == "Acomp") {
+          document.getElementById('listFuncAcomp').innerHTML = `
+            <div style="margin-bottom: 2vh; width: 100%; display: flex; justify-content: center;">
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Meta: <span class="font-color-navbar-reverse">${s.meta}%</span></a>
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Méd. AF's p/ Dia: <span class="font-color-navbar-reverse">${s.afsPorDia}</span></a>
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Tck. Médio: <span class="font-color-navbar-reverse">R$ ${s.ticketMed.replace('.',',')}</span></a>
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Projeção: <span class="font-color-navbar-reverse">R$ ${s.metaMes.replace('.',',')}</span></a>
+            </div>
+            <div style="margin-bottom: 2vh; width: 100%; display: flex; justify-content: center;">
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">AF's Restante: <span class="font-color-navbar-reverse">${s.AFsRestante}</span></a>
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Valor Restante: <span class="font-color-navbar-reverse">R$ ${s.valorRestante.replace('.',',')}</span></a>
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Valor Rest. p/ Dia: <span class="font-color-navbar-reverse">R$ ${s.valorDia.replace('.',',')}</span></a>
+            </div>
+            <div style="position: relative; width: 100%; display: flex; flex-direction: row; justify-content: center; margin-top: 3vh;">
+              <canvas id="graficoAcomp" style="position: absolute; width: 40%; right: 47%; margin-top: 2.5vh"></canvas>
+              <div id="chart_div" style="position: absolute; width: 60%; height: 15vw; font-weight: 600; right: -5%"></div>
+              <div id="midiasComment" style="position: absolute; width: 40%; left: 4%; display: flex; flex-direction: column; margin-top: 1.5vh">
+                ${s.midias.map(r=>`<a style="border-left: 0.5vh solid ${r.color}; border-radius: 0.3vh; font-size: 2vh; margin-block: 0.2vh; padding-left: 0.3vw">${r.label}</a>`).join('')}
+              </div>
+            </div>
+          `
+          // s.midias.forEach((element,i)=>{
+          //   document.getElementById('midiasComment') += `
+          //   <a>
+          //     ${element.label}
+          //   </a>
+          //   `
+          // })
+          var ctx = document.getElementById("graficoAcomp").getContext("2d");
+          new Chart(ctx).Doughnut(s.midias);
+          google.charts.load('current', {packages: ['corechart', 'line']});
+          google.charts.setOnLoadCallback(drawCurveTypes);
+          function drawCurveTypes() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'X');
+            data.addColumn('number', months[s.mes-2]);
+            data.addColumn('number', months[s.mes-1]);
+            data.addColumn('number', months[s.mes]);
+            data.addRows(s.months);
+
+            var options = {
+              legend: { position: 'bottom', textStyle: {color: '#01579b'} },
+              hAxis: { 
+                textStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+                titleTextStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+              },
+              vAxis: {
+                textStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+                titleTextStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+              },
+              backgroundColor: 'transparent',
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+          }
+        } else if (menu == 'CountConsultas') {
+          document.getElementById('listFunc').innerHTML += `
+            <div class="font-color-navbar-reverse" style="display: flex; width: 80%; border-bottom: 0.1vh solid gray; padding-block: 1vh; padding-inline: 1vw; font-weight: 600; justify-content: center; align-items: center; text-decoration: underline; cursor: pointer">
+              <a onclick="downloadCSV('count')">Download CSV</a>
+            </div>
+            <div class="font-color-navbar-reverse" style="display: flex; width: 80%; border-bottom: 0.1vh solid gray; padding-block: 0.4vh; padding-inline: 1vw; font-weight: 600">
+              <div style="width: 50%">
+                <a style="display: flex">Nome</a>
+              </div>
+              <div style="width: 20%; text-align: center">
+                <a style="display: flex">QNT.</a>
+              </div>
+              <div style="width: 30%; text-align: center">
+                <a style="display: flex">Valor</a>
+              </div>
+            </div>
+            `
+          list = s.countConsultas
+          s.countConsultas.forEach((element,index)=>{
+            document.getElementById('listFunc').innerHTML += `
+            <result style="display: flex; width: 80%; border-bottom: 0.1vh solid gray; padding-block: 0.3vh; padding-inline: 1vw">
+              <div style="width: 50%">
+                <a style="display: flex">${element.user}</a>
+              </div>
+              <div style="width: 20%">
+                <a style="display: flex">${element.qnt}</a>
+              </div>
+              <div style="width: 30%">
+                <a style="display: flex">R$ ${(element.valor.toFixed(2)).replace('.',',')}</a>
+              </div>
+            </result>
+            `
+          })
         }
       },
       error: function(e) {
