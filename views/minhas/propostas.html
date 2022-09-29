@@ -138,7 +138,7 @@ const fasesName = {
       menuPropostaActual = false
     }
     menuPropostaActual = codAF
-    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="changeFase('${codAF}',1)" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Inclusão</a><a onclick="changeFase('${codAF}',1)" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">FGTS</a></div></div>`
+    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="changeFase('${codAF}',1)" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Inclusão</a><a onclick="fgts('${codAF}',1)" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">FGTS</a></div></div>`
   }
   var propostas = []
   function filter() {
@@ -263,7 +263,7 @@ const fasesName = {
     "BMG": { option1: 'POR_VALOR_TOTAL' },
   }
 
-  function changeFase(codAF,fase) {
+  function fgts(codAF,fase) {
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (changeFaseActive) return alert('Você já está com algo em andamento! Aguarde...')
     var proposta = propostas.find(r=>r.codAF == codAF)

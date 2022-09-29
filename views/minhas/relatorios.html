@@ -3,10 +3,25 @@
   <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
 
   <div class="flex-direction-column margin-left38" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 12.5vh;">
-    <div class="background-image width40 height15" style="margin-bottom: 0.5vh; width: 30vw; border-radius: 2vh; height: 5vw; margin-inline: 0.6vw; display: flex; flex-direction: row; justify-content: center; align-items: center">
+    <div class="background-image width40 height15" style="margin-bottom: 0.5vh; width: 50vw; border-radius: 2vh; height: 5vw; margin-inline: 0.6vw; display: flex; flex-direction: row; justify-content: center; align-items: center; padding-inline: 2vw">
       <fieldset title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 65%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Relatorio</legend>
+        <select id="relatorio" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+          <option style="color: black" value="meu">Meu Relatorio</option>
+          <option style="color: black" value="equipe">Minha Equipe</option>
+          <option style="color: black" value="empresa">Empresa</option>
+          <optgroup id="funcsRelatorio" label="Funcionários">
+
+          </optgroup>
+        </select>
+      </fieldset>
+      <fieldset title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 35%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Objetivo</legend>
-        <input type="number" placeholder="Coloque o objetivo em porcentagem..." value="100" id="objetivo" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+        <input onkeyup="changeComissao()" type="text" placeholder="100%" value="100%" id="objetivo" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+      </fieldset>
+      <fieldset title="Sua comissão conforme o objetivo..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Comissão</legend>
+        <input disabled value="R$ 800,00" id="comissaoObj" style="color: red; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
       </fieldset>
       <i onclick="getRelatorio()" class="fa-regular fa-magnifying-glass-dollar font-color-navbar" style="font-size: 3.5vh; margin-left: 0.8vw; margin-top: 1vh; cursor: pointer"></i>
     </div>
@@ -14,9 +29,15 @@
 
   <div class="flex-direction-column margin-left38" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
     <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i class="fa-regular fa-money-bill-trend-up font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.5vh; margin-top: 2vh; font-weight: 600;">Consultado:</a>
+      <a onclick="downloadCSV()" id="topLiberado" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.6vh; margin-top: 0vh; font-weight: 600;">0</a>
+    </div>
+    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-sharp fa-solid fa-bullseye-arrow font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.5vh; margin-top: 2vh; font-weight: 600;">Meta:</a>
-      <a id="topMeta" class="font-color-navbar" style="font-size: 2.6vh; margin-top: 0vh; font-weight: 600;">0</a>
+      <a id="topMeta" class="font-color-navbar" style="font-size: 2.2vh; margin-top: 0vh; font-weight: 600;">0</a>
+      <a id="topComissao" class="font-color-navbar" style="padding-top: 0.5vh; font-size: 2.1vh; margin-top: 0vh; font-weight: 600;"></a>
     </div>
     <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-regular fa-scale-balanced font-color-navbar" style="font-size: 6vh"></i>
@@ -31,7 +52,8 @@
     <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-projector font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.5vh; margin-top: 2vh; font-weight: 600;">Projeção:</a>
-      <a id="topProjecao" class="font-color-navbar" style="font-size: 2.6vh; margin-top: 0vh; font-weight: 600;">0</a>
+      <a id="topProjecao" class="font-color-navbar" style="font-size: 2.2vh; margin-top: 0vh; font-weight: 600;">0</a>
+      <a id="topProjecaoCom" class="font-color-navbar" style="padding-top: 0.5vh; font-size: 2.1vh; margin-top: 0vh; font-weight: 600;"></a>
     </div>
     <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="far fa-money-check-edit font-color-navbar" style="font-size: 6vh"></i>
@@ -60,29 +82,71 @@
   </div>
 </div>
 <script>
+  var relatorio = {
+    "meu": "getAcomp", 
+    "equipe": "getAcompGerente",
+    "empresa": "getAcompEmpresa",
+  }
+  var comissao = [
+    { min: 50, max: 70, comissao: 200 },
+    { min: 70, max: 100, comissao: 300 },
+    { min: 100, max: 130, comissao: 800 },
+    { min: 130, max: 150, comissao: 1600 },
+    { min: 150, max: 180, comissao: 2000 },
+    { min: 180, max: 200, comissao: 3000 },
+    { min: 200, max: 250, comissao: 3500 },
+    { min: 250, max: 300, comissao: 5000 },
+    { min: 300, max: 330, comissao: 6000 },
+    { min: 330, max: 360, comissao: 7000 },
+    { min: 360, max: 400, comissao: 8000 },
+    { min: 400, max: 9999999, comissao: 10000 },
+  ]
+  var fgts = false
   var block = false
   function getRelatorio() {
     if (block) return alert('Aguarde...')
+    var objetivoReq = false
+    if (document.getElementById('objetivo').value) {
+      objetivoReq = document.getElementById('objetivo').value.replace('%','')
+      if (!Number(objetivoReq)) return alert('O objetivo deve ser um numero...')
+    }
+    if (objetivoReq && !Number(objetivoReq)) return alert('O objetivo deve ser um numero...')
+    var relatorioReq = false
+    if (!relatorio[document.getElementById('relatorio').value]) {
+      relatorioReq = 'getAcomp'
+    } else relatorioReq = relatorio[document.getElementById('relatorio').value]
     document.getElementById('grafico1').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     document.getElementById('grafico2').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     block = true
-    $.ajax({ type: "post",url: `${apiURL}/funcionarios/getAcomp`,
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/${relatorioReq}`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
-        objetivo: document.getElementById('objetivo').value,
-        newUser: localStorage.getItem('user'),
+        objetivo: objetivoReq,
+        // newUser: relatorio[document.getElementById('relatorio').value] ? localStorage.getItem('user') : document.getElementById('relatorio').value,
+        newUser: "JOSEANE",
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
         block = false
         if (s.error) return alert(s.error)
-        document.getElementById('topMeta').innerHTML = s.meta+`%`
-        document.getElementById('topAFsDia').innerHTML = s.afsPorDia
-        document.getElementById('topTicket').innerHTML = `R$ `+s.ticketMed.replace('.',',')
-        document.getElementById('topProjecao').innerHTML = `R$ `+s.metaMes.replace('.',',')
-        document.getElementById('topAFsRestante').innerHTML = s.AFsRestante
-        document.getElementById('topValorRestante').innerHTML = `R$ `+s.valorRestante.replace('.',',')
-        document.getElementById('topValorDia').innerHTML = `R$ `+s.valorDia.replace('.',',')
+        fgts = s.fgts
+        if (s.meta) {
+          document.getElementById('topMeta').innerHTML = s.meta ? String(s.meta).replace('.',',')+`%` : 0
+          var comissaoMeta = comissao.find(r=>s.meta >= r.min && s.meta < r.max)
+          if (comissaoMeta) document.getElementById('topComissao').innerHTML = `R$ ${comissaoMeta.comissao},00`
+        }
+        document.getElementById('topLiberado').innerHTML = s.valorFGTS ? `R$ `+String(s.valorFGTS).replace('.',',') : 0
+        document.getElementById('topAFsDia').innerHTML = s.afsPorDia ? s.afsPorDia : 0
+        document.getElementById('topTicket').innerHTML = s.ticketMed && Number(s.ticketMed) ? `R$ `+s.ticketMed.replace('.',',') : 0
+        if (s.metaMes) {
+          document.getElementById('topProjecao').innerHTML = s.metaMes ? s.metaMes.replace('.',',')+`%` : 0
+          var comissaoMeta = comissao.find(r=>s.metaMes >= r.min && s.metaMes < r.max)
+          if (comissaoMeta) document.getElementById('topProjecaoCom').innerHTML = `R$ ${comissaoMeta.comissao},00`
+        }
+        
+        document.getElementById('topAFsRestante').innerHTML =  s.AFsRestante ? s.AFsRestante : 0
+        document.getElementById('topValorRestante').innerHTML = s.valorRestante ? `R$ `+s.valorRestante.replace('.',',') : 0
+        document.getElementById('topValorDia').innerHTML = s.valorDia ? `R$ `+s.valorDia.replace('.',',') : 0
         document.getElementById('grafico1').innerHTML = `
           <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Mídias</a>
           <canvas id="graficoMidias" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
@@ -150,5 +214,53 @@
       }
     })
   }
-  (function () { getRelatorio() })();
+
+  function downloadCSV() {
+    if (!fgts || fgts.length <= 0) return alert('A lista está vazia...')
+    var csv = `CPF,BANCO`
+    csv = `CPF,BANCO,LIBERADO,TOTAL,TELEFONE,AGENTE,DATA - HORARIO`
+    fgts.map(r=> { csv += `\n${r.cpf},${r.bank},${r.liberado.replaceAll('.','').replace(',','.')},${r.total.replaceAll('.','').replace(',','.')},${r.telefone},${r.user},${r.data.replace('T',' - ').replace('Z','')}` })
+    var a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    a.target = '_blank';
+    a.download = `CSV-FGTS.csv`;
+    a.click();
+  }
+
+  function changeComissao() {
+    if (document.getElementById('objetivo').value) {
+      var meta = document.getElementById('objetivo').value.replace('%','')
+      if (!meta || !Number(meta)) return document.getElementById('comissaoObj').value = `R$ 00,00`;
+      var comissaoMeta = comissao.find(r=>meta >= r.min && meta < r.max)
+      if (comissaoMeta) {
+        document.getElementById('comissaoObj').value = `R$ ${comissaoMeta.comissao},00`
+      } else document.getElementById('comissaoObj').value = `R$ 00,00`
+    } else document.getElementById('comissaoObj').value = `R$ 00,00`
+  }
+
+  var agentesBlock = false
+  function getAgentes() {
+    if (agentesBlock) return alert('Aguarde...')
+    agentesBlock = true
+    $.ajax({ type: "post",url: `${apiURL}/funcionarios/getLogins`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password')
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        agentesBlock = false
+        s.logins.forEach((element,index) => {
+          document.getElementById('funcsRelatorio').innerHTML += `<option style="color: black" value="${element.user}">${element.user}</option>`
+        });
+      },
+      error: function(e) {
+        agentesBlock = false
+        if (e.error) return alert(e.error)
+        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+      }
+    })
+  }
+
+  (function () { getRelatorio(); getAgentes() })();
 </script>

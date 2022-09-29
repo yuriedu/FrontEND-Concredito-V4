@@ -49,8 +49,8 @@
               <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
                 <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo</legend>
                 <select class="font-color-reverse" id="typeF" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                  <option value="" style="color: black" selected>Todos</option>
-                  <option value="sucess" style="color: black">Sucessos</option>
+                  <option value="" style="color: black">Todos</option>
+                  <option value="sucess" style="color: black" selected>Sucessos</option>
                   <option value="error" style="color: black">Erros</option>
                 </select>
               </fieldset>
@@ -338,6 +338,7 @@
     } else if (menu == "FGTS" || menu == "Cadastros" || "CountConsultas") {
       document.getElementById(`funcFGTS`).style.display = 'flex'
     }
+
     openBlock = true
     $.ajax({ type: "post",url: `${apiURL}/funcionarios/get${menu}`,
       data: JSON.stringify({
@@ -467,15 +468,15 @@
         } else if (menu == "Acomp") {
           document.getElementById('listFuncAcomp').innerHTML = `
             <div style="margin-bottom: 2vh; width: 100%; display: flex; justify-content: center;">
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Meta: <span class="font-color-navbar-reverse">${s.meta}%</span></a>
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Méd. AF's p/ Dia: <span class="font-color-navbar-reverse">${s.afsPorDia}</span></a>
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Tck. Médio: <span class="font-color-navbar-reverse">R$ ${s.ticketMed.replace('.',',')}</span></a>
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Projeção: <span class="font-color-navbar-reverse">R$ ${s.metaMes.replace('.',',')}</span></a>
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Meta: <span class="font-color-navbar-reverse">${s.meta ? s.meta.replace('.',',') : 0}%</span></a>
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Méd. AF's p/ Dia: <span class="font-color-navbar-reverse">${s.afsPorDia ? s.afsPorDia : 0}</span></a>
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Tck. Médio: <span class="font-color-navbar-reverse">R$ ${s.ticketMed ? s.ticketMed.replace('.',',') : 0}</span></a>
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Projeção: <span class="font-color-navbar-reverse">${s.metaMes ? s.metaMes.replace('.',',') : 0}$</span></a>
             </div>
             <div style="margin-bottom: 2vh; width: 100%; display: flex; justify-content: center;">
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">AF's Restante: <span class="font-color-navbar-reverse">${s.AFsRestante}</span></a>
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Valor Restante: <span class="font-color-navbar-reverse">R$ ${s.valorRestante.replace('.',',')}</span></a>
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Valor Rest. p/ Dia: <span class="font-color-navbar-reverse">R$ ${s.valorDia.replace('.',',')}</span></a>
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">AF's Restante: <span class="font-color-navbar-reverse">${s.AFsRestante ? s.AFsRestante : 0}</span></a>
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Valor Restante: <span class="font-color-navbar-reverse">R$ ${s.valorRestante ? s.valorRestante.replace('.',',') : 0}</span></a>
+              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Valor Rest. p/ Dia: <span class="font-color-navbar-reverse">R$ ${s.valorDia ? s.valorDia.replace('.',',') : 0}</span></a>
             </div>
             <div style="position: relative; width: 100%; display: flex; flex-direction: row; justify-content: center; margin-top: 3vh;">
               <canvas id="graficoAcomp" style="position: absolute; width: 40%; right: 47%; margin-top: 2.5vh"></canvas>
