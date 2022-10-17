@@ -1,6 +1,6 @@
 <div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
   <navbar id="navbar"></navbar>
-  <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
+  <script>$("#navbar").load(`/imports/navbar.html`)</script>
 
   <div class="background-image left18-5 width79" style="position: relative; top: 12.5vh; left: 6vw; width: 92.5vw; height: 85.5vh; border-radius: 2vh; display: flex; justify-content: center; align-items: center;">
 
@@ -184,7 +184,6 @@
         if (s.dados.conta) document.getElementById('conta').value = s.dados.conta
         if (s.dados.poupanca) document.getElementById('poupanca').value = s.dados.poupanca ? '1' : '0'
         if (s.dados.telefone) document.getElementById('telefone').value = s.dados.telefone
-
         if (s.dados.dataNascimento) {
           var date = s.dados.dataNascimento.slice(0, 10)
           document.getElementById('nascimento').value = `${date.slice(8,10)}/${date.slice(5,7)}/${date.slice(0,4)}`
@@ -195,9 +194,8 @@
       error: function(e) {
         document.getElementById('consultar').innerHTML = `<p class="font-1">Consultar</p>`
         document.getElementById('consultar').classList.remove("buttonBlock");
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
       }
     })
   }

@@ -39,18 +39,11 @@
   </div>
 </div>
 <script>
-  var pages = {
-    dashboard: ['destaque'],
-    administrativo: ['funcionarios'],
-    consultas: ['fgts','lotes'],
-    propostas: ['lista'],
-  }
   function openLogin() {
     document.getElementById('loginMenu').style.display = 'inline'
     document.getElementById('codeMenu').style.display = 'none'
   }
   function login() {
-    if (document.getElementById('login').classList.contains('buttonBlock')) return alert('Aguarde...')
     if (document.getElementById('checkCode').classList.contains('buttonBlock')) return alert('Aguarde...')
     if (!document.getElementById('user').value) return alert('Você não colocou seu usuário...')
     if (!document.getElementById('password').value) return alert('Você não colocou sua senha...')
@@ -59,11 +52,12 @@
     document.getElementById('login').classList.add("buttonBlock");
     document.getElementById('checkCode').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('checkCode').classList.add("buttonBlock");
-    $.ajax({ type: "post", url: `${apiURL}/funcionarios/login`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/logins/login`, data: JSON.stringify({
       user: document.getElementById('user').value, 
       password: document.getElementById('password').value,
-      code: document.getElementById('code') && document.getElementById('code').value ? document.getElementById('code').value : false
-    }),contentType:"application/json; charset=utf-8",
+      code: document.getElementById('codeMenu').style.display == 'inline' ? document.getElementById('code').value : false
+    }),
+    contentType:"application/json; charset=utf-8",
       success: function(s) {
         document.getElementById('login').innerHTML = `<p class="font-1">Login</p>`
         document.getElementById('checkCode').innerHTML = `<p class="font-1">Verificar</p>`
@@ -75,13 +69,12 @@
           alert(s.error)
         } else if (s.error) return alert(s.error)
         if (s.login) {
-          if (s.alert) alert(s.alert)
           localStorage.setItem('user', document.getElementById('user').value)
           localStorage.setItem('password', document.getElementById('password').value)
           var url = window.location.pathname.split('/')
-          if (url[1] == "login") return window.location = "/"
-          if (url[1]) return $(document.body).load(`/views/${url[1]}${url[2] ? '/'+url[2] : ''}.html`)
-          return $(document.body).load(`/views/dashboard/destaques.html`)
+          if (url[1] == "login" || url[1] == "logout") return window.location = "/"
+          if (url[1]) return location.reload();
+          return window.location = "/"
         } else {
           localStorage.setItem('user', '')
           localStorage.setItem('password', '')
@@ -94,9 +87,8 @@
         document.getElementById('checkCode').innerHTML = `<p class="font-1">Verificar</p>`
         document.getElementById('login').classList.remove("buttonBlock");
         document.getElementById('checkCode').classList.remove("buttonBlock");
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
       }
     });
   }

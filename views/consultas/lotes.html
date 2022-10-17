@@ -1,13 +1,13 @@
 <div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
   <navbar id="navbar"></navbar>
-  <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
+  <script>$("#navbar").load(`/imports/navbar.html`)</script>
 
   <div class="background-image margin-left18-5 width79 min-height40" style="margin-top: 12.5vh; margin-left: 6vw; width: 92.5vw; min-height: 48vh; border-radius: 2vh">
     <a style="display: flex; width: 100%; justify-content: center; padding-top: 2vh; font-size: 3vh">Lotes de FGTS:</a>
     <div style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 1.7vh;">
       <fieldset title="Coloque a lista de CPF's aqui..." style="padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CPF's</legend>
-        <textarea class="font-size1-5" id="cpfs" placeholder="000.000.000-00,&#10;000.000.000-00,&#10;000.000.000-00,&#10;000.000.000-00&#10;" rows="4" class="font-color" style="font-size: 2.1vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
+        <textarea class="font-size1-5 font-color" id="cpfs" placeholder="000.000.000-00,&#10;000.000.000-00,&#10;000.000.000-00,&#10;000.000.000-00&#10;" rows="4" class="font-color" style="font-size: 2.1vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
       </fieldset>
       <fieldset class="width70p" title="Selecione os bancos que serão consultados..." style="padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%; margin-top: 1.5vh">
         <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Bancos</legend>
@@ -44,8 +44,8 @@
       </fieldset>
     </div>
     <div style="display: flex; font-weight: 600; justify-content: center; margin-top: 2vh">
-      <a id="consultar" onclick="consultar()" class="buttonLogin font-2 font-size1-5" style="font-size: 3vh; padding-inline: 3vh; padding-block: 1vh; border-radius: 1vh; margin-right: 1vw;">Consultar</a>
-      <a id="consultar" onclick="parar()" class="buttonLogin font-2 font-size1-5" style="font-size: 3vh; padding-inline: 3vh; padding-block: 1vh; border-radius: 1vh; margin-right: 1vw;">Parar</a>
+      <a id="consultar" onclick="separar()" class="buttonLogin font-2 font-size1-5" style="font-size: 3vh; padding-inline: 3vh; padding-block: 1vh; border-radius: 1vh; margin-right: 1vw;">Consultar</a>
+      <a id="stop" onclick="parar()" class="buttonLogin font-2 font-size1-5" style="font-size: 3vh; padding-inline: 3vh; padding-block: 1vh; border-radius: 1vh; margin-right: 1vw;">Parar</a>
     </div>
   </div>
   <div class="background-image margin-left18-5 width79 min-height44-5" style="margin-top: 3vh; margin-left: 6vw; width: 92.5vw; min-height: 36.5vh; border-top-left-radius: 2vh; border-top-right-radius: 2vh;">
@@ -64,67 +64,13 @@
   </div>
 </div>
 
+
 <script>
-  var csv = {
-    Sucessos: [],
-    Erros: []
-  }
-  function dowloadCSV(type) {
-    if (!csv[type] || csv[type].length <= 0) return alert(`A lista ${type} está vazia...`)
-    document.getElementById(`${type}_button`).innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
-    document.getElementById(`${type}_button`).classList.add("buttonBlock");
-    var csvList = 'Error\n';
-    if (type == 'Sucessos') {
-      csvList = 'Cpf,Banco,Total,Liberado,Data\n';
-      csv[type].forEach((element,index)=>{
-        csvList += `${element.cpf},${element.bank},${element.total},${element.liberado},${element.data}\n`
-      });
-    } else {
-      csvList = 'Cpf,Banco,Erro\n';
-      csv[type].forEach((element,index)=>{
-        csvList += `${element.cpf},${element.bank},${element.error}\n`
-      });
-    }
-    var a = document.createElement('a');
-    a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvList);
-    a.target = '_blank';
-    a.download = `lotesFGTS-${type}.csv`;
-    a.click();
-    document.getElementById(`${type}_button`).innerHTML = `CSV ${type}`
-    document.getElementById(`${type}_button`).classList.add("buttonBlock");
-  }
-  function copyResult(cpf) {
-    var copy = ''
-    if (csv.Sucessos.length <= 0 && csv.Erros.length <= 0) return alert('Minhas listas CSV está vazia...')
-    if (csv.Sucessos.find(r=>r.cpf == cpf)) {
-      csv.Sucessos.filter(r=>r.cpf == cpf).forEach((element,index)=>{
-        copy += `${element.cpf},${element.bank},${element.total},${element.liberado},${element.data}\n`
-      })
-    }
-    if (csv.Erros.find(r=>r.cpf == cpf)) {
-      csv.Erros.filter(r=>r.cpf == cpf).forEach((element,index)=>{
-        copy += `${element.cpf},${element.bank},${element.error}\n`
-      })
-    }
-    if (!copy) return alert('Não encontrei esse CPF nas minhas listas CSV...')
-    if (window.clipboardData) {
-      window.clipboardData.setData("Text", copy);
-      alert('O resultado foi copiado com sucesso!')
-    } else {
-      navigator.clipboard.writeText(copy).then(()=>{
-        alert('O resultado foi copiado com sucesso!')
-      }).catch(()=>{
-        alert('O seu navegador não suporta o sistema de copia...')
-      })
-    }
-
-  }
-
   var banks = [
-    { name: 'FACTA FINANCEIRA', active: false, option1: 'GOLD' },
+    { name: 'FACTA FINANCEIRA', active: false, option1: 'POR_VALOR_TOTAL', option2: false, option3: 'GOLD' },
     { name: 'BANCO C6', active: false, option1: 'POR_VALOR_TOTAL' },
     { name: 'PANAMERICANO', active: false, option1: 'POR_VALOR_TOTAL', option3: '900001' },
-    { name: 'SAFRA', active: false, option1: '1' },
+    { name: 'SAFRA', active: false, option1: '1', option2: '1,79 ESPECIAL SUB' },
     { name: 'MERCANTIL', active: false, option1: 'POR_VALOR_TOTAL' },
     { name: 'BMG', active: false, option1: false },
   ]
@@ -136,13 +82,14 @@
       } else banks.find(r=>r.name==bank).active = true
     } else return alert(`Banco: ${bank} não encontrado...`)
   }
+  var results = []
   var cpfs = []
   function parar() {
     if (cpfs.length <= 0) return alert("A lista de CPF's já está vazia...")
     cpfs = []
-    return alert("A lista de CPF's foi limpa! Aguarde o cpf que estão sendo consultado terminar...")
+    return alert("A lista de CPF's foi limpa! Aguarde o cpf que está sendo consultado terminar...")
   }
-  async function consultar() {
+  async function separar() {
     if (document.getElementById('consultar').classList.contains('buttonBlock')) return alert('Sua consulta já está na fila! Aguarde um pouco, por favor...')
     if (!document.getElementById('cpfs').value) return alert("Colque a lista de CPF's que será consultado...")
     if (banks.filter(r=>r.active).length <= 0) return alert('Selecione algum dos bancos que será consultado...')
@@ -150,37 +97,25 @@
     if (cpfs.length <= 0) return alert("Lista de Cpf's invalido! Verifique e tente novamente...")
     document.getElementById(`consultar`).innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById(`consultar`).classList.add("buttonBlock");
-    banks.filter(r=>r.active).forEach((bank)=>{
-      if (!cpfs[0]) return;
-      consultarCPF(cpfs[0], 0, bank)
-    })
+    banks.filter(r=>r.active).forEach((bank)=>{ consultar(cpfs[0], bank) })
   }
-  function consultarCPF(cpf, i, bank) {
-    if (!cpf) return nextCPF(i, bank)
-    cpf = cpf.replaceAll('.',"").replaceAll('-','').replaceAll(" ","")
-    cpf = cpf.length == 10 ? `0${cpf}` : cpf.length == 9 ? `00${cpf}` : cpf.length == 8 ? `000${cpf}` : cpf.length == 7 ? `0000${cpf}` : cpf.length == 6 ? `00000${cpf}` : cpf
-    if (csv.Sucessos.find(r=> r.cpf == cpf && r.bank == bank.name)) return nextCPF(i, bank)
-    if (csv.Erros.find(r=> r.cpf == cpf && r.bank == bank.name)) return nextCPF(i, bank)
-    if (String(cpf).length == 10) cpf = `0${cpf}`
-    if (String(cpf).length == 9) cpf = `00${cpf}`
-    if (String(cpf).length == 8) cpf = `000${cpf}`
-    if (String(cpf).length == 7) cpf = `0000${cpf}`
-    if (String(cpf).length == 6) cpf = `00000${cpf}`
-    if (String(cpf).length == 5) cpf = `000000${cpf}`
-    if (String(cpf).length == 4) cpf = `0000000${cpf}`
-    if (String(cpf).length == 3) cpf = `00000000${cpf}`
-    if (String(cpf).length == 2) cpf = `000000000${cpf}`
-    if (String(cpf).length == 1) cpf = `0000000000${cpf}`
+  async function consultar(cpf, bank) {
+    if (!cpf || results.find(r=>r.cpf==cpf && r.bank==bank.name)) return nextCPF(bank);
+    cpf = cpf.replaceAll('.','').replaceAll('-','').replaceAll(' ','')
+    if (results.find(r=> r.cpf == cpf && r.bank == bank.name)) return nextCPF(bank)
+    for (var i = 0, n = 10; i < n; ++i) {
+      if (cpf.length < 11) cpf = `0${cpf}`
+    }
     $.ajax({ type: "post",url: `${apiURL}/consultas/fgts`,
     data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        cpf: cpf,
-        bank: bank.name,
-        option1: bank.option1 ? bank.option1 : false,
-        option2: bank.option2 ? bank.option2 : false,
-        option3: bank.option3 ? bank.option3 : false,
-      }), contentType:"application/json; charset=utf-8",
+      user: localStorage.getItem('user'),
+      password: localStorage.getItem('password'),
+      cpf: cpf,
+      bank: bank.name,
+      option1: bank.option1 ? bank.option1 : false,
+      option2: bank.option2 ? bank.option2 : false,
+      option3: bank.option3 ? bank.option3 : false,
+    }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
         if (document.getElementById(`${cpf}`)) {
           document.getElementById(`banks-${cpf}`).innerHTML += `<div style="display: flex"><fieldset class="font-size2" title="Banco" style="font-size: 2.4vh; border-radius: 0.6vh; width: 28%; padding: 0; margin: 0; padding-inline: 1%"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Banco</legend><input class="font-size1-5 font-1 font-color" style="margin: 0; width: 100%; font-size: 2.3vh; background: transparent; border: 0" value="${bank.name}" disabled></fieldset>${s.error ? '<fieldset class="font-size2" title="'+s.error+'" style="font-size: 2.4vh; border-radius: 0.6vh; width: 58%; padding: 0; margin: 0; padding-inline: 1%; margin-left: 1vh; "><legend class="font-4 508.170.780-53" style="margin: 0; padding: 0; font-size: 2.3vh">Erro</legend><input class="font-size1-5 font-1 font-color" style="margin: 0; width: 100%; font-size: 2.3vh; background: transparent; border: 0" value="'+s.error+'" disabled></fieldset>' : '<fieldset class="font-size2" title="Saldo Total" style="font-size: 2.4vh; border-radius: 0.6vh; width: 28%; padding: 0; margin: 0; padding-inline: 1%; margin-left: 1vh; "><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Total</legend><input class="font-size1-5 font-1 font-color" style="margin: 0; width: 100%; font-size: 2.3vh; background: transparent; border: 0" value="'+s.saldoTotal+'" disabled></fieldset><fieldset class="font-size2" title="Saldo Liberado" style="font-size: 2.4vh; border-radius: 0.6vh; width: 28%; padding: 0; margin: 0; padding-inline: 1%; margin-left: 1vh; "><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Liberado</legend><input class="font-size1-5 font-1 font-color" style="margin: 0; width: 100%; font-size: 2.3vh; background: transparent; border: 0" value="'+s.saldoLiberado+'" disabled></fieldset>'}</div>`
@@ -188,28 +123,80 @@
           document.getElementById('resultados').innerHTML += `<div id="${cpf}" class="background-Propostas" style="width: 80%; margin-inline: 10%; border-radius: 2vh; padding-top: 1vh; padding-bottom: 2vh; margin-block: 2vh;"><div style="display: flex; width: 100%; justify-content: center;"><fieldset class="font-size2" title="CPF" style="font-size: 2.4vh; border-radius: 0.6vh; width: 86%; padding: 0; margin: 0; padding-inline: 1%; margin-left: 1%"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">CPF</legend><input class="font-size1-5 font-1 font-color" style="margin: 0; width: 100%; font-size: 2.3vh; background: transparent; border: 0" value="${cpf}" disabled></fieldset><i onclick="copyResult('${cpf}')" style="margin-top: 1vh; margin-left: 2%; font-size: 2.5vh; cursor: pointer" title="Copiar" class="fas fa-copy font-color-navbar"></i></div><div id="banks-${cpf}" style="margin-left: 5%"><div style="display: flex"><fieldset class="font-size2" title="Banco" style="font-size: 2.4vh; border-radius: 0.6vh; width: 28%; padding: 0; margin: 0; padding-inline: 1%"><legend class="font-4 508.170.780-53" style="margin: 0; padding: 0; font-size: 2.3vh">Banco</legend><input class="font-size1-5 font-1 font-color" style="margin: 0; width: 100%; font-size: 2.3vh; background: transparent; border: 0" value="${bank.name}" disabled></fieldset>${s.error ? '<fieldset class="font-size2" title="'+s.error+'" style="font-size: 2.4vh; border-radius: 0.6vh; width: 58%; padding: 0; margin: 0; padding-inline: 1%; margin-left: 1vh; "><legend class="font-4 508.170.780-53" style="margin: 0; padding: 0; font-size: 2.3vh">Erro</legend><input class="font-size1-5 font-1 font-color" style="margin: 0; width: 100%; font-size: 2.3vh; background: transparent; border: 0" value="'+s.error+'" disabled></fieldset>' : '<fieldset class="font-size2" title="Saldo Total" style="font-size: 2.4vh; border-radius: 0.6vh; width: 28%; padding: 0; margin: 0; padding-inline: 1%; margin-left: 1vh; "><legend class="font-4 508.170.780-53" style="margin: 0; padding: 0; font-size: 2.3vh">Total</legend><input class="font-size1-5 font-1 font-color" style="margin: 0; width: 100%; font-size: 2.3vh; background: transparent; border: 0" value="'+s.saldoTotal+'" disabled></fieldset><fieldset class="font-size2" title="Saldo Liberado" style="font-size: 2.4vh; border-radius: 0.6vh; width: 28%; padding: 0; margin: 0; padding-inline: 1%; margin-left: 1vh; "><legend class="font-4 508.170.780-53" style="margin: 0; padding: 0; font-size: 2.3vh">Liberado</legend><input class="font-size1-5 font-1 font-color" style="margin: 0; width: 100%; font-size: 2.3vh; background: transparent; border: 0" value="'+s.saldoLiberado+'" disabled></fieldset>'}</div></div></div>`
         }
         if (s.error && !s.retry) {
-          csv.Erros[csv.Erros.length] = { cpf: cpf, bank: bank.name, error: s.error }
-        } else csv.Sucessos[csv.Sucessos.length] = { cpf: cpf, bank: bank.name, total: s.saldoTotal, liberado: s.saldoLiberado, data: s.data }
-        return nextCPF(i, bank)
+          results[results.length] = { cpf: cpf, bank: bank.name, error: s.error }
+        } else if (s.error) {
+          results[results.length] = { cpf: cpf, bank: bank.name, retry: true, error: s.error }
+        } else if (s.saldoLiberado) {
+          results[results.length] = { cpf: cpf, bank: bank.name, total: s.saldoTotal, liberado: s.saldoLiberado, data: s.data, telefone: s.telefone ? s.telefone : 'Vazio' }
+        }
+        if (s.stop) {
+          cpfs = []
+          return alert('Consulta em Lotes foi pausada por questões de segurança...')
+        }
+        return nextCPF(bank)
       },
       error: function(e) {
-        if (e.error) return alert(e.error)
-        return nextCPF(i, bank)
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return nextCPF(bank)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
       }
     })
-
   }
-
-  var banksEnd = 0
-  async function nextCPF(i, bank) {
-    i++
-    if (cpfs[i]) return setTimeout(()=>{ return consultarCPF(cpfs[i], i, bank) }, 1000)
-    banksEnd++
-    if (banks.filter(r=>r.active).length == banksEnd) {
-      banksEnd = 0
+  var completeBanks = 0
+  function nextCPF(bank) {
+    cpfs.splice(0,1)
+    if (cpfs[0]) return consultar(cpfs[0], bank)
+    completeBanks++
+    if (completeBanks == banks.filter(r=>r.active).length) {
+      completeBanks = 0
       document.getElementById(`consultar`).innerHTML = `Consultar`
       document.getElementById(`consultar`).classList.remove("buttonBlock");
       alert('Consulta Finalizada...')
+    }
+  }
+
+  async function dowloadCSV(type) {
+    if (!results || results.length <= 0) return alert(`A lista de resultados está vazia...`)
+    if (type == "Sucessos" && results.filter(r=>r.liberado).length <= 0) return alert('Essa lista está vazia...')
+    if (type == "Erros" && results.filter(r=>r.error).length <= 0) return alert('Essa lista está vazia...')
+    document.getElementById(`${type}_button`).innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById(`${type}_button`).classList.add("buttonBlock");
+    var csv = false
+    if (type == 'Sucessos') {
+      csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA`
+      await results.filter(r=>r.liberado).map((element,index)=>{
+        csv+=`\n${element.cpf},${element.bank},${element.total.replaceAll(',','.')},${element.liberado.replaceAll(',','.')},${element.telefone},${element.data}`
+      })
+    } else {
+      csv = `CPF,BANCO,ERRO`
+      await results.filter(r=>r.error).map((element,index)=>{
+        csv+=`\n${element.cpf},${element.bank},${element.error}`
+      })
+    }
+    var a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    a.target = '_blank';
+    a.download = `lotesFGTS-${type}.csv`;
+    a.click();
+    document.getElementById(`${type}_button`).innerHTML = `CSV ${type}`
+    document.getElementById(`${type}_button`).classList.remove("buttonBlock");
+  }
+
+  async function copyResult(cpf) {
+    if (!results || results.length <= 0) return alert(`A lista de resultados está vazia...`)
+    if (results.filter(r=>r.cpf == cpf).length <= 0) return alert('CPF não encontrado...')
+    var csv = false
+    csv = `CPF,BANCO,TOTAL,LIBERADO,ERRO,TELEFONE,DATA`
+    await results.filter(r=>r.cpf == cpf).map((element,index)=>{
+      csv+=`\n${element.cpf},${element.bank},${element.total ? element.total : 0},${element.liberado ? element.liberado : 0},${element.error ? element.error : 0},${element.telefone ? element.telefone : 'Vazio'},${element.data ? element.data : 0}`
+    })
+    if (window.clipboardData) {
+      window.clipboardData.setData("Text", csv);
+      alert('O resultado foi copiado com sucesso!')
+    } else {
+      navigator.clipboard.writeText(csv).then(()=>{
+        alert('O resultado foi copiado com sucesso!')
+      }).catch(()=>{ alert('O seu navegador não suporta o sistema de copia...') })
     }
   }
 </script>

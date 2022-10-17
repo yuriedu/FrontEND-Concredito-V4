@@ -1,6 +1,6 @@
 <div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
   <navbar id="navbar"></navbar>
-  <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
+  <script>$("#navbar").load(`/imports/navbar.html`)</script>
 
   <div class="background-image margin-left18-5 width79 min-height33" style="margin-top: 12.5vh; margin-left: 6vw; width: 92.5vw; min-height: 37vh; border-radius: 2vh">
     <a style="display: flex; width: 100%; justify-content: center; padding-top: 2vh; font-size: 3vh">Filtro de Propostas:</a>
@@ -112,7 +112,7 @@
       <div style="position:absolute; top: 2vh; right: 3vh; cursor: pointer">
         <i onclick="closeGenerator()" class="far fa-times" style="cursor: pointer; font-size: 3.5vh;"></i>
       </div>
-      <a style="font-size: 3vh">Gerador de Cadastros:</a>
+      <a style="font-size: 4vh">Gerador de Cadastros:</a>
       <div style="display: flex; width: 65%;">
         <fieldset id="fieldset" title="Codigo 2" style="margin-top: 5vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 95%; margin-inline: 1%; padding-inline: 1%;">
           <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Codigo 1</legend>
@@ -132,36 +132,61 @@
 </div>
 
 <script>
-const fasesName = {
-  '1': 'Inclusão sem conferência',
-  '2': 'AGUARDANDO AVERBAÇÃO',
-  '9': 'PENDENTE',
-  '11': 'Aguardando Retorno CIP',
-  '12': 'Pendência Resolvida',
-  '15': 'EM DIGITAÇÃO-ROBO',
-  '69': 'DAR ANUÊNCIA',
-  '323': 'AGUARDA AUMENTO INSS',
-  '692': 'PROPOSTA EM ANALISE BANCO',
-  '700': 'REPROVADO',
-  '822': 'AGUARDANDO DIGITAÇÃO AUTOMÁTICA - ROBÔ',
-  '823': 'DIGITADO SUCESSO - ROBÔ',
-  '824': 'NÃO DIGITADO --ERRO-- ROBÔ',
-  '1111': 'AGUARDANDO ATUAÇÃO MASTER',
-  '1234': 'OP - CADASTRAR MANUAL',
-  '2002': 'CLIENTE RECEBEU',
-  '3920': 'PROPOSTA PAGA',
-  '4002': 'ASSINADO / RESPONDIDO',
-  '9232': 'AGUARDANDO ASSINATURA DIGITAL',
-  '9923': 'LINK ENVIADO AO CLIENTE',
-  '90000': 'Aguarda Liberar Assinar',
-  '10293': 'Verificação manual OP',
-  '100023': 'PAGAMENTO DEVOLVIDO',
-  '120001': 'PENDENTE POR ASSINATURA',
-  '202552': 'Envia Requisição CIP',
-}
-
-var agentes = []
-
+  const fasesName = {
+    '1': 'Inclusão sem conferência',
+    '2': 'AGUARDANDO AVERBAÇÃO',
+    '9': 'PENDENTE',
+    '11': 'Aguardando Retorno CIP',
+    '12': 'Pendência Resolvida',
+    '15': 'EM DIGITAÇÃO-ROBO',
+    '69': 'DAR ANUÊNCIA',
+    '323': 'AGUARDA AUMENTO INSS',
+    '692': 'PROPOSTA EM ANALISE BANCO',
+    '700': 'REPROVADO',
+    '822': 'AGUARDANDO DIGITAÇÃO AUTOMÁTICA - ROBÔ',
+    '823': 'DIGITADO SUCESSO - ROBÔ',
+    '824': 'NÃO DIGITADO --ERRO-- ROBÔ',
+    '1111': 'AGUARDANDO ATUAÇÃO MASTER',
+    '1234': 'OP - CADASTRAR MANUAL',
+    '2002': 'CLIENTE RECEBEU',
+    '3920': 'PROPOSTA PAGA',
+    '4002': 'ASSINADO / RESPONDIDO',
+    '9232': 'AGUARDANDO ASSINATURA DIGITAL',
+    '9923': 'LINK ENVIADO AO CLIENTE',
+    '90000': 'Aguarda Liberar Assinar',
+    '10293': 'Verificação manual OP',
+    '100023': 'PAGAMENTO DEVOLVIDO',
+    '120001': 'PENDENTE POR ASSINATURA',
+    '202552': 'Envia Requisição CIP',
+  }
+</script>
+<script>
+  var agentes = false
+  function getAgentes() {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (agentes) return alert('Aguarde...')
+    agentes = true
+    $.ajax({ type: "post",url: `${apiURL}/logins/get`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password')
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        agentes = s.logins
+        s.logins.forEach((element,index) => {
+          document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
+        });
+        document.getElementById('agente').placeholder = 'Selecione o Agente...'
+      },
+      error: function(e) {
+        agentes = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+      }
+    })
+  }(function () { getAgentes() })();
+</script>
+<script>
   var menuPropostaActual = false
   function menuPropostas(icon, codAF, bank) {
     if (menuPropostaActual) {
@@ -172,27 +197,26 @@ var agentes = []
     menuPropostaActual = codAF
     document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="cadastrar('${codAF}','${bank}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastrar</a><a onclick="sendLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Enviar Link</a><a onclick="checkEsteira('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Esteira</a><a onclick="generator('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Gerar Cadastro</a><a onclick="changeFase('${codAF}',1)" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Inclusão</a></div></div>`
   }
-
   function filter() {
     if (document.getElementById('filter').classList.contains('buttonBlock')) return alert('Aguarde...')
-    document.getElementById('filter').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
-    document.getElementById('filter').classList.add("buttonBlock");
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (agentes && document.getElementById('agente').value && !agentes.find(r=>r.user==document.getElementById('agente').value)) return alert('Agente não encontrado...')
     if (agentes && document.getElementById('agente').value && !agentes.find(r=>r.user==document.getElementById('agente').value && r.codigo)) return alert('Codigo do Agente é invalido, peça para o "Breno" configurar...')
     document.getElementById('propostas-lista').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
-    $.ajax({ type: "post", url: `${apiURL}/propostas/lista`, data: JSON.stringify({
+    document.getElementById('filter').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('filter').classList.add("buttonBlock");
+    $.ajax({ type: "post", url: `${apiURL}/propostas/afs/lista`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
-      fase: document.getElementById('fase') && document.getElementById('fase').value ? document.getElementById('fase').value : false,
-      bank: document.getElementById('bank') && document.getElementById('bank').value ? document.getElementById('bank').value : false,
-      orgao: document.getElementById('orgao') && document.getElementById('orgao').value ? document.getElementById('orgao').value : false,
-      cpf: document.getElementById('cpf') && document.getElementById('cpf').value ? document.getElementById('cpf').value : false,
-      codAF: document.getElementById('codAF') && document.getElementById('codAF').value ? document.getElementById('codAF').value : false,
-      codContrato: document.getElementById('codContrato') && document.getElementById('codContrato').value ? document.getElementById('codContrato').value : false,
-      agente: document.getElementById('agente') && document.getElementById('agente').value ? agentes.find(r=>r.user==document.getElementById('agente').value).codigo : false,
-      dateIni: document.getElementById('dateIni') && document.getElementById('dateIni').value ? document.getElementById('dateIni').value : false,
-      dateEnd: document.getElementById('dateEnd') && document.getElementById('dateEnd').value ? document.getElementById('dateEnd').value : false,
+      fase: document.getElementById('fase').value,
+      bank: document.getElementById('bank').value,
+      orgao: document.getElementById('orgao').value,
+      cpf: document.getElementById('cpf').value,
+      codAF: document.getElementById('codAF').value,
+      codContrato: document.getElementById('codContrato').value,
+      dateIni: document.getElementById('dateIni').value,
+      dateEnd: document.getElementById('dateEnd').value,
+      agente: document.getElementById('agente').value ? agentes.find(r=>r.user==document.getElementById('agente').value).codigo : false,
     }),contentType:"application/json; charset=utf-8",
       success: function(s) {
         document.getElementById('filter').innerHTML = `<p class="font-1">Filtrar</p>`
@@ -202,7 +226,7 @@ var agentes = []
         if (s.propostas && s.propostas.length >= 1) {
           document.getElementById('propostas-lista').innerHTML = ``
           s.propostas.forEach((element,index)=>{
-            if (element.codOrgaoAF == 23) element.orgaoName = "FGTS"
+          if (element.codOrgaoAF == 23) element.orgaoName = "FGTS"
             if (element.codOrgaoAF == 1) element.orgaoName = "INSS"
             if (element.codOrgaoAF == 7) element.orgaoName = "CARTÃO INSS"
             if (!element.orgaoName) element.orgaoName = "???"
@@ -214,40 +238,18 @@ var agentes = []
       error: function(e) {
         document.getElementById('filter').innerHTML = `<p class="font-1">Filtrar</p>`
         document.getElementById('filter').classList.remove("buttonBlock");
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
       }
-    });
-  }
-
-  function newToken() {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (!document.getElementById(`tokenBMG`).value) return alert('Coloque o Token...')
-    $.ajax({ type: "post", url: `${apiURL}/propostas/newToken`, data: JSON.stringify({
-      user: localStorage.getItem('user'), 
-      password: localStorage.getItem('password'),
-      token: document.getElementById('tokenBMG').value,
-      bank: "BMG",
-    }),contentType:"application/json; charset=utf-8",
-      success: function(s) {
-        if (s.error) return alert(s.error)
-        return alert('Token alterado com sucesso!')
-      },
-      error: function(e) {
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    });
+    })
   }
 
   function cadastrar(codAF, bankAF) {
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (document.getElementById(`situation_${codAF}`).style.color == `blue`) return alert('Proposta já está sendo cadastrada...')
+    if (document.getElementById(`situation_${codAF}`).style.color == `blue`) return alert('Essa proposta já está sendo cadastrada...')
     document.getElementById(`situation_${codAF}`).style.color = `blue`
     document.getElementById(`situation_${codAF}`).value = 'Entrando na fila...'
-    setTimeout(function(){ situation(codAF, false, bankAF) }, 1500)
+    setTimeout(function(){ situation(codAF, bankAF) }, 1500)
     $.ajax({ type: "post", url: `${apiURL}/propostas/cadastrar`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
@@ -264,17 +266,18 @@ var agentes = []
         return document.getElementById(`title_${codAF}`).title = s.data
       },
       error: function(e) {
-        if (e.error) {
+        if (e.responseJSON && e.responseJSON.error) {
           document.getElementById(`situation_${codAF}`).style.color = `red`
-          document.getElementById(`situation_${codAF}`).value = e.error
-          return document.getElementById(`title_${codAF}`).title = s.error
+          document.getElementById(`situation_${codAF}`).value = e.responseJSON.error
+          return document.getElementById(`title_${codAF}`).title = e.responseJSON.error
         }
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
       }
     });
   }
-  function situation(codAF, aux, bank) {
+
+  function situation(codAF, bank) {
     if (document.getElementById(`situation_${codAF}`).style.color == 'red' || document.getElementById(`situation_${codAF}`).style.color == "green" || document.getElementById(`situation_${codAF}`).style.color == "orange") return;
     $.ajax({ type: "post", url: `${apiURL}/propostas/situation`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
@@ -284,90 +287,91 @@ var agentes = []
       actual: document.getElementById(`situation_${codAF}`) ? document.getElementById(`situation_${codAF}`).value : false
     }),contentType:"application/json; charset=utf-8",
       success: function(s) {
-        if (s.not && !aux) {
-          return situation(codAF, aux, bank)
-        } else if (s.error) {
+        if (s.error) {
           document.getElementById(`situation_${codAF}`).style.color = `red`
           document.getElementById(`situation_${codAF}`).value = s.error
           return document.getElementById(`title_${codAF}`).title = s.error
-        } else if (s.end && aux) {
-          document.getElementById(`situation_${codAF}`).style.color = `orange`
-          document.getElementById(`situation_${codAF}`).value = s.end
-          return document.getElementById(`title_${codAF}`).title = s.end
-        } else if (!s.end && !s.not) {
+        } else if (s.position) {
+          document.getElementById(`situation_${codAF}`).value = `Aguardando na fila - `+s.position
+          document.getElementById(`title_${codAF}`).title = `Aguardando na fila - `+s.position
+          return situation(codAF, bank)
+        } else if (s.start) {
+          document.getElementById(`situation_${codAF}`).value = 'Iniciando Cadastro...'
+          document.getElementById(`title_${codAF}`).title = 'Iniciando Cadastro...'
+          return situation(codAF, bank)
+        } else if (s.value) {
           document.getElementById(`situation_${codAF}`).style.color = `blue`
-          document.getElementById(`situation_${codAF}`).value = s.result
-          document.getElementById(`title_${codAF}`).title = s.result
-          return situation(codAF, aux, bank)
-        } else if (s.not && !aux) {
-          return setTimeout(()=> { return situation(codAF, aux, bank) },3000)
+          document.getElementById(`situation_${codAF}`).value = s.value
+          document.getElementById(`title_${codAF}`).title = s.value
+          return situation(codAF, bank)
+        } else if (s.notFound && document.getElementById(`situation_${codAF}`).style.color != 'red' && document.getElementById(`situation_${codAF}`).style.color != "green" && document.getElementById(`situation_${codAF}`).style.color != "orange") {
+          document.getElementById(`situation_${codAF}`).style.color = `orange`
+          return document.getElementById(`situation_${codAF}`).value = 'Cadastro Finalizado...'
         }
-      },
+      }, 
       error: function(e) {
-        if (e.error) {
+        if (e.responseJSON && e.responseJSON.error) {
           document.getElementById(`situation_${codAF}`).style.color = `red`
-          document.getElementById(`situation_${codAF}`).value = e.error
-          return document.getElementById(`title_${codAF}`).title = s.error
+          document.getElementById(`situation_${codAF}`).value = e.responseJSON.error
+          return document.getElementById(`title_${codAF}`).title = e.responseJSON.error
         }
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
       }
-    });
+    })
   }
 
-  var sendLinking = false
-  function sendLink(codAF,fase) {
-    if (sendLinking) return alert('Você já está enviando o link de alguma proposta! Aguarde...')
-    sendLinking = true
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    $.ajax({ type: "post", url: `${apiURL}/propostas/sendLink`, data: JSON.stringify({
-      user: localStorage.getItem('user'), 
-      password: localStorage.getItem('password'),
-      proposta: codAF
-    }),contentType:"application/json; charset=utf-8",
-      success: function(s) {
-        sendLinking = false
-        if (s.error) return alert(s.error)
-        alert(`O link foi enviado com sucesso para o cliente!`)
-      },
-      error: function(e) {
-        sendLinking = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    });
-  }
-
-  var changeFaseActive = false
+  var blockFase = false
   function changeFase(codAF,fase) {
-    if (changeFaseActive) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
-    changeFaseActive = true
+    if (blockFase) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
+    blockFase = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    $.ajax({ type: "post", url: `${apiURL}/propostas/changeFase`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/afs/fase`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF,
       fase: fase,
     }),contentType:"application/json; charset=utf-8",
       success: function(s) {
-        changeFaseActive = false
+        blockFase = false
         if (s.error) return alert(s.error)
         alert(`A proposta: ${codAF} teve sua fase alterada com sucesso!`)
       },
       error: function(e) {
-        changeFaseActive = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+        blockFase = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
       }
     });
   }
 
-  var changeEsteira = false
+  var link = false
+  function sendLink(codAF,fase) {
+    if (link) return alert('Você já está enviando o link de alguma proposta! Aguarde...')
+    link = true
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    $.ajax({ type: "post", url: `${apiURL}/propostas/link`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      proposta: codAF
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        link = false
+        if (s.error) return alert(s.error)
+        alert(`O link foi enviado com sucesso para o cliente!`)
+      },
+      error: function(e) {
+        link = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+      }
+    });
+  }
+
+  var esteira = false
   function checkEsteira(codAF) {
-    if (changeEsteira) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
-    changeEsteira = true
+    if (esteira) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
+    esteira = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     $.ajax({ type: "post", url: `${apiURL}/propostas/esteira`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
@@ -375,18 +379,38 @@ var agentes = []
       proposta: codAF
     }),contentType:"application/json; charset=utf-8",
       success: function(s) {
-        changeEsteira = false
+        esteira = false
         if (s.error) return alert(s.error)
         return alert(s.data)
       },
       error: function(e) {
-        changeEsteira = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+        esteira = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
       }
     });
   }
+
+  function newToken() {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (!document.getElementById(`tokenBMG`).value) return alert('Coloque o Token...')
+    $.ajax({ type: "post", url: `${apiURL}/propostas/token`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      token: document.getElementById('tokenBMG').value,
+      bank: "BMG",
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        if (s.error) return alert(s.error)
+        return alert('Token alterado com sucesso!')
+      },
+      error: function(e) {
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+      }
+    });
+  }
+
   var generatorMenu = false
   function closeGenerator() {
     generatorMenu = false
@@ -413,9 +437,8 @@ var agentes = []
       },
       error: function(e) {
         generatorCod = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
       }
     });
   }
@@ -428,34 +451,6 @@ var agentes = []
       } else return alert('Não a nada aqui para ser copiado...')
     } else return alert('Não encontrei o codigo...')
   }
-
-  var agentesBlock = false
-  function getAgentes() {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (agentesBlock) return alert('Aguarde...')
-    agentesBlock = true
-    $.ajax({ type: "post",url: `${apiURL}/funcionarios/getLogins`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password')
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        agentesBlock = false
-        agentes = s.logins
-        s.logins.forEach((element,index) => {
-          document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
-        });
-        document.getElementById('agente').placeholder = 'Selecione o Agente...'
-      },
-      error: function(e) {
-        agentesBlock = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-  (function () { getAgentes() })();
 </script>
 <script>
     function searchBar() {

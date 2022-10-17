@@ -1,37 +1,344 @@
 <div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
   <navbar id="navbar"></navbar>
-  <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
+  <script>$("#navbar").load(`/imports/navbar.html`)</script>
   <div class="background-image margin-left18-5 width79 " style="margin-top: 12.5vh; margin-left: 6vw; width: 92.5vw; height: 20%; border-radius: 2vh;display: flex; flex-direction: column; justify-content: center; align-items: center;">
     <a style="font-size: 3vh">Configurações</a>
     <div style="display: flex; width: 100%; justify-content: center; align-items: center">
-      <a id="configsButton" onclick="changeMenu('configs')" class="buttonLogin width50p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Configs</a>
-      <a id="rolesButton" onclick="changeMenu('roles')" class="buttonLogin width50p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Cargos</a>
-      <a id="logsButton" onclick="changeMenu('logs')" class="buttonLogin width50p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Logs</a>
+      <a id="Configs" onclick="getMenu('Configs')" class="buttonLogin width50p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Configs</a>
+      <a id="Roles" onclick="getMenu('Roles')" class="buttonLogin width50p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Cargos</a>
+      <a id="Esteiras" onclick="getMenu('Esteiras')" class="buttonLogin width50p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Esteiras</a>
     </div>
   </div>
-
   <div class="background-image margin-left18-5 width79 " style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; height: 13%; border-radius: 2vh;display: flex; flex-direction: row; justify-content: center; align-items: center;">
-    <fieldset title="Pesquise alguma coisa por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
-      <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
-      <input onkeyup="searchBar()" id="searchBar" placeholder="Pesquise alguma coisa aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-    </fieldset>
-    <i onclick="searchBar()" class="fa-regular fa-magnifying-glass-dollar" style="font-size: 3.5vh; margin-top: 1.5vh; cursor: pointer"></i>
   </div>
 
-  <div class="background-image margin-left18-5 width79 " style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; min-height: 42.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: column; padding-block: 4vh">
-    <div id="loading" style="display: none">
-      <div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>
-    </div>
-    <div id="roles" style="display: none; margin-inline: 3vw"></div>
-    <div id="configs" style="display: none; margin-inline: 3vw"></div>
-    <div id="logs" style="display: none; margin-inline: 3vw"></div>
-    <div id="menuPropostas">
-    </div>
+  <div id="result" class="background-image margin-left18-5 width79 " style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; min-height: 42.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: column; align-items: center; padding-block: 4vh">
+
   </div>
+  <div id="menuPropostas"></div>
 </div>
 
 <script>
-  var agentes = []
+  var menuPropostaActual = false
+  var getBlock = false
+  var menus = [ { menu: "Configs", block: true }, { menu: "Roles", block: true }, { menu: "Esteiras", block: true } ]
+  function getMenu(button) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (getBlock) return alert('Aguarde...')
+    if (document.getElementById(button).classList.contains('buttonBlock') || getBlock) return alert('Sem permissão...')
+    menus.filter(r=> !r.block).forEach(r=>{ document.getElementById(r.menu).classList.add('buttonBlock') })
+    document.getElementById('result').innerHTML = `<div class="loader-wheel"></div><div class="loader-text font-5"></div>`
+    getBlock = true
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/configs/get`,
+      data: JSON.stringify({ user: localStorage.getItem('user'), password: localStorage.getItem('password'), menu: button }),
+      contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        getBlock = false
+        document.getElementById('result').innerHTML = ``
+        menus.filter(r=> r.menu != button && !r.block).forEach(r=>{ document.getElementById(r.menu).classList.remove('buttonBlock') })
+        if (s.error) return alert(s.error)
+        if (button == "Configs") {
+          s.configs.forEach((element,index)=>{
+            if (element.active || element.active === 0) {
+              document.getElementById('result').innerHTML += `<result style="width: 23%;">
+                <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+                  <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
+                  <div style="width: 100%; display: flex; justify-content: center">
+                    <div id="${element.id}_activeS" onclick="inputChecked('${element.id}_active')" class="slider">
+                      <div id="${element.id}_activeB" class="sliderB"></div>
+                    </div>
+                  </div>
+                  <input id="${element.id}_active" value='0' type='hidden'>
+                  <i onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid fa-floppy-disk font-color-navbar"></i>
+                </fieldset>
+              </result>`
+              if (element.active == 1) inputChecked(`${element.id}_active`)
+            }
+          })
+        } else if (button == "Roles") {
+          document.getElementById('result').innerHTML += `<div class="font-color-navbar background-reverse" style="z-index: 5; cursor: pointer; position: fixed; bottom: 2vh; right: 3vw; padding-block: 1vh; display: flex; align-items: center; justify-content: center; border-radius: 2vh"><fieldset id="fieldset" title="Novo Cargo..." style="text-align: left; padding: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%; margin-right: 1vw;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Novo Cargo</legend><input class="font-1 font-color-reverse" placeholder="Nome do Cargo" id="newRoleInput" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset><i class="fa-regular fa-file-circle-plus" style="font-size: 4vh; margin-top: 1vh" onclick="create('Roles', document.getElementById('newRoleInput').value)"></i></div></div>`
+          s.roles.forEach((element,index)=>{
+            document.getElementById('result').innerHTML += `<result style="width: 90%">
+              <div class="background-Propostas" style="border-radius: 1.5vh; margin-block: 1.5vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 0.8vh">
+                <div class="line-bottom navbar-font-color font-4" style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center; height: 6vh; font-size: 2.2vh">
+                  <a title="${element.role}" style="max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                    <i class="fa-regular fa-user-tag font-size2"></i>
+                    <span class="invisibleAndroid"> Cargo: </span>
+                    ${element.role}
+                  </a>
+                  <a title="${element.agente}" style="max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                    <i class="fa-regular fa-user-tag font-size2"></i>
+                    <span class="invisibleAndroid"> Criador: </span>
+                    ${element.agente}
+                  </a>
+                  <i style="position: absolute; right: 1.5vw; cursor: pointer" onclick="menuPropostas(this, '${index}','${element.role}')" class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+                <div class="flex-direction-column" style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 11%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Funcionários</legend>
+                    <div id="${index}_administrativo_funcionariosS" onclick="inputChecked('${index}_administrativo_funcionarios')" class="slider">
+                      <div id="${index}_administrativo_funcionariosB" class="sliderB"></div>
+                    </div>
+                    <input id="${index}_administrativo_funcionarios" value='0' type='hidden'>
+                  </fieldset>
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Configs</legend>
+                    <div id="${index}_administrativo_configsS" onclick="inputChecked('${index}_administrativo_configs')" class="slider">
+                      <div id="${index}_administrativo_configsB" class="sliderB"></div>
+                    </div>
+                    <input id="${index}_administrativo_configs" value='0' type='hidden'>
+                  </fieldset>
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Logs</legend>
+                    <div id="${index}_administrativo_logsS" onclick="inputChecked('${index}_administrativo_logs')" class="slider">
+                      <div id="${index}_administrativo_logsB" class="sliderB"></div>
+                    </div>
+                    <input id="${index}_administrativo_logs" value='0' type='hidden'>
+                  </fieldset>
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Cargos</legend>
+                    <div id="${index}_administrativo_rolesS" onclick="inputChecked('${index}_administrativo_roles')" class="slider">
+                      <div id="${index}_administrativo_rolesB" class="sliderB"></div>
+                    </div>
+                    <input id="${index}_administrativo_roles" value='0' type='hidden'>
+                  </fieldset>
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 13%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Relatórios ADM</legend>
+                    <div id="${index}_administrativo_relatoriosS" onclick="inputChecked('${index}_administrativo_relatorios')" class="slider">
+                      <div id="${index}_administrativo_relatoriosB" class="sliderB"></div>
+                    </div>
+                    <input id="${index}_administrativo_relatorios" value='0' type='hidden'>
+                  </fieldset>
+                </div>
+                <div class="flex-direction-column" style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 11.5%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Lista de Prop.</legend>
+                    <div id="${index}_propostas_listaS" onclick="inputChecked('${index}_propostas_lista')" class="slider">
+                      <div id="${index}_propostas_listaB" class="sliderB"></div>
+                    </div>
+                    <input id="${index}_propostas_lista" value='0' type='hidden'>
+                  </fieldset>
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Nova Prop.</legend>
+                    <div id="${index}_propostas_cadastrarS" onclick="inputChecked('${index}_propostas_cadastrar')" class="slider">
+                      <div id="${index}_propostas_cadastrarB" class="sliderB"></div>
+                    </div>
+                    <input id="${index}_propostas_cadastrar" value='0' type='hidden'>
+                  </fieldset>
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 13%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Consultas FGTS</legend>
+                    <div id="${index}_consultas_fgtsS" onclick="inputChecked('${index}_consultas_fgts')" class="slider">
+                      <div id="${index}_consultas_fgtsB" class="sliderB"></div>
+                    </div>
+                    <input id="${index}_consultas_fgts" value='0' type='hidden'>
+                  </fieldset>
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Lotes</legend>
+                    <div id="${index}_consultas_lotesS" onclick="inputChecked('${index}_consultas_lotes')" class="slider">
+                      <div id="${index}_consultas_lotesB" class="sliderB"></div>
+                    </div>
+                    <input id="${index}_consultas_lotes" value='0' type='hidden'>
+                  </fieldset>
+                </div>
+              </div>
+            </result>`
+            for (var key in s.roles[index]) {
+              if(s.roles[index][key] == 1 && document.getElementById(`${index}_${key}`)) {
+                inputChecked(`${index}_${key}`)
+              }
+            }
+          })
+        } else if (button == "Esteiras") {
+          s.fases.splice(0,5).forEach((element,index)=>{
+            document.getElementById('result').innerHTML += `<result style="width: 90%">
+              <div class="background-Propostas" style="border-radius: 1.5vh; margin-block: 1.5vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 1.5vh">
+                <div class="line-bottom navbar-font-color font-4" style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center; height: 6vh; font-size: 2.2vh">
+                  <a title="${element.bank}" style="max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                    <i class="fa-regular fa-user-tag font-size2"></i>
+                    <span class="invisibleAndroid"> Banco: </span>
+                    ${element.bank}
+                  </a>
+                  <a title="${element.situacao}" style="max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                    <i class="fa-regular fa-user-tag font-size2"></i>
+                    <span class="invisibleAndroid"> Situação: </span>
+                    ${element.situacao ? element.situacao : 'Nenhuma'}
+                  </a>
+                  <a title="${element.atividade}" style="max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                    <i class="fa-regular fa-user-tag font-size2"></i>
+                    <span class="invisibleAndroid"> Atividade: </span>
+                    ${element.atividade ? element.atividade : 'Nenhuma'}
+                  </a>
+                  <a title="${element.status}" style="max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                    <i class="fa-regular fa-user-tag font-size2"></i>
+                    <span class="invisibleAndroid"> Status: </span>
+                    ${element.status ? element.status : 'Nenhum'}
+                  </a>
+                  <i class="fa-solid fa-floppy-disk font-color-navbar" style="position: absolute; right: 1.5vw; cursor: pointer" 
+                  onclick="saveMenu(
+                    'Esteiras','${element.id}',
+                    document.getElementById('${element.id}_newFase').value,
+                    document.getElementById('${element.id}_oldFase').value,
+                    document.getElementById('${element.id}_motivo').value,
+                    ${element.atividade ? element.atividade : 'Nenhuma'},
+                    ${element.status ? element.status : 'Nenhum'}
+                  )"></i>
+                </div>
+                <div class="font-4" style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center; height: 6vh; font-size: 2.2vh; padding-block: 1vh">
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 20%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Nova Fase</legend>
+                    <input id="${element.id}_newFase" type="text" class="font-1" value="${element.newFase ? element.newFase : ''}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+                  </fieldset>
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 20%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Fases Antigas</legend>
+                    <input id="${element.id}_oldFase" type="text" class="font-1" value="${element.oldFase ? element.oldFase : ''}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+                  </fieldset>
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 40%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Motivo</legend>
+                    <input id="${element.id}_motivo" type="text" class="font-1" value="${element.motivo ? element.motivo : ''}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+                  </fieldset>
+                </div>
+              </div>
+            </result>`
+          })
+        }
+      },
+      error: async function(e) {
+        getBlock = false
+        menus.filter(r=>r.menu != button).forEach(r=>{ document.getElementById(r.menu).classList.remove('buttonBlock') })
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+      }
+    })
+  }
+  function saveMenu(button, option, value1, value2, value3, value4, value5, value6, value7, value8, value9) {
+    if (getBlock) return alert('Aguarde...')
+    getBlock = true
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/configs/save`,
+      data: JSON.stringify({ 
+        user: localStorage.getItem('user'), 
+        password: localStorage.getItem('password'), 
+        menu: button, 
+        option: option, 
+        value1: value1,
+        value2: value2,
+        value3: value3,
+        value4: value4,
+        value5: value5,
+        value6: value6,
+        value7: value7,
+        value8: value8,
+        value9: value9,
+      }),
+      contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        getBlock = false
+        if (s.error) return alert(s.error)
+        if (button == "Configs") return alert('Configuração salva com sucesso...')
+        if (button == "Roles") return alert('Cargo salvo com sucesso...')
+        if (button == "Esteiras") return alert('Fase salva com sucesso...')
+        return alert('Configuração salva com sucesso...')
+      },
+      error: async function(e) {
+        getBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+      }
+    })
+  }
+  function create(button, value) {
+    if (getBlock) return alert('Aguarde...')
+    getBlock = true
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/configs/create`,
+      data: JSON.stringify({ 
+        user: localStorage.getItem('user'), 
+        password: localStorage.getItem('password'), 
+        menu: button,
+        value: value
+      }),
+      contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        getBlock = false
+        if (s.error) return alert(s.error)
+        if (button == "Configs") alert('Configuração criada com sucesso...')
+        if (button == "Roles") alert('Cargo criado com sucesso...')
+        if (button == "Esteiras") alert('Fase criada com sucesso...')
+        return window.location.reload()
+      },
+      error: async function(e) {
+        getBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+      }
+    })
+  }
+  function remove(button, value) {
+    if (getBlock) return alert('Aguarde...')
+    getBlock = true
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/configs/remove`,
+      data: JSON.stringify({ 
+        user: localStorage.getItem('user'), 
+        password: localStorage.getItem('password'), 
+        menu: button,
+        value: value
+      }),
+      contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        getBlock = false
+        if (s.error) return alert(s.error)
+        if (button == "Configs") alert('Configuração deletada com sucesso...')
+        if (button == "Roles") alert('Cargo deletado com sucesso...')
+        if (button == "Esteiras") alert('Fase deletada com sucesso...')
+        return window.location.reload()
+      },
+      error: async function(e) {
+        getBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+      }
+    })
+  }
+  function menuPropostas(icon, cod, role) {
+    if (menuPropostaActual) {
+      document.getElementById(`menuProposta`).innerHTML = ``
+      if (menuPropostaActual == cod) return menuPropostaActual = false
+      menuPropostaActual = false
+    }
+    menuPropostaActual = cod
+    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="saveMenu('Roles','${role}',
+        document.getElementById('${cod}_administrativo_funcionarios').value,
+        document.getElementById('${cod}_administrativo_roles').value,
+        document.getElementById('${cod}_administrativo_configs').value,
+        document.getElementById('${cod}_administrativo_logs').value,
+        document.getElementById('${cod}_administrativo_relatorios').value,
+        document.getElementById('${cod}_propostas_lista').value,
+        document.getElementById('${cod}_propostas_cadastrar').value,
+        document.getElementById('${cod}_consultas_fgts').value,
+        document.getElementById('${cod}_consultas_lotes').value
+      )
+    " class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Salvar</a><a onclick="remove('Roles','${role}')" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Deletar</a></div></div>`
+  }
+  (function () {
+    if (login.perms.administrativo_configs) {
+      if (menus.find(r=> r.menu == "Configs")) {
+        menus.find(r=> r.menu == "Configs").block = false
+        document.getElementById('Configs').classList.remove('buttonBlock')
+      }
+      if (menus.find(r=> r.menu == "Esteiras")) {
+        menus.find(r=> r.menu == "Esteiras").block = false
+        document.getElementById('Esteiras').classList.remove('buttonBlock')
+      }
+    }
+    if (login.perms.administrativo_roles) {
+      if (menus.find(r=> r.menu == "Roles")) {
+        menus.find(r=> r.menu == "Roles").block = false
+        document.getElementById('Roles').classList.remove('buttonBlock')
+      }
+    }
+    if (login.perms.administrativo_configs) getMenu('Configs')
+  })();
+</script>
+<script>
   function inputChecked(button) {
     if (document.getElementById(button).value == '1') {
       document.getElementById(button).value = '0'
@@ -43,361 +350,4 @@
       document.getElementById(button+"S").classList.add('sliderC')
     }
   }
-
-  var myPermissions = false
-  var actualMenu = false
-  function searchBar() {
-    var input, filter, ul, li, a, i, txtValue;
-    input = document.getElementById('searchBar');
-    filter = input.value.toUpperCase();
-    ul = document.getElementById(actualMenu);
-    li = ul.getElementsByTagName('proposta');
-    for (i = 0; i < li.length; i++) {
-      a = li[i]
-      txtValue = a.textContent || a.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        li[i].style.display = "inline";
-      } else {
-        li[i].style.display = "none";
-      }
-    }
-  }
-  function changeMenu(menu, aux) {
-    if (document.getElementById(`${menu}Button`).classList.contains('buttonBlock')) return alert('Você não tem permissão para acessar esse sistema')
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    var postURL = false
-    if (menu == 'roles') postURL = 'getRoles'
-    if (menu == 'configs') postURL = 'getConfigs'
-    if (menu == 'logs') postURL = 'getLogs'
-    if (!postURL) return alert('Menu não encontrado...')
-    var type = document.getElementById('type') ? document.getElementById('type').value : false
-    var dataIni = document.getElementById('dataIni') ? document.getElementById('dataIni').value : false
-    var dataEnd = document.getElementById('dataEnd') ? document.getElementById('dataEnd').value : false
-    var agente = document.getElementById('agente') ? document.getElementById('agente').value : false
-    if (document.getElementById(`${actualMenu}Button`)) {
-      if (menu == actualMenu && !aux) return;
-      if (document.getElementById(`${actualMenu}Button`).classList.contains('buttonBlock')) return alert('Aguarde...');
-      document.getElementById(`${actualMenu}Button`).classList.remove('buttonLogin-select')
-      document.getElementById(`${actualMenu}`).innerHTML = ''
-      document.getElementById(`${actualMenu}`).style.display = 'none'
-    }
-    actualMenu = menu
-    document.getElementById('loading').style.display = 'flex'
-    document.getElementById(`${actualMenu}Button`).classList.add('buttonBlock')
-    $.ajax({ type: "post",url: `${apiURL}/administrativo/${postURL}`,
-    data: JSON.stringify({
-      user: localStorage.getItem('user'),
-      password: localStorage.getItem('password'),
-      type: type,
-      dataIni: dataIni,
-      dataEnd: dataEnd,
-      agente: agente,
-    }), contentType:"application/json; charset=utf-8",
-    success: async function(s) {
-      if (s.error) return alert(s.error)
-      if (menu == "logs") {
-        document.getElementById(menu).innerHTML += `<div style="display: flex; width: 100%; justify-content: center; align-items: center">
-            <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo</legend>
-              <select class="font-1" id="type" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-                <option style="color: black" value="" selected>Todas</option>
-                <option style="color: black" value="cadastrar">Cadastrar</option>
-                <option style="color: black" value="esteira">Esteira</option>
-                <option style="color: black" value="fgts">FGTS</option>
-                <option style="color: black" value="funcionarios">Funcionarios</option>
-                <option style="color: black" value="generator">Geradores</option>
-                <option style="color: black" value="login">Login</option>
-                <option style="color: black" value="propostas">Propostas</option>
-                <option style="color: black" value="system">Sistema</option>
-                <option style="color: black" value="login">Login</option>
-                <option style="color: black" value="leads">Leads</option>
-              </select>
-            </fieldset>
-            <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Minima</legend>
-              <input class="font-1" id="dataIni" type="datetime-local" id="type" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-            </fieldset>
-            <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Maxima</legend>
-              <input class="font-1" id="dataEnd" type="datetime-local" id="type" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-            </fieldset>
-            <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Agentes</legend>
-              <input class="font-1" id="agente" placeholder="Carregando..." list="agentesList" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-            </fieldset>
-            <datalist id="agentesList"></datalist>
-            <i onclick="changeMenu('logs', true)" style="font-size: 3vh; margin-left: 0.5vw; cursor: pointer" class="fa-regular fa-magnifying-glass"></i>
-          </div>`
-        s.logs.forEach((element,index)=>{
-          document.getElementById(menu).innerHTML += `<proposta><a style="display:none">${JSON.stringify(element)}</a><div id="fase_${element.role}" class="background-Propostas" style="z-index: 1; position: relative; border-radius: 1.5vh; margin-block: 2.5vh">
-            <div class="line-bottom navbar-font-color font-4" style="display: flex; flex-direction: row; align-items: center; height: 6vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center; position: relative">
-              <a title="${element.author}" style="margin-inline: 2%; max-width: 25%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-light fa-user-headset"></i><span class="invisibleAndroid"> Autor: </span><span id="${element.author}_bank">${element.author}</span></a>
-              <a title="${element.type}" style="margin-inline: 2%; max-width: 25%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-solid fa-quote-left font-size2"></i><span class="invisibleAndroid"> Tipo: </span><span>${element.type}</span></a>
-              <a title="${element.data}" style="margin-inline: 2%; max-width: 25%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-regular fa-calendar-days font-size2"></i><span class="invisibleAndroid"> Data: </span><span id="${element.id}_atividade">${element.data.split("T").join(" - ").replace('Z','')}</span></a>
-            </div>
-          <div class="flex-direction-column" style="display: flex; flex-direction: row; align-items: center; min-height: 10vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center;"> 
-            <fieldset class="width60p" style="padding: 0; width: 80%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Log</legend>
-              <input class="font-1" id="${element.id}_newFase" value="${element.log}" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0" disabled>
-            </fieldset>
-          </div></div></proposta>`
-        })
-        
-        if (type) document.getElementById('type').value = type
-        if (dataIni) document.getElementById('dataIni').value = dataIni
-        if (dataEnd) document.getElementById('dataEnd').value = dataEnd
-        getAgentes()
-      }
-      if (menu == "configs") {
-        s.configs.forEach((element,index)=>{
-          if (element.active || element.active === 0) {
-            document.getElementById(menu).innerHTML += `<fieldset class="width70p margin-left15p" style="position: relative; padding: 0; width: 30%; margin: 0; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; margin-left: 35%; display: flex;">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pausar Minhas API's</legend>
-              <div style="width: 100%; display: flex; justify-content: center">
-                <div id="${element.id}_activeS" onclick="inputChecked('${element.id}_active')" class="slider"><div id="${element.id}_activeB" class="sliderB"></div>
-                <input id="${element.id}_active" value='0' type='hidden'>
-              </div>
-              <i onclick="saveConfigs('${element.id}_active','${element.config}')" style="font-size: 3vh; position: absolute; right: 2vw; cursor: pointer" class="fa-solid fa-floppy-disk font-color-navbar"></i>
-            </fieldset>`
-            if (element.active == 1) inputChecked(`${element.id}_active`)
-          }
-        })
-        document.getElementById(menu).innerHTML += `<a style="width: 100%; display: flex; justify-content: center; font-size: 4vh; margin-top: 5vh">Fases Esteira:</a>`
-        s.fases.forEach((element,index)=>{
-          document.getElementById(menu).innerHTML += `<proposta><a style="display:none">${JSON.stringify(element)}</a><div id="fase_${element.role}" class="background-Propostas" style="z-index: 1; position: relative; border-radius: 1.5vh; margin-block: 2.5vh"><div class="line-bottom navbar-font-color font-4" style="display: flex; flex-direction: row; align-items: center; height: 6vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center; position: relative"><i style="position: absolute; right: 1.5vw; cursor: pointer" onclick="saveFases('${element.id}')" class="fa-solid fa-floppy-disk font-color-navbar"></i><a title="${element.bank}" style="margin-inline: 2%; max-width: 25%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-regular fa-building-columns"></i><span class="invisibleAndroid"> Banco: </span><span id="${element.id}_bank">${element.bank}</span></a><a title="${element.situacao}" style="margin-inline: 2%; max-width: 25%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-regular fa-bookmark font-size2"></i><span class="invisibleAndroid"> Situação: </span><span id="${element.id}_situacao">${element.situacao}</span></a><a title="${element.atividade}" style="margin-inline: 2%; max-width: 25%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-regular fa-book-user font-size2"></i><span class="invisibleAndroid"> Atividade: </span><span id="${element.id}_atividade">${element.atividade}</span></a><a title="${element.status}" style="margin-inline: 2%; max-width: 25%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-regular fa-book-open-cover font-size2"></i><span class="invisibleAndroid"> Status: </span><span id="${element.id}_status">${element.status}</status></a></div><div class="flex-direction-column" style="display: flex; flex-direction: row; align-items: center; min-height: 10vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center;">
-            
-            <fieldset class="width60p" style="padding: 0; width: 15%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Nova Fase</legend>
-              <input class="font-1" type="number" id="${element.id}_newFase" value="${element.newFase}" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-            </fieldset>
-            <fieldset class="width60p" style="padding: 0; width: 30%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Fases Antigas</legend>
-              <input class="font-1" id="${element.id}_oldFase" placeholder="Vazio..." value="${element.oldFase ? element.oldFase : ''}" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-            </fieldset>
-            <fieldset class="width60p" style="padding: 0; width: 40%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Motivo</legend>
-              <input class="font-1" placeholder="Vazio..." id="${element.id}_motivo" value="${element.motivo ? element.motivo : ''}" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-            </fieldset>
-            </div></div></proposta>`
-        })
-      }
-      if (menu == 'roles') {
-        s.roles.forEach((element,index)=>{
-          document.getElementById(menu).innerHTML += `<proposta><a style="display:none">${JSON.stringify(element)}</a><div id="role_${element.role}" class="background-Propostas" style="z-index: 1; position: relative; border-radius: 1.5vh; margin-block: 2.5vh"><div class="line-bottom navbar-font-color font-4" style="display: flex; flex-direction: row; align-items: center; height: 6vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center; position: relative"><i style="position: absolute; right: 1.5vw; cursor: pointer" onclick="menuPropostas(this, '${index}')" class="fa-solid fa-ellipsis-vertical"></i><a title="${element.role}" style="margin-inline: 2%; max-width: 40%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-regular fa-user-tag font-size2"></i><span class="invisibleAndroid"> Cargo: </span><span id="${index}_roleName">${element.role}</span></a><a title="${element.agente}" style="margin-inline: 2%; max-width: 40%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-regular fa-id-card-clip font-size2"></i><span class="invisibleAndroid"> Agente: </span>${element.agente}</a></div><div class="flex-direction-column" style="display: flex; flex-direction: row; align-items: center; min-height: 10vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center;"><fieldset class="width60p" style="padding: 0; width: 8%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Funcionarios</legend><div style="width: 100%; display: flex; justify-content: center"><div id="${index}_administrativo_funcionariosS" onclick="inputChecked('${index}_administrativo_funcionarios')" class="slider"><div id="${index}_administrativo_funcionariosB" class="sliderB"></div><input id="${index}_administrativo_funcionarios" value='0' type='hidden'></div></div></fieldset><fieldset class="width60p" style="padding: 0; width: 9%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Edit. Cargos</legend><div style="width: 100%; display: flex; justify-content: center"><div id="${index}_administrativo_rolesS" onclick="inputChecked('${index}_administrativo_roles')" class="slider"><div id="${index}_administrativo_rolesB" class="sliderB"></div><input id="${index}_administrativo_roles" value='0' type='hidden'></div></div></fieldset><fieldset class="width60p" style="padding: 0; width: 8%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Logs</legend><div style="width: 100%; display: flex; justify-content: center"><div id="${index}_administrativo_logsS" onclick="inputChecked('${index}_administrativo_logs')" class="slider"><div id="${index}_administrativo_logsB" class="sliderB"></div><input id="${index}_administrativo_logs" value='0' type='hidden'></div></div></fieldset><fieldset class="width60p" style="padding: 0; width: 8%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Edit. Conf.</legend><div style="width: 100%; display: flex; justify-content: center"><div id="${index}_administrativo_configsS" onclick="inputChecked('${index}_administrativo_configs')" class="slider"><div id="${index}_administrativo_configsB" class="sliderB"></div><input id="${index}_administrativo_configs" value='0' type='hidden'></div></div></fieldset><fieldset class="width60p" style="padding: 0; width: 8%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">ADM Relat.</legend><div style="width: 100%; display: flex; justify-content: center"><div id="${index}_administrativo_relatoriosS" onclick="inputChecked('${index}_administrativo_relatorios')" class="slider"><div id="${index}_administrativo_relatoriosB" class="sliderB"></div><input id="${index}_administrativo_relatorios" value='0' type='hidden'></div></div></fieldset><fieldset class="width60p" style="padding: 0; width: 8%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Prop. Lista</legend><div style="width: 100%; display: flex; justify-content: center"><div id="${index}_propostas_listaS" onclick="inputChecked('${index}_propostas_lista')" class="slider"><div id="${index}_propostas_listaB" class="sliderB"></div><input id="${index}_propostas_lista" value='0' type='hidden'></div></div></fieldset><fieldset class="width60p" style="padding: 0; width: 8%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Prop. Nova</legend><div style="width: 100%; display: flex; justify-content: center"><div id="${index}_propostas_cadastrarS" onclick="inputChecked('${index}_propostas_cadastrar')" class="slider"><div id="${index}_propostas_cadastrarB" class="sliderB"></div><input id="${index}_propostas_cadastrar" value='0' type='hidden'></div></div></fieldset><fieldset class="width60p" style="padding: 0; width: 8%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Cons. FGTS</legend><div style="width: 100%; display: flex; justify-content: center"><div id="${index}_consultas_fgtsS" onclick="inputChecked('${index}_consultas_fgts')" class="slider"><div id="${index}_consultas_fgtsB" class="sliderB"></div><input id="${index}_consultas_fgts" value='0' type='hidden'></div></div></fieldset><fieldset class="width60p" style="padding: 0; width: 8%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Cons. Lotes</legend><div style="width: 100%; display: flex; justify-content: center"><div id="${index}_consultas_lotesS" onclick="inputChecked('${index}_consultas_lotes')" class="slider"><div id="${index}_consultas_lotesB" class="sliderB"></div><input id="${index}_consultas_lotes" value='0' type='hidden'></div></div></fieldset></div></div></proposta>`
-          
-          for (var key in s.roles[index]) {
-            if(s.roles[index][key] == 1 && document.getElementById(`${index}_${key}`)) {
-              inputChecked(`${index}_${key}`)
-            }
-          }
-        })
-        document.getElementById(menu).innerHTML += `<div class="font-color-navbar background-reverse" style="z-index: 5; cursor: pointer; position: fixed; bottom: 2vh; right: 3vw; padding-block: 1vh; display: flex; align-items: center; justify-content: center; border-radius: 2vh"><fieldset id="fieldset" title="Novo Cargo..." style="text-align: left; padding: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%; margin-right: 1vw;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Novo Cargo</legend><input class="font-1 font-color-reverse" placeholder="Nome do Cargo" id="newRoleInput" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset><i class="fa-regular fa-file-circle-plus" style="font-size: 4vh" onclick="createRole()"></i></div></div>`
-      }
-      document.getElementById(`${menu}Button`).classList.remove('buttonBlock')
-      document.getElementById(`${menu}Button`).classList.add('buttonLogin-select')
-      document.getElementById('loading').style.display = 'none'
-      document.getElementById(`${menu}`).style.display = 'inline'
-    },
-    error: function(e) {
-      if (e.error) return alert(e.error)
-        document.getElementById(`${menu}Button`).classList.remove('buttonBlock')
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-  var menuPropostaActual = false
-  function menuPropostas(icon, codAF) {
-    if (menuPropostaActual) {
-      document.getElementById(`menuProposta`).innerHTML = ``
-      if (menuPropostaActual == codAF) return menuPropostaActual = false
-      menuPropostaActual = false
-    }
-    menuPropostaActual = codAF
-    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="editRole('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Salvar</a><a onclick="deleteRole('${codAF}')" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Deletar</a></div></div>`
-  }
-  var salvandoConfig = false
-  function saveFases(id) {
-    if (salvandoConfig) return alert('Você já está com um salvamento em andamento...')
-    salvandoConfig = true
-    $.ajax({ type: "post",url: `${apiURL}/administrativo/editConfigs`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        id: id,
-        newFase: document.getElementById(`${id}_newFase`).value,
-        oldFase: document.getElementById(`${id}_oldFase`).value,
-        motivo: document.getElementById(`${id}_motivo`).value
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        salvandoConfig = false
-        if (s.error) return alert(s.error)
-        return alert('Salvo com sucesso...')
-      },
-      error: function(e) {
-        salvandoConfig = false
-        if (e.error) return alert(e.error)
-        document.getElementById(`${menu}Button`).classList.remove('buttonBlock')
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-  function saveConfigs(key, menu) {
-    if (salvandoConfig) return alert('Você já está com um salvamento em andamento...')
-    salvandoConfig = true
-    $.ajax({ type: "post",url: `${apiURL}/administrativo/editConfigs`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        config: menu,
-        configValue: document.getElementById(key).value
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        salvandoConfig = false
-        if (s.error) return alert(s.error)
-        return alert('Salvo com sucesso...')
-      },
-      error: function(e) {
-        salvandoConfig = false
-        if (e.error) return alert(e.error)
-        document.getElementById(`${menu}Button`).classList.remove('buttonBlock')
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-  var criando = false
-  function createRole(i) {
-    if (criando) return alert('Você já está com uma criação em andamento...')
-    criando = true
-    $.ajax({ type: "post",url: `${apiURL}/administrativo/newRole`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        newRole: document.getElementById(`newRoleInput`).value
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        deletando = false
-        if (s.error) return alert(s.error)
-        alert('Cargo criado com sucesso...')
-        return window.location.reload()
-      },
-      error: function(e) {
-        deletando = false
-        if (e.error) return alert(e.error)
-        document.getElementById(`${menu}Button`).classList.remove('buttonBlock')
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-  var salvando = false
-  function editRole(i) {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (salvando) return alert('Você já está com um salvamento em andamento...')
-    salvando = true
-    $.ajax({ type: "post",url: `${apiURL}/administrativo/editRole`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        role: document.getElementById(`${i}_roleName`).innerHTML,
-        administrativo_funcionarios: document.getElementById(`${i}_administrativo_funcionarios`).value == 1 ? true : false,
-        administrativo_roles: document.getElementById(`${i}_administrativo_roles`).value == 1 ? true : false,
-        administrativo_configs: document.getElementById(`${i}_administrativo_configs`).value == 1 ? true : false,
-        administrativo_logs: document.getElementById(`${i}_administrativo_logs`).value == 1 ? true : false,
-        administrativo_relatorios: document.getElementById(`${i}_administrativo_relatorios`).value == 1 ? true : false,
-        propostas_lista: document.getElementById(`${i}_propostas_lista`).value == 1 ? true : false,
-        propostas_cadastrar: document.getElementById(`${i}_propostas_cadastrar`).value == 1 ? true : false,
-        consultas_fgts: document.getElementById(`${i}_consultas_fgts`).value == 1 ? true : false,
-        consultas_lotes: document.getElementById(`${i}_consultas_lotes`).value == 1 ? true : false
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        if (s.error) return alert(s.error)
-        salvando = false
-        return alert('Cargo salvo com sucesso...')
-      },
-      error: function(e) {
-        salvando = false
-        if (e.error) return alert(e.error)
-        document.getElementById(`${menu}Button`).classList.remove('buttonBlock')
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-  var deletando = false
-  function deleteRole(i) {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (deletando) return alert('Você já está com um deletamento em andamento...')
-    deletando = true
-    $.ajax({ type: "post",url: `${apiURL}/administrativo/deleteRole`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        role: document.getElementById(`${i}_roleName`).innerHTML
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        if (s.error) return alert(s.error)
-        deletando = false
-        alert('Cargo deletado com sucesso...')
-        return window.location.reload()
-      },
-      error: function(e) {
-        deletando = false
-        if (e.error) return alert(e.error)
-        document.getElementById(`${menu}Button`).classList.remove('buttonBlock')
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-
-  var agentesBlock = false
-  function getAgentes() {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (agentesBlock) return alert('Aguarde...')
-    agentesBlock = true
-    $.ajax({ type: "post",url: `${apiURL}/funcionarios/getLogins`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password')
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        agentesBlock = false
-        agentes = s.logins
-        document.getElementById('agente').placeholder = 'Selecione o Agente...'
-        s.logins.forEach((element,index) => {
-          document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
-        });
-      },
-      error: function(e) {
-        agentesBlock = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-
-  (function () {
-    $.ajax({ type: "post",url: `${apiURL}/funcionarios/verifyLogin`,
-    data: JSON.stringify({
-      user: localStorage.getItem('user'),
-      password: localStorage.getItem('password'),
-    }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        if (s.error) return alert(s.error)
-        if (s.perms.administrativo_roles) document.getElementById('rolesButton').classList.remove('buttonBlock')
-        if (s.perms.administrativo_logs) document.getElementById('logsButton').classList.remove('buttonBlock')
-        if (s.perms.administrativo_configs) document.getElementById('configsButton').classList.remove('buttonBlock')
-        // changeMenu('configs')
-      },
-      error: function(e) {
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  })();
 </script>

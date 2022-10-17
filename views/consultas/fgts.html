@@ -1,6 +1,6 @@
 <div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
   <navbar id="navbar"></navbar>
-  <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
+  <script>$("#navbar").load(`/imports/navbar.html`)</script>
 
   <div class="background-image left18-5 width79" style="position: relative; top: 12.5vh; left: 6vw; width: 92.5vw; height: 85.5vh; border-radius: 2vh; display: flex; justify-content: center; align-items: center;">
 
@@ -73,12 +73,12 @@
 
 <script>
   var banks = [
-    { name:'FACTA FINANCEIRA', options: '<fieldset title="Tabela da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tabela</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="GOLD" style="color: black; font-weight: 600;">GOLD</option><option value="NORMAL" style="color: black; font-weight: 600;">NORMAL</option></select></fieldset>' },
+    { name:'FACTA FINANCEIRA', options: '<div style="display: flex; width: 100%; justify-content: center;"><fieldset title="Tipo da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tipo</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="POR_VALOR_TOTAL" style="color: black; font-weight: 600;">Valor Total</option><option value="POR_QUANTIDADE_DE_PARCELAS" style="color: black; font-weight: 600;">Quantidade de Parcelas</option></select></fieldset><fieldset title="Parcelas da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Parcelas</legend><input class="font-1" id="option2" placeholder="00" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset></div><fieldset title="Tabela da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tabela</legend><select class="font-1" id="option3" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="GOLD" style="color: black; font-weight: 600;">GOLD</option><option value="NORMAL" style="color: black; font-weight: 600;">NORMAL</option></select></fieldset>' },
     { name:'BANCO C6', options: '<div style="display: flex; width: 100%; justify-content: center;"><fieldset title="Tipo da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tipo</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="POR_VALOR_TOTAL" style="color: black; font-weight: 600;">Valor Total</option><option value="POR_VALOR_SOLICITADO" style="color: black; font-weight: 600;">Valor Solicitado</option><option value="POR_QUANTIDADE_DE_PARCELAS" style="color: black; font-weight: 600;">Quantidade de Parcelas</option></select></fieldset><fieldset title="Valor da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Valor</legend><input class="font-1" id="option2" placeholder="00" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset></div>' },
     { name:'PANAMERICANO', options: '<div style="display: flex; width: 100%; justify-content: center;"><fieldset title="Tipo da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tipo</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="POR_VALOR_TOTAL" style="color: black; font-weight: 600;">Valor Total</option><option value="POR_VALOR_SOLICITADO" style="color: black; font-weight: 600;">Valor Solicitado</option><option value="POR_QUANTIDADE_DE_PARCELAS" style="color: black; font-weight: 600;">Quantidade de Parcelas</option></select></fieldset><fieldset title="Valor da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Valor</legend><input class="font-1" id="option2" placeholder="00" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset></div><fieldset title="Tabela da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tabela</legend><select class="font-1" id="option3" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="900001" style="color: black; font-weight: 600;">GTS_CORBAN</option><option value="900006" style="color: black; font-weight: 600;">FGTS_CORBAN_FLEX1</option><option value="900007" style="color: black; font-weight: 600;">FGTS_CORBAN_FLEX2</option></select></fieldset>' },
     { name:'BMG', options: false },
     { name:'MERCANTIL', options: '<div style="display: flex; width: 100%; justify-content: center;"><fieldset title="Tipo da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tipo</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="POR_VALOR_TOTAL" style="color: black; font-weight: 600;">Valor Total</option><option value="POR_QUANTIDADE_DE_PARCELAS" style="color: black; font-weight: 600;">Quantidade de Parcelas</option></select></fieldset><fieldset title="Parcelas da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Parcelas</legend><input class="font-1" id="option2" placeholder="00" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset></div>' },
-    { name:'SAFRA', options: '<fieldset title="Parcelas da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Parcelas</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="1" style="color: black; font-weight: 600;">1 / 7</option><option value="2" style="color: black; font-weight: 600;">6 / 7</option></select></fieldset>' },
+    { name:'SAFRA', options: '<fieldset title="Parcelas da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Parcelas</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="1" style="color: black; font-weight: 600;">1 / 7</option><option value="2" style="color: black; font-weight: 600;">6 / 7</option></select></fieldset><fieldset title="Tabela da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tabela</legend><select class="font-1" id="option2" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="1,79 ESPECIAL SUB" style="color: black; font-weight: 600;">1,79 ESPECIAL SUB</option><option value="1,59 ESP DIGITAL" style="color: black; font-weight: 600;">1,59 ESP DIGITAL</option><option value="1,65 ESP DIGITAL" style="color: black; font-weight: 600;">1,65 ESP DIGITAL</option><option value="2,04 SUB" style="color: black; font-weight: 600;">Tabela Normal 2,04 SUB</option></select></fieldset>' },
   ]
   function setBank(bank) {
     if (bank) {
@@ -93,22 +93,18 @@
     if (!document.getElementById('banks').value || document.getElementById('banks').value == 'false') return alert('Selecione o banco em que será feito a consulta!')
     if (!document.getElementById('cpf').value) return alert('Colque o CPF que será consultado!')
     document.getElementById('cpf').value = document.getElementById('cpf').value.replaceAll(".","").replaceAll("-","")
-    if (document.getElementById('cpf').value.length != 11) return alert('O CPF é invalido, verifique e tente novamente...')
-    if (document.getElementById(`queueText`).innerHTML && document.getElementById(`queueText`).innerHTML.includes('fila')) return alert('Aguarde a sua consulta anterior acabar...')
+    if (document.getElementById(`queueText`).innerHTML && document.getElementById(`queueText`).innerHTML.includes('fila')) return alert('Aguarde até você sair da fila...')
+    for (var i = 0, n = 10; i < n; ++i) {
+      if (document.getElementById('cpf').value.length < 11) document.getElementById('cpf').value = `0${document.getElementById('cpf').value}`
+    }
+    if (document.getElementById('cpf').value.length != 11) return alert('O CPF está invalido! Ele deve ter 11 digitos apenas...')
     document.getElementById('consultar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('consultar').classList.add("buttonBlock");
     document.getElementById(`queueText`).innerHTML = `Entrando na fila de consultas FGTS...`
-    setTimeout(function(){ queue(document.getElementById('banks').value) }, 1500)
-    if (String(document.getElementById('cpf').value).length == 10) cpf = `0${document.getElementById('cpf').value}`
-    if (String(document.getElementById('cpf').value).length == 9) cpf = `00${document.getElementById('cpf').value}`
-    if (String(document.getElementById('cpf').value).length == 8) cpf = `000${document.getElementById('cpf').value}`
-    if (String(document.getElementById('cpf').value).length == 7) cpf = `0000${document.getElementById('cpf').value}`
-    if (String(document.getElementById('cpf').value).length == 6) cpf = `00000${document.getElementById('cpf').value}`
-    if (String(document.getElementById('cpf').value).length == 5) cpf = `000000${document.getElementById('cpf').value}`
-    if (String(document.getElementById('cpf').value).length == 4) cpf = `0000000${document.getElementById('cpf').value}`
-    if (String(document.getElementById('cpf').value).length == 3) cpf = `00000000${document.getElementById('cpf').value}`
-    if (String(document.getElementById('cpf').value).length == 2) cpf = `000000000${document.getElementById('cpf').value}`
-    if (String(document.getElementById('cpf').value).length == 1) cpf = `0000000000${document.getElementById('cpf').value}`
+    document.getElementById('cpf').disabled = true
+    document.getElementById('banks').disabled = true
+    document.getElementById('cpf').disabled = true
+    setTimeout(function(){ queue() }, 1500)
     $.ajax({ type: "post", url: `${apiURL}/consultas/fgts`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
@@ -120,9 +116,13 @@
         option3: document.getElementById('option3') ? document.getElementById('option3').value : false,
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
+        document.getElementById('cpf').disabled = false
+        document.getElementById('banks').disabled = false
+        document.getElementById(`queueText`).innerHTML = ''
         document.getElementById('consultar').innerHTML = `<p class="font-1">Consultar</p>`
         document.getElementById('consultar').classList.remove("buttonBlock");
         if (s.error) return alert(s.error) 
+        if (s.cpf != document.getElementById('cpf').value) alert(`O CPF consultado é diferente do inserido! Verifique e tente novamente...\nCPF Inserido: ${document.getElementById('cpf').value}\nCPF Consultado: ${s.cpf}`)
         document.getElementById('cpfResult').value = s.cpf
         document.getElementById('totalResult').value = s.saldoTotal
         document.getElementById('liberadoResult').value = s.saldoLiberado
@@ -136,40 +136,38 @@
         document.getElementById('result').style.display = `inline`
       },
       error: function(e) {
+        document.getElementById('cpf').disabled = false
+        document.getElementById('banks').disabled = false
+        document.getElementById(`queueText`).innerHTML = ''
         document.getElementById('consultar').innerHTML = `<p class="font-1">Consultar</p>`
         document.getElementById('consultar').classList.remove("buttonBlock");
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
       }
     })
   }
-  function queue(bank) {
-    $.ajax({ type: "post", url: `${apiURL}/consultas/queue`, data: JSON.stringify({
+  function queue() {
+    $.ajax({ type: "post", url: `${apiURL}/others/queue`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
-      bank: bank,
+      system: 'consultas',
+      cpf: document.getElementById('cpf').value,
+      bank: document.getElementById('banks').value,
       actual: document.getElementById(`queueText`).innerHTML
     }),contentType:"application/json; charset=utf-8",
       success: function(s) {
-        if (s.error) {
-          return document.getElementById(`queueText`).innerHTML = s.error
-        } else if (s.end) {
-          return document.getElementById(`queueText`).innerHTML = s.end
-        } else if (s.complete) {
-          document.getElementById(`queueText`).innerHTML = `Consultando -- fila: ${s.complete}`
-          return queue(bank)
-        } else if (s.not) {
-          return document.getElementById(`queueText`).innerHTML = ''
-        } else if (s.result) {
-          document.getElementById(`queueText`).innerHTML = `Sua posição na fila: ${s.result}`
+        if (s.error) return document.getElementById(`queueText`).innerHTML = s.error
+        if (s.complete) return document.getElementById(`queueText`).innerHTML = `Consultando...`
+        if (s.not) return document.getElementById(`queueText`).innerHTML = ''
+        if (s.result) {
+          document.getElementById(`queueText`).innerHTML = `Sua posição na fila: (${s.result})`
           return queue(bank)
         }
       },
       error: function(e) {
-        if (e.error) return document.getElementById(`queueText`).innerHTML = s.error
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+        document.getElementById(`queueText`).innerHTML = ''
+        if (e.responseJSON && e.responseJSON.error) return document.getElementById(`queueText`).innerHTML = s.error
+        return document.getElementById(`queueText`).innerHTML = `A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`
       }
     });
   }
@@ -177,4 +175,13 @@
     document.getElementById('result').style.display = `none`
     document.getElementById('newConsultar').style.display = `inline`
   }
+
+  (function () {
+    var url = new URLSearchParams(window.location.search);
+    if (url.get('cpf')) document.getElementById('cpf').value = url.get('cpf')
+    if (url.get('bank')) {
+      document.getElementById('banks').value = url.get('bank')
+      setBank(url.get('bank'))
+    }
+  })();
 </script>

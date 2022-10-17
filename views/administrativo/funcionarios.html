@@ -1,682 +1,227 @@
 <div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
   <navbar id="navbar"></navbar>
-  <script>$("#navbar").load(`/views/imports/navbar.html`)</script>
-
-  <div class="background-image margin-left18-5 width79 " style="position: relative; margin-top: 12.5vh; margin-left: 6vw; width: 92.5vw; height: 13%; border-radius: 2vh;display: flex; flex-direction: row; justify-content: center; align-items: center;">
-    <i onclick="openFunc('Todos','FGTS')" title="FGTS de os todos funcionarios!" class="fa-sharp fa-solid fa-money-check-dollar-pen font-color-navbar" style="cursor: pointer; font-size: 3vh; position: absolute; right: 4vw; top: 1vh"></i>
-    <i onclick="openFunc('Todos','CountConsultas')" title="Contador de Consultas dos funcionarios!" class="fa-solid fa-users font-color-navbar" style="cursor: pointer; font-size: 3vh; position: absolute; right: 1vw; top: 1vh"></i>
-    <fieldset title="Pesquise algum funcionario por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
-      <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
-      <input onkeyup="searchBar()" id="searchBar" placeholder="Pesquise algum funcionario aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-    </fieldset>
-    <i onclick="searchBar()" class="fa-regular fa-magnifying-glass-dollar" style="font-size: 3.5vh; margin-top: 1.5vh; cursor: pointer"></i>
+  <script>$("#navbar").load(`/imports/navbar.html`)</script>
+  <div class="background-image margin-left18-5 width79 " style="position: relative; margin-top: 12.5vh; margin-left: 5.5vw; width: 92.5vw; height: 13%; border-radius: 1vh; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+    <div style="position: relative; height: 100%; margin-bottom: 1vh; width: 100%; display: flex; flex-direction: row; align-items: center; margin-inline: 1vw;">
+      <a style="font-size: 3.5vh; margin-left: 1.5vw; border-bottom: 0.1vh solid gray; padding-left: 1vw; padding-right: 2vw">Lista de Funcionários:</a>
+      <fieldset title="Pesquise algum funcionario por aqui..." style="position: absolute; right: 3vw; padding: 0; margin: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
+        <input onkeyup="searchBar(this, 'funcionario')" id="searchBar" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 3.5vh; background: transparent; border: 0">
+      </fieldset>
+      <i onclick="searchBar({ id: 'searchBar' }, 'funcionario')" class="fa-regular fa-magnifying-glass-dollar" style="cursor: pointer; font-size: 3.5vh; position: absolute; right: 1vw; margin-top: 1.3vh;"></i>
+    </div>
   </div>
 
-  <div class="background-image margin-left18-5 width79 " style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; min-height: 64.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: column; padding-block: 4vh">
-    <div id="loading">
-      <div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>
+  <div id="funcionarios" class="background-image margin-left18-5 width79 " style="margin-top: 2vh; margin-left: 5.5vw; width: 92.5vw; min-height: 68.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; padding-block: 2vh;">
+  </div>
+  
+  <div id="menuFunc" class="background-reverse width35" style="display: none; position: absolute; width: 8vw; border-radius: 1.5vh; font-size: 2vh; flex-direction: column; text-align: center; padding-block: 0.8vh">
+    <a onclick="openEdit('edit')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Editar</a>
+    <a onclick="deleteFunc()" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Deletar</a>
+  </div>
+  <div onclick="openEdit('create')" class="navbar-color width35" style="cursor: pointer; width: 3.5vw; height: 3.5vw; border-radius: 100%; position: fixed; bottom: 1vw; right: 3vw; font-size: 3vh; display: flex; justify-content: center; align-items: center;">
+    <i class="fa-regular fa-user-plus"></i>
+  </div>
+  <div id="editFunc" class="background-reverse" style="display: none; position: fixed; left: 20vw; top: 20vh; width: 60vw; height: 70vh; border-radius: 3vh; flex-direction: row; justify-content: center; align-items: center;">
+    <i onclick="openEdit('edit',true)" class="fa-solid fa-xmark" style="cursor: pointer; position: absolute; right: 1.6vw; top: 1vw; font-size: 4vh"></i>
+    <div style="width: 30%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <img src="/public/images/iconFunc.png" style="width: 12vw; border-radius: 100%">
+      <a style="font-size: 3vh; font-weight: 400; margin-top: 4vh; max-width: 100%; overflow: hidden;">
+        <span id="usuarioText">???</span>
+        <span class="font-color-navbar" style="font-size: 2vh" id="codigoText">#???</span>
+      </a>
+      <a style="font-size: 2.2vh; margin-top: 1vh"><i class="fa-regular fa-suitcase font-color-navbar"></i> <span style="text-decoration: underline; padding-left: 0.3vw" id="roleText">???</span></a>
     </div>
-
-    <div class="font-color-navbar background-reverse left17p" style="z-index: 5; cursor: pointer; position: fixed; bottom: 2vh; left: 6vw; padding-block: 1vh; display: flex; align-items: center; justify-content: center; border-radius: 2vh">
-      <fieldset id="fieldset" title="Novo Funcionário..." style="text-align: left; padding: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%; margin-right: 1vw;">
-        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Novo Funcionário</legend>
-        <input class="font-1 font-color-reverse" placeholder="Nome do Funcionário" id="newFuncInput" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+    <div style="margin-left: 1vw; width: 65%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <fieldset id="fieldset" title="Usuário" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Usuário</legend>
+        <input id="usuario" type="text" class="font-1 font-color-reverse" placeholder="..." style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
       </fieldset>
-      <i class="fa-regular fa-user-plus" style="font-size: 4vh" onclick="newFunc()"></i>
-    </div>
-
-    <div id="funcionarios" style="display: none; margin-inline: 3vw"></div>
-    <div id="menuPropostas"></div>
-    <div id="openFunc" style="z-index: 10; position: fixed; display: none; height: 100vh; width: 100vw; top: 0; left: 0; align-items: center; justify-content: center;">
-      <div class="background-reverse" style="width: 60vw; max-width: 60vw; overflow: hidden; padding-block: 3vh; border-radius: 3vh;">
-        <div style="max-height: 60vh; min-height: 60vh; overflow: auto; display: flex; flex-direction: column; align-items: center; max-width: 100%; overflow-x: hidden;">
-          <i onclick="openFunc(false,'close')" class="fas fa-times" style="width: 95%; cursor: pointer; display: flex; justify-content: right; font-size: 3.5vh"></i>
-          <a style="font-size: 3.5vh">Funcionário: <span class="font-color-navbar-reverse" id="nameFunc">???</span></a>
-          <div id="funcFGTS" style="display: none; flex-direction: column; align-items: center;">
-            <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
-              <input onkeyup="searchBar2()" class="font-color-reverse" id="searchBar2" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-            <div style="display: flex; justify-content: center; width: 100%; margin-top: 1vh;">
-              <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
-                <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Minima</legend>
-                <input class="font-color-reverse" type="datetime-local" id="dataMinF" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-              </fieldset>
-              <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
-                <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Maxima</legend>
-                <input class="font-color-reverse" type="datetime-local" id="dataMaxF" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-              </fieldset>
-              <fieldset id="fieldset" title="Pesquise algum CPF por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
-                <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo</legend>
-                <select class="font-color-reverse" id="typeF" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                  <option value="" style="color: black">Todos</option>
-                  <option value="sucess" style="color: black" selected>Sucessos</option>
-                  <option value="error" style="color: black">Erros</option>
-                </select>
-              </fieldset>
-              <i onclick="openFunc(document.getElementById('userOpen').value)" class="fa-regular fa-magnifying-glass-dollar" style="font-size: 3.5vh; margin-top: 2.5vh; cursor: pointer"></i>
-              <input id="userOpen" type="hidden">
-              <input id="menuOpen" type="hidden">
-            </div>
-
-            <div id="listFunc" style="margin-top: 3vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-              <div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>
-            </div>
-            <a id="loadMore" onclick="listMore()" class="font-color-navbar-reverse" style="display: none; font-size: 3vh; margin-top: 3vh; text-decoration: underline; cursor: pointer">Carregar mais...</a>
-          </div>
-          <div id="funcAcomp" style="display: none; width: 100%">
-            <div style="display: flex; justify-content: center; width: 100%; margin-top: 1vh;">
-              <fieldset id="fieldset" title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
-                <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Objetivo</legend>
-                <input class="font-color-reverse" type="number" placeholder="Coloque o objetivo em porcentagem..." value="100" id="objetivo" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-              </fieldset>
-              <i onclick="openFunc(document.getElementById('userOpen').value,'Acomp')" class="fa-regular fa-magnifying-glass-dollar" style="font-size: 3.5vh; margin-left: 0.8vw; margin-top: 2.5vh; cursor: pointer"></i>
-            </div>
-            <div id="listFuncAcomp" style="margin-top: 3vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-              <div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>
-            </div>
-          </div>
-        </div>
+      <fieldset id="fieldset" title="Senha" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Senha</legend>
+        <input id="senha" type="password" class="font-1 font-color-reverse" placeholder="********" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+      </fieldset>
+      <fieldset id="fieldset" title="Email" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Email</legend>
+        <input id="email" type="text" class="font-1 font-color-reverse" placeholder="email@concreditoconsignados.com.br" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+      </fieldset>
+      <fieldset id="fieldset" title="Código" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Código</legend>
+        <input id="codigo" type="number" class="font-1 font-color-reverse" placeholder="00" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+      </fieldset>
+      <fieldset id="fieldset" title="Filial" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Filial</legend>
+        <select id="filial" type="text" class="font-1 font-color-reverse" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+          <option style="color: black" value="matriz" selected>Matriz</option>
+          <option style="color: black" value="sobrenome">Sobrenome</option>
+          <option style="color: black" value="cupula">Cupula</option>
+        </select>
+      </fieldset>
+      <fieldset id="fieldset" title="Cargo" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Cargo</legend>
+        <select id="cargo" type="text" class="font-1 font-color-reverse" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+          <option style="color: black" value="default" selected>Nenhum</option>
+          <option style="color: black" value="CEO">CEO</option>
+          <option style="color: black" value="Developer">Developer</option>
+          <option style="color: black" value="Administrador">Administrador</option>
+          <option style="color: black" value="Analista">Analista</option>
+          <option style="color: black" value="Supervisor">Supervisor</option>
+          <option style="color: black" value="Vendedor">Vendedor</option>
+          <option style="color: black" value="Operador">Operador</option>
+        </select>
+      </fieldset>
+      <div onclick="saveEdit()" id="editButton" class="buttonLogin2" style="width: 18vw; padding-block: 0.8vh; font-size: 2.8vh; border-radius: 2vh; margin-top: 2vh;">
+        <p class="font-1 font-color-reverse">Salvar</p>
       </div>
     </div>
   </div>
 </div>
 <script>
-  var menuPropostaActual = false
-  function menuPropostas(icon, codAF) {
-    if (menuPropostaActual) {
-      document.getElementById(`menuProposta`).innerHTML = ``
-      if (menuPropostaActual == codAF) return menuPropostaActual = false
-      menuPropostaActual = false
+  var actualFunc = false
+  var menuOpen = false
+  function openMenu(icon, user) {
+    if (menuOpen && (menuOpen == user || user == "close")) {
+      document.getElementById(`menuFunc`).style.display = 'none'
+      menuOpen = false
+    } else {
+      menuOpen = user
+      actualFunc = user
+      document.getElementById(`menuFunc`).style.display = 'flex'
+      document.getElementById(`menuFunc`).style.top = `${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px`
+      document.getElementById(`menuFunc`).style.left = `calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'})`
     }
-    menuPropostaActual = codAF
-    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh">
-      <a onclick="saveFunc('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Salvar</a>
-      <a onclick="deleteFunc('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Deletar</a>
-      <a onclick="openFunc('${codAF}','FGTS')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">FGTS</a>
-      <a onclick="openFunc('${codAF}','Cadastros')" class="line-bottom-reverse navbar-color-select navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastros</a>
-      <a onclick="openFunc('${codAF}','Acomp')" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Acomp/ Sem.</a>
-    </div></div>`
   }
-
-  var loginsBlock = false
-  function getUser() {
-    if (loginsBlock) return alert('Você já está com um puxamento em andamento...')
-    loginsBlock = true
-    $.ajax({ type: "post",url: `${apiURL}/funcionarios/getLogins`,
+  var users = false
+  function openEdit(menu, close) {
+    if (menuOpen) openMenu(false,"close");
+    if (close) return document.getElementById('editFunc').style.display = 'none'
+    var user = {}
+    if (menu == 'edit') {
+      if (!users || !actualFunc || !users.find(r=>r.user == actualFunc)) return alert('Funcionário não encontrado...')
+      user = users.find(r=>r.user == actualFunc)
+      document.getElementById('editButton').innerHTML = `Salvar`
+    } else if (menu == 'create') {
+      actualFunc = false
+      document.getElementById('editButton').innerHTML = `Criar`
+    }
+    document.getElementById('editFunc').style.display = 'flex'
+    document.getElementById('usuarioText').innerHTML = user.user ? user.user.length >= 12 ? user.user.slice(0,12)+'...' : user.user : '???'
+    document.getElementById('codigoText').innerHTML = user.codigo ? '#'+user.codigo : '#???'
+    document.getElementById('roleText').innerHTML = user.role ? user.role : '???'
+    document.getElementById('usuario').value = user.user ? user.user : ''
+    document.getElementById('email').value = user.email ? user.email : ''
+    document.getElementById('codigo').value = user.codigo ? user.codigo : '1'
+    document.getElementById('filial').value = user.filial ? user.filial : 'matriz'
+    document.getElementById('cargo').value = user.role ? user.role : 'default'
+  }
+  function saveEdit() {
+    if (menuOpen) openMenu(false,"close");
+    if (document.getElementById('editButton').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (!actualFunc && !document.getElementById('usuario').value) return alert('Coloque o Nome de usuário...')
+    if (!actualFunc && !document.getElementById('senha').value) return alert('Coloque a Senha do usuário...')
+    if (!actualFunc && !document.getElementById('email').value) return alert('Coloque o Email do usuário...')
+    if (!actualFunc && !document.getElementById('codigo').value && document.getElementById('codigo').value != '0') return alert('Coloque o Codigo do usuário...')
+    document.getElementById('editButton').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('editButton').classList.add("buttonBlock");
+    $.ajax({ type: "post",url: `${apiURL}/logins/${actualFunc ? 'edit' : 'create'}`,
       data: JSON.stringify({
-        user: localStorage.getItem('user'),
+        user: localStorage.getItem('user'), 
         password: localStorage.getItem('password'),
+        funcionario: actualFunc ? actualFunc : document.getElementById('usuario').value,
+        pass: document.getElementById('senha').value,
+        email: document.getElementById('email').value,
+        codigo: document.getElementById('codigo').value,
+        filial: document.getElementById('filial').value,
+        role: document.getElementById('cargo').value,
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
-        loginsBlock = false
+        document.getElementById('editButton').innerHTML = `Salvar`
+        document.getElementById('editButton').classList.remove("buttonBlock");
         if (s.error) return alert(s.error)
-        document.getElementById('loading').style.display = 'none'
-        document.getElementById(`funcionarios`).style.display = 'inline'
+        alert('Usuário salvo com sucesso...')
+        return location.reload();
+      },
+      error:  async function(s) {
+        document.getElementById('editButton').innerHTML = `Salvar`
+        document.getElementById('editButton').classList.remove("buttonBlock");
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+      }
+    })
+  }
+  var deleteBlock = false
+  function deleteFunc() {
+    if (menuOpen) openMenu(false,"close");
+    if (deleteBlock) return alert('Aguarde...')
+    if (!actualFunc) return alert('Selecione o funcionário antes...')
+    deleteBlock = true
+    $.ajax({ type: "post",url: `${apiURL}/logins/delete`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'), 
+        password: localStorage.getItem('password'),
+        funcionario: actualFunc,
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        if (s.error) return alert(s.error)
+        alert('Usuário deletado com sucesso...')
+        return location.reload();
+      },
+      error:  async function(s) {
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+      }
+    })
+  }
+  var funcBlock = false
+  function getFuncionarios() {
+    if (funcBlock) return alert('Aguarde...')
+    funcBlock = true
+    document.getElementById('funcionarios').innerHTML = `<div style="width: 100%; display: flex; justify-content: center; align-items: center;"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+    $.ajax({ type: "post",url: `${apiURL}/logins/get`,
+      data: JSON.stringify({ user: localStorage.getItem('user'), password: localStorage.getItem('password'),}),
+      contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        funcBlock = false
+        if (s.error) return alert(s.error)
+        users = s.logins
+        document.getElementById('funcionarios').innerHTML = ``
         s.logins.forEach((element,index)=>{
-          document.getElementById('funcionarios').innerHTML += `<proposta id="userID_${element.user}"><a style="display:none">${JSON.stringify(element)}</a><div id="user_${element.user}" class="background-Propostas" style="z-index: 1; position: relative; border-radius: 1.5vh; margin-block: 2.5vh"><div class="line-bottom navbar-font-color font-4" style="display: flex; flex-direction: row; align-items: center; height: 6vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center; position: relative">
-
-          <i style="position: absolute; right: 1.5vw; cursor: pointer" onclick="menuPropostas(this, '${element.user}')" class="fa-solid fa-ellipsis-vertical font-color-navbar"></i>
-
-          <a title="${element.user}" style="margin-inline: 2%; max-width: 25%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-regular fa-user-headset"></i><span class="invisibleAndroid"> Funcionário: </span><span>${element.user}</span></a>
-          <a title="${element.agente}" style="margin-inline: 2%; max-width: 25%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-solid fa-user-tie-hair font-size2"></i><span class="invisibleAndroid"> Agente: </span><span>${element.agente}</span></a>
-          </div>
-          <div class="flex-direction-column" style="display: flex; flex-direction: row; align-items: center; min-height: 10vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center;">
-          <fieldset class="width60p" style="padding: 0; width: 25%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Email</legend>
-            <input class="font-1" id="${element.user}_email" placeholder="${element.email}" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-          </fieldset>
-          <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Nova Senha</legend>
-            <input class="font-1" id="${element.user}_password" placeholder="..." style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-          </fieldset>
-          <fieldset class="width60p" style="padding: 0; width: 10%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Cod. Agilus</legend>
-            <input class="font-1" type="number" id="${element.user}_codigo" placeholder="${element.codigo}" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-          </fieldset>
-          <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Cargo</legend>
-            <input class="font-1" id="${element.user}_role" placeholder="${element.role}" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-          </fieldset>
-          <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
-            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Filial</legend>
-            <select class="font-1" id="${element.user}_filial" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-              <option value="matriz" style="color: black" ${element.filial == "matriz" ? 'selected' : ''}>Matriz</option>
-              <option value="sobrenome" style="color: black" ${element.filial == "sobrenome" ? 'selected' : ''}>Sobrenome</option>
-              <option value="cupula" style="color: black" ${element.filial == "cupula" ? 'selected' : ''}>Cupula</option>
-            </select>
-          </fieldset>
-          </div></div></proposta>`
+          document.getElementById('funcionarios').innerHTML += `
+            <funcionario class="background-Propostas" style="position: relative; margin: 1vw; width: 12vw; height: 25vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+              <a style="display: none">${element.user} ${element.codigo} ${element.cargo} ${element.filial} ${element.email}</a>
+              <i onclick="openMenu(this,'${element.user}')" class="fa-regular fa-ellipsis-vertical" style="font-size: 2.5vh; cursor: pointer; position: absolute; top: 1vh; right: 0.65vw"></i>
+              <img src="${element.avatar ? element.avatar : '/public/images/iconFunc.png'}" style="width: 55%; border-radius: 100%">
+              <a style="font-size: 2.2vh; font-weight: 400; margin-top: 2.5vh; max-width: 100%; overflow: hidden;">${element.user.length >= 10 ? element.user.slice(0,10)+'...' : element.user}<span class="font-color-navbar" style="font-size: 1.5vh">#${element.codigo}</span></a>
+              <a style="font-size: 1.5vh; margin-top: 1vh"><i class="fa-regular fa-suitcase font-color-navbar"></i> <span style="text-decoration: underline">${element.role == 'default' ? 'Nenhum' : element.role}</span></a>
+            </funcionario>
+          `
         })
       },
       error:  async function(s) {
-        loginsBlock = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
+        funcBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
       }
     })
   }
 
-  var saveBlock = false
-  function saveFunc(user) {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (saveBlock) return alert('Você já está salvando algum funcionario...')
-    saveing = true
-    $.ajax({ type: "post",url: `${apiURL}/funcionarios/editLogin`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        newUser: user,
-        codigo: document.getElementById(`${user}_codigo`) ? document.getElementById(`${user}_codigo`).value : false,
-        newPassword: document.getElementById(`${user}_password`) ? document.getElementById(`${user}_password`).value : false,
-        newEmail: document.getElementById(`${user}_email`) ? document.getElementById(`${user}_email`).value : false,
-        newRole: document.getElementById(`${user}_role`) ? document.getElementById(`${user}_role`).value : false,
-        newFilial: document.getElementById(`${user}_filial`) ? document.getElementById(`${user}_filial`).value : false,
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        saveBlock = false
-        if (s.error) return alert(s.error)
-        return alert('Salvo com sucesso...')
-      },
-      error: function(e) {
-        saveBlock = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-
-  var newBlock = false
-  function newFunc(user) {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (newBlock) return alert('Você já está criando algum funcionario...')
-    newBlock = true
-    $.ajax({ type: "post",url: `${apiURL}/funcionarios/newLogin`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        newUser: document.getElementById('newFuncInput').value
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        newBlock = false
-        if (s.error) return alert(s.error)
-        alert('Funcionario criado com sucesso...')
-        return window.location.reload()
-      },
-      error: function(e) {
-        newBlock = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-
-  var deleteBlock = false
-  function deleteFunc(user) {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (deleteBlock) return alert('Você já está deletando algum funcionario...')
-    deleteBlock = true
-    $.ajax({ type: "post",url: `${apiURL}/funcionarios/deleteLogin`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        deleteUser: user
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        deleteBlock = false
-        if (s.error) return alert(s.error)
-        alert('Funcionario deletado com sucesso...')
-        document.getElementById(`userID_${user}`).innerHTML = ``
-      },
-      error: function(e) {
-        deleteBlock = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-
-  var clearBlock = false
-  function clearFunc(user, menu) {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (clearBlock) return alert('Você já está limpando algum funcionario...')
-    clearBlock = true
-    $.ajax({ type: "post",url: `${apiURL}/funcionarios/clearCounts`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        menu: menu,
-        newUser: user,
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        clearBlock = false
-        if (s.error) return alert(s.error)
-        alert('Funcionario limpo com sucesso...')
-        document.getElementById(`listFunc`).innerHTML = ``
-      },
-      error: function(e) {
-        clearBlock = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-
-  function downloadCSV(menu) {
-    if (!list || list.length <= 0) return alert('A lista está vazia...')
-    var csv = `CPF,BANCO`
-    if (menu == "sucess") {
-      if (list.filter(r=>!r.error).length <= 0) return alert('A lista de Sucessos está vazia...')
-      csv = `CPF,BANCO,LIBERADO,TOTAL,TELEFONE,AGENTE,DATA - HORARIO`
-      list.filter(r=>!r.error).map(r=> { csv += `\n${r.cpf},${r.bank},${r.liberado.replaceAll('.','').replace(',','.')},${r.total.replaceAll('.','').replace(',','.')},${r.telefone},${r.user},${r.data.replace('T',' - ').replace('Z','')}` })
-    } else if (menu == "error") {
-      if (list.filter(r=>r.error).length <= 0) return alert('A lista de Erros está vazia...')
-      csv = `CPF,BANCO,TELEFONE,ERRO,AGENTE,DATA - HORARIO`
-      list.filter(r=>r.error).map(r=> { csv += `\n${r.cpf},${r.bank},${r.telefone},${r.error},${r.user},${r.data.replace('T',' - ').replace('Z','')}` })
-    } else if (menu == "total") {
-      csv = `CPF,BANCO,TELEFONE,LIBERADO,TOTAL,ERRO,AGENTE,DATA - HORARIO`
-      list.filter(r=>!r.error).map(r=> { csv += `\n${r.cpf},${r.bank},${r.telefone},${r.liberado.replaceAll('.','').replace(',','.')},${r.total.replaceAll('.','').replace(',','.')},NULL,${r.user},${r.data.replace('T',' - ').replace('Z','')}` })
-      list.filter(r=>r.error).map(r=> { csv += `\n${r.cpf},${r.bank},${r.telefone},0.00,0.00,${r.error},${r.user},${r.data.replace('T',' - ').replace('Z','')}` })
-    } else if (menu == "af") {
-      csv = `AF,AGENTE,DATA - HORARIO`
-      list.map((r)=>{ csv += `\n${r.af},${r.user},${r.data.replace('T',' - ').replace('Z','')}` })
-    } else if (menu == "count") {
-      csv = `AGENTE,QUANTIDADE,VALOR`
-      list.map((r)=>{ csv += `\n${r.user},${r.qnt},${(r.valor.toFixed(2)).replace('.',',')}` })
-    }
-    var a = document.createElement('a');
-    a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-    a.target = '_blank';
-    a.download = `CSV-${menu}.csv`;
-    a.click();
-  }
-
-  var months = {
-    '1': 'Janeiro',
-    '2': 'Fevereiro',
-    '3': 'Março',
-    '4': 'Abril',
-    '5': 'Maio',
-    '6': 'Junho',
-    '7': 'Julho',
-    '8': 'Agosto',
-    '9': 'Setembro',
-    '10': 'Outubro',
-    '11': 'Novembro',
-    '12': 'Dezembro'
-  }
-
-  var list = false
-  var listMax = 100
-  var openBlock = false
-  function openFunc(user, menu) {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (openBlock) return alert('Você já está com um funcionario aberto...')
-    if (menu == 'close') return document.getElementById('openFunc').style.display = 'none'
-    list = false
-    listMax = 100
-    document.getElementById('userOpen').value = user
-    if (menu) {
-      document.getElementById('menuOpen').value = menu
-    } else if (document.getElementById('menuOpen').value) {
-      menu = document.getElementById('menuOpen').value
-    } else { document.getElementById('menuOpen').value = 'FGTS' }
-    document.getElementById('loadMore').style.display = 'none'
-    document.getElementById('listFunc').innerHTML = `<div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
-    document.getElementById('listFuncAcomp').innerHTML = `<div style="width: 100%; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
-    document.getElementById('nameFunc').innerHTML = `${user}`
-    document.getElementById('openFunc').style.display = 'flex'
-    document.getElementById(`funcFGTS`).style.display = 'none'
-    document.getElementById(`funcAcomp`).style.display = 'none'
-    if (menu == "Acomp") {
-      document.getElementById(`funcAcomp`).style.display = 'inline'
-    } else if (menu == "FGTS" || menu == "Cadastros" || "CountConsultas") {
-      document.getElementById(`funcFGTS`).style.display = 'flex'
-    }
-
-    openBlock = true
-    $.ajax({ type: "post",url: `${apiURL}/funcionarios/get${menu}`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        newUser: user == 'Todos' ? false : user,
-        dataMin: document.getElementById('dataMinF').value,
-        dataMax: document.getElementById('dataMaxF').value,
-        type: document.getElementById('typeF').value,
-        objetivo: document.getElementById('objetivo').value
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        openBlock = false
-        if (s.error) {
-          document.getElementById('openFunc').style.display = 'none'
-          return alert(s.error)
-        }
-        document.getElementById('listFunc').innerHTML = ``
-        if (menu == "FGTS") {
-          list = s.fgts
-          document.getElementById('listFunc').innerHTML += `
-            <div style="width: 100%; display: flex; justify-content: center;">
-              <a onclick="downloadCSV('sucess')" title="CSV Sucessos" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer">Sucessos: <span class="font-color-navbar-reverse">${s.fgts.filter(r=>!r.error).length}</span></a>
-              <a onclick="downloadCSV('error')" title="CSV Erros" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer">Erros: <span class="font-color-navbar-reverse">${s.fgts.filter(r=>r.error).length}</span></a>
-              <a onclick="downloadCSV('total')" title="CSV Total" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer">Total: <span class="font-color-navbar-reverse">${s.fgts.length}</span></a>
-            </div>
-            <div style="width: 100%; display: flex; justify-content: center;">
-              <a title="VALOR TOTAL LIBERADO" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh;">Liberado: <span class="font-color-navbar-reverse">R$ ${s.liberado.replace('.',',')}</span></a>
-              <a title="QUANTIDADE MEDIA DE CONSULTAS POR DIA" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh">MED. P/DIA QNT.: <span class="font-color-navbar-reverse">${s.grafico.medQnt}</span></a>
-              <a title="VALOR MEDIO POR DIA" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh">MED. P/DIA VAL.: <span class="font-color-navbar-reverse">R$ ${s.grafico.medValor.replace('.',',')}</span></a>
-              <a title="TICKET MEDIO CONSULTADO" style="margin-inline: 1vw; font-size: 2vh; margin-top: 3vh">TICKET MED.: <span class="font-color-navbar-reverse">R$ ${s.grafico.medTicket.replace('.',',')}</span></a>
-            </div>
-            <div style="margin-bottom: 2vh; width: 100%; display: flex; justify-content: center;">
-              <a title="Limpar lista" onclick="clearFunc('${user}','fgts')" class="font-color-navbar-reverse" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer; text-decoration: underline">Limpar</a>
-            </div>
-            <div style="width: 100%; display: flex; justify-content: center;">
-              <canvas id="grafico" style="width: 20vw; height: 20vw"></canvas>
-            </div>
-          `
-          s.fgts.slice(0, listMax).filter(r=>!r.error).forEach((element,index)=>{
-            document.getElementById('listFunc').innerHTML += `
-              <result class="background-Propostas" style="border-radius: 1vh; display: flex; width: 90%; padding-block: 1vh; margin-block: 1vh; display: flex; justify-content: center; align-items: center">
-                <a style="display: none">${JSON.stringify(element)}</a>
-                <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 18%; margin-inline: 1%; padding-inline: 1%;">
-                  <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
-                  <input disabled class="font-color-reverse" value="${element.cpf}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                </fieldset>
-                <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
-                  <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
-                  <input disabled class="font-color-reverse" value="${element.bank}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                </fieldset>
-                <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
-                  <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Liberado</legend>
-                  <input disabled class="font-color-reverse" value="${element.liberado}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                </fieldset>
-                <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
-                  <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Total</legend>
-                  <input disabled class="font-color-reverse" value="${element.total}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                </fieldset>
-                <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
-                  <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Data</legend>
-                  <input disabled class="font-color-reverse" value="${element.data.replace('T',' - ').replace('Z','')}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                </fieldset>
-              </result>
-            `
-          })
-          s.fgts.slice(0, listMax).filter(r=>r.error).forEach((element,index)=>{
-            document.getElementById('listFunc').innerHTML += `
-              <result class="background-Propostas" style="border-radius: 1vh; display: flex; width: 90%; padding-block: 1vh; margin-block: 1vh; display: flex; justify-content: center; align-items: center">
-                <a style="display: none">${JSON.stringify(element)}</a>
-                <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 18%; margin-inline: 1%; padding-inline: 1%;">
-                  <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
-                  <input disabled class="font-color-reverse" value="${element.cpf}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                </fieldset>
-                <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
-                  <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
-                  <input disabled class="font-color-reverse" value="${element.bank}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                </fieldset>
-                <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 35%; margin-inline: 1%; padding-inline: 1%;">
-                  <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Erro</legend>
-                  <input disabled class="font-color-reverse" value="${element.error}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                </fieldset>
-                <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
-                  <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Data</legend>
-                  <input disabled class="font-color-reverse" value="${element.data.replace('T',' - ').replace('Z','')}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                </fieldset>
-              </result>
-            `
-          })
-          if (s.fgts.length >= listMax) document.getElementById('loadMore').style.display = 'flex'
-          var data = [
-            { value: s.grafico.banks['FACTA FINANCEIRA'], color: '#ffa500', highlight: "#ffa500", label: "FACTA FINANCEIRA" },
-            { value: s.grafico.banks['BANCO C6'], color: '#FFFF00', highlight: "#FFFF00", label: "BANCO C6" },
-            { value: s.grafico.banks['PANAMERICANO'], color: '#808080', highlight: "#808080", label: "PANAMERICANO" },
-            { value: s.grafico.banks['MERCANTIL'], color: '#0000FF', highlight: "#0000FF", label: "MERCANTIL" },
-            { value: s.grafico.banks['BMG'], color: '#FF0000', highlight: "#FF0000", label: "BMG" },
-            { value: s.grafico.banks['SAFRA'], color: '#00008b', highlight: "#00008b", label: "SAFRA" },
-          ];
-          var ctx = document.getElementById("grafico").getContext("2d");
-          new Chart(ctx).Pie(data);
-        } else if (menu == "Cadastros") {
-          list = s.cadastros
-          document.getElementById('listFunc').innerHTML += `
-            <div style="margin-bottom: 2vh; width: 100%; display: flex; justify-content: center;">
-              <a onclick="downloadCSV('af')" title="CSV Total" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer">Total: <span class="font-color-navbar-reverse">${s.cadastros.length}</span></a>
-            </div>
-            <div style="margin-bottom: 2vh; width: 100%; display: flex; justify-content: center;">
-              <a title="Limpar lista" onclick="clearFunc('${user}','cadastros')" class="font-color-navbar-reverse" style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh; cursor: pointer; text-decoration: underline">Limpar</a>
-            </div>
-          `
-          s.cadastros.slice(0, listMax).forEach((element,index)=>{
-            document.getElementById('listFunc').innerHTML += `
-              <result class="background-Propostas" style="border-radius: 1vh; display: flex; width: 90%; padding-block: 1vh; margin-block: 1vh; display: flex; justify-content: center; align-items: center">
-                <a style="display: none">${JSON.stringify(element)}</a>
-                <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 22%; margin-inline: 1%; padding-inline: 1%;">
-                  <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">AF</legend>
-                  <input disabled class="font-color-reverse" value="${element.af}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                </fieldset>
-                <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
-                  <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Data</legend>
-                  <input disabled class="font-color-reverse" value="${element.data.replace('T',' - ').replace('Z','')}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-                </fieldset>
-              </result>
-            `
-          })
-          if (s.cadastros.length >= listMax) document.getElementById('loadMore').style.display = 'flex'
-        } else if (menu == "Acomp") {
-          document.getElementById('listFuncAcomp').innerHTML = `
-            <div style="margin-bottom: 2vh; width: 100%; display: flex; justify-content: center;">
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Meta: <span class="font-color-navbar-reverse">${s.meta ? s.meta.replace('.',',') : 0}%</span></a>
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Méd. AF's p/ Dia: <span class="font-color-navbar-reverse">${s.afsPorDia ? s.afsPorDia : 0}</span></a>
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Tck. Médio: <span class="font-color-navbar-reverse">R$ ${s.ticketMed ? s.ticketMed.replace('.',',') : 0}</span></a>
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Projeção: <span class="font-color-navbar-reverse">${s.metaMes ? s.metaMes.replace('.',',') : 0}$</span></a>
-            </div>
-            <div style="margin-bottom: 2vh; width: 100%; display: flex; justify-content: center;">
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">AF's Restante: <span class="font-color-navbar-reverse">${s.AFsRestante ? s.AFsRestante : 0}</span></a>
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Valor Restante: <span class="font-color-navbar-reverse">R$ ${s.valorRestante ? s.valorRestante.replace('.',',') : 0}</span></a>
-              <a style="margin-inline: 1vw; font-size: 2.5vh; margin-top: 3vh;">Valor Rest. p/ Dia: <span class="font-color-navbar-reverse">R$ ${s.valorDia ? s.valorDia.replace('.',',') : 0}</span></a>
-            </div>
-            <div style="position: relative; width: 100%; display: flex; flex-direction: row; justify-content: center; margin-top: 3vh;">
-              <canvas id="graficoAcomp" style="position: absolute; width: 40%; right: 47%; margin-top: 2.5vh"></canvas>
-              <div id="chart_div" style="position: absolute; width: 60%; height: 15vw; font-weight: 600; right: -5%"></div>
-              <div id="midiasComment" style="position: absolute; width: 40%; left: 4%; display: flex; flex-direction: column; margin-top: 1.5vh">
-                ${s.midias.map(r=>`<a style="border-left: 0.5vh solid ${r.color}; border-radius: 0.3vh; font-size: 2vh; margin-block: 0.2vh; padding-left: 0.3vw">${r.label}</a>`).join('')}
-              </div>
-            </div>
-          `
-          // s.midias.forEach((element,i)=>{
-          //   document.getElementById('midiasComment') += `
-          //   <a>
-          //     ${element.label}
-          //   </a>
-          //   `
-          // })
-          var ctx = document.getElementById("graficoAcomp").getContext("2d");
-          new Chart(ctx).Doughnut(s.midias);
-          google.charts.load('current', {packages: ['corechart', 'line']});
-          google.charts.setOnLoadCallback(drawCurveTypes);
-          function drawCurveTypes() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'X');
-            data.addColumn('number', months[s.mes-2]);
-            data.addColumn('number', months[s.mes-1]);
-            data.addColumn('number', months[s.mes]);
-            data.addRows(s.months);
-
-            var options = {
-              legend: { position: 'bottom', textStyle: {color: '#01579b'} },
-              hAxis: { 
-                textStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
-                titleTextStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
-              },
-              vAxis: {
-                textStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
-                titleTextStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
-              },
-              backgroundColor: 'transparent',
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
-          }
-        } else if (menu == 'CountConsultas') {
-          document.getElementById('listFunc').innerHTML += `
-            <div class="font-color-navbar-reverse" style="display: flex; width: 80%; border-bottom: 0.1vh solid gray; padding-block: 1vh; padding-inline: 1vw; font-weight: 600; justify-content: center; align-items: center; text-decoration: underline; cursor: pointer">
-              <a onclick="downloadCSV('count')">Download CSV</a>
-            </div>
-            <div class="font-color-navbar-reverse" style="display: flex; width: 80%; border-bottom: 0.1vh solid gray; padding-block: 0.4vh; padding-inline: 1vw; font-weight: 600">
-              <div style="width: 50%">
-                <a style="display: flex">Nome</a>
-              </div>
-              <div style="width: 20%; text-align: center">
-                <a style="display: flex">QNT.</a>
-              </div>
-              <div style="width: 30%; text-align: center">
-                <a style="display: flex">Valor</a>
-              </div>
-            </div>
-            `
-          list = s.countConsultas
-          s.countConsultas.forEach((element,index)=>{
-            document.getElementById('listFunc').innerHTML += `
-            <result style="display: flex; width: 80%; border-bottom: 0.1vh solid gray; padding-block: 0.3vh; padding-inline: 1vw">
-              <div style="width: 50%">
-                <a style="display: flex">${element.user}</a>
-              </div>
-              <div style="width: 20%">
-                <a style="display: flex">${element.qnt}</a>
-              </div>
-              <div style="width: 30%">
-                <a style="display: flex">R$ ${(element.valor.toFixed(2)).replace('.',',')}</a>
-              </div>
-            </result>
-            `
-          })
-        }
-      },
-      error: function(e) {
-        openBlock = false
-        if (e.error) return alert(e.error)
-        if (e && e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`Ocorreu algum erro indefinido! Tente novamente mais tarde...`)
-      }
-    })
-  }
-  
-  function listMore() {
-    document.getElementById('loadMore').style.display = 'none'
-    if (list[0] && list[0].cpf) {
-      list.slice(listMax, listMax+100).filter(r=>!r.error).forEach((element,index)=>{
-        document.getElementById('listFunc').innerHTML += `
-          <result class="background-Propostas" style="border-radius: 1vh; display: flex; width: 90%; padding-block: 1vh; margin-block: 1vh; display: flex; justify-content: center; align-items: center">
-            <a style="display: none">${JSON.stringify(element)}</a>
-            <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 18%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
-              <input disabled class="font-color-reverse" value="${element.cpf}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-            <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
-              <input disabled class="font-color-reverse" value="${element.bank}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-            <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Liberado</legend>
-              <input disabled class="font-color-reverse" value="${element.liberado}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-            <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Total</legend>
-              <input disabled class="font-color-reverse" value="${element.total}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-            <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Data</legend>
-              <input disabled class="font-color-reverse" value="${element.data.replace('T',' - ').replace('Z','')}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-          </result>
-        `
-      })
-      list.slice(listMax, listMax+100).filter(r=>r.error).forEach((element,index)=>{
-        document.getElementById('listFunc').innerHTML += `
-          <result class="background-Propostas" style="border-radius: 1vh; display: flex; width: 90%; padding-block: 1vh; margin-block: 1vh; display: flex; justify-content: center; align-items: center">
-            <a style="display: none">${JSON.stringify(element)}</a>
-            <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 18%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
-              <input disabled class="font-color-reverse" value="${element.cpf}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-            <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
-              <input disabled class="font-color-reverse" value="${element.bank}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-            <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 35%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Erro</legend>
-              <input disabled class="font-color-reverse" value="${element.error}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-            <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Data</legend>
-              <input disabled class="font-color-reverse" value="${element.data.replace('T',' - ').replace('Z','')}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-          </result>
-        `
-      })
-    } else if (list[0] && list[0].af) {
-      list.slice(listMax, listMax+100).forEach((element,index)=>{
-        document.getElementById('listFunc').innerHTML += `
-          <result class="background-Propostas" style="border-radius: 1vh; display: flex; width: 90%; padding-block: 1vh; margin-block: 1vh; display: flex; justify-content: center; align-items: center">
-            <a style="display: none">${JSON.stringify(element)}</a>
-            <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 22%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">AF</legend>
-              <input disabled class="font-color-reverse" value="${element.af}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-            <fieldset id="fieldset" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4" style="color: black; margin: 0; padding: 0; font-size: 2.3vh">Data</legend>
-              <input disabled class="font-color-reverse" value="${element.data.replace('T',' - ').replace('Z','')}" style="color: black; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-            </fieldset>
-          </result>
-        `
-      })
-    }
-    listMax = listMax+100
-    if (list.length >= listMax) document.getElementById('loadMore').style.display = 'flex'
-  }
-
-  (function () {
-    getUser();
-    document.getElementById('dataMinF').value = new Date().toISOString().slice(0, 10)+`T00:00`
-  })();
-</script>
-<script>
-  function searchBar() {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+  function searchBar(input, menu) {
+    if (menuOpen) openMenu(false,"close");
     var input, filter, ul, li, a, i, txtValue;
-    input = document.getElementById('searchBar');
+    input = document.getElementById(input.id);
     filter = input.value.toUpperCase();
-    ul = document.getElementById("funcionarios");
-    li = ul.getElementsByTagName('proposta');
-    for (i = 0; i < li.length; i++) {
-      a = li[i]
-      txtValue = a.textContent || a.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        li[i].style.display = "inline";
-      } else {
-        li[i].style.display = "none";
-      }
-    }
-  }
-  function searchBar2() {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    var input, filter, ul, li, a, i, txtValue;
-    input = document.getElementById('searchBar2');
-    filter = input.value.toUpperCase();
-    ul = document.getElementById("listFunc");
-    li = ul.getElementsByTagName('result');
+    ul = document.getElementById(menu+'s');
+    li = ul.getElementsByTagName(menu);
     for (i = 0; i < li.length; i++) {
       a = li[i]
       txtValue = a.textContent || a.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
         li[i].style.display = "flex";
-      } else {
-        li[i].style.display = "none";
-      }
+      } else li[i].style.display = "none";
     }
   }
+
+  (function () {
+    return getFuncionarios()
+  })()
 </script>

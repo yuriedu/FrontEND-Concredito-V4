@@ -1,0 +1,190 @@
+<div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
+  <navbar id="navbar"></navbar>
+  <script>$("#navbar").load(`/imports/navbar.html`)</script>
+
+  <div class="background-image left18-5 width79" style="position: relative; top: 12.5vh; left: 6vw; width: 92.5vw; height: 25.5vh; border-radius: 2vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <a style="display: flex; width: 100%; justify-content: center; padding-top: 2vh; font-size: 3vh">Filtro de Logs:</a>
+    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; font-size: 1.7vh;">
+      <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo</legend>
+        <select class="font-1" id="type" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+          <option style="color: black" value="" selected>Todas</option>
+          <optgroup style="color: black!important" label="Administrativo">
+            <option style="color: black" value="funcionarios">Funcionarios</option>
+            <option style="color: black" value="roles">Cargos</option>
+            <option style="color: black" value="esteira">Esteira</option>
+            <option style="color: black" value="system">Sistemas</option>
+            <option style="color: black" value="login">Login</option>
+          </optgroup>
+          <optgroup style="color: black!important" label="Sistemas">
+            <option style="color: black" value="fgts">FGTS</option>
+            <option style="color: black" value="cadastrar">Cadastros</option>
+            <option style="color: black" value="generator">Geradores</option>
+            <option style="color: black" value="propostas">Propostas</option>
+            <option style="color: black" value="leads">Leads</option>
+          </optgroup>
+        </select>
+      </fieldset>
+      <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Minima</legend>
+        <input class="font-1" id="dataIni" type="datetime-local" id="type" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+      </fieldset>
+      <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Maxima</legend>
+        <input class="font-1" id="dataEnd" type="datetime-local" id="type" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+      </fieldset>
+      <fieldset class="width60p" style="padding: 0; width: 20%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 7.7vh">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Agentes</legend>
+        <input class="font-1" id="agente" placeholder="Carregando..." list="agentesList" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+        <datalist id="agentesList"></datalist>
+      </fieldset>
+    </div>
+    <div style="width: 100%; display: flex; justify-content: center">
+      <div id="filter" onclick="getLogs()" class="buttonLogin" style="width: 30%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">
+        <a>Filtrar</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="background-image left18-5 width79" style="position: relative; top: 15vh; left: 6vw; width: 92.5vw; min-height: 59.5vh; border-top-right-radius: 2vh; border-top-left-radius: 2vh; display: flex; flex-direction: column;  align-items: center;">
+    <div style="display: flex; flex-direction: row; width:100%; justify-content: center;">
+      <fieldset title="Pesquise algum funcionario por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 35%; margin-inline: 1%; padding-inline: 1%; margin-top: 1vh;">
+        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
+        <input onkeyup="searchBar(this, 'funcionario')" id="searchBar" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 3.5vh; background: transparent; border: 0">
+      </fieldset>
+      <i onclick="searchBar({ id: 'searchBar' }, 'funcionario')" class="fa-regular fa-magnifying-glass-dollar" style="cursor: pointer; font-size: 3.5vh; margin-top: 3.3vh;"></i>
+    </div>
+    <div id="logs" style="width: 100%"></div>
+    <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
+      <a onclick="loadMore()" class="navbar-font-color" style="font-size: 3vh; text-decoration: underline; margin-block: 2vh; cursor: pointer">Carregar mais Logs</a>
+    </div>
+    <div></div>
+  </div>
+
+</div>
+
+<script>
+  var agentes = []
+  var agentesBlock = false
+  function getAgentes() {
+    if (agentesBlock) return alert('Aguarde...')
+    agentesBlock = true
+    $.ajax({ type: "post",url: `${apiURL}/logins/get`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password')
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        if (s.error) return alert(s.error)
+        agentesBlock = false
+        agentes = s.logins
+        document.getElementById('agente').placeholder = 'Selecione o Agente...'
+        s.logins.forEach((element,index) => {
+          document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
+        });
+      },
+      error: function(e) {
+        agentesBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+      }
+    })
+  }
+
+  var logs = false
+  var actual = 0
+  function getLogs() {
+    if (document.getElementById('filter').classList.contains('buttonBlock')) return alert('Aguarde...')
+    document.getElementById('filter').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
+    document.getElementById('filter').classList.add("buttonBlock");
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/logs/get`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        type: document.getElementById('type').value,
+        dataIni: document.getElementById('dataIni').value,
+        dataEnd: document.getElementById('dataEnd').value,
+        agente: document.getElementById('agente').value
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        if (s.error) return alert(s.error)
+        document.getElementById('filter').innerHTML = `Filtrar`
+        document.getElementById('filter').classList.remove("buttonBlock");
+        document.getElementById('logs').innerHTML = ``
+        logs = s.logs
+        actual = 50
+        s.logs.slice(0,actual).forEach((element,index)=>{
+          document.getElementById('logs').innerHTML += `<log>
+            <div class="background-Propostas" style="border-radius: 1.5vh; width: 80%; margin-inline: 10%; margin-top: 3vh">
+              <div class="line-bottom navbar-font-color font-4" style="display: flex; flex-direction: row; align-items: center; height: 6vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center; position: relative">
+                <a title="${element.author}" style="margin-inline: 2%; max-width: 25%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-light fa-user-headset"></i><span class="invisibleAndroid"> Autor: </span><span id="${element.author}_bank">${element.author}</span></a>
+                <a title="${element.type}" style="margin-inline: 2%; max-width: 20%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-solid fa-quote-left font-size2"></i><span class="invisibleAndroid"> Tipo: </span><span>${element.type}</span></a>
+                <a title="${element.data}" style="margin-inline: 2%; max-width: 40%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-regular fa-calendar-days font-size2"></i><span class="invisibleAndroid"> Data: </span><span id="${element.id}_atividade">${element.data.replaceAll('-','/').split("T").join(" - ").replace('Z','')}</span></a>
+              </div>
+              <div class="flex-direction-column" style="display: flex; flex-direction: row; align-items: center; min-height: 15vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center;"> 
+                <fieldset class="width60p" style="padding: 0; width: 80%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 13vh">
+                  <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Log</legend>
+                  <textarea class="font-1" rows="3" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0" disabled>${element.log.replaceAll(' - ','\n')}</textarea>
+                </fieldset>
+              </div>
+            </div>
+          </log>`
+        })
+      },
+      error: function(e) {
+        document.getElementById('filter').innerHTML = `Filtrar`
+        document.getElementById('filter').classList.remove("buttonBlock");
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+      }
+    })
+  }
+
+  var loadBlock = false
+  async function loadMore() {
+    if (loadBlock) return alert('Aguarde...')
+    if (actual > logs.length) return alert('Não há mais logs...')
+    loadBlock = true
+    actual = actual+50
+    await logs.slice(actual-50,actual).forEach((element,index)=>{
+      document.getElementById('logs').innerHTML += `<log>
+        <div class="background-Propostas" style="border-radius: 1.5vh; width: 80%; margin-inline: 10%; margin-top: 3vh">
+          <div class="line-bottom navbar-font-color font-4" style="display: flex; flex-direction: row; align-items: center; height: 6vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center; position: relative">
+            <a title="${element.author}" style="margin-inline: 2%; max-width: 25%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-light fa-user-headset"></i><span class="invisibleAndroid"> Autor: </span><span id="${element.author}_bank">${element.author}</span></a>
+            <a title="${element.type}" style="margin-inline: 2%; max-width: 20%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-solid fa-quote-left font-size2"></i><span class="invisibleAndroid"> Tipo: </span><span>${element.type}</span></a>
+            <a title="${element.data}" style="margin-inline: 2%; max-width: 40%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa-regular fa-calendar-days font-size2"></i><span class="invisibleAndroid"> Data: </span><span id="${element.id}_atividade">${element.data.replaceAll('-','/').split("T").join(" - ").replace('Z','')}</span></a>
+          </div>
+          <div class="flex-direction-column" style="display: flex; flex-direction: row; align-items: center; min-height: 15vh; font-size: 2.2vh; padding-inline: 1%; justify-content: center;"> 
+            <fieldset class="width60p" style="padding: 0; width: 80%; margin: 0; border-radius: 0.6vh; margin-left: 0.5%; padding-inline: 0.4%; height: 13vh">
+              <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Log</legend>
+              <textarea class="font-1" rows="3" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0" disabled>${element.log.replaceAll(' - ','\n')}</textarea>
+            </fieldset>
+          </div>
+        </div>
+      </log>`
+    })
+    loadBlock = false
+  }
+
+  function searchBar() {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById('searchBar');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById('logs');
+    li = ul.getElementsByTagName('log');
+    for (i = 0; i < li.length; i++) {
+      a = li[i]
+      txtValue = a.textContent || a.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "inline";
+      } else {
+        li[i].style.display = "none";
+      }
+    }
+  }
+
+  (function () {
+    getAgentes()
+    return getLogs()
+  })()
+</script>
