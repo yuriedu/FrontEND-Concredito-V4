@@ -182,7 +182,7 @@ const fasesName = {
         document.getElementById('filter').innerHTML = `<p class="font-1">Filtrar</p>`
         document.getElementById('filter').classList.remove("buttonBlock");
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     });
   }
@@ -225,7 +225,7 @@ const fasesName = {
           return document.getElementById(`title_${codAF}`).title = e.responseJSON.error
         }
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
@@ -249,7 +249,7 @@ const fasesName = {
       error: function(e) {
         changeFaseActive = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     });
   }
@@ -287,7 +287,7 @@ const fasesName = {
     //   error: function(e) {
     //     changeFaseActive = false
     //     if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-    //     return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+    //     return alert(`A minha API demorou muito para retornar uma resposta valida...`)
     //   }
     // });
   }

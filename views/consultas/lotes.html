@@ -138,7 +138,7 @@
       error: function(e) {
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return nextCPF(bank)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }

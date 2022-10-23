@@ -145,7 +145,7 @@
         document.getElementById('editButton').innerHTML = `Salvar`
         document.getElementById('editButton').classList.remove("buttonBlock");
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
@@ -168,7 +168,7 @@
       },
       error:  async function(s) {
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
@@ -200,7 +200,7 @@
       error:  async function(s) {
         funcBlock = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }

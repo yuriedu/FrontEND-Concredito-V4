@@ -208,7 +208,7 @@
       "funcionarios": { perm: "administrativo_funcionarios", link: "/administrativo/funcionarios" },
       "configs": { perm: "administrativo_configs", link: "/administrativo/configs" },
       "logs": { perm: "administrativo_funcionarios", link: "/administrativo/logs" },
-      "relatorios": { perm: "administrativo_relatorios", link: "/administrativo/relatorios" },
+      "relatorios": { perm: "administrativo_funcionarios", link: "/administrativo/relatorios" },
     },
     "dashboard": {
       active: false,
@@ -300,7 +300,7 @@
         document.getElementById('bellLoader').style.display = 'none'
         setTimeout(function(){ document.getElementById('bellIcon').classList.remove('bellBlock') },5000)
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
@@ -416,7 +416,7 @@
         document.getElementById('alterUser').innerHTML = `<p class="font-1">Alterar</p>`
         document.getElementById('alterUser').classList.remove("buttonBlock");
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }

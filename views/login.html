@@ -88,7 +88,7 @@
         document.getElementById('login').classList.remove("buttonBlock");
         document.getElementById('checkCode').classList.remove("buttonBlock");
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     });
   }

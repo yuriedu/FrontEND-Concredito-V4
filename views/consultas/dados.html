@@ -16,7 +16,7 @@
             <a style="font-size: 2.3vh; margin-top: 2vh">E / OU</a>
             <fieldset title="Telefone do cliente..." style="margin-top: 0vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Telefone</legend>
-              <input class="font-1" placeholder="(00)90000-0000" id="telefoneFind" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+              <input class="font-1" placeholder="00 91234 1234" id="telefoneFind" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
             <div id="options" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;"></div>
           </div>
@@ -131,6 +131,17 @@
   function consultar() {
     if (document.getElementById('consultar').classList.contains('buttonBlock')) return alert('Aguarde...')
     if (!document.getElementById('cpf').value && !document.getElementById('telefoneFind').value) return alert('Coloque o CPF ou Telefone...')
+    for (var i = 0, n = 10; i < n; ++i) {
+      if (document.getElementById('cpf').value && document.getElementById('cpf').value.length < 11) {
+        document.getElementById('cpf').value = `0${document.getElementById('cpf').value}`
+      }
+      if (document.getElementById('telefoneFind').value && document.getElementById('telefoneFind').value.length < 11) {
+        document.getElementById('telefoneFind').value = `0${document.getElementById('telefoneFind').value}`
+      }
+    }
+    document.getElementById('telefoneFind').value = document.getElementById('telefoneFind').value.replaceAll(' ','').replaceAll('(','').replaceAll(')','').replaceAll('-','')
+    if (document.getElementById('telefoneFind').value && !Number(document.getElementById('telefoneFind').value)) return alert(`O Telefone deve conter apenas números!\nExemplo: 51912341234`)
+    if (document.getElementById('telefoneFind').value && document.getElementById('telefoneFind').value.length != 11) return alert(`O Telefone está invalido! Ele deve ter apenas 11 digitos!\nExemplo: 51912341234`)
     document.getElementById('consultar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('consultar').classList.add("buttonBlock");
     document.getElementById('nome').value = ''
@@ -195,7 +206,7 @@
         document.getElementById('consultar').innerHTML = `<p class="font-1">Consultar</p>`
         document.getElementById('consultar').classList.remove("buttonBlock");
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }

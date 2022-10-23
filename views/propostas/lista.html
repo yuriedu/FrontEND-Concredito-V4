@@ -163,7 +163,6 @@
 <script>
   var agentes = false
   function getAgentes() {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (agentes) return alert('Aguarde...')
     agentes = true
     $.ajax({ type: "post",url: `${apiURL}/logins/get`,
@@ -172,6 +171,7 @@
         password: localStorage.getItem('password')
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
+        if (s.error) return alert(s.error)
         agentes = s.logins
         s.logins.forEach((element,index) => {
           document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
@@ -181,7 +181,7 @@
       error: function(e) {
         agentes = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }(function () { getAgentes() })();
@@ -239,7 +239,7 @@
         document.getElementById('filter').innerHTML = `<p class="font-1">Filtrar</p>`
         document.getElementById('filter').classList.remove("buttonBlock");
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
@@ -272,7 +272,7 @@
           return document.getElementById(`title_${codAF}`).title = e.responseJSON.error
         }
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     });
   }
@@ -316,7 +316,7 @@
           return document.getElementById(`title_${codAF}`).title = e.responseJSON.error
         }
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
@@ -340,7 +340,7 @@
       error: function(e) {
         blockFase = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     });
   }
@@ -363,7 +363,7 @@
       error: function(e) {
         link = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     });
   }
@@ -386,7 +386,7 @@
       error: function(e) {
         esteira = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     });
   }
@@ -406,7 +406,7 @@
       },
       error: function(e) {
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     });
   }
@@ -438,7 +438,7 @@
       error: function(e) {
         generatorCod = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     });
   }

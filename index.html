@@ -18,7 +18,7 @@
       var login = false
       var urlAPI = 'https://api.concredito.com.br'
       var urlLocal = 'http://localhost:3000'
-      var apiURL = urlAPI
+      var apiURL = urlLocal
     </script>
   </head>
   <body style="margin: 0">
@@ -61,12 +61,13 @@
             },
             error: function(e) { return $(document.body).load(`/views/login.html`) }
           })
-        }(function () { load() })()
+        }
         function logout() {
           localStorage.setItem('user', '')
           localStorage.setItem('password', '')
           return window.location = "/login"
         }
+        (function () { load() })()
       </script>
   </body>
 </html>

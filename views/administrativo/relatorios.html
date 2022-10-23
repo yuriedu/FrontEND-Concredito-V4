@@ -290,17 +290,24 @@
           document.getElementById('listLiberado').innerHTML = `<div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; max-height: 60vh; overflow-y: auto; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
             <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Lista Liberado</a>
             <div id="listaLiberado" style="width: 100%; margin-top: 2vh">
-
+              <div style="display: flex; width: 100%; margin-block: 0.3vh">
+              <div style="width: 50%; margin-left: 5%">
+                <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
+              </div>
+              <div style="width: 45%">
+                <a style="font-size: 2.5vh; font-weight: 800">Liberado - <span style="margin-left: 1vw">S/E</span></a>
+              </div>
+            </div>
             </div>
           </div>`
           s.grafico.liberado.forEach((element,index)=>{
             document.getElementById('listaLiberado').innerHTML += `
             <div style="display: flex; width: 100%; margin-block: 0.3vh">
-              <div style="width: 63%; margin-left: 5%">
+              <div style="width: 50%; margin-left: 5%">
                 <a style="font-size: 2.8vh">${element.user}</a>
               </div>
-              <div style="width: 32%">
-                <a style="font-size: 2.5vh; font-weight: 600">R$ ${String(element.liberado).replace('.',',')}</a>
+              <div style="width: 45%">
+                <a style="font-size: 2.2vh; font-weight: 600">R$ ${String(element.liberado).replace('.',',').replace('null','0')} <span style="margin-left: 0.5vw; font-weight: 800">${element.sucessos}/${element.erros}</span></a>
               </div>
             </div>
             `
@@ -313,7 +320,7 @@
         document.getElementById('grafico2').innerHTML = ``
         document.getElementById('grafico3').innerHTML = ``
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
@@ -351,14 +358,14 @@
     block = true
     var csv = false
     if (type == 'Sucessos') {
-      csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA`
+      csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
       await fgts.filter(r=>r.liberado).map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${element.total.replaceAll(',','.')},${element.liberado.replaceAll(',','.')},${element.telefone},${element.data}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
     } else {
-      csv = `CPF,BANCO,ERRO`
+      csv = `CPF,BANCO,ERRO,AUTOR`
       await fgts.filter(r=>r.error).map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${element.error}`
+        csv+=`\n${element.cpf},${element.bank},${element.error},${element.user}`
       })
     }
     var a = document.createElement('a');
@@ -387,7 +394,7 @@
       error: function(e) {
         agentesBlock = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }

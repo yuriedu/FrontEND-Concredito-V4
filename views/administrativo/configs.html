@@ -10,6 +10,11 @@
     </div>
   </div>
   <div class="background-image margin-left18-5 width79 " style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; height: 13%; border-radius: 2vh;display: flex; flex-direction: row; justify-content: center; align-items: center;">
+    <fieldset title="Pesquise algum funcionario por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 45%; margin-inline: 1%; padding-inline: 1%;">
+      <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
+      <input onkeyup="searchBar(this)" id="searchBar" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 3.5vh; background: transparent; border: 0">
+    </fieldset>
+    <i onclick="searchBar({ id: 'searchBar' })" class="fa-regular fa-magnifying-glass-dollar" style="cursor: pointer; font-size: 3.5vh; margin-top: 1.3vh;"></i>
   </div>
 
   <div id="result" class="background-image margin-left18-5 width79 " style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; min-height: 42.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: column; align-items: center; padding-block: 4vh">
@@ -149,7 +154,7 @@
             }
           })
         } else if (button == "Esteiras") {
-          s.fases.splice(0,5).forEach((element,index)=>{
+          s.fases.forEach((element,index)=>{
             document.getElementById('result').innerHTML += `<result style="width: 90%">
               <div class="background-Propostas" style="border-radius: 1.5vh; margin-block: 1.5vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 1.5vh">
                 <div class="line-bottom navbar-font-color font-4" style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center; height: 6vh; font-size: 2.2vh">
@@ -174,14 +179,11 @@
                     ${element.status ? element.status : 'Nenhum'}
                   </a>
                   <i class="fa-solid fa-floppy-disk font-color-navbar" style="position: absolute; right: 1.5vw; cursor: pointer" 
-                  onclick="saveMenu(
-                    'Esteiras','${element.id}',
+                  onclick="saveMenu('Esteiras','${element.id}',
                     document.getElementById('${element.id}_newFase').value,
                     document.getElementById('${element.id}_oldFase').value,
                     document.getElementById('${element.id}_motivo').value,
-                    ${element.atividade ? element.atividade : 'Nenhuma'},
-                    ${element.status ? element.status : 'Nenhum'}
-                  )"></i>
+                    '${element.atividade}','${element.status}','${element.situacao}' )"></i>
                 </div>
                 <div class="font-4" style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center; height: 6vh; font-size: 2.2vh; padding-block: 1vh">
                   <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 20%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
@@ -206,7 +208,7 @@
         getBlock = false
         menus.filter(r=>r.menu != button).forEach(r=>{ document.getElementById(r.menu).classList.remove('buttonBlock') })
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
@@ -242,7 +244,7 @@
       error: async function(e) {
         getBlock = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
@@ -268,7 +270,7 @@
       error: async function(e) {
         getBlock = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
@@ -294,7 +296,7 @@
       error: async function(e) {
         getBlock = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida... Erro:\n${JSON.stringify(e)}`)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
@@ -348,6 +350,20 @@
       document.getElementById(button).value = '1'
       document.getElementById(button+"B").classList.add('sliderBC')
       document.getElementById(button+"S").classList.add('sliderC')
+    }
+  }
+  function searchBar(input) {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById(input.id);
+    filter = input.value.toUpperCase();
+    ul = document.getElementById('result');
+    li = ul.getElementsByTagName('result');
+    for (i = 0; i < li.length; i++) {
+      a = li[i]
+      txtValue = a.textContent || a.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "flex";
+      } else li[i].style.display = "none";
     }
   }
 </script>
