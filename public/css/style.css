@@ -156,6 +156,7 @@
 .borderColor { color: var(--color); border: 0.1vh solid var(--color) }
 .borderColor-reverse { color: var(--color-reverse); border: 0.1vh solid var(--color-reverse) }
 .line-bottom { border-bottom: 0.1vh solid rgba(var(--color-code), 0.3) }
+.line-left { border-left: 0.1vh solid rgba(var(--color-code), 0.3) }
 .line-bottom-reverse { border-bottom: 0.1vh solid rgba(var(--color-code-reverse), 0.3) }
 .line-top-reverse { border-top: 0.1vh solid rgba(var(--color-code-reverse), 0.3) }
 .line-top { border-top: 0.1vh solid rgba(var(--color-code), 0.3) }

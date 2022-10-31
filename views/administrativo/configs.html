@@ -44,20 +44,46 @@
         if (s.error) return alert(s.error)
         if (button == "Configs") {
           s.configs.forEach((element,index)=>{
-            if (element.active || element.active === 0) {
-              document.getElementById('result').innerHTML += `<result style="width: 23%;">
+            var menuSet = element.menu
+            if (!document.getElementById(element.menu)) document.getElementById('result').innerHTML += `<div id="${element.menu}" style="width: 100%; display: flex; flex-direction: row; justify-content: center"></div>`
+            if (element.type == 'checkbox') {
+              document.getElementById(menuSet).innerHTML += `<result style="width: 25%; margin-inline: 1%">
                 <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
                   <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
-                  <div style="width: 100%; display: flex; justify-content: center">
-                    <div id="${element.id}_activeS" onclick="inputChecked('${element.id}_active')" class="slider">
-                      <div id="${element.id}_activeB" class="sliderB"></div>
+                    <div style="width: 100%; display: flex; justify-content: center">
+                      <div id="${element.id}_activeS" onclick="inputChecked('${element.id}_active')" class="slider">
+                        <div id="${element.id}_activeB" class="sliderB"></div>
+                      </div>
                     </div>
-                  </div>
-                  <input id="${element.id}_active" value='0' type='hidden'>
+                    <input id="${element.id}_active" value='0' type='hidden'>
                   <i onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid fa-floppy-disk font-color-navbar"></i>
                 </fieldset>
               </result>`
-              if (element.active == 1) inputChecked(`${element.id}_active`)
+              if (element.value == 1) inputChecked(`${element.id}_active`)
+            } else if (element.type == 'input') {
+              document.getElementById(menuSet).innerHTML += `<result style="width: 25%; margin-inline: 1%">
+                <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+                  <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
+                  <input id="${element.id}_active" type="text" class="font-1" value="${element.value}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+                  <i title="Salvar" onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid ${ element.block ? 'fa-arrows-rotate' : 'fa-floppy-disk' } font-color-navbar"></i>
+                </fieldset>
+              </result>`
+            } else if (element.type == 'password') {
+              document.getElementById(menuSet).innerHTML += `<result style="width: 25%; margin-inline: 1%">
+                <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+                  <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
+                  <input id="${element.id}_active" type="password" class="font-1" value="${element.value}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+                  <i title="Salvar" onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid ${ element.block ? 'fa-arrows-rotate' : 'fa-floppy-disk' } font-color-navbar"></i>
+                </fieldset>
+              </result>`
+            } else if (element.type == 'number') {
+              document.getElementById(menuSet).innerHTML += `<result style="width: 25%; margin-inline: 1%">
+                <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+                  <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
+                  <input id="${element.id}_active" type="number" class="font-1" value="${element.value}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0" ${element.block ? 'disabled' : ''}>
+                  <i title="${element.block ? 'Zerar' : 'Salvar'}" onclick="document.getElementById('${element.id}_active').value = 0; saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid ${ element.block ? 'fa-arrows-rotate' : 'fa-floppy-disk' } font-color-navbar"></i>
+                </fieldset>
+              </result>`
             }
           })
         } else if (button == "Roles") {

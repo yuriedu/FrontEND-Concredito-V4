@@ -1,0 +1,258 @@
+<div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
+  <navbar id="navbar"></navbar>
+  <script>$("#navbar").load(`/imports/navbar.html`)</script>
+
+  <div class="background-image margin-left18-5 width79 min-height33" style="margin-top: 12.5vh; margin-left: 6vw; width: 92.5vw; min-height: 34vh; border-radius: 2vh">
+    <a style="display: flex; width: 100%; justify-content: center; padding-top: 2vh; font-size: 3vh">Filtro de Leads:</a>
+    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; font-size: 1.7vh;">
+      <fieldset title="Fase atual da proposta..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
+        <input id="cpf" type="number" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="00000000000">
+      </fieldset>
+      <fieldset title="Fase atual da proposta..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Telefone</legend>
+        <input id="phone" type="number" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="00 90000 0000">
+      </fieldset>
+      <fieldset title="Fase atual da proposta..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Agentes</legend>
+        <input id="agentes" list="agentesList" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="Carregando...">
+      </fieldset>
+
+      <fieldset title="Orgão do Contrato da proposta..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Flags</legend>
+        <select id="flags" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
+          <option style="color: black" value="" selected>Todos</option>
+          <option style="color: black" value="copy">Copiado</option>
+          <option style="color: black" value="notCopy">NÃO Copiado</option>
+          <option style="color: black" value="block">Bloqueado</option>
+        </select>
+      </fieldset>
+    </div>
+    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; font-size: 1.7vh; font-size: 1.7vh;">
+      <fieldset title="Banco do Contrato da proposta..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">OBS</legend>
+        <select id="obs" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
+          <option style="color: black" value="" selected>Todas</option>
+          <option style="color: black" value="1">COM SALDO</option>
+          <option style="color: black" value="2">SEM SALDO</option>
+          <option style="color: black" value="3">CLIENTE FECHADO</option>
+          <option style="color: black" value="4">PEDIR INDICAÇÃO</option>
+          <option style="color: black" value="5">NÃO QUIS FECHAR</option>
+        </select>
+      </fieldset>
+      <fieldset title="Banco do Contrato da proposta..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
+        <select id="bank" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
+          <option style="color: black" value="" selected>Todos</option>
+          <option style="color: black" value="facta">FACTA FINANCEIRA</option>
+          <option style="color: black" value="c6">BANCO C6</option>
+          <option style="color: black" value="pan">PANAMERICANO</option>
+          <option style="color: black" value="merc">MERCANTIL</option>
+          <option style="color: black" value="bmg">BMG</option>
+          <option style="color: black" value="safra">SAFRA</option>
+          <option style="color: black" value="banri">BANRISUL</option>
+          <option style="color: black" value="pag">PagBank</option>
+        </select>
+      </fieldset>
+      <fieldset title="Banco do Contrato da proposta..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo</legend>
+        <select id="type" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
+          <option style="color: black" value="" selected>Todos</option>
+          <option style="color: black" value="oportunidade">Oportunidade</option>
+        </select>
+      </fieldset>
+    </div>
+    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; font-size: 1.7vh; font-size: 1.7vh;">
+      <fieldset title="Data Minima..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Data Inicio</legend>
+        <input id="dateIni" type="date" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
+      </fieldset>
+      <fieldset title="Data Maxima..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Data Final</legend>
+        <input id="dateEnd" type="date" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
+      </fieldset>
+    </div>
+    <div style="width: 100%; display: flex; justify-content: center">
+      <div id="filter" onclick="filter()" class="buttonLogin" style="width: 25%; margin-top: 1.5vh; font-size: 2.5vh; padding-block: 1.2vh; border-radius: 1.5vh"> <a>Filtrar</a> </div>
+    </div>
+  </div>
+
+  <div class="background-image margin-left18-5 width79" style="margin-top: 3vh; display: flex; flex-direction: column; margin-left: 6vw; width: 92.5vw; min-height: 12vh; border-radius: 2vh; text-align: center; justify-content: center; align-items: center; font-size: 1.7vh;">
+    <a class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Distribuir Leads - Leads sem Agentes: <span id="disponivel" class="font-color-navbar" style="text-decoration: underline; font-weight: 600;">0</span></a>
+    <div style="display: flex; justify-content: center; align-items: center; width: 100%">
+      <fieldset title="Fase atual da proposta..." style="padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Agentes</legend>
+        <input id="agentesADD" list="agentesList" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="Carregando...">
+        <datalist id="agentesList"></datalist>
+      </fieldset>
+      <fieldset title="Fase atual da proposta..." style="padding: 0; border-radius: 0.6vh; width: 10%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Quantidade</legend>
+        <input id="quanty" type="number" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="000">
+      </fieldset>
+      <fieldset title="Banco do Contrato da proposta..." style="padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
+        <select id="bank" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
+          <option style="color: black" value="" selected>Todos</option>
+          <option style="color: black" value="facta">FACTA FINANCEIRA</option>
+          <option style="color: black" value="c6">BANCO C6</option>
+          <option style="color: black" value="pan">PANAMERICANO</option>
+          <option style="color: black" value="merc">MERCANTIL</option>
+          <option style="color: black" value="bmg">BMG</option>
+          <option style="color: black" value="safra">SAFRA</option>
+          <option style="color: black" value="banri">BANRISUL</option>
+          <option style="color: black" value="pag">PagBank</option>
+        </select>
+      </fieldset>
+      <i class="fa-solid fa-user-plus font-color-navbar" onclick="distribuir()" style="font-size: 3vh; cursor: pointer;"></i>
+    </div>
+  </div>
+
+  <div class="background-image margin-left18-5 width79 min-height36-5" style="margin-top: 3vh; margin-left: 6vw; width: 92.5vw; min-height: 29.5vh; border-top-left-radius: 2vh; border-top-right-radius: 2vh; padding-block: 3vh">
+    <div style="display: flex; margin-inline: 3.5vw; margin-bottom: 1.5vh; align-items: center;">
+      <div style="display: flex; width: 30%">
+        <a style="font-size: 2.2vh">Selecionar</a>
+        <input type="number" max="50" placeholder="00" style="font-size: 1.8vh; width: 2.2vw; border: 0.1vh solid black; border-radius: 0.7vh; background: transparent; margin-inline: 0.8vh; padding-block: 0.3vh;"> 
+        <a style="font-size: 2.2vh">Primeiras</a>
+        <i class="fa-regular fa-octagon-check font-color-navbar" style="font-size: 2.5vh; margin-left: 0.3vw; cursor: pointer;"></i>
+      </div>
+      <div style="display: flex; justify-content: center; width: 40%">
+        <a class="font-color-navbar" style="font-size: 2.2vh; font-weight: 600; margin-inline: 1vw">Total: <span id="total" style="text-decoration: underline">0</span></a>
+        <a class="font-color-navbar" style="font-size: 2.2vh; font-weight: 600; margin-inline: 1vw">Visivel: <span id="visivel" style="text-decoration: underline">0</span></a>
+      </div>
+      <div style="display: flex; width: 30%; justify-content: right;">
+        <a class="buttonLogin" style="font-size: 2.2vh; margin-inline: 1vw; padding-inline: 1.3vw; padding-block: 0.8vh; border-radius: 1.5vh;">Copiar</a>
+        <a class="buttonLogin" style="font-size: 2.2vh; margin-inline: 1vw; padding-inline: 1.3vw; padding-block: 0.8vh; border-radius: 1.5vh;">Download</a>
+      </div>
+    </div>
+    <div class="borderColor" style="margin-inline: 5%; border-radius: 1vh; width: 90%; min-height: 6vh">
+      <div class="line-bottom" style="font-size: 2.2vh; font-weight: 600; width: 100%; display: flex; height: 4.5vh; display: flex; align-items: center;">
+        <input type="checkbox" style="background: transparent; width: 2%">
+        <i class="line-left fa-duotone fa-copy font-color-navbar" style="width: 3%; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
+        <i class="line-left fa-solid fa-ban" style="color: red; width: 3%; height: 100%; display: flex; align-items: center; justify-content: center"></i>
+        <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">CPF</a>
+        <a class="line-left" style="height: 100%; width: 25%; display: flex; align-items: center; justify-content: center;">Nome</a>
+        <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">Telefone</a>
+        <a class="line-left" style="height: 100%; width: 14%; display: flex; align-items: center; justify-content: center;">Data</a>
+        <a class="line-left" style="height: 100%; width: 13%; display: flex; align-items: center; justify-content: center;">Agente</a>
+        <a class="line-left" style="height: 100%; width: 13%; display: flex; align-items: center; justify-content: center;">Banco</a>
+        <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">Valor</a>
+        <i class="line-left fa-regular fa-ellipsis-vertical font-color-navbar" style="width: 2%; cursor: pointer; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
+      </div>
+      <div id="results" style="width: 100%; height: 100%">
+
+
+
+      </div>
+    </div>
+  </div>
+  <div id="menuPropostas"></div>
+</div>
+<script>
+  var filterBlock = false
+  function filter() {
+    if (filterBlock) return alert('Aguarde...')
+    document.getElementById('results').innerHTML = `<div style="width: 100%; height: 10vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div>`
+    filterBlock = true
+    $.ajax({ type: "post", url: `${apiURL}/administrativo/leads/get`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        cpf: document.getElementById('cpf').value,
+        telefone: document.getElementById('phone').value,
+        agente: document.getElementById('agentes').value,
+        flag: document.getElementById('flags').value,
+        obs: document.getElementById('obs').value,
+        bank: document.getElementById('bank').value,
+        dateIni: document.getElementById('dateIni').value,
+        dateEnd: document.getElementById('dateEnd').value,
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        filterBlock = false
+        if (s.error) {
+          document.getElementById('results').innerHTML = ``
+          document.getElementById('total').innerHTML = `0`
+          document.getElementById('visivel').innerHTML = `0`
+          document.getElementById('disponivel').innerHTML = `0`
+          return alert(s.error)
+        }
+        document.getElementById('total').innerHTML = s.total
+        document.getElementById('visivel').innerHTML = `100`
+        document.getElementById('disponivel').innerHTML = s.disponivel
+        document.getElementById('results').innerHTML = ``
+        s.leads.slice(0,5).forEach((element,index)=>{
+          document.getElementById('results').innerHTML += `
+            <div class="line-bottom" style="font-size: 1.8vh; width: 100%; display: flex; height: 3.5vh; display: flex; align-items: center;">
+              <input type="checkbox" style="background: transparent; width: 2%">
+              <i class="line-left ${element.copy ? 'fa-duotone fa-copy' : ''} font-color-navbar" style="font-size: 2.2vh; width: 3%; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
+              <i class="line-left ${element.block ? 'fa-solid fa-ban' : ''}" style="font-size: 2.2vh; color: red; width: 3%; height: 100%; display: flex; align-items: center; justify-content: center"></i>
+              <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">${element.cpf}</a>
+              <a class="line-left" style="height: 100%; width: 25%; display: flex; align-items: center; justify-content: center;">
+                <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${String(element.nome).replace('null','Não Definido...')}</span>
+              </a>
+              <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">
+                <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${element.telefone}</span>
+              </a>
+              <a class="line-left" style="height: 100%; width: 14%; display: flex; align-items: center; justify-content: center;">
+                <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${element.data}</span>
+              </a>
+              <a class="line-left" style="height: 100%; width: 13%; display: flex; align-items: center; justify-content: center;">
+                <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${String(element.agente).replace('null','Não Definido...')}</span>
+              </a>
+              <a class="line-left" style="height: 100%; width: 13%; display: flex; align-items: center; justify-content: center;">
+                <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${element.bank}</span>
+              </a>
+              <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">
+                <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${element.valor}</span>
+              </a>
+              <i class="line-left fa-regular fa-ellipsis-vertical font-color-navbar" style="font-size: 2.2vh; width: 2%; cursor: pointer; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
+            </div>
+          `
+        })
+      },
+      error: function(e) {
+        filterBlock = false
+        document.getElementById('results').innerHTML = ``
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    })
+  }
+  var agentesBlock = false
+  function getAgentes() {
+    if (agentesBlock) return alert('Aguarde...')
+    agentesBlock = true
+    $.ajax({ type: "post",url: `${apiURL}/logins/get`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password')
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        agentesBlock = false
+        document.getElementById('agentes').placeholder = `Escolhe um agente...`
+        document.getElementById('agentesADD').placeholder = `Escolhe um agente...`
+        s.logins.forEach((element,index) => {
+          document.getElementById('agentesList').innerHTML += `<option style="color: black">${element.user}</option>`
+        });
+      },
+      error: function(e) {
+        agentesBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    })
+  }
+  (async function () { await getAgentes(); return filter(); })();
+</script>
+<script>
+  function searchBar() {
+    var input = document.getElementById('searchBar');
+    var filter = input.value.toUpperCase();
+    var ul = document.getElementById("results");
+    var li = ul.getElementsByTagName('result');
+    for (i = 0; i < li.length; i++) {
+      var txtValue = li[i].textContent || li[i].innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) return li[i].style.display = "inline";
+      return li[i].style.display = "none";
+    }
+  }
+</script>

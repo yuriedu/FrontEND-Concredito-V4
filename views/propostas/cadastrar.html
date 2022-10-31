@@ -560,7 +560,7 @@
           if (s.dados.email) document.getElementById('email').value = s.dados.email
           if (s.dados.banco) document.getElementById('banco').value = s.dados.banco
           if (s.dados.agencia) document.getElementById('agencia').value = s.dados.agencia
-          if (s.dados.conta) document.getElementById('conta').value = s.dados.conta
+          if (s.dados.conta) document.getElementById('conta').value = String(s.dados.conta).replaceAll('-','')
           if (s.dados.cargo) document.getElementById('cargo').value = s.dados.cargo
           if (s.dados.poupanca) {
             document.getElementById('poupanca').value = s.dados.poupanca ? '1' : '0'

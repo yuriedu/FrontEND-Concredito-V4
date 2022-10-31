@@ -95,15 +95,18 @@
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Liberado:</a>
       <a id="topLiberado" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
     </div>
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="background-image width40 height20" style="position: relative; margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i onclick="lotes()" class="fa-regular fa-magnifying-glass-dollar font-color-navbar" style="font-size: 2.5vh; cursor:pointer; position: absolute; right: 0.5vw; top: 0.5vw"></i>
       <i class="fa-solid fa-hexagon-check font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Sucessos:</a>
       <a onclick="downloadCSV('Sucessos')" id="topSucessos" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      <a onclick="downloadTotalCSV('Sucessos')" id="topSucessosTotal" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.8vh; font-weight: 600;"></a>
     </div>
     <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-hexagon-exclamation font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Erros:</a>
       <a onclick="downloadCSV('Erros')" id="topErros" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      <a onclick="downloadTotalCSV('Erros')" id="topErrosTotal" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.8vh; font-weight: 600;"></a>
     </div>
     <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-ballot-check font-color-navbar" style="font-size: 6vh"></i>
@@ -140,7 +143,7 @@
 </div>
 <script>
   var fgts = []
-
+  var total = []
   var block = false
   function relatorio() {
     if (block) return alert('Aguarde...')
@@ -165,6 +168,8 @@
     document.getElementById('topLiberado').innerHTML = 0
     document.getElementById('topSucessos').innerHTML = 0
     document.getElementById('topErros').innerHTML = 0
+    document.getElementById('topSucessosTotal').innerHTML = ``
+    document.getElementById('topErrosTotal').innerHTML = ``
     document.getElementById('topTotal').innerHTML = 0
     document.getElementById('topMedAfPorDiaQnt').innerHTML = 0
     document.getElementById('topMedAfPorDiaValor').innerHTML = 0
@@ -198,6 +203,7 @@
         document.getElementById('grafico3').innerHTML = ``
         if (s.error) return alert(s.error)
         fgts = s.list
+        total = s.grafico.totalFGTS
         document.getElementById('topMeta').innerHTML = `${s.grafico.meta ? s.grafico.meta : 0}%`
         var comissaoMeta = comissao.find(r=>s.grafico.meta >= r.min && s.grafico.meta < r.max)
         if (comissaoMeta) document.getElementById('topComissao').innerHTML = `R$ ${comissaoMeta.comissao},00`
@@ -278,6 +284,8 @@
         document.getElementById('topLiberado').innerHTML = s.total ? `R$ `+String(s.total).replace('.',',') : 0
         document.getElementById('topSucessos').innerHTML = s.list.filter(r=>!r.error).length
         document.getElementById('topErros').innerHTML = s.list.filter(r=>!r.liberado).length
+        document.getElementById('topSucessosTotal').innerHTML = `Total: `+s.grafico.totalFGTS.filter(r=>!r.error).length
+        document.getElementById('topErrosTotal').innerHTML = `Total: `+s.grafico.totalFGTS.filter(r=>!r.liberado).length
         document.getElementById('topTotal').innerHTML = s.list.length
         document.getElementById('topMedAfPorDiaQnt').innerHTML = s.grafico.medQnt
         document.getElementById('topMedAfPorDiaValor').innerHTML = `R$ ${s.grafico.medValor.replace('.',',')}`
@@ -285,18 +293,18 @@
         document.getElementById('grafico3').innerHTML = `
           <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Bancos</a>
           <canvas id="graficoBanks" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
-          <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 80%; margin-inline: 10%">
-            <div style="display: flex; flex-direction: column; min-width: 45%; text-align: left">
+          <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 90%; margin-inline: 10%">
+            <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
               ${s.grafico.banks.slice(0,s.grafico.banks.length/2).map(r=>
                 `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-                  ${r.label} <span style="font-size: 1.6vh">${r.value  == 0.00 ? 0 : r.value}%</span>
+                  ${r.label} <span style="font-size: 1.6vh">${r.value  == 0.00 || r.value == "NaN" ? 0 : r.value}%</span>
                 </a>`
               ).join('')}
             </div>
-            <div style="display: flex; flex-direction: column; width: 45% text-align: right; margin-left: 10%">
+            <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
               ${s.grafico.banks.slice(s.grafico.banks.length/2,s.grafico.banks.length).map(r=>
                 `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-                  ${r.label} <span style="font-size: 1.6vh">${r.value  == 0.00 ? 0 : r.value}%</span>
+                  ${r.label} <span style="font-size: 1.6vh">${r.value  == 0.00 || r.value == "NaN" ? 0 : r.value}%</span>
                 </a>`
               ).join('')}
             </div>
@@ -305,27 +313,51 @@
         var graficoBanks = document.getElementById("graficoBanks").getContext("2d");
         new Chart(graficoBanks).Pie(s.grafico.banks);
         if (s.grafico.liberado && s.grafico.liberado.length >= 1) {
-          document.getElementById('listLiberado').innerHTML = `<div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; max-height: 60vh; overflow-y: auto; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
-            <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Lista Liberado</a>
-            <div id="listaLiberado" style="width: 100%; margin-top: 2vh">
-              <div style="display: flex; width: 100%; margin-block: 0.3vh">
-              <div style="width: 50%; margin-left: 5%">
-                <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
+          document.getElementById('listLiberado').innerHTML = `<div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; max-height: 60vh; overflow-y: auto; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 40vw; max-width: 40vw; overflow-x: hidden; margin-right: 2vw">
+            <div id="listaLiberado" style="width: 100%; margin-top: 1.5vh">
+              <div style="display: flex; width: 94%; margin-top: 0.3vh; border-bottom: 0.1vh solid gray; margin-inline: 3%">
+                <div title="Nome Funcionário" style="width: 38%; max-width: 38%; padding-left: 2%">
+                  <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
+                </div>
+                <div title="Valor Liberado" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+                  <a style="font-size: 2.5vh; font-weight: 800">VL. S</a>
+                </div>
+                <div title="Quantidade de Sucessos" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+                  <a style="font-size: 2.5vh; font-weight: 800">S</a>
+                </div>
+                <div title="Quantidade de Erros" style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
+                  <a style="font-size: 2.5vh; font-weight: 800">E</a>
+                </div>
+                <div title="Quantidade de AFs(Consultados)" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+                  <a style="font-size: 2.5vh; font-weight: 800">AF</a>
+                </div>
+                <div title="Valor das AFs(Consultados)" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+                  <a style="font-size: 2.5vh; font-weight: 800">VL. AFs</a>
+                </div>
               </div>
-              <div style="width: 45%">
-                <a style="font-size: 2.5vh; font-weight: 800">Liberado - <span style="margin-left: 1vw">S/E</span></a>
-              </div>
-            </div>
             </div>
           </div>`
           s.grafico.liberado.forEach((element,index)=>{
             document.getElementById('listaLiberado').innerHTML += `
-            <div style="display: flex; width: 100%; margin-block: 0.3vh">
-              <div style="width: 50%; margin-left: 5%">
-                <a style="font-size: 2.8vh">${element.user}</a>
+
+            <div style="display: flex; width: 94%; border-bottom: 0.1vh solid gray; margin-inline: 3%">
+              <div style="width: 38%; max-width: 38%; padding-left: 2%">
+                <a style="font-size: 2.3vh">${element.user}</a>
               </div>
-              <div style="width: 45%">
-                <a style="font-size: 2.2vh; font-weight: 600">R$ ${String(element.liberado).replace('.',',').replace('null','0')} <span style="margin-left: 0.5vw; font-weight: 800">${element.sucessos}/${element.erros}</span></a>
+              <div style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+                <a style="font-size: 2vh">${String(element.liberado).replace('.',',').replace('null','0')}</a>
+              </div>
+              <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+                <a style="font-size: 2vh">${element.sucessos}</a>
+              </div>
+              <div style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
+                <a style="font-size: 2vh">${element.erros}</a>
+              </div>
+              <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+                <a style="font-size: 2vh">${element.afs ? element.afs : 0}</a>
+              </div>
+              <div style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+                <a style="font-size: 2vh">${element.valorAfs ? String(element.valorAfs).replace('.',',') : 0}</a>
               </div>
             </div>
             `
@@ -381,15 +413,41 @@
         csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
     } else {
-      csv = `CPF,BANCO,ERRO,AUTOR`
+      csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR`
       await fgts.filter(r=>r.error).map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${element.error},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${element.error.replaceAll(`,`,'.')},${element.telefone},${element.user}`
       })
     }
     var a = document.createElement('a');
     a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
     a.target = '_blank';
-    a.download = `lotesFGTS-${type}.csv`;
+    a.download = `relatoriosFGTS-${type}.csv`;
+    a.click();
+    block = false
+  }
+
+  async function downloadTotalCSV(type) {
+    if (block) return alert('Aguarde...')
+    if (!fgts || fgts.length <= 0) return alert(`A lista de resultados está vazia...`)
+    if (type == "Sucessos" && fgts.filter(r=>r.liberado).length <= 0) return alert('Essa lista está vazia...')
+    if (type == "Erros" && fgts.filter(r=>r.error).length <= 0) return alert('Essa lista está vazia...')
+    block = true
+    var csv = false
+    if (type == 'Sucessos') {
+      csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
+      await total.filter(r=>r.liberado).map((element,index)=>{
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+      })
+    } else {
+      csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR`
+      await total.filter(r=>r.error).map((element,index)=>{
+        csv+=`\n${element.cpf},${element.bank},${element.error.replaceAll(`,`,'.')},${element.telefone},${element.user}`
+      })
+    }
+    var a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    a.target = '_blank';
+    a.download = `relatoriosFGTS-${type}.csv`;
     a.click();
     block = false
   }
@@ -415,6 +473,30 @@
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
+  }
+
+  async function lotes() {
+    if (fgts && fgts.length <= 0) return alert('Lista vazia...') 
+    var csv = ''
+    await fgts.filter(r=>r.liberado).map((element,index)=>{
+      csv+=`${index != 0 ? '\n' : ''}${element.cpf};${element.bank},`
+    })
+    if (window.clipboardData) {
+      window.clipboardData.setData("Text", csv);
+      return window.location = `/consultas/lotes`
+    } else {
+      navigator.clipboard.writeText(csv).then(()=>{
+        return window.location = `/consultas/lotes`
+      }).catch(()=>{ 
+        alert('Não foi possivel copiar os CPFs e os bancos! Então sera baixado em CSV...')
+        var a = document.createElement('a');
+        a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+        a.target = '_blank';
+        a.download = `CPFs-Consultas.csv`;
+        a.click();
+        return window.location = `/consultas/lotes`
+      })
+    }
   }
 
   (async function () {

@@ -101,6 +101,14 @@
   }
   async function consultar(cpf, bank) {
     if (!cpf || results.find(r=>r.cpf==cpf && r.bank==bank.name)) return nextCPF(bank);
+    if (cpf.includes(';')) {
+      bank = cpf.split(';')[1]
+      cpf = cpf.split(';')[0]
+      if (banks.find(r=>r.name==bank)) {
+        bank = banks.find(r=>r.name==bank)
+      } else return nextCPF(bank); 
+    }
+    if (!cpf || !bank) return nextCPF(bank);
     cpf = cpf.replaceAll('.','').replaceAll('-','').replaceAll(' ','')
     if (results.find(r=> r.cpf == cpf && r.bank == bank.name)) return nextCPF(bank)
     for (var i = 0, n = 10; i < n; ++i) {
@@ -168,9 +176,9 @@
         csv+=`\n${element.cpf},${element.bank},${element.total.replaceAll(',','.')},${element.liberado.replaceAll(',','.')},${element.telefone},${element.data}`
       })
     } else {
-      csv = `CPF,BANCO,ERRO`
+      csv = `CPF,BANCO,ERRO,TELEFONE`
       await results.filter(r=>r.error).map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${element.error}`
+        csv+=`\n${element.cpf},${element.bank},${element.error.replaceAll(`,`,'.')},${element.telefone}`
       })
     }
     var a = document.createElement('a');
@@ -188,7 +196,7 @@
     var csv = false
     csv = `CPF,BANCO,TOTAL,LIBERADO,ERRO,TELEFONE,DATA`
     await results.filter(r=>r.cpf == cpf).map((element,index)=>{
-      csv+=`\n${element.cpf},${element.bank},${element.total ? element.total : 0},${element.liberado ? element.liberado : 0},${element.error ? element.error : 0},${element.telefone ? element.telefone : 'Vazio'},${element.data ? element.data : 0}`
+      csv+=`\n${element.cpf},${element.bank},${element.total ? element.total : 0},${element.liberado ? element.liberado : 0},${element.error ? element.error.replaceAll(`,`,'.') : 0},${element.telefone ? element.telefone : 'Vazio'},${element.data ? element.data : 0}`
     })
     if (window.clipboardData) {
       window.clipboardData.setData("Text", csv);

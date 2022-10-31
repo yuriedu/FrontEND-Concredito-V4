@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -18,7 +19,7 @@
       var login = false
       var urlAPI = 'https://api.concredito.com.br'
       var urlLocal = 'http://localhost:3000'
-      var apiURL = urlLocal
+      var apiURL = urlAPI
     </script>
   </head>
   <body style="margin: 0">
@@ -30,7 +31,7 @@
       <script>
         var pages = {
           dashboard: ['metas'],
-          administrativo: ['funcionarios','configs','logs','relatorios'],
+          administrativo: ['funcionarios','configs','logs','leads','relatorios'],
           minhas: ['propostas','relatorios'],
           consultas: ['dados','fgts','lotes'],
           propostas: ['cadastrar','lista'],
