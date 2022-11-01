@@ -111,9 +111,11 @@
     <div style="display: flex; margin-inline: 3.5vw; margin-bottom: 1.5vh; align-items: center;">
       <div style="display: flex; width: 30%">
         <a style="font-size: 2.2vh">Selecionar</a>
-        <input type="number" max="50" placeholder="00" style="font-size: 1.8vh; width: 2.2vw; border: 0.1vh solid black; border-radius: 0.7vh; background: transparent; margin-inline: 0.8vh; padding-block: 0.3vh;"> 
+        <input id="qntActive" type="number" class="borderColor" max="50" placeholder="00" style="font-size: 1.8vh; width: 2.2vw; border-radius: 0.7vh; background: transparent; margin-inline: 0.8vh; padding-block: 0.3vh;"> 
         <a style="font-size: 2.2vh">Primeiras</a>
-        <i class="fa-regular fa-octagon-check font-color-navbar" style="font-size: 2.5vh; margin-left: 0.3vw; cursor: pointer;"></i>
+        <i title="Selecionar" onclick="activeSelect()" class="fa-regular fa-octagon-check font-color-navbar" style="font-size: 2.5vh; margin-left: 0.3vw; cursor: pointer;"></i>
+        <i title="Copiar Selecionados" onclick="activeSelect()" class="fa-duotone fa-copy font-color-navbar" style="font-size: 2.4vh; margin-left: 0.7vw; cursor: pointer;"></i>
+        <i title="Baixar Selecionados" onclick="activeSelect()" class="fa-solid fa-download font-color-navbar" style="font-size: 2.4vh; margin-left: 0.7vw; cursor: pointer;"></i>
       </div>
       <div style="display: flex; justify-content: center; width: 40%">
         <a class="font-color-navbar" style="font-size: 2.2vh; font-weight: 600; margin-inline: 1vw">Total: <span id="total" style="text-decoration: underline">0</span></a>
@@ -126,32 +128,35 @@
     </div>
     <div class="borderColor" style="margin-inline: 5%; border-radius: 1vh; width: 90%; min-height: 6vh">
       <div class="line-bottom" style="font-size: 2.2vh; font-weight: 600; width: 100%; display: flex; height: 4.5vh; display: flex; align-items: center;">
-        <input type="checkbox" style="background: transparent; width: 2%">
-        <i class="line-left fa-duotone fa-copy font-color-navbar" style="width: 3%; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
-        <i class="line-left fa-solid fa-ban" style="color: red; width: 3%; height: 100%; display: flex; align-items: center; justify-content: center"></i>
-        <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">CPF</a>
+        <input onclick="activeAll(this)" type="checkbox" style="background: transparent; width: 2%">
+        <i title="Copiado" class="line-left fa-duotone fa-copy font-color-navbar" style="width: 3%; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
+        <i title="Bloqueado" class="line-left fa-solid fa-ban" style="color: red; width: 3%; height: 100%; display: flex; align-items: center; justify-content: center"></i>
+        <a class="line-left" style="height: 100%; width: 10%; display: flex; align-items: center; justify-content: center;">CPF</a>
         <a class="line-left" style="height: 100%; width: 25%; display: flex; align-items: center; justify-content: center;">Nome</a>
-        <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">Telefone</a>
-        <a class="line-left" style="height: 100%; width: 14%; display: flex; align-items: center; justify-content: center;">Data</a>
+        <a class="line-left" style="height: 100%; width: 10%; display: flex; align-items: center; justify-content: center;">Telefone</a>
+        <a class="line-left" style="height: 100%; width: 10%; display: flex; align-items: center; justify-content: center;">Data</a>
         <a class="line-left" style="height: 100%; width: 13%; display: flex; align-items: center; justify-content: center;">Agente</a>
         <a class="line-left" style="height: 100%; width: 13%; display: flex; align-items: center; justify-content: center;">Banco</a>
         <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">Valor</a>
         <i class="line-left fa-regular fa-ellipsis-vertical font-color-navbar" style="width: 2%; cursor: pointer; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
       </div>
-      <div id="results" style="width: 100%; height: 100%">
-
-
-
-      </div>
+      <div id="results" style="width: 100%; height: 100%"></div>
     </div>
+      <a onclick="loadMore()" class="navbar-font-color" style="font-size: 2.5vh; text-decoration: underline; margin-block: 2vh; cursor: pointer; display: flex; width: 100%; justify-content: center;">Carregar mais...</a>
   </div>
   <div id="menuPropostas"></div>
 </div>
+
 <script>
+  var menuPropostaActual = false
+  var view = false
+  var leads = false
   var filterBlock = false
   function filter() {
+    if (menuPropostaActual) menuProposta(false, menuPropostaActual)
     if (filterBlock) return alert('Aguarde...')
     document.getElementById('results').innerHTML = `<div style="width: 100%; height: 10vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div>`
+    view = false
     filterBlock = true
     $.ajax({ type: "post", url: `${apiURL}/administrativo/leads/get`,
       data: JSON.stringify({
@@ -179,21 +184,23 @@
         document.getElementById('visivel').innerHTML = `100`
         document.getElementById('disponivel').innerHTML = s.disponivel
         document.getElementById('results').innerHTML = ``
-        s.leads.slice(0,5).forEach((element,index)=>{
+        view = 100
+        leads = s.leads
+        s.leads.slice(0,100).forEach((element,index)=>{
           document.getElementById('results').innerHTML += `
             <div class="line-bottom" style="font-size: 1.8vh; width: 100%; display: flex; height: 3.5vh; display: flex; align-items: center;">
-              <input type="checkbox" style="background: transparent; width: 2%">
-              <i class="line-left ${element.copy ? 'fa-duotone fa-copy' : ''} font-color-navbar" style="font-size: 2.2vh; width: 3%; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
-              <i class="line-left ${element.block ? 'fa-solid fa-ban' : ''}" style="font-size: 2.2vh; color: red; width: 3%; height: 100%; display: flex; align-items: center; justify-content: center"></i>
-              <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">${element.cpf}</a>
+              <input id="${element.id}" name="lead" type="checkbox" style="background: transparent; width: 2%">
+              <i id="${element.id}_copy" ${element.flag_copy ? 'title="Copiado"' : ''} class="line-left ${element.flag_copy ? 'fa-duotone fa-copy' : ''} font-color-navbar" style="font-size: 2.2vh; width: 3%; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
+              <i id="${element.id}_block" ${element.flag_block ? 'title="Bloqueado"' : ''} class="line-left ${element.flag_block ? 'fa-solid fa-ban' : ''}" style="font-size: 2.2vh; color: red; width: 3%; height: 100%; display: flex; align-items: center; justify-content: center"></i>
+              <a class="line-left" style="height: 100%; width: 10%; display: flex; align-items: center; justify-content: center;">${element.cpf}</a>
               <a class="line-left" style="height: 100%; width: 25%; display: flex; align-items: center; justify-content: center;">
                 <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${String(element.nome).replace('null','Não Definido...')}</span>
               </a>
-              <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">
+              <a class="line-left" style="height: 100%; width: 10%; display: flex; align-items: center; justify-content: center;">
                 <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${element.telefone}</span>
               </a>
-              <a class="line-left" style="height: 100%; width: 14%; display: flex; align-items: center; justify-content: center;">
-                <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${element.data}</span>
+              <a class="line-left" style="height: 100%; width: 10%; display: flex; align-items: center; justify-content: center;">
+                <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${element.data.slice(8,10)}/${element.data.slice(5,7)}/${element.data.slice(0,4)}</span>
               </a>
               <a class="line-left" style="height: 100%; width: 13%; display: flex; align-items: center; justify-content: center;">
                 <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${String(element.agente).replace('null','Não Definido...')}</span>
@@ -204,7 +211,7 @@
               <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">
                 <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${element.valor}</span>
               </a>
-              <i class="line-left fa-regular fa-ellipsis-vertical font-color-navbar" style="font-size: 2.2vh; width: 2%; cursor: pointer; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
+              <i onclick="menuProposta(this, '${element.id}')" class="line-left fa-regular fa-ellipsis-vertical font-color-navbar" style="font-size: 2.2vh; width: 2%; cursor: pointer; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
             </div>
           `
         })
@@ -216,6 +223,169 @@
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
+  }
+
+  function menuProposta(icon, id) {
+    if (menuPropostaActual) {
+      document.getElementById(`menuProposta`).innerHTML = ``
+      if (menuPropostaActual == id) return menuPropostaActual = false
+      menuPropostaActual = false
+    }
+    menuPropostaActual = id
+    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta">
+      <div class="background-reverse width35" style="z-index: 2; width: 7vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '7vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh">
+        <a onclick="copy('${id}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Copiar</a>
+        <a onclick="block('${id}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Bloquear</a>
+        <a onclick="openObs('${id}')" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">OBS</a>
+      </div>
+    </div>`
+  }
+
+  var copyBlock = false
+  function copy(id) {
+    if (menuPropostaActual) menuProposta(false, menuPropostaActual)
+    if (copyBlock) return alert('Aguarde...')
+    if (!leads.find(r=>r.id == id)) return alert(`Lead: ${id} não encontrada...`)
+    copyBlock = true
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/leads/edit`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        id: id,
+        copy: leads.find(r=>r.id == id).flag_copy ? 'delete' : 1,
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        copyBlock = false
+        if (leads.find(r=>r.id == id).flag_copy) {
+          document.getElementById(`${id}_copy`).classList.remove('fa-duotone')
+          document.getElementById(`${id}_copy`).classList.remove('fa-copy')
+          leads.find(r=>r.id == id).flag_copy = 0
+          return alert('A flag de copia da lead foi removido com sucesso...')
+        } else {
+          document.getElementById(`${id}_copy`).classList.add('fa-duotone')
+          document.getElementById(`${id}_copy`).classList.add('fa-copy')
+          leads.find(r=>r.id == id).flag_copy = 1
+          if (window.clipboardData) {
+            window.clipboardData.setData("Text", leads.find(r=>r.id == id).telefone);
+            return alert('Telefone da lead foi copiado com sucesso...')
+          } else {
+            navigator.clipboard.writeText(leads.find(r=>r.id == id).telefone).then(()=>{
+              return alert('Telefone da lead foi copiado com sucesso...')
+            }).catch(()=>{ 
+              return alert('Seu navegador não suporta o nossos sistema de Copia...')
+            })
+          }
+        }
+      },
+      error: function(e) {
+        copyBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    })
+  }
+
+  function copyLotes() {
+    if (menuPropostaActual) menuProposta(false, menuPropostaActual)
+    if (copyBlock) return alert('Aguarde...')
+    var checkboxes = document.getElementsByName('lead');
+    if (!checkboxes) return alert('Lista vazia...')
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+
+    }
+
+    
+  }
+
+  function block(id) {
+    if (menuPropostaActual) menuProposta(false, menuPropostaActual)
+    if (copyBlock) return alert('Aguarde...')
+    if (!leads.find(r=>r.id == id)) return alert(`Lead: ${id} não encontrada...`)
+    copyBlock = true
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/leads/edit`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        id: id,
+        block: leads.find(r=>r.id == id).flag_block ? 'delete' : 1,
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        copyBlock = false
+        if (leads.find(r=>r.id == id).flag_block) {
+          document.getElementById(`${id}_block`).classList.remove('fa-solid')
+          document.getElementById(`${id}_block`).classList.remove('fa-ban')
+          leads.find(r=>r.id == id).flag_block = 0
+          return alert('A lead foi desbloqueada com sucesso...')
+        } else {
+          document.getElementById(`${id}_block`).classList.add('fa-solid')
+          document.getElementById(`${id}_block`).classList.add('fa-ban')
+          leads.find(r=>r.id == id).flag_block = 1
+          return alert('A lead foi bloqueada com sucesso...')
+        }
+      },
+      error: function(e) {
+        copyBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    })
+  }
+
+  var moreBlock = false
+  async function loadMore() {
+    if (menuPropostaActual) menuProposta(false, menuPropostaActual)
+    if (moreBlock) return alert('Aguarde...')
+    if (!view || !leads) return alert('Lista vazia...')
+    if (view.length >= leads.length) return alert('Lista completa...')
+    moreBlock = true
+    view += 100
+    document.getElementById('visivel').innerHTML = view
+    await leads.slice(view,view+100).forEach((element,index)=>{
+      document.getElementById('results').innerHTML += `
+        <div class="line-bottom" style="font-size: 1.8vh; width: 100%; display: flex; height: 3.5vh; display: flex; align-items: center;">
+          <input id="${element.id}" name="lead" type="checkbox" style="background: transparent; width: 2%">
+          <i id="${element.id}_copy" ${element.flag_copy ? 'title="Copiado"' : ''} class="line-left ${element.flag_copy ? 'fa-duotone fa-copy' : ''} font-color-navbar" style="font-size: 2.2vh; width: 3%; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
+          <i id="${element.id}_block" ${element.flag_block ? 'title="Bloqueado"' : ''} class="line-left ${element.flag_block ? 'fa-solid fa-ban' : ''}" style="font-size: 2.2vh; color: red; width: 3%; height: 100%; display: flex; align-items: center; justify-content: center"></i>
+          <a class="line-left" style="height: 100%; width: 10%; display: flex; align-items: center; justify-content: center;">${element.cpf}</a>
+          <a class="line-left" style="height: 100%; width: 25%; display: flex; align-items: center; justify-content: center;">
+            <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${String(element.nome).replace('null','Não Definido...')}</span>
+          </a>
+          <a class="line-left" style="height: 100%; width: 10%; display: flex; align-items: center; justify-content: center;">
+            <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${element.telefone}</span>
+          </a>
+          <a class="line-left" style="height: 100%; width: 10%; display: flex; align-items: center; justify-content: center;">
+            <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${element.data.slice(8,10)}/${element.data.slice(5,7)}/${element.data.slice(0,4)}</span>
+          </a>
+          <a class="line-left" style="height: 100%; width: 13%; display: flex; align-items: center; justify-content: center;">
+            <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${String(element.agente).replace('null','Não Definido...')}</span>
+          </a>
+          <a class="line-left" style="height: 100%; width: 13%; display: flex; align-items: center; justify-content: center;">
+            <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${element.bank}</span>
+          </a>
+          <a class="line-left" style="height: 100%; width: 8%; display: flex; align-items: center; justify-content: center;">
+            <span style="max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${element.valor}</span>
+          </a>
+          <i onclick="menuProposta(this, '${element.id}')" class="line-left fa-regular fa-ellipsis-vertical font-color-navbar" style="font-size: 2.2vh; width: 2%; cursor: pointer; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
+        </div>
+      `
+    })
+    moreBlock = false
+  }
+  function activeAll(source) {
+    if (menuPropostaActual) menuProposta(false, menuPropostaActual)
+    var checkboxes = document.getElementsByName('lead');
+    if (!checkboxes) return alert('Lista vazia...')
+    for(var i=0, n=checkboxes.length;i<n;i++) checkboxes[i].checked = source.checked;
+  }
+  function activeSelect() {
+    if (menuPropostaActual) menuProposta(false, menuPropostaActual)
+    var checkboxes = document.getElementsByName('lead');
+    if (!checkboxes) return alert('Lista vazia...')
+    var qnt = document.getElementById('qntActive').value ? Number(document.getElementById('qntActive').value) : false
+    if (!qnt || qnt < 1 || qnt > 50) return alert('Coloque uma quantidade de 1 há 50')
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+      if ((i+1) <= qnt) checkboxes[i].checked = true;
+    }
   }
   var agentesBlock = false
   function getAgentes() {
@@ -245,6 +415,7 @@
 </script>
 <script>
   function searchBar() {
+    if (menuPropostaActual) menuProposta(false, menuPropostaActual)
     var input = document.getElementById('searchBar');
     var filter = input.value.toUpperCase();
     var ul = document.getElementById("results");
