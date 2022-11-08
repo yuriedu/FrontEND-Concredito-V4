@@ -132,7 +132,6 @@
       <a id="/administrativo/funcionarios" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Funcionários</a>
       <a id="/administrativo/configs" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Configurações</a>
       <a id="/administrativo/logs" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Logs</a>
-      <a id="/administrativo/leads" class="navbar-color-select-block font-color-reverse navbar-color-select" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Leads</a>
       <a id="/administrativo/relatorios" class="navbar-color-select-block font-color-reverse navbar-color-select" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Relatórios</a>
     </div>
   </div>
@@ -209,7 +208,6 @@
       "funcionarios": { perm: "administrativo_funcionarios", link: "/administrativo/funcionarios" },
       "configs": { perm: "administrativo_configs", link: "/administrativo/configs" },
       "logs": { perm: "administrativo_funcionarios", link: "/administrativo/logs" },
-      "leads": { perm: "administrativo_funcionarios", link: "/administrativo/leads" },
       "relatorios": { perm: "administrativo_funcionarios", link: "/administrativo/relatorios" },
     },
     "dashboard": {
@@ -220,14 +218,14 @@
     "minhas": {
       active: false,
       "propostas": { perm: false, link: "/minhas/propostas" },
-      "leads": { off: true, perm: false, link: "/minhas/leads" },
+      "leads": { perm: false, link: "/minhas/leads" },
       "relatorios": { perm: false, link: "/minhas/relatorios" },
     },
     "propostas": {
       active: false,
       "cadastrar": { perm: "propostas_cadastrar", link: "/propostas/cadastrar" },
       "lista": { perm: "propostas_lista", link: "/propostas/lista" },
-      "leads": { off: true, perm: "administrativo_funcionarios", link: "/propostas/leads" },
+      "leads": { perm: "administrativo_funcionarios", link: "/propostas/leads" },
     },
     "consultas": {
       active: false,

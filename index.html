@@ -19,7 +19,7 @@
       var login = false
       var urlAPI = 'https://api.concredito.com.br'
       var urlLocal = 'http://localhost:3000'
-      var apiURL = urlLocal
+      var apiURL = urlAPI
     </script>
   </head>
   <body style="margin: 0">
@@ -31,10 +31,10 @@
       <script>
         var pages = {
           dashboard: ['metas'],
-          administrativo: ['funcionarios','configs','logs','leads','relatorios'],
-          minhas: ['propostas','relatorios'],
+          administrativo: ['funcionarios','configs','logs','relatorios'],
+          minhas: ['propostas','relatorios','leads'],
+          propostas: ['cadastrar','lista','leads'],
           consultas: ['dados','fgts','lotes'],
-          propostas: ['cadastrar','lista'],
         }
         function load() {
           if (!localStorage.getItem('user') || !localStorage.getItem('password')) return $(document.body).load(`/views/login.html`)

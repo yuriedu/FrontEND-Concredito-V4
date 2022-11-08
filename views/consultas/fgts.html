@@ -23,7 +23,7 @@
             </fieldset>
             <fieldset title="CPF do cliente..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
-              <input class="font-1" placeholder="000.000.000-00" id="cpf" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+              <input class="font-1" placeholder="000 000 000 00" id="cpf" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
             <div id="options" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;"></div>
           </div>
@@ -92,12 +92,12 @@
     if (document.getElementById('consultar').classList.contains('buttonBlock')) return alert('Aguarde...')
     if (!document.getElementById('banks').value || document.getElementById('banks').value == 'false') return alert('Selecione o banco em que será feito a consulta!')
     if (!document.getElementById('cpf').value) return alert('Colque o CPF que será consultado!')
-    document.getElementById('cpf').value = document.getElementById('cpf').value.replaceAll(".","").replaceAll("-","")
+    document.getElementById('cpf').value = document.getElementById('cpf').value.replaceAll(".","").replaceAll("-","").replaceAll(" ","")
     if (document.getElementById(`queueText`).innerHTML && document.getElementById(`queueText`).innerHTML.includes('fila')) return alert('Aguarde até você sair da fila...')
     for (var i = 0, n = 10; i < n; ++i) {
       if (document.getElementById('cpf').value.length < 11) document.getElementById('cpf').value = `0${document.getElementById('cpf').value}`
     }
-    if (document.getElementById('cpf').value.length != 11) return alert('O CPF está invalido! Ele deve ter 11 digitos apenas...')
+    if (document.getElementById('cpf').value.length != 11 || !Number(document.getElementById('cpf').value)) return alert('O CPF está invalido! Ele deve ser um número e ter 11 digitos apenas...')
     document.getElementById('consultar').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('consultar').classList.add("buttonBlock");
     document.getElementById(`queueText`).innerHTML = `Entrando na fila de consultas FGTS...`

@@ -245,7 +245,7 @@
 
   function cadastrar(codAF, bankAF) {
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (document.getElementById(`situation_${codAF}`).style.color == `blue`) return alert('Essa proposta já está sendo cadastrada...')
+    if (document.getElementById(`situation_${codAF}`).style.color == `blue`) return alert('Aguarde...')
     document.getElementById(`situation_${codAF}`).style.color = `blue`
     document.getElementById(`situation_${codAF}`).value = 'Entrando na fila...'
     setTimeout(function(){ situation(codAF, bankAF) }, 1500)
@@ -322,7 +322,7 @@
 
   var blockFase = false
   function changeFase(codAF,fase) {
-    if (blockFase) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
+    if (blockFase) return alert('Aguarde...')
     blockFase = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     $.ajax({ type: "post", url: `${apiURL}/propostas/afs/fase`, data: JSON.stringify({
@@ -346,7 +346,7 @@
 
   var link = false
   function sendLink(codAF,fase) {
-    if (link) return alert('Você já está enviando o link de alguma proposta! Aguarde...')
+    if (link) return alert('Aguarde...')
     link = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     $.ajax({ type: "post", url: `${apiURL}/propostas/link`, data: JSON.stringify({
@@ -369,7 +369,7 @@
 
   var esteira = false
   function checkEsteira(codAF) {
-    if (esteira) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
+    if (esteira) return alert('Aguarde...')
     esteira = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     $.ajax({ type: "post", url: `${apiURL}/propostas/esteira`, data: JSON.stringify({
@@ -398,7 +398,7 @@
 
   var generatorCod = false
   function generator(codAF) {
-    if (generatorCod || generatorMenu) return alert('Você já está gerando um cadastro! Aguarde...')
+    if (generatorCod || generatorMenu) return alert('Aguarde...')
     generatorCod = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     $.ajax({ type: "post", url: `${apiURL}/propostas/generator`, data: JSON.stringify({

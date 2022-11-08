@@ -11,13 +11,13 @@
           <option style="color: black" value="equipe">Minha Equipe</option>
         </select>
       </fieldset>
-      <fieldset title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+      <fieldset title="Coloque a data minima..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Inicial</legend>
-        <input type="datetime-local" id="dateIni" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+        <input type="date" id="dateIni" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
       </fieldset>
-      <fieldset title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+      <fieldset title="Coloque a data maxima..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Final</legend>
-        <input type="datetime-local"id="dateEnd" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+        <input type="date" id="dateEnd" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
       </fieldset>
       <fieldset title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 11%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Objetivo</legend>
@@ -86,17 +86,18 @@
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Liberado:</a>
       <a id="topLiberado" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
     </div>
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="background-image width40 height20" style="position: relative; margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i onclick="lotes()" class="fa-regular fa-magnifying-glass-dollar font-color-navbar" style="font-size: 2.5vh; cursor:pointer; position: absolute; right: 0.5vw; top: 0.5vw"></i>
       <i class="fa-solid fa-hexagon-check font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Sucessos:</a>
       <a onclick="downloadCSV('Sucessos')" id="topSucessos" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
-      <a onclick="downloadTotalCSV('Sucessos')" id="topSucessosTotal" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.8vh; font-weight: 600;"></a>
+      <a onclick="downloadTotalCSV('Sucessos')" id="topSucessosTotal" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.6vh; font-weight: 600;"></a>
     </div>
     <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-hexagon-exclamation font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Erros:</a>
       <a onclick="downloadCSV('Erros')" id="topErros" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
-      <a onclick="downloadTotalCSV('Erros')" id="topErrosTotal" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.8vh; font-weight: 600;"></a>
+      <a onclick="downloadTotalCSV('Erros')" id="topErrosTotal" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.6vh; font-weight: 600;"></a>
     </div>
     <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-ballot-check font-color-navbar" style="font-size: 6vh"></i>
@@ -124,27 +125,27 @@
     <div id="grafico3" class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
     
     </div>
+
     <div id="listLiberado">
     
     </div>
   </div>
+
 </div>
 <script>
-  var fgts = []
   var total = []
-
+  var sucessos = []
+  var erros = []
   var block = false
   function relatorio() {
     if (block) return alert('Aguarde...')
     var objetivoReq = false
-    if (document.getElementById('objetivo').value) {
-      objetivoReq = document.getElementById('objetivo').value.replace('%','')
-      if (!Number(objetivoReq)) return alert('O objetivo deve ser um numero...')
-    }
+    if (!document.getElementById('objetivo').value) document.getElementById('objetivo').value = '100'
+    objetivoReq = document.getElementById('objetivo').value.replace('%','')
+    if (!Number(objetivoReq)) return alert('O objetivo deve ser um numero...')
     if (objetivoReq && !Number(objetivoReq)) return alert('O objetivo deve ser um numero...')
     var date = new Date();
-    date.setHours(date.getHours() - 3);
-    if (!document.getElementById('dateIni').value) document.getElementById('dateIni').value = date.toISOString().slice(0, 10)+`T00:00`
+    if (!document.getElementById('dateIni').value) document.getElementById('dateIni').value = date.toISOString().slice(0, 10)
     document.getElementById('topMeta').innerHTML = `0%`
     document.getElementById('topComissao').innerHTML = ``
     document.getElementById('topAFsDia').innerHTML = 0
@@ -152,32 +153,38 @@
     document.getElementById('topValorRestante').innerHTML = 0
     document.getElementById('topProjecao').innerHTML = `0%`
     document.getElementById('topProjecaoCom').innerHTML = ``
-    document.getElementById('topProjecaoCom').innerHTML = 0
     document.getElementById('topAFsRestante').innerHTML = 0
     document.getElementById('topValorDia').innerHTML = 0
     document.getElementById('topLiberado').innerHTML = 0
     document.getElementById('topSucessos').innerHTML = 0
     document.getElementById('topErros').innerHTML = 0
+    document.getElementById('topSucessosTotal').innerHTML = ``
+    document.getElementById('topErrosTotal').innerHTML = ``
     document.getElementById('topTotal').innerHTML = 0
     document.getElementById('topMedAfPorDiaQnt').innerHTML = 0
     document.getElementById('topMedAfPorDiaValor').innerHTML = 0
     document.getElementById('topTicket2').innerHTML = 0
-    document.getElementById('topSucessosTotal').innerHTML = ``
-    document.getElementById('topErrosTotal').innerHTML = ``
+    document.getElementById('listLiberado').innerHTML = ``
     document.getElementById('grafico1').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     document.getElementById('grafico2').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     document.getElementById('grafico3').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
-    document.getElementById('listLiberado').innerHTML = ``
     block = true
-    $.ajax({ type: "post",url: `${apiURL}/administrativo/relatorios/${document.getElementById('relatorio').value}`,
+
+    var url = document.getElementById('relatorio').value
+    var funcionario = localStorage.getItem('user')
+    if (document.getElementById('relatorio').value && document.getElementById('relatorio').value.includes('-')) {
+      url = document.getElementById('relatorio').value.split('-')[0]
+      funcionario = document.getElementById('relatorio').value.split('-')[1]
+    }
+
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/relatorios/${url}`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
         dataMin: document.getElementById('dateIni').value,
         dataMax: document.getElementById('dateEnd').value,
         objetivo: objetivoReq,
-        // funcionario: "LARISSALESSA",
-        funcionario: localStorage.getItem('user'),
+        funcionario: funcionario,
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
         block = false
@@ -185,41 +192,49 @@
         document.getElementById('grafico2').innerHTML = ``
         document.getElementById('grafico3').innerHTML = ``
         if (s.error) return alert(s.error)
-        fgts = s.list
-        total = s.grafico.totalFGTS
-        document.getElementById('topMeta').innerHTML = `${s.grafico.meta ? s.grafico.meta : 0}%`
-        var comissaoMeta = comissao.find(r=>s.grafico.meta >= r.min && s.grafico.meta < r.max)
+
+        sucessos = s.fgts.sucessos
+        erros = s.fgts.erros
+        total = s.fgts.list
+        for (var i = 1, n = 31; i <= n; ++i) { s.afs.months[i-1] = [i,0,0,0] }
+        await s.calcular.midias.map(r=>{ s.afs.midias.find(r2=> r.midia == r2.midia).value = r.valor })
+        var aux = [ s.mes-2, s.mes-1, s.mes ]
+        await s.calcular.dias.map(r=>{
+          if (s.afs.months.find(r2=>r2[0] == r.dia) && aux.find(r2=>r2==Number(r.mes))) s.afs.months.find(r2=>r2[0] == r.dia)[aux.findIndex(r2=>r2==Number(r.mes)) + 1] = r.valor
+        })
+        document.getElementById('topMeta').innerHTML = `${s.meta ? s.meta.replace('.',',') : 0}%`
+        var comissaoMeta = comissao.find(r=>s.meta >= r.min && s.meta < r.max)
         if (comissaoMeta) document.getElementById('topComissao').innerHTML = `R$ ${comissaoMeta.comissao},00`
-        document.getElementById('topAFsDia').innerHTML = s.grafico.afsPorDia ? s.grafico.afsPorDia : 0
-        document.getElementById('topTicket').innerHTML = s.grafico.ticketMed ? `R$ `+s.grafico.ticketMed.replace('.',',') : 0
-        document.getElementById('topValorRestante').innerHTML = s.grafico.valorRestante ? `R$ `+s.grafico.valorRestante.replace('.',',') : 0
-        document.getElementById('topProjecao').innerHTML = `${s.grafico.metaMes ? s.grafico.metaMes : 0}%`
-        var comissaoMeta = comissao.find(r=>s.grafico.metaMes >= r.min && s.grafico.metaMes < r.max)
+        document.getElementById('topAFsDia').innerHTML = s.afs.afsDia ? s.afs.afsDia : 0
+        document.getElementById('topTicket').innerHTML = s.afs.ticket ? s.afs.ticket == "NaN" ? `R$ 0,00` : `R$ `+s.afs.ticket.replace('.',',') : 0
+        document.getElementById('topValorRestante').innerHTML = s.afs.vlRestante ? `R$ `+s.afs.vlRestante.replace('.',',') : 0
+        document.getElementById('topProjecao').innerHTML = `${s.afs.metaMes ? s.afs.metaMes : 0}%`
+        var comissaoMeta = comissao.find(r=>s.afs.metaMes >= r.min && s.afs.metaMes < r.max)
         if (comissaoMeta) document.getElementById('topProjecaoCom').innerHTML = `R$ ${comissaoMeta.comissao},00`
-        document.getElementById('topAFsRestante').innerHTML = s.grafico.AFsRestante ? s.grafico.AFsRestante.replace('.',',') : 0
-        document.getElementById('topValorDia').innerHTML = s.grafico.valorDia ? s.grafico.valorDia.replace('.',',') : 0
+        document.getElementById('topAFsRestante').innerHTML = s.afs.afsRestante ? s.afs.afsRestante.replace('.',',') : 0
+        document.getElementById('topValorDia').innerHTML = s.afs.valorDia ? s.afs.valorDia.replace('.',',') : 0
         document.getElementById('grafico1').innerHTML = `
           <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Mídias</a>
           <canvas id="graficoMidias" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
           <div class="margin-top25" style="display: flex; margin-top: 34vh; width: 80%; margin-inline: 10%">
             <div style="display: flex; flex-direction: column; min-width: 45%; text-align: left">
-              ${s.grafico.midias.slice(0,s.grafico.midias.length/2).map(r=>
+              ${s.afs.midias.slice(0,s.afs.midias.length/2).map(r=>
                 `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-                  ${r.label} <span style="font-size: 1.6vh">${(r.value / s.grafico.midiasTotal * 100).toFixed(2) == 0.00 ? 0 : (r.value / s.grafico.midiasTotal * 100).toFixed(2) == 'NaN' ? 0 : (r.value / s.grafico.midiasTotal * 100).toFixed(2)}%</span>
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / s.afs.vlMidias) ? (r.value * 100 / s.afs.vlMidias).toFixed(2) : '0'}%</span>
                 </a>`
               ).join('')}
             </div>
             <div style="display: flex; flex-direction: column; width: 45% text-align: right; margin-left: 10%">
-              ${s.grafico.midias.slice(s.grafico.midias.length/2,s.grafico.midias.length).map(r=>
+              ${s.afs.midias.slice(s.afs.midias.length/2,s.afs.midias.length).map(r=>
                 `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-                  ${r.label} <span style="font-size: 1.6vh">${(r.value / s.grafico.midiasTotal * 100).toFixed(2) == 0.00 ? 0 : (r.value / s.grafico.midiasTotal * 100).toFixed(2) == 'NaN' ? 0 : (r.value / s.grafico.midiasTotal * 100).toFixed(2)}%</span>
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / s.afs.vlMidias) ? (r.value * 100 / s.afs.vlMidias).toFixed(2) : '0'}%</span>
                 </a>`
               ).join('')}
             </div>
           </div>
         `
         var graficoMidias = document.getElementById("graficoMidias").getContext("2d");
-        new Chart(graficoMidias).Doughnut(s.grafico.midias);
+        new Chart(graficoMidias).Doughnut(s.afs.midias);
 
         var months = {
           '1': 'Janeiro',
@@ -244,10 +259,10 @@
         function drawCurveTypes() {
           var data = new google.visualization.DataTable();
           data.addColumn('number', 'X');
-          data.addColumn('number', months[s.grafico.mes-2]);
-          data.addColumn('number', months[s.grafico.mes-1]);
-          data.addColumn('number', months[s.grafico.mes]);
-          data.addRows(s.grafico.months);
+          data.addColumn('number', months[s.mes-2]);
+          data.addColumn('number', months[s.mes-1]);
+          data.addColumn('number', months[s.mes]);
+          data.addRows(s.afs.months);
           var optionsGraficoMeses = {
             legend: { position: 'bottom', textStyle: {color: '#01579b'} },
             hAxis: { 
@@ -264,28 +279,28 @@
           graficoMeses.draw(data, optionsGraficoMeses);
         }
 
-        document.getElementById('topLiberado').innerHTML = s.total ? `R$ `+String(s.total).replace('.',',') : 0
-        document.getElementById('topSucessos').innerHTML = s.list.filter(r=>!r.error).length
-        document.getElementById('topErros').innerHTML = s.list.filter(r=>!r.liberado).length
-        document.getElementById('topSucessosTotal').innerHTML = `Total: `+s.grafico.totalFGTS.filter(r=>!r.error).length
-        document.getElementById('topErrosTotal').innerHTML = `Total: `+s.grafico.totalFGTS.filter(r=>!r.liberado).length
-        document.getElementById('topTotal').innerHTML = s.list.length
-        document.getElementById('topMedAfPorDiaQnt').innerHTML = s.grafico.medQnt
-        document.getElementById('topMedAfPorDiaValor').innerHTML = `R$ ${s.grafico.medValor.replace('.',',')}`
-        document.getElementById('topTicket2').innerHTML = s.grafico.medTicket && Number(s.grafico.medTicket) ? `R$ `+s.grafico.medTicket.replace('.',',') : 0
+        document.getElementById('topLiberado').innerHTML = s.fgts.liberado ? `R$ `+String(s.fgts.liberado).replace('.',',') : 0
+        document.getElementById('topSucessos').innerHTML = s.fgts.sucess
+        document.getElementById('topErros').innerHTML = s.fgts.error
+        document.getElementById('topSucessosTotal').innerHTML = `Total: `+s.fgts.list.filter(r=>!r.error).length
+        document.getElementById('topErrosTotal').innerHTML = `Total: `+s.fgts.list.filter(r=>!r.liberado).length
+        document.getElementById('topTotal').innerHTML = s.fgts.total
+        document.getElementById('topMedAfPorDiaQnt').innerHTML = s.fgts.medQnt
+        document.getElementById('topMedAfPorDiaValor').innerHTML = `R$ ${s.fgts.medValor.replace('.',',')}`
+        document.getElementById('topTicket2').innerHTML = s.fgts.ticket && Number(s.fgts.ticket) ? s.fgts.ticket == "NaN" ? `R$ 0,00` : `R$ `+s.fgts.ticket.replace('.',',') : 0
         document.getElementById('grafico3').innerHTML = `
           <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Bancos</a>
           <canvas id="graficoBanks" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
           <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 90%; margin-inline: 10%">
             <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
-              ${s.grafico.banks.slice(0,s.grafico.banks.length/2).map(r=>
+              ${s.fgts.banks.slice(0,s.fgts.banks.length/2).map(r=>
                 `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
                   ${r.label} <span style="font-size: 1.6vh">${r.value  == 0.00 || r.value == "NaN" ? 0 : r.value}%</span>
                 </a>`
               ).join('')}
             </div>
             <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
-              ${s.grafico.banks.slice(s.grafico.banks.length/2,s.grafico.banks.length).map(r=>
+              ${s.fgts.banks.slice(s.fgts.banks.length/2,s.fgts.banks.length).map(r=>
                 `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
                   ${r.label} <span style="font-size: 1.6vh">${r.value  == 0.00 || r.value == "NaN" ? 0 : r.value}%</span>
                 </a>`
@@ -294,9 +309,8 @@
           </div>
         `
         var graficoBanks = document.getElementById("graficoBanks").getContext("2d");
-        // new Chart(graficoBanks).Doughnut(s.grafico.banks);
-        new Chart(graficoBanks).Pie(s.grafico.banks);
-        if (s.grafico.liberado && s.grafico.liberado.length >= 1) {
+        new Chart(graficoBanks).Pie(s.fgts.banks);
+        if (s.fgts.agilus) {
           document.getElementById('listLiberado').innerHTML = `<div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; max-height: 60vh; overflow-y: auto; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 40vw; max-width: 40vw; overflow-x: hidden; margin-right: 2vw">
             <div id="listaLiberado" style="width: 100%; margin-top: 1.5vh">
               <div style="display: flex; width: 94%; margin-top: 0.3vh; border-bottom: 0.1vh solid gray; margin-inline: 3%">
@@ -321,27 +335,26 @@
               </div>
             </div>
           </div>`
-          s.grafico.liberado.forEach((element,index)=>{
+          s.fgts.agilus.forEach((element,index)=>{
             document.getElementById('listaLiberado').innerHTML += `
-
             <div style="display: flex; width: 94%; border-bottom: 0.1vh solid gray; margin-inline: 3%">
               <div style="width: 38%; max-width: 38%; padding-left: 2%">
                 <a style="font-size: 2.3vh">${element.user}</a>
               </div>
               <div style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
-                <a style="font-size: 2vh">${String(element.liberado).replace('.',',').replace('null','0')}</a>
+                <a style="font-size: 2vh">${String(element.liberado).replace('.',',').replace('null','0,00')}</a>
               </div>
               <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
                 <a style="font-size: 2vh">${element.sucessos}</a>
               </div>
               <div style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
-                <a style="font-size: 2vh">${element.erros}</a>
+                <a style="font-size: 2vh">${s.fgts.erros.filter(r=>r.error).length}</a>
               </div>
               <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
                 <a style="font-size: 2vh">${element.afs ? element.afs : 0}</a>
               </div>
               <div style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
-                <a style="font-size: 2vh">${element.valorAfs ? String(element.valorAfs).replace('.',',') : 0}</a>
+                <a style="font-size: 2vh">${element.valorAfs ? String(element.valorAfs).replace('.',',') : '0,00'}</a>
               </div>
             </div>
             `
@@ -385,21 +398,20 @@
   }
 
   async function downloadCSV(type) {
-    if (document.getElementById('relatorio').value == "funcionarios") return alert('Você não pode baixar essa lista...')
+    return alert('Você não pode baixar as consultas FGTS por aqui...')
     if (block) return alert('Aguarde...')
-    if (!fgts || fgts.length <= 0) return alert(`A lista de resultados está vazia...`)
-    if (type == "Sucessos" && fgts.filter(r=>r.liberado).length <= 0) return alert('Essa lista está vazia...')
-    if (type == "Erros" && fgts.filter(r=>r.error).length <= 0) return alert('Essa lista está vazia...')
     block = true
     var csv = false
     if (type == 'Sucessos') {
+      if (!sucessos || sucessos.length <= 0) return alert(`A lista de resultados está vazia...`)
       csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
-      await fgts.filter(r=>r.liberado).map((element,index)=>{
+      await sucessos.map((element,index)=>{
         csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
     } else {
+      if (!erros || erros.length <= 0) return alert(`A lista de resultados está vazia...`)
       csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR`
-      await fgts.filter(r=>r.error).map((element,index)=>{
+      await erros.map((element,index)=>{
         csv+=`\n${element.cpf},${element.bank},${element.error.replaceAll(`,`,'.')},${element.telefone},${element.user}`
       })
     }
@@ -412,11 +424,9 @@
   }
 
   async function downloadTotalCSV(type) {
-    if (document.getElementById('relatorio').value == "funcionarios") return alert('Você não pode baixar essa lista...')
+    return alert('Você não pode baixar as consultas FGTS por aqui...')
     if (block) return alert('Aguarde...')
-    if (!fgts || fgts.length <= 0) return alert(`A lista de resultados está vazia...`)
-    if (type == "Sucessos" && fgts.filter(r=>r.liberado).length <= 0) return alert('Essa lista está vazia...')
-    if (type == "Erros" && fgts.filter(r=>r.error).length <= 0) return alert('Essa lista está vazia...')
+    if (!total || total.length <= 0) return alert(`A lista de resultados está vazia...`)
     block = true
     var csv = false
     if (type == 'Sucessos') {
@@ -438,10 +448,34 @@
     block = false
   }
 
-  (function () {
+  async function lotes() {
+    return alert('Você não pode consultar os sucessos FGTS por aqui...')
+    if (sucessos && sucessos.length <= 0) return alert('Lista vazia...') 
+    var csv = ''
+    await sucessos.filter(r=>r.liberado).map((element,index)=>{
+      csv+=`${index != 0 ? '\n' : ''}${element.cpf};${element.bank},`
+    })
+    if (window.clipboardData) {
+      window.clipboardData.setData("Text", csv);
+      return window.location = `/consultas/lotes`
+    } else {
+      navigator.clipboard.writeText(csv).then(()=>{
+        return window.location = `/consultas/lotes`
+      }).catch(()=>{ 
+        alert('Não foi possivel copiar os CPFs e os bancos! Então sera baixado em CSV...')
+        var a = document.createElement('a');
+        a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+        a.target = '_blank';
+        a.download = `CPFs-Consultas.csv`;
+        a.click();
+        return window.location = `/consultas/lotes`
+      })
+    }
+  }
+
+  (async function () {
     var date = new Date();
-    date.setHours(date.getHours() - 3);
-    document.getElementById('dateIni').value = date.toISOString().slice(0, 10)+`T00:00`
+    document.getElementById('dateIni').value = date.toISOString().slice(0, 10)
     return relatorio()
   })();
 </script>
