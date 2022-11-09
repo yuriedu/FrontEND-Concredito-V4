@@ -13,11 +13,6 @@
         <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Telefone</legend>
         <input id="phone" type="number" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="00 90000 0000">
       </fieldset>
-      <fieldset title="Fase atual da proposta..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
-        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Agentes</legend>
-        <input id="agentes" list="agentesList" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="Carregando...">
-      </fieldset>
-
       <fieldset title="Orgão do Contrato da proposta..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Flags</legend>
         <select id="flags" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
@@ -78,23 +73,7 @@
     </div>
   </div>
 
-  <div class="background-image margin-left18-5 width79" style="margin-top: 3vh; display: flex; flex-direction: column; margin-left: 6vw; width: 92.5vw; min-height: 12vh; border-radius: 2vh; text-align: center; justify-content: center; align-items: center; font-size: 1.7vh;">
-    <a class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Distribuir Leads - Leads sem Agentes: <span id="disponivel" class="font-color-navbar" style="text-decoration: underline; font-weight: 600;">0</span></a>
-    <div style="display: flex; justify-content: center; align-items: center; width: 100%">
-      <fieldset title="Fase atual da proposta..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
-        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Agentes</legend>
-        <input id="agentesADD" list="agentesList" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="Carregando...">
-        <datalist id="agentesList"></datalist>
-      </fieldset>
-      <fieldset title="Fase atual da proposta..." style="padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
-        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Quantidade</legend>
-        <input id="quanty" type="number" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="000">
-      </fieldset>
-      <i class="fa-solid fa-user-plus font-color-navbar" onclick="distribuir()" style="font-size: 3vh; cursor: pointer; margin-top: 1.2vh"></i>
-    </div>
-  </div>
-
-  <div class="background-image margin-left18-5 width79 min-height36-5" style="margin-top: 3vh; margin-left: 6vw; width: 92.5vw; min-height: 29.5vh; border-top-left-radius: 2vh; border-top-right-radius: 2vh; padding-block: 3vh">
+  <div class="background-image margin-left18-5 width79 min-height36-5" style="margin-top: 3vh; margin-left: 6vw; width: 92.5vw; min-height: 44.5vh; border-top-left-radius: 2vh; border-top-right-radius: 2vh; padding-block: 3vh">
     <div style="display: flex; margin-inline: 3.5vw; margin-bottom: 1.5vh; align-items: center;">
       <div style="display: flex; width: 30%">
         <a style="font-size: 2.2vh">Selecionar</a>
@@ -177,7 +156,7 @@
         password: localStorage.getItem('password'),
         cpf: document.getElementById('cpf').value,
         telefone: document.getElementById('phone').value,
-        agente: document.getElementById('agentes').value,
+        agente: localStorage.getItem('user'),
         flag: document.getElementById('flags').value,
         obs: document.getElementById('obs').value,
         bank: document.getElementById('bank').value,
@@ -195,7 +174,6 @@
         }
         document.getElementById('total').innerHTML = s.total
         document.getElementById('visivel').innerHTML = `100`
-        document.getElementById('disponivel').innerHTML = s.disponivel
         document.getElementById('results').innerHTML = ``
         view = 100
         leads = s.leads
@@ -249,7 +227,6 @@
       <div class="background-reverse width35" style="z-index: 2; width: 7vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '7vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh">
         <a onclick="copy('${id}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Copiar</a>
         <a onclick="block('${id}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Bloquear</a>
-        <a onclick="remAgente('${id}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Rem. Agente</a>
         <a onclick="openObs('${id}')" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">OBS</a>
       </div>
     </div>`
@@ -305,51 +282,6 @@
     })
   }
 
-  function distribuir() {
-    if (menuPropostaActual) menuProposta(false, menuPropostaActual)
-    if (copyBlock) return alert('Aguarde...')
-    if (!document.getElementById('agentesADD').value) return alert('Coloque o agentes que recebera as Leads...')
-    if (!document.getElementById('quanty').value) return alert('Coloque a quantidade de Leads que sera enviada...')
-    if (document.getElementById('quanty').value > 1000 || document.getElementById('quanty').value < 1) return alert('A quantidade de Leads deve ser entra 1 há 1000...')
-    copyBlock = true
-    $.ajax({ type: "post",url: `${apiURL}/propostas/leads/distribuir`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        leads: document.getElementById('quanty').value,
-        newAgente: document.getElementById('agentesADD').value,
-        cpf: document.getElementById('cpf').value,
-        telefone: document.getElementById('phone').value,
-        agente: document.getElementById('agentes').value,
-        flag: document.getElementById('flags').value,
-        obs: document.getElementById('obs').value,
-        bank: document.getElementById('bank').value,
-        dateIni: document.getElementById('dateIni').value,
-        dateEnd: document.getElementById('dateEnd').value,
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        copyBlock = false
-        if (s.error) return alert(s.error)
-        var index = -1
-        for(var i=0, n=document.getElementById('quanty').value;i<n;i++) {
-          index++
-          if (leads[index] && !leads[index].agente) {
-            if (document.getElementById(`${leads[index].id}_agente`)) {
-              leads[index].agente = document.getElementById('agentesADD').value
-              document.getElementById(`${leads[index].id}_agente`).innerHTML = document.getElementById('agentesADD').value
-            }
-          } else i--
-        }
-        return alert(`Leads distribuidas com sucesso...`)
-      },
-      error: function(e) {
-        copyBlock = false
-        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
-      }
-    })
-  }
-
   function copy(id) {
     if (menuPropostaActual) menuProposta(false, menuPropostaActual)
     if (copyBlock) return alert('Aguarde...')
@@ -384,33 +316,6 @@
             })
           }
         }
-      },
-      error: function(e) {
-        copyBlock = false
-        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
-      }
-    })
-  }
-
-  function remAgente(id) {
-    if (menuPropostaActual) menuProposta(false, menuPropostaActual)
-    if (copyBlock) return alert('Aguarde...')
-    if (!leads.find(r=>r.id == id)) return alert(`Lead: ${id} não encontrada...`)
-    if (!leads.find(r=>r.id == id).agente) return alert(`A lead: ${id} não tem agente...`)
-    copyBlock = true
-    $.ajax({ type: "post",url: `${apiURL}/propostas/leads/edit`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password'),
-        id: id,
-        agente: 'delete',
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        copyBlock = false
-        leads.find(r=>r.id == id).agente = null
-        document.getElementById(`${id}_agente`).innerHTML = 'Não Definido...'
-        return alert('Agente removido com sucesso...')
       },
       error: function(e) {
         copyBlock = false
@@ -591,30 +496,7 @@
       }
     }
   }
-  var agentesBlock = false
-  function getAgentes() {
-    if (agentesBlock) return alert('Aguarde...')
-    agentesBlock = true
-    $.ajax({ type: "post",url: `${apiURL}/logins/get`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password')
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        agentesBlock = false
-        document.getElementById('agentes').placeholder = `Escolhe um agente...`
-        document.getElementById('agentesADD').placeholder = `Escolhe um agente...`
-        s.logins.forEach((element,index) => {
-          document.getElementById('agentesList').innerHTML += `<option style="color: black">${element.user}</option>`
-        });
-      },
-      error: function(e) {
-        agentesBlock = false
-        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
-      }
-    })
-  }
+
   function searchBar() {
     if (menuPropostaActual) menuProposta(false, menuPropostaActual)
     var input = document.getElementById('searchBar');
@@ -628,5 +510,5 @@
       } else li[i].style.display = "none";
     }
   }
-  (async function () { await getAgentes(); return filter(); })();
+  (async function () { return filter(); })();
 </script>
