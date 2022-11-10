@@ -186,6 +186,14 @@
   <a href="/"><img id="logo" class="zoom" src="/public/images/logo_white.png" style="z-index: 2; width: 10vw;"></a>
 </div>
 
+<div id="avisoMenu" class="background-reverse" style="display: none; width: 40vw; position: fixed; top: 13vh; left: 30vw; border-radius: 3vh; padding-inline: 1.2vw">
+  <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center">
+    <a class="font-color-navbar-reverse font-5" style="font-size: 4vh; font-weight: 600; margin-top: 2.5vh">Aviso:</a>
+    <a id="aviso" style="font-size: 2.1vh; margin-top: 1.1vh; width: 100%; display: flex; align-items: center; justify-content: center; text-align: center;"></a>
+    <div onclick="avisoOK()" class="buttonLogin" style="width: 22%; margin-top: 3vh; margin-bottom: 2.5vh; font-size: 2.2vh; padding-block: 1vh; border-radius: 1.5vh">OK</div>
+  </div>
+</div>
+
 <script>
   var sidebar = false
   function openSideBar() {
@@ -305,8 +313,20 @@
     })
   }
 
+  function avisoOK() {
+    document.getElementById('avisoMenu').style.display = 'none'
+    localStorage.setItem('aviso', document.getElementById('aviso').innerHTML)
+    document.getElementById('aviso').innerHTML = ''
+  }
+
   function load() {
     if (!login) return $(document.body).load(`/views/login.html`)
+    if (login.aviso.value) {
+      if (localStorage.getItem('aviso') != login.aviso.value) {
+        document.getElementById('aviso').innerHTML = login.aviso.value
+        document.getElementById('avisoMenu').style.display = 'flex'
+      }
+    }
     document.getElementById('userNAVBAR').innerHTML = `${login.login.user}#${login.login.codigo}`
     for (var menu in submenus) {
       for (var sub in submenus[menu]) {
