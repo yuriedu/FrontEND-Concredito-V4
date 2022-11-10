@@ -60,14 +60,7 @@
       <fieldset id="fieldset" title="Cargo" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Cargo</legend>
         <select id="cargo" type="text" class="font-1 font-color-reverse" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
-          <option style="color: black" value="default" selected>Nenhum</option>
-          <option style="color: black" value="CEO">CEO</option>
-          <option style="color: black" value="Developer">Developer</option>
-          <option style="color: black" value="Administrador">Administrador</option>
-          <option style="color: black" value="Analista">Analista</option>
-          <option style="color: black" value="Supervisor">Supervisor</option>
-          <option style="color: black" value="Vendedor">Vendedor</option>
-          <option style="color: black" value="Operador">Operador</option>
+          <option style="color: black" value="" selected>Sem Permissão</option>
         </select>
       </fieldset>
       <div onclick="saveEdit()" id="editButton" class="buttonLogin2" style="width: 18vw; padding-block: 0.8vh; font-size: 2.8vh; border-radius: 2vh; margin-top: 2vh;">
@@ -191,7 +184,7 @@
               <a style="display: none">${element.user} ${element.codigo} ${element.cargo} ${element.filial} ${element.email} ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'online' : 'inativo'  : 'offline' }</a>
               <i onclick="openMenu(this,'${element.user}')" class="fa-regular fa-ellipsis-vertical" style="font-size: 2.5vh; cursor: pointer; position: absolute; top: 1vh; right: 0.65vw"></i>
               <img src="${element.avatar ? element.avatar : '/public/images/iconFunc.png'}" style="width: 55%; border-radius: 100%">
-              <a style="font-size: 2.2vh; font-weight: 400; margin-top: 2.5vh; max-width: 100%; overflow: hidden;"><i class="fa-duotone fa-circle-dot" style="font-size: 1.9vh; margin-right: 0.2vw; color: ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'green' : 'orange'  : 'red' }"></i>${element.user.length >= 10 ? element.user.slice(0,10)+'...' : element.user}<span class="font-color-navbar" style="font-size: 1.5vh">#${element.codigo}</span></a>
+              <a style="font-size: 2.2vh; font-weight: 400; margin-top: 2.5vh; max-width: 100%; overflow: hidden;"><i class="fa-duotone fa-circle-dot" style="font-size: 1.9vh; margin-right: 0.2vw; color: ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'green' : 'orange'  : 'red' }"></i>${element.user.length >= 10 ? element.user.slice(0,10)+'.' : element.user}<span class="font-color-navbar" style="font-size: 1.5vh">#${element.codigo}</span></a>
               <a style="font-size: 1.5vh; margin-top: 1vh"><i class="fa-regular fa-suitcase font-color-navbar"></i> <span style="text-decoration: underline">${element.role == 'default' ? 'Nenhum' : element.role}</span></a>
             </funcionario>
           `
@@ -199,6 +192,30 @@
       },
       error:  async function(s) {
         funcBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    })
+  }
+
+  var rolesBlock = false
+  function getRoles() {
+    if (rolesBlock) return alert('Aguarde...')
+    rolesBlock = true
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/configs/get`,
+      data: JSON.stringify({ user: localStorage.getItem('user'), password: localStorage.getItem('password'), menu: 'Roles' }),
+      contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        rolesBlock = false
+        if (!s.error) {
+          document.getElementById('cargo').innerHTML = `<option style="color: black" value="default" selected>Nenhum</option>`
+          s.roles.forEach((element,index)=>{
+            document.getElementById('cargo').innerHTML += `<option style="color: black" value="${element.role}">${element.role}</option>`
+          })
+        }
+      },
+      error:  async function(s) {
+        rolesBlock = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
@@ -221,7 +238,8 @@
     }
   }
 
-  (function () {
+  (async function () {
+    await getRoles();
     return getFuncionarios()
   })()
 </script>

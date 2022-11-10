@@ -140,6 +140,13 @@
                     </div>
                     <input id="${index}_administrativo_relatorios" value='0' type='hidden'>
                   </fieldset>
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 13%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Relatór. Empresa</legend>
+                    <div id="${index}_administrativo_empresaS" onclick="inputChecked('${index}_administrativo_empresa')" class="slider">
+                      <div id="${index}_administrativo_empresaB" class="sliderB"></div>
+                    </div>
+                    <input id="${index}_administrativo_empresa" value='0' type='hidden'>
+                  </fieldset>
                 </div>
                 <div class="flex-direction-column" style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center;">
                   <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 11.5%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
@@ -155,6 +162,13 @@
                       <div id="${index}_propostas_cadastrarB" class="sliderB"></div>
                     </div>
                     <input id="${index}_propostas_cadastrar" value='0' type='hidden'>
+                  </fieldset>
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Lista de Leads</legend>
+                    <div id="${index}_propostas_leadsS" onclick="inputChecked('${index}_propostas_leads')" class="slider">
+                      <div id="${index}_propostas_leadsB" class="sliderB"></div>
+                    </div>
+                    <input id="${index}_propostas_leads" value='0' type='hidden'>
                   </fieldset>
                   <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 13%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
                     <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Consultas FGTS</legend>
@@ -238,7 +252,7 @@
       }
     })
   }
-  function saveMenu(button, option, value1, value2, value3, value4, value5, value6, value7, value8, value9) {
+  function saveMenu(button, option, value1, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11) {
     if (getBlock) return alert('Aguarde...')
     getBlock = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
@@ -257,6 +271,8 @@
         value7: value7,
         value8: value8,
         value9: value9,
+        value10: value10,
+        value11: value11,
       }),
       contentType:"application/json; charset=utf-8",
       success: async function(s) {
@@ -342,7 +358,9 @@
         document.getElementById('${cod}_propostas_lista').value,
         document.getElementById('${cod}_propostas_cadastrar').value,
         document.getElementById('${cod}_consultas_fgts').value,
-        document.getElementById('${cod}_consultas_lotes').value
+        document.getElementById('${cod}_consultas_lotes').value,
+        document.getElementById('${cod}_administrativo_empresa').value,
+        document.getElementById('${cod}_propostas_leads').value
       )
     " class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Salvar</a><a onclick="remove('Roles','${role}')" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Deletar</a></div></div>`
   }

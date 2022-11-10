@@ -145,6 +145,7 @@
   var total = []
   var sucessos = []
   var erros = []
+  var agilus = []
   var block = false
   function relatorio() {
     if (block) return alert('Aguarde...')
@@ -325,27 +326,39 @@
               <div style="display: flex; width: 94%; margin-top: 0.3vh; border-bottom: 0.1vh solid gray; margin-inline: 3%">
                 <div title="Nome Funcionário" style="width: 38%; max-width: 38%; padding-left: 2%">
                   <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
-                  <i class="fa-regular fa-arrows-up-down" style="font-size: 2vh"></i>
+                  <i onclick="redirect('user')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+                  <input type="hidden" id="user_list" value="0">
                 </div>
                 <div title="Valor Liberado" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
                   <a style="font-size: 2.5vh; font-weight: 800">VL. S</a>
+                  <i onclick="redirect('liberado')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+                  <input type="hidden" id="liberado_list" value="0">
                 </div>
                 <div title="Quantidade de Sucessos" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
                   <a style="font-size: 2.5vh; font-weight: 800">S</a>
+                  <i onclick="redirect('sucessos')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+                  <input type="hidden" id="sucessos_list" value="0">
                 </div>
                 <div title="Quantidade de Erros" style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
                   <a style="font-size: 2.5vh; font-weight: 800">E</a>
+                  <i onclick="redirect('erros')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+                  <input type="hidden" id="erros_list" value="0">
                 </div>
                 <div title="Quantidade de AFs(Consultados)" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
                   <a style="font-size: 2.5vh; font-weight: 800">AF</a>
+                  <i onclick="redirect('afs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+                  <input type="hidden" id="afs_list" value="0">
                 </div>
                 <div title="Valor das AFs(Consultados)" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
                   <a style="font-size: 2.5vh; font-weight: 800">VL. AFs</a>
+                  <i onclick="redirect('valorAfs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+                  <input type="hidden" id="valorAfs_list" value="0">
                 </div>
               </div>
             </div>
           </div>`
           s.fgts.agilus.forEach((element,index)=>{
+            s.fgts.agilus[index].erros =  s.fgts.erros.filter(r=>r.user == element.user).length
             document.getElementById('listaLiberado').innerHTML += `
             <div style="display: flex; width: 94%; border-bottom: 0.1vh solid gray; margin-inline: 3%">
               <div style="width: 38%; max-width: 38%; padding-left: 2%">
@@ -358,7 +371,7 @@
                 <a style="font-size: 2vh">${element.sucessos}</a>
               </div>
               <div style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
-                <a style="font-size: 2vh">${s.fgts.erros.filter(r=>r.user == element.user).length}</a>
+                <a style="font-size: 2vh">${element.erros}</a>
               </div>
               <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
                 <a style="font-size: 2vh">${element.afs ? element.afs : 0}</a>
@@ -369,6 +382,7 @@
             </div>
             `
           })
+          agilus = s.fgts.agilus
         }
       },
       error: function(e) {
@@ -380,6 +394,88 @@
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
+  }
+
+  var blockRedirect = false
+  function redirect(menu) {
+    if (blockRedirect) return alert('Aguarde...')
+    if (!agilus || agilus.length < 1) return alert('Lista vazia...')
+    if (!menu) return alert('Campo não informado...')
+    blockRedirect = true
+    var aux = 0
+    if (document.getElementById(`${menu}_list`) && document.getElementById(`${menu}_list`).value == '1') aux = 1
+    document.getElementById('listaLiberado').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+    if (aux == 0) {
+      agilus.sort(function(a, b) {
+        var aux1 = String(a[menu]).replace(',','.')
+        var aux2 = String(b[menu]).replace(',','.')
+        if (aux1 == '0') aux1 = -1
+        if (aux2 == '0') aux2 = -1
+        if (Number(aux1) && Number(aux2)) return aux1-aux2
+        return aux2.localeCompare(aux1)
+      });
+    } else if (aux == 1) agilus.reverse()
+    document.getElementById('listaLiberado').innerHTML = `
+      <div style="display: flex; width: 94%; margin-top: 0.3vh; border-bottom: 0.1vh solid gray; margin-inline: 3%">
+        <div title="Nome Funcionário" style="width: 38%; max-width: 38%; padding-left: 2%">
+          <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
+          <i onclick="redirect('user')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="user_list" value="0">
+        </div>
+        <div title="Valor Liberado" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+          <a style="font-size: 2.5vh; font-weight: 800">VL. S</a>
+          <i onclick="redirect('liberado')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="liberado_list" value="0">
+        </div>
+        <div title="Quantidade de Sucessos" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+          <a style="font-size: 2.5vh; font-weight: 800">S</a>
+          <i onclick="redirect('sucessos')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="sucessos_list" value="0">
+        </div>
+        <div title="Quantidade de Erros" style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
+          <a style="font-size: 2.5vh; font-weight: 800">E</a>
+          <i onclick="redirect('erros')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="erros_list" value="0">
+        </div>
+        <div title="Quantidade de AFs(Consultados)" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+          <a style="font-size: 2.5vh; font-weight: 800">AF</a>
+          <i onclick="redirect('afs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="afs_list" value="0">
+        </div>
+        <div title="Valor das AFs(Consultados)" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+          <a style="font-size: 2.5vh; font-weight: 800">VL. AFs</a>
+          <i onclick="redirect('valorAfs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="valorAfs_list" value="0">
+        </div>
+      </div>
+    `
+    if (aux == 0) document.getElementById(`${menu}_list`).value = '1'
+    if (aux == 1) document.getElementById(`${menu}_list`).value = '0'
+    agilus.forEach((element,index)=>{
+      document.getElementById('listaLiberado').innerHTML += `
+      <div style="display: flex; width: 94%; border-bottom: 0.1vh solid gray; margin-inline: 3%">
+        <div style="width: 38%; max-width: 38%; padding-left: 2%">
+          <a style="font-size: 2.3vh">${element.user}</a>
+        </div>
+        <div style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+          <a style="font-size: 2vh">${String(element.liberado).replace('.',',').replace('null','0,00')}</a>
+        </div>
+        <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+          <a style="font-size: 2vh">${element.sucessos}</a>
+        </div>
+        <div style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
+          <a style="font-size: 2vh">${element.erros}</a>
+        </div>
+        <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+          <a style="font-size: 2vh">${element.afs ? element.afs : 0}</a>
+        </div>
+        <div style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+          <a style="font-size: 2vh">${element.valorAfs ? String(element.valorAfs).replace('.',',') : '0,00'}</a>
+        </div>
+      </div>
+      `
+    })
+    blockRedirect = false
   }
 
   var comissao = [
