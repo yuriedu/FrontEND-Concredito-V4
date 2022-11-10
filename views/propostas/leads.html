@@ -354,6 +354,8 @@
     if (menuPropostaActual) menuProposta(false, menuPropostaActual)
     if (copyBlock) return alert('Aguarde...')
     if (!leads.find(r=>r.id == id)) return alert(`Lead: ${id} não encontrada...`)
+    if (leads.find(r=>r.id == element).flag_block == 1) return alert('Você não pode copiar uma lead bloqueada...') 
+    if (leads.find(r=>r.id == element).flag_copy == 1) return alert('Você não pode copiar uma lead já copiada...') 
     copyBlock = true
     $.ajax({ type: "post",url: `${apiURL}/propostas/leads/edit`,
       data: JSON.stringify({
@@ -445,9 +447,11 @@
           document.getElementById(`${element}_copy`).classList.add('fa-duotone')
           document.getElementById(`${element}_copy`).classList.add('fa-copy')
           leads.find(r=>r.id == element).flag_copy = 1
-          if (telefones) {
-            telefones += `\n${leads.find(r=>r.id == element).telefone}`
-          } else telefones = `${leads.find(r=>r.id == element).telefone}`
+          if (leads.find(r=>r.id == element) && leads.find(r=>r.id == element).flag_block == 0) {
+            if (telefones) {
+              telefones += `\n${leads.find(r=>r.id == element).telefone}`
+            } else telefones = `${leads.find(r=>r.id == element).telefone}`
+          }
         })
         if (!telefones) return alert(`Telefones não encontrado...`)
         if (window.clipboardData) {
@@ -483,9 +487,11 @@
     if (ids.length > 50) return alert('Você só pode selecionar no maximo 50 leads por vez...')   
     var telefones = false
     await ids.forEach((element,index)=>{
-      if (telefones) {
-        telefones += `\n${leads.find(r=>r.id == element).telefone}`
-      } else telefones = `${leads.find(r=>r.id == element).telefone}`
+      if (leads.find(r=>r.id == element) && leads.find(r=>r.id == element).flag_block == 0) {
+        if (telefones) {
+          telefones += `\n${leads.find(r=>r.id == element).telefone}`
+        } else telefones = `${leads.find(r=>r.id == element).telefone}`
+      }
     })
     if (!telefones) return alert(`Telefones não encontrado...`)
     var a = document.createElement('a');
@@ -585,7 +591,7 @@
     var end = 0
     for(var i=0, n=checkboxes.length;i<n;i++) {
       var id = checkboxes[i].id
-      if ((end+1) <= qnt && leads.find(r=>r.id == id) && (!leads.find(r=>r.id == id).flag_copy || leads.find(r=>r.id == id).flag_copy == 0)) {
+      if ((end+1) <= qnt && leads.find(r=>r.id == id) && leads.find(r=>r.id == id).flag_copy == 0 && leads.find(r=>r.id == id).flag_block == 0) {
         end++
         checkboxes[i].checked = true;
       }

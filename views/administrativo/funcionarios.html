@@ -188,10 +188,10 @@
         s.logins.forEach((element,index)=>{
           document.getElementById('funcionarios').innerHTML += `
             <funcionario class="background-Propostas" style="position: relative; margin: 1vw; width: 12vw; height: 25vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-              <a style="display: none">${element.user} ${element.codigo} ${element.cargo} ${element.filial} ${element.email}</a>
+              <a style="display: none">${element.user} ${element.codigo} ${element.cargo} ${element.filial} ${element.email} ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'online' : 'inativo'  : 'offline' }</a>
               <i onclick="openMenu(this,'${element.user}')" class="fa-regular fa-ellipsis-vertical" style="font-size: 2.5vh; cursor: pointer; position: absolute; top: 1vh; right: 0.65vw"></i>
               <img src="${element.avatar ? element.avatar : '/public/images/iconFunc.png'}" style="width: 55%; border-radius: 100%">
-              <a style="font-size: 2.2vh; font-weight: 400; margin-top: 2.5vh; max-width: 100%; overflow: hidden;">${element.user.length >= 10 ? element.user.slice(0,10)+'...' : element.user}<span class="font-color-navbar" style="font-size: 1.5vh">#${element.codigo}</span></a>
+              <a style="font-size: 2.2vh; font-weight: 400; margin-top: 2.5vh; max-width: 100%; overflow: hidden;"><i class="fa-duotone fa-circle-dot" style="font-size: 1.9vh; margin-right: 0.2vw; color: ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'green' : 'orange'  : 'red' }"></i>${element.user.length >= 10 ? element.user.slice(0,10)+'...' : element.user}<span class="font-color-navbar" style="font-size: 1.5vh">#${element.codigo}</span></a>
               <a style="font-size: 1.5vh; margin-top: 1vh"><i class="fa-regular fa-suitcase font-color-navbar"></i> <span style="text-decoration: underline">${element.role == 'default' ? 'Nenhum' : element.role}</span></a>
             </funcionario>
           `
