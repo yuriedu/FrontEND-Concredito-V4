@@ -7,17 +7,13 @@
       <a id="Configs" onclick="getMenu('Configs')" class="buttonLogin width50p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Configs</a>
       <a id="Roles" onclick="getMenu('Roles')" class="buttonLogin width50p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Cargos</a>
       <a id="Esteiras" onclick="getMenu('Esteiras')" class="buttonLogin width50p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Esteiras</a>
+      <a id="Descomplicando" onclick="getMenu('Descomplicando')" class="buttonLogin width50p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Descomplicando</a>
     </div>
   </div>
-  <div class="background-image margin-left18-5 width79 " style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; height: 13%; border-radius: 2vh;display: flex; flex-direction: row; justify-content: center; align-items: center;">
-    <fieldset title="Pesquise algum funcionario por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 45%; margin-inline: 1%; padding-inline: 1%;">
-      <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
-      <input onkeyup="searchBar(this)" id="searchBar" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 3.5vh; background: transparent; border: 0">
-    </fieldset>
-    <i onclick="searchBar({ id: 'searchBar' })" class="fa-regular fa-magnifying-glass-dollar" style="cursor: pointer; font-size: 3.5vh; margin-top: 1.3vh;"></i>
+  <div id="filtros" class="background-image margin-left18-5 width79" style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; height: 13%; border-radius: 2vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
   </div>
 
-  <div id="result" class="background-image margin-left18-5 width79 " style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; min-height: 42.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: column; align-items: center; padding-block: 4vh">
+  <div id="result" class="background-image margin-left18-5 width79" style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; min-height: 42.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: column; align-items: center; padding-block: 4vh">
 
   </div>
   <div id="menuPropostas"></div>
@@ -26,23 +22,47 @@
 <script>
   var menuPropostaActual = false
   var getBlock = false
-  var menus = [ { menu: "Configs", block: true }, { menu: "Roles", block: true }, { menu: "Esteiras", block: true } ]
+  var list = false
+  var view = 100
+  var menus = [ { menu: "Configs", block: true }, { menu: "Roles", block: true }, { menu: "Esteiras", block: true }, { menu: "Descomplicando", block: true } ]
   function getMenu(button) {
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     if (getBlock) return alert('Aguarde...')
-    if (document.getElementById(button).classList.contains('buttonBlock') || getBlock) return alert('Sem permissão...')
+    if (menus.filter(r=>r.menu == button).block) return alert('Sem permissão...')
     menus.filter(r=> !r.block).forEach(r=>{ document.getElementById(r.menu).classList.add('buttonBlock') })
+    var filter1 = document.getElementById('filter1') ? document.getElementById('filter1').value : false
+    var filter2 = document.getElementById('filter2') ? document.getElementById('filter2').value : false
     document.getElementById('result').innerHTML = `<div class="loader-wheel"></div><div class="loader-text font-5"></div>`
+    document.getElementById('filtros').innerHTML = `<div class="loader-wheel"></div><div class="loader-text font-5"></div>`
     getBlock = true
     $.ajax({ type: "post",url: `${apiURL}/administrativo/configs/get`,
-      data: JSON.stringify({ user: localStorage.getItem('user'), password: localStorage.getItem('password'), menu: button }),
+      data: JSON.stringify({ 
+        user: localStorage.getItem('user'),
+         password: localStorage.getItem('password'), 
+         menu: button,
+         filter1: filter1,
+         filter2: filter2,
+      }),
       contentType:"application/json; charset=utf-8",
       success: async function(s) {
         getBlock = false
-        document.getElementById('result').innerHTML = ``
         menus.filter(r=> r.menu != button && !r.block).forEach(r=>{ document.getElementById(r.menu).classList.remove('buttonBlock') })
+        document.getElementById('result').innerHTML = `
+          <div style="width: 97%; display: flex; flex-direction: right; justify-content: right; margin-right: 3%; margin-bottom: 2vh">
+            <div style="display: flex; width: 30%; justify-content: right;">
+              <fieldset title="Pesquise algum funcionario por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 75%; margin-inline: 3%; padding-inline: 1%;">
+                <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.8vh">Pesquisar</legend>
+                <input onkeyup="searchBar(this)" id="searchBar" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2vh; width: 100%; background: transparent; border: 0; height: 2.7vh">
+              </fieldset>
+              <i onclick="searchBar({ id: 'searchBar' })" class="fa-regular fa-magnifying-glass-dollar" style="cursor: pointer; font-size: 3vh; margin-top: 1.8vh"></i>
+            </div>
+          </div>
+        `
         if (s.error) return alert(s.error)
         if (button == "Configs") {
+          document.getElementById('filtros').innerHTML = `
+            <a class="font-color-navbar" style="display: flex; width: 100%; justify-content: center; padding-top: 2vh; font-size: 3.2vh; font-weight: 600;">Nenhum filtro disponivel...</a>
+          `
           s.configs.forEach((element,index)=>{
             var menuSet = element.menu
             if (!document.getElementById(element.menu)) document.getElementById('result').innerHTML += `<div id="${element.menu}" style="width: 100%; display: flex; flex-direction: row; justify-content: center"></div>`
@@ -72,7 +92,7 @@
               document.getElementById(menuSet).innerHTML += `<result style="width: 25%; margin-inline: 1%">
                 <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
                   <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
-                  <textarea id="${element.id}_active" rows="1" class="font-1" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">${String(element.value).replace('null','Não Definido...')}</textarea>
+                  <textarea id="${element.id}_active" rows="1" class="font-1 font-color" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">${String(element.value).replace('null','Não Definido...')}</textarea>
                   <i title="Salvar" onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid ${ element.block ? 'fa-arrows-rotate' : 'fa-floppy-disk' } font-color-navbar"></i>
                 </fieldset>
               </result>`
@@ -95,6 +115,9 @@
             }
           })
         } else if (button == "Roles") {
+          document.getElementById('filtros').innerHTML = `
+            <a class="font-color-navbar" style="display: flex; width: 100%; justify-content: center; padding-top: 2vh; font-size: 3.2vh; font-weight: 600;">Nenhum filtro disponivel...</a>
+          `
           document.getElementById('result').innerHTML += `<div class="font-color-navbar background-reverse" style="z-index: 5; cursor: pointer; position: fixed; bottom: 2vh; right: 3vw; padding-block: 1vh; display: flex; align-items: center; justify-content: center; border-radius: 2vh"><fieldset id="fieldset" title="Novo Cargo..." style="text-align: left; padding: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%; margin-right: 1vw;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Novo Cargo</legend><input class="font-1 font-color-reverse" placeholder="Nome do Cargo" id="newRoleInput" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset><i class="fa-regular fa-file-circle-plus" style="font-size: 4vh; margin-top: 1vh" onclick="create('Roles', document.getElementById('newRoleInput').value)"></i></div></div>`
           s.roles.forEach((element,index)=>{
             document.getElementById('result').innerHTML += `<result style="width: 90%">
@@ -202,53 +225,86 @@
             }
           })
         } else if (button == "Esteiras") {
-          s.fases.forEach((element,index)=>{
-            document.getElementById('result').innerHTML += `<result style="width: 90%">
-              <div class="background-Propostas" style="border-radius: 1.5vh; margin-block: 1.5vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 1.5vh">
-                <div class="line-bottom navbar-font-color font-4" style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center; height: 6vh; font-size: 2.2vh">
-                  <a title="${element.bank}" style="max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
-                    <i class="fa-regular fa-user-tag font-size2"></i>
-                    <span class="invisibleAndroid"> Banco: </span>
+          list = s.fases
+          document.getElementById('filtros').innerHTML = `
+            <a class="font-color-navbar" style="display: flex; width: 100%; justify-content: center; font-size: 3.2vh; font-weight: 600;">Filtros:</a>
+            <div style="display: flex; flex-direction: row; width: 100%; justify-content: center; align-items: center">
+              <fieldset title="Fase atual da proposta..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Bancos</legend>
+                <select id="filter1" type="number" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
+                  <option value="" style="color: black" selected>Todos</option>
+                  <option value="FACTA FINANCEIRA" style="color: black">FACTA FINANCEIRA</option>
+                  <option value="BANCO C6" style="color: black">BANCO C6</option>
+                  <option value="PANAMERICANO" style="color: black">PANAMERICANO</option>
+                  <option value="MERCANTIL" style="color: black">MERCANTIL</option>
+                  <option value="SAFRA" style="color: black">SAFRA</option>
+                  <option value="BANRISUL" style="color: black">BANRISUL</option>
+                </select>
+              </fieldset>
+              <fieldset title="Fase atual da proposta..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Cod. Nova Fase</legend>
+                <input id="filter2" type="number" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="0000">
+              </fieldset>
+              <i onclick="getMenu('Esteiras')" class="fa-regular fa-magnifying-glass-dollar" style="cursor: pointer; font-size: 3.5vh; margin-top: 1.5vh;"></i>
+            </div>
+          `
+          document.getElementById('filter1').value = filter1 ? filter1 : ''
+          document.getElementById('filter2').value = filter2 ? filter2 : ''
+          document.getElementById('result').innerHTML += `<div id="fases" class="margin-left18-5 width79" style="width: 100%; min-height: 68.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; padding-bottom: 1vh;"></div>
+          <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
+            <a onclick="loadMore('Esteiras')" class="navbar-font-color" style="font-size: 3vh; text-decoration: underline; margin-block: 2vh; cursor: pointer">Carregar mais Logs</a>
+          </div>
+          `
+          s.fases.slice(0,50).forEach((element,index)=>{
+            document.getElementById('fases').innerHTML += `
+              <result class="background-Propostas" style="position: relative; margin: 1vw; width: 20vw; height: 45vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <i onclick="saveMenu('Esteiras','${element.id}', document.getElementById('${element.id}_newFase').value, document.getElementById('${element.id}_oldFase').value, document.getElementById('${element.id}_motivo').value,
+            '${element.atividade}','${element.status}','${element.situacao}' )" class="fa-regular fa-floppy-disk font-color-navbar" style="font-size: 2.8vh; cursor: pointer; position: absolute; top: 1vh; right: 0.65vw"></i>
+                <img src="/public/images/Bancos/${element.bank}.png" style="width: 5vw; border-radius: 100%">
+                <div class="font-color-navbar" style="margin-block: 2vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 1.8vh">
+                  <a style='display: none'>${element.newFase} ${element.oldFase} ${element.motivo}</a>
+                  <a title="${element.bank}" style="max-width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                    <i class="fa-regular fa-building-columns font-size2"></i>
+                    <span class="invisibleAndroid" style="font-weight: 600"> Banco: </span>
                     ${element.bank}
                   </a>
-                  <a title="${element.situacao}" style="max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                  <a title="${element.situacao}" style="max-width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
                     <i class="fa-regular fa-user-tag font-size2"></i>
-                    <span class="invisibleAndroid"> Situação: </span>
+                    <span class="invisibleAndroid" style="font-weight: 600"> Situação: </span>
                     ${element.situacao ? element.situacao : 'Nenhuma'}
                   </a>
-                  <a title="${element.atividade}" style="max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
-                    <i class="fa-regular fa-user-tag font-size2"></i>
-                    <span class="invisibleAndroid"> Atividade: </span>
+                  <a title="${element.atividade}" style="max-width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                    <i class="fa-regular fa-tags font-size2"></i>
+                    <span class="invisibleAndroid" style="font-weight: 600"> Atividade: </span>
                     ${element.atividade ? element.atividade : 'Nenhuma'}
                   </a>
-                  <a title="${element.status}" style="max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
-                    <i class="fa-regular fa-user-tag font-size2"></i>
-                    <span class="invisibleAndroid"> Status: </span>
+                  <a title="${element.status}" style="max-width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                    <i class="fa-regular fa-code font-size2"></i>
+                    <span class="invisibleAndroid" style="font-weight: 600"> Status: </span>
                     ${element.status ? element.status : 'Nenhum'}
                   </a>
-                  <i class="fa-solid fa-floppy-disk font-color-navbar" style="position: absolute; right: 1.5vw; cursor: pointer" 
-                  onclick="saveMenu('Esteiras','${element.id}',
-                    document.getElementById('${element.id}_newFase').value,
-                    document.getElementById('${element.id}_oldFase').value,
-                    document.getElementById('${element.id}_motivo').value,
-                    '${element.atividade}','${element.status}','${element.situacao}' )"></i>
                 </div>
-                <div class="font-4" style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center; height: 6vh; font-size: 2.2vh; padding-block: 1vh">
-                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 20%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Nova Fase</legend>
-                    <input id="${element.id}_newFase" type="text" class="font-1" value="${element.newFase ? element.newFase : ''}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+                <div class="font-color-navbar" style="width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center">
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 60%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5.5vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2vh">Nova Fase</legend>
+                    <input id="${element.id}_newFase" type="text" class="font-1" value="${element.newFase ? element.newFase : ''}" style="width: 100%; height: 2vh; margin: 0; font-size: 2vh; background: transparent; border: 0">
                   </fieldset>
-                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 20%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Fases Antigas</legend>
-                    <input id="${element.id}_oldFase" type="text" class="font-1" value="${element.oldFase ? element.oldFase : ''}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 70%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5.5vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2vh">Fases Antigas</legend>
+                    <input id="${element.id}_oldFase" type="text" class="font-1" value="${element.oldFase ? element.oldFase : ''}" style="width: 100%; height: 2vh; margin: 0; font-size: 2vh; background: transparent; border: 0">
                   </fieldset>
-                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 40%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Motivo</legend>
-                    <input id="${element.id}_motivo" type="text" class="font-1" value="${element.motivo ? element.motivo : ''}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+                  <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 80%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5.5vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2vh">Motivo</legend>
+                    <input id="${element.id}_motivo" type="text" class="font-1" value="${element.motivo ? element.motivo : ''}" style="width: 100%; height: 2vh; margin: 0; font-size: 2vh; background: transparent; border: 0">
                   </fieldset>
                 </div>
-              </div>
-            </result>`
+              </result>
+            `
+          })
+        } else if (button == "Descomplicando") {
+          list = s.descomplicando
+          s.descomplicando.forEach((element, index) => {
+            
           })
         }
       },
@@ -260,6 +316,64 @@
       }
     })
   }
+
+  function loadMore(menu) {
+    if (!list || list.length < 1) return alert('A lista está vazia...')
+    if (view >= list.length) return alert('Você já está com a lista completa...')
+    if (!menu || (menu !== "Esteiras" && menu !== "Descomplicando")) return alert('Menu não encontrado...')
+    list.slice(view,view+50).forEach((element,index)=>{
+      if (menu == "Esteiras") {
+        document.getElementById('fases').innerHTML += `
+          <result class="background-Propostas" style="position: relative; margin: 1vw; width: 20vw; height: 45vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <i onclick="saveMenu('Esteiras','${element.id}', document.getElementById('${element.id}_newFase').value, document.getElementById('${element.id}_oldFase').value, document.getElementById('${element.id}_motivo').value,
+        '${element.atividade}','${element.status}','${element.situacao}' )" class="fa-regular fa-floppy-disk font-color-navbar" style="font-size: 2.8vh; cursor: pointer; position: absolute; top: 1vh; right: 0.65vw"></i>
+            <img src="/public/images/Bancos/${element.bank}.png" style="width: 5vw; border-radius: 100%">
+            <div class="font-color-navbar" style="margin-block: 2vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 1.8vh">
+              <a style='display: none'>${element.newFase} ${element.oldFase} ${element.motivo}</a>
+              <a title="${element.bank}" style="max-width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                <i class="fa-regular fa-building-columns font-size2"></i>
+                <span class="invisibleAndroid" style="font-weight: 600"> Banco: </span>
+                ${element.bank}
+              </a>
+              <a title="${element.situacao}" style="max-width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                <i class="fa-regular fa-user-tag font-size2"></i>
+                <span class="invisibleAndroid" style="font-weight: 600"> Situação: </span>
+                ${element.situacao ? element.situacao : 'Nenhuma'}
+              </a>
+              <a title="${element.atividade}" style="max-width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                <i class="fa-regular fa-tags font-size2"></i>
+                <span class="invisibleAndroid" style="font-weight: 600"> Atividade: </span>
+                ${element.atividade ? element.atividade : 'Nenhuma'}
+              </a>
+              <a title="${element.status}" style="max-width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+                <i class="fa-regular fa-code font-size2"></i>
+                <span class="invisibleAndroid" style="font-weight: 600"> Status: </span>
+                ${element.status ? element.status : 'Nenhum'}
+              </a>
+            </div>
+            <div class="font-color-navbar" style="width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center">
+              <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 60%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5.5vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                <legend class="font-4" style="margin: 0; padding: 0; font-size: 2vh">Nova Fase</legend>
+                <input id="${element.id}_newFase" type="text" class="font-1" value="${element.newFase ? element.newFase : ''}" style="width: 100%; height: 2vh; margin: 0; font-size: 2vh; background: transparent; border: 0">
+              </fieldset>
+              <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 70%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5.5vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                <legend class="font-4" style="margin: 0; padding: 0; font-size: 2vh">Fases Antigas</legend>
+                <input id="${element.id}_oldFase" type="text" class="font-1" value="${element.oldFase ? element.oldFase : ''}" style="width: 100%; height: 2vh; margin: 0; font-size: 2vh; background: transparent; border: 0">
+              </fieldset>
+              <fieldset class="width70p margin-left15p" style="padding: 0; margin: 0; width: 80%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5.5vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+                <legend class="font-4" style="margin: 0; padding: 0; font-size: 2vh">Motivo</legend>
+                <input id="${element.id}_motivo" type="text" class="font-1" value="${element.motivo ? element.motivo : ''}" style="width: 100%; height: 2vh; margin: 0; font-size: 2vh; background: transparent; border: 0">
+              </fieldset>
+            </div>
+          </result>
+        `
+      } else if (menu == "Descomplicando") {
+      
+      }
+      searchBar({ id: 'searchBar' })
+    })
+  }
+
   function saveMenu(button, option, value1, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11) {
     if (getBlock) return alert('Aguarde...')
     getBlock = true
@@ -378,6 +492,10 @@
       if (menus.find(r=> r.menu == "Configs")) {
         menus.find(r=> r.menu == "Configs").block = false
         document.getElementById('Configs').classList.remove('buttonBlock')
+      }
+      if (menus.find(r=> r.menu == "Descomplicando")) {
+        menus.find(r=> r.menu == "Descomplicando").block = false
+        document.getElementById('Descomplicando').classList.remove('buttonBlock')
       }
       if (menus.find(r=> r.menu == "Esteiras")) {
         menus.find(r=> r.menu == "Esteiras").block = false
