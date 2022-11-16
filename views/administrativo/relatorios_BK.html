@@ -142,27 +142,10 @@
 
 </div>
 <script>
-
-  var total = false
-  var sucessos = false
-  var erros = false
-
-  var fgts = {
-    total: {
-      valor: 0,
-      sucessos: [],
-      erros: []
-    },
-    funcionarios: [
-
-    ]
-  }
-
-  var valores = {
-    total: 0,
-    funcionarios: []
-  }
-
+  var total = []
+  var sucessos = []
+  var erros = []
+  var agilus = []
   var block = false
   function relatorio() {
     if (block) return alert('Aguarde...')
@@ -203,6 +186,7 @@
       url = document.getElementById('relatorio').value.split('-')[0]
       funcionario = document.getElementById('relatorio').value.split('-')[1]
     }
+
     $.ajax({ type: "post",url: `${apiURL}/administrativo/relatorios/${url}`,
       data: JSON.stringify({
         user: localStorage.getItem('user'),
@@ -219,36 +203,26 @@
         document.getElementById('grafico3').innerHTML = ``
         if (s.error) return alert(s.error)
 
-        //CALCULOS
+        sucessos = s.fgts.sucessos
+        erros = s.fgts.erros
+        total = s.fgts.list
         for (var i = 1, n = 31; i <= n; ++i) { s.afs.months[i-1] = [i,0,0,0] }
         await s.calcular.midias.map(r=>{ s.afs.midias.find(r2=> r.midia == r2.midia).value = r.valor })
         var aux = [ s.mes-2, s.mes-1, s.mes ]
         await s.calcular.dias.map(r=>{
           if (s.afs.months.find(r2=>r2[0] == r.dia) && aux.find(r2=>r2==Number(r.mes))) s.afs.months.find(r2=>r2[0] == r.dia)[aux.findIndex(r2=>r2==Number(r.mes)) + 1] = r.valor
         })
-        //META
         document.getElementById('topMeta').innerHTML = `${s.meta ? s.meta.replace('.',',') : 0}%`
         var comissaoMeta = comissao.find(r=>s.meta >= r.min && s.meta < r.max)
         if (comissaoMeta) document.getElementById('topComissao').innerHTML = `R$ ${comissaoMeta.comissao},00`
-        //AFs
-        var afsDia = (s.afs.func / s.dates.max.slice(8,10)).toFixed(0)
-        document.getElementById('topAFsDia').innerHTML = afsDia && afsDia != "NaN" ? afsDia : 0
-        var ticket = (s.afs.vlFunc / s.afs.func).toFixed(2)
-        document.getElementById('topTicket').innerHTML = ticket ? ticket == "NaN" ? `R$ 0,00` : `R$ `+ticket.replace('.',',') : 0
-        var metaDia = (Number(s.meta) / s.dates.max.slice(8,10)).toFixed(2)
-        var metaMes = (metaDia * Number(s.days)).toFixed(2)
-        document.getElementById('topProjecao').innerHTML = metaMes && metaMes != "NaN" ? `${metaMes ? metaMes : 0}%` : "0%"
-        var comissaoMeta = comissao.find(r=>metaMes >= r.min && metaMes < r.max)
+        document.getElementById('topAFsDia').innerHTML = s.afs.afsDia ? s.afs.afsDia : 0
+        document.getElementById('topTicket').innerHTML = s.afs.ticket ? s.afs.ticket == "NaN" ? `R$ 0,00` : `R$ `+s.afs.ticket.replace('.',',') : 0
+        document.getElementById('topValorRestante').innerHTML = s.afs.vlRestante ? `R$ `+s.afs.vlRestante.replace('.',',') : 0
+        document.getElementById('topProjecao').innerHTML = `${s.afs.metaMes ? s.afs.metaMes : 0}%`
+        var comissaoMeta = comissao.find(r=>s.afs.metaMes >= r.min && s.afs.metaMes < r.max)
         if (comissaoMeta) document.getElementById('topProjecaoCom').innerHTML = `R$ ${comissaoMeta.comissao},00`
-        var ticketEmpresa = (s.afs.vlEmpresa / s.afs.empresa).toFixed(2)
-        var afsRestante = (((Number(s.objetivo) - Number(s.meta)) * 1050) / ticketEmpresa).toFixed(0)
-        document.getElementById('topAFsRestante').innerHTML = afsRestante && afsRestante != "NaN" ? afsRestante.replace('.',',') : 0
-        var vlRestante = ((Number(s.objetivo) - Number(s.meta)) * 1050).toFixed(2)
-        document.getElementById('topValorRestante').innerHTML = vlRestante && vlRestante != "NaN" ? `R$ `+vlRestante.replace('.',',') : 'R$ 0,00'
-        s.days = s.days - Number(s.dates.max.slice(8,10))
-        var valorDia = (vlRestante / s.days).toFixed(2)
-        document.getElementById('topValorDia').innerHTML = valorDia && valorDia != "NaN" ? valorDia.replace('.',',') : "R$ 0,00"
-
+        document.getElementById('topAFsRestante').innerHTML = s.afs.afsRestante ? s.afs.afsRestante.replace('.',',') : 0
+        document.getElementById('topValorDia').innerHTML = s.afs.valorDia ? s.afs.valorDia.replace('.',',') : 0
         document.getElementById('grafico1').innerHTML = `
           <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Mídias</a>
           <canvas id="graficoMidias" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
@@ -315,24 +289,101 @@
           graficoMeses.draw(data, optionsGraficoMeses);
         }
 
-        await total.forEach((element,index)=>{
-          if (element.liberado) {
-            if (!sucessos.find(r=> r.cpf == element.cpf)) {
-              sucessos[sucessos.length] = element
-              valores.total += element.liberado
-              if (element.funcionario.find(r=> r.cpf == element.cpf)) {
-                element.funcionario.find(r=> r.cpf == element.cpf).valor += element.liberado_list
-              } else valores.funcionarios[valores.funcionarios.length] = { cpf: element.cpf, valor: element.liberado }
-            }
-          } else {
-            if (!erros.find(r=> r.cpf == element.cpf)) {
-              erros[erros.length] = element
-            }
-          }
-        })
-
-
-
+        document.getElementById('topLiberado').innerHTML = s.fgts.liberado ? `R$ `+String(s.fgts.liberado).replace('.',',') : 0
+        document.getElementById('topSucessos').innerHTML = s.fgts.sucess
+        document.getElementById('topErros').innerHTML = s.fgts.error
+        document.getElementById('topSucessosTotal').innerHTML = `Total: `+s.fgts.list.filter(r=>!r.error).length
+        document.getElementById('topErrosTotal').innerHTML = `Total: `+s.fgts.list.filter(r=>!r.liberado).length
+        document.getElementById('topTotal').innerHTML = s.fgts.total
+        document.getElementById('topMedAfPorDiaQnt').innerHTML = s.fgts.medQnt
+        document.getElementById('topMedAfPorDiaValor').innerHTML = `R$ ${s.fgts.medValor.replace('.',',')}`
+        document.getElementById('topTicket2').innerHTML = s.fgts.ticket && Number(s.fgts.ticket) ? s.fgts.ticket == "NaN" ? `R$ 0,00` : `R$ `+s.fgts.ticket.replace('.',',') : 0
+        document.getElementById('grafico3').innerHTML = `
+          <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Bancos</a>
+          <canvas id="graficoBanks" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
+          <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 90%; margin-inline: 10%">
+            <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
+              ${s.fgts.banks.slice(0,s.fgts.banks.length/2).map(r=>
+                `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                  ${r.label} <span style="font-size: 1.6vh">${r.value  == 0.00 || r.value == "NaN" ? 0 : r.value}%</span>
+                </a>`
+              ).join('')}
+            </div>
+            <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
+              ${s.fgts.banks.slice(s.fgts.banks.length/2,s.fgts.banks.length).map(r=>
+                `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                  ${r.label} <span style="font-size: 1.6vh">${r.value  == 0.00 || r.value == "NaN" ? 0 : r.value}%</span>
+                </a>`
+              ).join('')}
+            </div>
+          </div>
+        `
+        var graficoBanks = document.getElementById("graficoBanks").getContext("2d");
+        new Chart(graficoBanks).Pie(s.fgts.banks);
+        if (s.fgts.agilus) {
+          document.getElementById('listLiberado').innerHTML = `<div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; max-height: 60vh; overflow-y: auto; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 40vw; max-width: 40vw; overflow-x: hidden; margin-right: 2vw">
+            <div id="listaLiberado" style="width: 100%; margin-top: 1.5vh">
+              <div style="display: flex; width: 94%; margin-top: 0.3vh; border-bottom: 0.1vh solid gray; margin-inline: 3%">
+                <div title="Nome Funcionário" style="width: 38%; max-width: 38%; padding-left: 2%">
+                  <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
+                  <i onclick="redirect('user')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+                  <input type="hidden" id="user_list" value="0">
+                </div>
+                <div title="Valor Liberado" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+                  <a style="font-size: 2.5vh; font-weight: 800">VL. S</a>
+                  <i onclick="redirect('liberado')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+                  <input type="hidden" id="liberado_list" value="0">
+                </div>
+                <div title="Quantidade de Sucessos" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+                  <a style="font-size: 2.5vh; font-weight: 800">S</a>
+                  <i onclick="redirect('sucessos')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+                  <input type="hidden" id="sucessos_list" value="0">
+                </div>
+                <div title="Quantidade de Erros" style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
+                  <a style="font-size: 2.5vh; font-weight: 800">E</a>
+                  <i onclick="redirect('erros')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+                  <input type="hidden" id="erros_list" value="0">
+                </div>
+                <div title="Quantidade de AFs(Consultados)" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+                  <a style="font-size: 2.5vh; font-weight: 800">AF</a>
+                  <i onclick="redirect('afs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+                  <input type="hidden" id="afs_list" value="0">
+                </div>
+                <div title="Valor das AFs(Consultados)" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+                  <a style="font-size: 2.5vh; font-weight: 800">VL. AFs</a>
+                  <i onclick="redirect('valorAfs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+                  <input type="hidden" id="valorAfs_list" value="0">
+                </div>
+              </div>
+            </div>
+          </div>`
+          s.fgts.agilus.forEach((element,index)=>{
+            s.fgts.agilus[index].erros =  s.fgts.erros.filter(r=>r.user == element.user).length
+            document.getElementById('listaLiberado').innerHTML += `
+            <div style="display: flex; width: 94%; border-bottom: 0.1vh solid gray; margin-inline: 3%">
+              <div style="width: 38%; max-width: 38%; padding-left: 2%">
+                <a style="font-size: 2.3vh">${element.user}</a>
+              </div>
+              <div style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+                <a style="font-size: 2vh">${String(element.liberado).replace('.',',').replace('null','0,00')}</a>
+              </div>
+              <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+                <a style="font-size: 2vh">${element.sucessos}</a>
+              </div>
+              <div style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
+                <a style="font-size: 2vh">${element.erros}</a>
+              </div>
+              <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+                <a style="font-size: 2vh">${element.afs ? element.afs : 0}</a>
+              </div>
+              <div style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+                <a style="font-size: 2vh">${element.valorAfs ? String(element.valorAfs).replace('.',',') : '0,00'}</a>
+              </div>
+            </div>
+            `
+          })
+          agilus = s.fgts.agilus
+        }
       },
       error: function(e) {
         block = false

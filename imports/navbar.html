@@ -1,4 +1,4 @@
-<div class="navbar-color padding-left15 padding-right5 width80 height8" style="z-index: 998; position: fixed; padding-left: 4.5vw; padding-right: 3vw; width: 92.5vw; height: 10vh">
+<div class="navbar-color padding-left15 padding-right5 width80 height8" style="z-index: 997; position: fixed; padding-left: 4.5vw; padding-right: 3vw; width: 92.5vw; height: 10vh">
   <div style="display: flex; flex-direction: row; align-items: center; width: 100%; height: 100%; justify-content: right; font-size: 3vh;">
     <i id="themeNAVBAR" onclick="changeTheme()" style="cursor: pointer" class="far fa-lightbulb-on navbar-color-select"></i>
     <div class="hoverMenuButton" style="position: relative; display: flex; flex-direction: column;">
@@ -75,7 +75,7 @@
       </div>
     </div>
     <div class="hoverMenuButton" style="display: flex; flex-direction: column;">
-      <div class="navbar-color-select" style="cursor: pointer; padding-block: 2vh">
+      <div class="navbar-color-select font-size2-3" style="cursor: pointer; padding-block: 2vh">
         <a>@<span id="userNAVBAR" style="margin-left: 0.1vw">??????</span></a>
         <i style="margin-left: 0.4vw" class="fad fa-angle-down padding-left2"></i>
       </div>
@@ -115,15 +115,13 @@
   </div>
 </div>
 
-<div id="sidebar" class="navbar-color width16" style="z-index: 998; position: fixed; width: 4.5vw; height: 100vh; font-size: 4vh; overflow: hidden; overflow-y: auto; ">
-  <div onclick="openSideBar()" class="navbar-color-select" style="height: 9.8vh; display: flex; align-items: center; cursor: pointer">
-    <i id="iconSideBar" class="fas fa-bars min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
-    <div class="visibleAndroid" style="height: 9.8vh; display: flex; align-items: center; margin-left: 1vh; margin-top: 1vh"><a href="/"><img id="logo2" class="zoom" src="/public/images/logo_white.png" style="z-index: 2; height: 9vh;"></a></div>
-  </div>
+<div class="width16 navbar-color-select" onclick="openSideBar()" style="z-index: 998; position: absolute; top: 0; left: 0; width: 4.5vw; height: 9.8vh; display: flex; align-items: center; cursor: pointer">
+  <i id="iconSideBar" class="navbar-color-select fas fa-bars min-width16-1 font-color-reverse" style="display: flex; min-width: 4.6vw; justify-content: center; font-size: 4vh"></i>
+  <div style="height: 9.8vh; align-items: center; margin-left: 1vh; margin-top: 1vh"><a href="/"><img id="logo2" class="zoom" src="/public/images/logo_white.png" style="z-index: 2; height: 9vh; display: none"></a></div>
+</div>
 
-
-
-
+<div id="sidebar" class="navbar-color width0" style="z-index: 997; position: fixed; width: 4.5vw; height: 100vh; font-size: 4vh; overflow: hidden; ">
+  <div style="height:9.8vh"></div>
   <div id="administrativo">
     <div onclick="openSubMenu('administrativo')" id="button-administrativo" class="navbar-background-select font-size3" style="border-top: 0.1vh solid rgba(0,0,0, 0.3); height: 7.5vh; display: flex; align-items: center; cursor: pointer">
       <i class="fa-regular fa-gear min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
@@ -165,14 +163,14 @@
       <a class="font-size2-5" style="font-size: 3vh; display: flex; width: 100%">Propostas <i id="arrow-propostas" class="fas fa-caret-left" style="width: 90%; margin-right: 10%; font-size: 3.5vh; display: flex; justify-content: right;"></i></a>
     </div>
     <div id="sub-propostas" class="font-size2" style="display: none; flex-direction: column; font-size: 2.5vh; margin-inline: 2.6vw; padding-block: 0.5vh">
-      <a id="/propostas/cadastrar" class="navbar-color-select-block navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Nova Propostas</a>
+      <a id="/propostas/cadastrar" class="navbar-color-select-block navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Nova Proposta</a>
       <a id="/propostas/lista" class="navbar-color-select-block navbar-color-select font-color-reverse" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Lista de Propostas</a>
       <a id="/propostas/leads" class="navbar-color-select-block navbar-color-select font-color-reverse" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Lista de Leads</a>
     </div>
   </div>
   <div id="consultas">
     <div onclick="openSubMenu('consultas')" id="button-consultas" class="navbar-background-select font-size3" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); border-top: 0.1vh solid rgba(0,0,0, 0.3); height: 7.5vh; display: flex; align-items: center; cursor: pointer">
-      <i class="far fa-folder-magnifying-glass min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
+      <i class="far fa-file-search min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
       <a class="font-size2-5" style="font-size: 3vh; display: flex; width: 100%">Consultas <i id="arrow-consultas" class="fas fa-caret-left" style="width: 90%; margin-right: 10%; font-size: 3.5vh; display: flex; justify-content: right;"></i></a>
     </div>
     <div id="sub-consultas" class="font-size2" style="display: none; flex-direction: column; font-size: 2.5vh; margin-inline: 2.6vw; padding-block: 0.5vh">
@@ -181,23 +179,13 @@
       <a id="/consultas/lotes" class="navbar-color-select-block navbar-color-select font-color-reverse" style="text-decoration: none; cursor: pointer; padding-block: 0.5vh"><i style="padding-right: 0.2vw" class="fas fa-angle-right"></i> Lotes</a>
     </div>
   </div>
-  <div id="descomplicando">
-    <div onclick="openSubMenu('descomplicando')" id="button-descomplicando" class="navbar-background-select font-size3" style="border-bottom: 0.1vh solid rgba(0,0,0, 0.3); border-top: 0.1vh solid rgba(0,0,0, 0.3); height: 7.5vh; display: flex; align-items: center; cursor: pointer">
-      <i class="far fa-book-bookmark min-width16-1" style="display: flex; min-width: 4.6vw; justify-content: center;"></i>
-      <a class="font-size2-5" style="font-size: 3vh; display: flex; width: 100%">Descomplicando <i id="arrow-descomplicando" class="fas fa-caret-left" style="width: 90%; margin-right: 10%; font-size: 3.5vh; display: flex; justify-content: right;"></i></a>
-    </div>
-    <div id="sub-descomplicando" class="font-size2" style="display: none; flex-direction: column; font-size: 2.5vh; margin-inline: 2.6vw; padding-block: 0.5vh">
-
-    </div>
-  </div>
-
 
 </div>
 <div class="invisibleAndroid" style="z-index: 999; position: fixed; left: 6vw; height: 10vh; display: flex; align-items: center;">
   <a href="/"><img id="logo" class="zoom" src="/public/images/logo_white.png" style="z-index: 2; width: 10vw;"></a>
 </div>
 
-<div id="avisoMenu" class="background-reverse" style="display: none; width: 40vw; position: fixed; top: 13vh; left: 30vw; border-radius: 3vh; padding-inline: 1.2vw; z-index: 999">
+<div id="avisoMenu" class="background-reverse" style="display: none; width: 40vw; position: fixed; top: 13vh; left: 30vw; border-radius: 3vh; padding-inline: 1.2vw">
   <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center">
     <a class="font-color-navbar-reverse font-5" style="font-size: 4vh; font-weight: 600; margin-top: 2.5vh">Aviso:</a>
     <a id="aviso" style="font-size: 2.1vh; margin-top: 1.1vh; width: 100%; display: flex; align-items: center; justify-content: center; text-align: center;"></a>
@@ -211,14 +199,16 @@
     if (sidebar) {
       for (var key in submenus) { if(submenus[key].active) openSubMenu(key) }
       sidebar = false
-      document.getElementById("sidebar").style.width = window.screen.width < 900 ? '16vw' : '4.5vw'
+      document.getElementById("sidebar").style.setProperty('width', `${window.screen.width < 900 ? '0vw' : '4.5vw'}`, 'important')
       document.getElementById("iconSideBar").classList.remove('fa-times')
       document.getElementById("iconSideBar").classList.add('fa-bars');
+      document.getElementById('logo2').style.display = 'none'
     } else {
       sidebar = true
       document.getElementById("sidebar").style.setProperty('width', `${window.screen.width < 900 ? '65vw' : '20vw'}`, 'important')
       document.getElementById("iconSideBar").classList.remove('fa-bars')
       document.getElementById("iconSideBar").classList.add('fa-times');
+      if (window.screen.width < 900) document.getElementById('logo2').style.display = 'flex'
     }
   }
   var submenus = {
@@ -252,16 +242,6 @@
       "fgts": { perm: "consultas_fgts", link: "/consultas/fgts" },
       "lotes": { perm: "consultas_lotes", link: "/consultas/lotes" },
     },
-    "descomplicando": {
-      active: false,
-      "Notícias": { perm: false, link: "/descomplicando/noticias" },
-      "Bancos": { perm: false, link: "/descomplicando/bancos" },
-      "Falas": { perm: false, link: "/descomplicando/falas" },
-      "Agilus": { perm: false, link: "/descomplicando/agilus" },
-      "Formalização": { perm: false, link: "/descomplicando/formalizacao" },
-      "Treinamentos": { perm: false, link: "/descomplicando/treinamentos" },
-      "Para Você": { perm: false, link: "/descomplicando/para_voce" },
-    }
   }
   function openSubMenu(submenu) {
     if (!sidebar) openSideBar()
@@ -348,7 +328,7 @@
         document.getElementById('avisoMenu').style.display = 'flex'
       }
     }
-    document.getElementById('userNAVBAR').innerHTML = `${login.login.user}#${login.login.codigo}`
+    document.getElementById('userNAVBAR').innerHTML = `${login.login.user.length > 10 ? login.login.user.slice(0,10)+"..." : login.login.user}#${login.login.codigo}`
     for (var menu in submenus) {
       for (var sub in submenus[menu]) {
         if (sub != 'active' && !submenus[menu][sub].off && document.getElementById(`${submenus[menu][sub].link}`)) {

@@ -183,37 +183,58 @@
   .visibleAndroid { display: flex!important }
   .positionFixed { position: fixed!important }
   .flex-direction-column { flex-direction: column!important; }
+  .flex-direction-row { flex-direction: row!important; }
+  .display-inline {display: inline!important;}
   .sidebar { max-width: 17vw; width: 17vw }
   .body { margin-left: 17vw; width: 83vw; max-width: 83vw; overflow-x: hidden!important; }
+  .width0 { width: 0vw!important }
   .width3 { width: 3vw!important }
   .width5 { width: 17vw!important; min-width: 17vw!important; }
   .width5p { width: 5%!important }
+  .width8p { width: 8%!important }
   .width10 { width: 6vw!important }
+  .width10p { width: 10%!important }
   .width10-5 { width: 10.5vw!important; max-width: 10.5vw!important; }
   .width16 { width: 16vw!important; }
+  .width12p { width: 12%!important; }
   .width15p { width: 15%!important }
   .width16 { width: 16vw!important }
   .width18 { width: 18vw!important; }
+  .width18p { width: 18%!important; }
   .width20-5 { width: 20.5vw!important; max-width: 20.5vw!important }  /* */
   .width20p { width: 20%!important }
   .width23p { width: 23%!important }
+  .width25p { width: 25%!important }
   .width27-5 { width: 27.5vw!important; }  /* */
+  .width28p { width: 28%!important }
   .width30 { width: 30vw!important }
   .width30p { width: 30%!important }
   .width35p { width: 35%!important }
+  .width37p { width: 37%!important }
   .width35 { width: 35vw!important; }
   .width40 { width: 40vw!important; }
+  .width40p { width: 40%!important; }
+  .width42p { width: 42%!important; }
+  .width45p { width: 45%!important; }
+  .width47p { width: 47%!important; }
+  .width54p { width: 54%!important; }
   .width56-5 { width: 56.5vw!important; max-width: 56.5vw!important } /* */
   .width66-5 { width: 66.5vw!important; max-width: 66.5vw!important } /* */
   .width50p { width: 50%!important }
+  .width53p { width: 53%!important }
+  .width55p { width: 55%!important }
   .width60p { width: 60%!important }
+  .width65 { width: 65vw!important }
+  .width68p { width: 68%!important }
   .width70p { width: 70%!important }
   .width70 { width: 70vw!important; }
+  .width72p { width: 72%!important; }
   .width74 { width: 74vw!important; }
   .width77 { width: 77vw!important; }
-  .width79 { width: 79vw!important; max-width: 79vw!important; }
+  .width79 { width: 95vw!important; max-width: 95vw!important; }
   .width80 { width: 80vw!important; }
   .width80p { width: 80%!important; }
+  .width84p { width: 84%!important; }
   .width85 { width: 85vw!important; }
   .width90p { width: 90%!important; }
   .width92-5 { width: 92.5vw!important }
@@ -228,6 +249,7 @@
   .height18 { height: 18vh!important }
   .height20 { height: 20vh!important }
   .height30 { height: 30vh!important }
+  .height45 { height: 45vh!important }
   .height50 { height: 50vh!important }
   .height70 { height: 70vh!important }
   .min-width16-1 { min-width: 16.1vw!important }
@@ -252,17 +274,20 @@
   .left10 { left: 10vw!important; }
   .left10p { left: 10%!important; }
   .left17p { left: 17%!important; }
-  .left18-5 { left: 18.5vw!important }
+  .left18-5 { left: 2.5vw!important }
   .left17 { left: 17vw!important; }
   .left16-5 { left: 6.5vw!important; }
   .left80 { left: -80%!important }
   .margin0 { margin: 0!important }
   .margin-inline10p { margin-inline: 10%!important; }
+  .margin-left2-5 { margin-left: 2.5vw!important }
   .margin-left7-5 { margin-left: 7.5vw!important }
   .margin-left15p { margin-left: 15%!important }
   .margin-left18-5 { margin-left: 18.5vw!important }
-  .margin-left38 { margin-left: 38vw!important }
   .margin-left20p { margin-left: 20%!important }
+  .margin-left23-5 { margin-left: 23.5vw!important }
+  .margin-left38 { margin-left: 38vw!important }
+  .margin-top1 { margin-top: 1vh!important }
   .margin-top2 { margin-top: 2vh!important }
   .margin-top15 { margin-top: 15vh!important }
   .margin-top25 { margin-top: 25vh!important }
@@ -271,12 +296,16 @@
   .padding-right5 { padding-right: 5vw!important }
   .padding-right3 { padding-right: 3vw!important; }
   .padding-right20 { padding-right: 20vw!important; }
+  .padding-inline2 { padding-inline: 2vw!important; }
   .font-size1 { font-size: 1vh!important }
   .font-size1-5 { font-size: 1.5vh!important }
   .font-size2 { font-size: 2vh!important }
+  .font-size2-3 { font-size: 2.3vh!important }
   .font-size2-5 { font-size: 2.5vh!important }
   .font-size3 { font-size: 3vh!important }
+  .font-size5 { font-size: 5vh!important }
   .bodyConsultas {width: 83vw; max-width: 83vw; }
+  .overflow-hidden {overflow: hidden !important;}
   body { overflow: hidden!important }
 }
 
