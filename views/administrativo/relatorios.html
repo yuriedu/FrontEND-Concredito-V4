@@ -239,7 +239,7 @@
         var comissaoMeta = comissao.find(r=>s.meta >= r.min && s.meta < r.max)
         if (comissaoMeta) document.getElementById('topComissao').innerHTML = `R$ ${comissaoMeta.comissao},00`
         //AFs
-        var afsDia = (s.afs.func / s.dates.max.slice(8,10)).toFixed(0)
+        var afsDia = (s.afs.func / s.dates.max.slice(8,10) / ( s.agentes ? s.agentes.length : 1 )).toFixed(0)
         document.getElementById('topAFsDia').innerHTML = afsDia && afsDia != "NaN" ? afsDia : 0
         var ticket = (s.afs.vlFunc / s.afs.func).toFixed(2)
         document.getElementById('topTicket').innerHTML = ticket ? ticket == "NaN" ? `R$ 0,00` : `R$ `+ticket.replace('.',',') : 0
@@ -249,9 +249,9 @@
         var comissaoMeta = comissao.find(r=>metaMes >= r.min && metaMes < r.max)
         if (comissaoMeta) document.getElementById('topProjecaoCom').innerHTML = `R$ ${comissaoMeta.comissao},00`
         var ticketEmpresa = (s.afs.vlEmpresa / s.afs.empresa).toFixed(2)
-        var afsRestante = (((Number(s.objetivo) - Number(s.meta)) * 1050) / ticketEmpresa).toFixed(0)
+        var afsRestante = ((((Number(s.objetivo) * ( s.agentes ? s.agentes.length : 1 )) - Number( s.somaMeta ? s.somaMeta : s.meta)) * 1050) / ticketEmpresa).toFixed(0)
         document.getElementById('topAFsRestante').innerHTML = afsRestante && afsRestante != "NaN" ? afsRestante.replace('.',',') : 0
-        var vlRestante = ((Number(s.objetivo) - Number(s.meta)) * 1050).toFixed(2)
+        var vlRestante = (((Number(s.objetivo) * ( s.agentes ? s.agentes.length : 1 )) - Number( s.somaMeta ? s.somaMeta : s.meta)) * 1050).toFixed(2)
         document.getElementById('topValorRestante').innerHTML = vlRestante && vlRestante != "NaN" ? `R$ `+vlRestante.replace('.',',') : 'R$ 0,00'
         s.days = s.days - Number(s.dates.max.slice(8,10))
         var valorDia = (vlRestante / s.days).toFixed(2)
@@ -417,7 +417,7 @@
               <div title="Valor Liberado" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
                 <a style="font-size: 2.5vh; font-weight: 800">VL. S</a>
                 <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
-                <input type="hidden" id="liberado_list" value="0">
+                <input type="hidden" id="total_list" value="0">
               </div>
               <div title="Quantidade de Sucessos" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
                 <a style="font-size: 2.5vh; font-weight: 800">S</a>
@@ -533,6 +533,7 @@
         </div>
       </div>
     `
+    alert(menu)
     if (aux == 0) document.getElementById(`${menu}_list`).value = '1'
     if (aux == 1) document.getElementById(`${menu}_list`).value = '0'
     agilus.forEach((element,index)=>{
