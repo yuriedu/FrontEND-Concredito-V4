@@ -32,8 +32,8 @@
             <div id="options" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;"></div>
           </div>
           <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center;text-align: center;">
-            <a id="consultar" onclick="consultar()" class="buttonLogin width50p" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 2vw;">Simular FGTS</a>
-            <a id="nextClient" onclick="nextClient()" class="buttonLogin width50p" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Proximo</a>
+            <a id="consultar" onclick="consultar()" class="buttonLogin width40p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 2vw;">Simular FGTS</a>
+            <a id="nextClient" onclick="nextClient()" class="buttonLogin width40p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Proximo</a>
           </div>
         </div>
         <div id="simularFGTS" style="display: none">
@@ -67,67 +67,71 @@
             <div id="parcs" class="borderColor" style="min-height: 8vh; margin-block: 1vh; width: 80%; border-radius: 1.5vh;"></div>
           </div>
           <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center; text-align: center;">
-            <a onclick="mainPage()" class="buttonLogin width50p" style="width: 30%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 2vw;">Voltar</a>
-            <a id="nextClient2" onclick="nextClient()" class="buttonLogin width50p" style="width: 30%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Proximo</a>
+            <a onclick="mainPage()" class="buttonLogin width30p font-size2" style="width: 30%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 2vw;">Voltar</a>
+            <a id="nextClient2" onclick="nextClient()" class="buttonLogin width30p font-size2" style="width: 30%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Proximo</a>
           </div>
         </div>
         <div id="clienteDados" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; display: none;">
           <a id="title" class="font-size2" style="font-size: 4vh; width: 100%;">Dados do Cliente:</a>
-          <div style="display: flex; width: 100%; justify-content: center;">
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
+          <div class="display-inline" style="display: flex; width: 100%; justify-content: center;">
+            <fieldset class="width90p margin-left2-5" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Nome</legend>
               <input class="font-1" id="nome" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset class="width90p margin-left2-5" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Mãe</legend>
               <input class="font-1" id="mae" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
           </div>
-          <div style="display: flex; width: 100%; justify-content: center;">
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Telefone</legend>
-              <input class="font-1" id="telefone" type="number" placeholder="51 912341234" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-            </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Nascimento</legend>
-              <input class="font-1" type="date" id="nascimento" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-            </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Sexo</legend>
-              <select class="font-1" id="sexo" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-                <option value="M" style="color: black">Masculino</option>
-                <option value="F" style="color: black">Feminino</option>
-              </select>
-            </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
-              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Email</legend>
-              <input class="font-1" type="email" id="email" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
-            </fieldset>
+          <div class="flex-direction-column width100p" style="display: flex; width: 87.5%; justify-content: center; flex-direction: row;">
+            <div class="width100p" style="width: 50%; display: flex; flex-direction: row; justify-content: center">
+              <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 48%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Nascimento</legend>
+                <input class="font-1" type="date" id="nascimento" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+              </fieldset>
+              <fieldset class="width37p display-inline" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 42%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Sexo</legend>
+                <select class="font-1" id="sexo" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+                  <option value="M" style="color: black">Masculino</option>
+                  <option value="F" style="color: black">Feminino</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="width100p" style="width: 50%; display: flex; flex-direction: row; justify-content: center">
+              <fieldset class="width40p"  style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 48%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Telefone</legend>
+                <input class="font-1" id="telefone" type="number" placeholder="51 912341234" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+              </fieldset>
+              <fieldset class="width45p display-inline" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 54%; margin-inline: 1%; padding-inline: 1%;">
+                <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Email</legend>
+                <input class="font-1" type="email" id="email" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+              </fieldset>
+            </div>
           </div>
-          <div style="display: flex; width: 100%; justify-content: center;">
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+          <div class="display-inline" style="display: flex; width: 100%; justify-content: center;">
+            <fieldset class="display-inline width42p" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
               <input class="font-1" id="cpfR" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0" disabled>
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset class="display-inline width42p" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">RG</legend>
               <input class="font-1" id="rg" type="number" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset class="display-inline width54p" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Matricula</legend>
               <input class="font-1" id="matricula" type="number" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset class="display-inline width30p" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Espécie</legend>
               <input class="font-1" id="especie" type="number" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
           </div>
-          <div style="display: flex; width: 100%; justify-content: center;">
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+          <div class="display-inline" style="display: flex; width: 100%; justify-content: center;">
+            <fieldset class="display-inline width30p" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CEP</legend>
               <input class="font-1" id="cep" type="number" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset class="display-inline width53p" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">UF</legend>
               <select class="font-1" id="uf" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
                 <option value="AC" style="color: black">Acre</option>
@@ -159,56 +163,56 @@
                 <option value="TO" style="color: black">Tocantins</option>
               </select>
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset class="display-inline width90p" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Cidade</legend>
               <input class="font-1" id="cidade" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
           </div>
-          <div style="display: flex; width: 100%; justify-content: center;">
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
+          <div class="display-inline" style="display: flex; width: 100%; justify-content: center;">
+            <fieldset class="width90p display-inline" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Endereço</legend>
               <input class="font-1" id="endereco" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset class="width15p display-inline" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Número</legend>
               <input class="font-1" id="numero" type="number" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset class="width68p display-inline" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 30%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Bairro</legend>
               <input class="font-1" id="bairro" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
           </div>
-          <div style="display: flex; width: 100%; justify-content: center;">
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
+          <div class="display-inline" style="display: flex; width: 100%; justify-content: center;">
+            <fieldset class="width90p display-inline" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
               <input class="font-1" list="banksList" id="banco" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
               <datalist id="banksList">
 
               </datalist>  
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 5%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset class="width15p display-inline" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 5%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Agência</legend>
               <input class="font-1" type="number" id="agencia" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset class="width45p display-inline" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Conta</legend>
               <input class="font-1" type="number" id="conta" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 8%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset class="width18p display-inline" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 8%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Poupança</legend>
               <select class="font-1" id="poupanca" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
                 <option value="0" style="color: black" selected>Não</option>
                 <option value="1" style="color: black">Sim</option>
               </select>
             </fieldset>
-            <fieldset style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+            <fieldset class="width90p display-inline" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
               <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Cargo</legend>
               <input class="font-1" id="cargo" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
             </fieldset>
           </div>
           <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; text-align: center;">
-            <a onclick="mainPage()" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 2vw">Voltar</a>
-            <a onclick="nextAF()" id="nextAF" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh;">Proximo</a>
+            <a onclick="mainPage()" class="buttonLogin width45p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 2vw">Voltar</a>
+            <a onclick="nextAF()" id="nextAF" class="buttonLogin width45p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh;">Proximo</a>
           </div>
         </div>
         <div id="propostaDados" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; display: none;">
@@ -291,8 +295,8 @@
             </fieldset>
           </div>
           <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; text-align: center;">
-            <a onclick="backClient()" id="backClient" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Voltar</a>
-            <a onclick="cadastrar()" id="cadastrar" class="buttonLogin width50p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Cadastrar</a>
+            <a onclick="backClient()" id="backClient" class="buttonLogin width45p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Voltar</a>
+            <a onclick="cadastrar()" id="cadastrar" class="buttonLogin width45p font-size2" style="width: 20%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh; margin-right: 1vw">Cadastrar</a>
           </div>
           <!-- <a id="operador" onclick="operador()" class="font-color-navbar" style="cursor: pointer; margin-top: 2vh; font-size: 1.5vh; text-decoration: underline">Ocorreu algum problema? Clique aqui para enviar a proposta para algum OPERADOR...</a> -->
         </div>
@@ -341,9 +345,10 @@
   var tabelas = {
     'FACTA FINANCEIRA': { 
       '23': [ 
-        { name: 'GOLD', value: '6-GOLD' }, 
-        { name: 'NORMAL', value: '7-NORMAL' }, 
-        /*{ name: 'PLUS', value: '9' }*/ 
+        { name: 'GOLD', value: '6-38776' }, 
+        { name: 'PLUS', value: '9-38881' }, 
+        { name: 'EXCLUSVIA 2,04', value: '14-39462' }, 
+        { name: 'EXCLUSIVA 1,59', value: '15-39500' }, 
       ],
       '7': [ 
         { name: 'CARTÃO BENEFICIO', value: '1-NOT' } 
@@ -387,7 +392,30 @@
     },
   }
   var banks = [
-    { name:'FACTA FINANCEIRA', options: '<div style="display: flex; width: 100%; justify-content: center;"><fieldset title="Tipo da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tipo</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="POR_VALOR_TOTAL" style="color: black; font-weight: 600;">Valor Total</option><option value="POR_QUANTIDADE_DE_PARCELAS" style="color: black; font-weight: 600;">Quantidade de Parcelas</option></select></fieldset><fieldset title="Parcelas da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Parcelas</legend><input class="font-1" id="option2" placeholder="00" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset></div><fieldset title="Tabela da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tabela</legend><select class="font-1" id="option3" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="GOLD" style="color: black; font-weight: 600;">GOLD</option><option value="NORMAL" style="color: black; font-weight: 600;">NORMAL</option><option value="39500" style="color: black; font-weight: 600;">EXCLUSIVA 1,59</option><option value="39462" style="color: black; font-weight: 600;">EXCLUSIVA 2,04</option></select></fieldset>' },
+    { name:'FACTA FINANCEIRA', options: `
+      <div style="display: flex; width: 100%; justify-content: center;">
+        <fieldset title="Tipo da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
+          <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tipo</legend>
+          <select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            <option value="POR_VALOR_TOTAL" style="color: black; font-weight: 600;">Valor Total</option>
+            <option value="POR_QUANTIDADE_DE_PARCELAS" style="color: black; font-weight: 600;">Quantidade de Parcelas</option>
+          </select>
+        </fieldset>
+        <fieldset title="Parcelas da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
+          <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Parcelas</legend>
+          <input class="font-1" id="option2" placeholder="00" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+        </fieldset>
+      </div>
+      <fieldset title="Tabela da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 70%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tabela</legend>
+        <select class="font-1" id="option3" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+          <option value="38776" style="color: black; font-weight: 600;">GOLD</option>
+          <option value="38881" style="color: black; font-weight: 600;">PLUS</option>
+          <option value="39462" style="color: black; font-weight: 600;">EXCLUSIVA 2,04</option>
+          <option value="39500" style="color: black; font-weight: 600;">EXCLUSIVA 1,59</option>
+        </select>
+      </fieldset>
+    ` },
     { name:'BANCO C6', options: '<div style="display: flex; width: 100%; justify-content: center;"><fieldset title="Tipo da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tipo</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="POR_VALOR_TOTAL" style="color: black; font-weight: 600;">Valor Total</option><option value="POR_VALOR_SOLICITADO" style="color: black; font-weight: 600;">Valor Solicitado</option><option value="POR_QUANTIDADE_DE_PARCELAS" style="color: black; font-weight: 600;">Quantidade de Parcelas</option></select></fieldset><fieldset title="Valor da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Valor</legend><input class="font-1" id="option2" placeholder="00" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset></div>' },
     { name:'PANAMERICANO', options: '<div style="display: flex; width: 100%; justify-content: center;"><fieldset title="Tipo da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tipo</legend><select class="font-1" id="option1" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="POR_VALOR_TOTAL" style="color: black; font-weight: 600;">Valor Total</option><option value="POR_VALOR_SOLICITADO" style="color: black; font-weight: 600;">Valor Solicitado</option><option value="POR_QUANTIDADE_DE_PARCELAS" style="color: black; font-weight: 600;">Quantidade de Parcelas</option></select></fieldset><fieldset title="Valor da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Valor</legend><input class="font-1" id="option2" placeholder="00" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset></div><fieldset title="Tabela da simulação..." style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh;">Tabela</legend><select class="font-1" id="option3" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"><option value="900001" style="color: black; font-weight: 600;">GTS_CORBAN</option><option value="900006" style="color: black; font-weight: 600;">FGTS_CORBAN_FLEX1</option><option value="900007" style="color: black; font-weight: 600;">FGTS_CORBAN_FLEX2</option></select></fieldset>' },
     { name:'BMG', options: false },

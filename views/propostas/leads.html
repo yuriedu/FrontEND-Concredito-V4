@@ -330,17 +330,7 @@
       success: async function(s) {
         copyBlock = false
         if (s.error) return alert(s.error)
-        var index = -1
-        for(var i=0, n=document.getElementById('quanty').value;i<n;i++) {
-          index++
-          if (leads[index] && !leads[index].agente) {
-            if (document.getElementById(`${leads[index].id}_agente`)) {
-              leads[index].agente = document.getElementById('agentesADD').value
-              document.getElementById(`${leads[index].id}_agente`).innerHTML = document.getElementById('agentesADD').value
-            }
-          } else i--
-        }
-        return alert(`Leads distribuidas com sucesso...`)
+        return filter()
       },
       error: function(e) {
         copyBlock = false

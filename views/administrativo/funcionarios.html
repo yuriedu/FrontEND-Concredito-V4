@@ -1,55 +1,57 @@
-<div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
+<div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; max-width:100vw">
   <navbar id="navbar"></navbar>
   <script>$("#navbar").load(`/imports/navbar.html`)</script>
-  <div class="background-image margin-left18-5 width79 " style="position: relative; margin-top: 12.5vh; margin-left: 5.5vw; width: 92.5vw; height: 13%; border-radius: 1vh; display: flex; flex-direction: row; justify-content: center; align-items: center;">
-    <div style="position: relative; height: 100%; margin-bottom: 1vh; width: 100%; display: flex; flex-direction: row; align-items: center; margin-inline: 1vw;">
-      <a style="font-size: 3.5vh; margin-left: 1.5vw; border-bottom: 0.1vh solid gray; padding-left: 1vw; padding-right: 2vw">Lista de Funcionários:</a>
-      <fieldset title="Pesquise algum funcionario por aqui..." style="position: absolute; right: 3vw; padding: 0; margin: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
-        <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
-        <input onkeyup="searchBar(this, 'funcionario')" id="searchBar" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 3.5vh; background: transparent; border: 0">
-      </fieldset>
-      <i onclick="searchBar({ id: 'searchBar' }, 'funcionario')" class="fa-regular fa-magnifying-glass-dollar" style="cursor: pointer; font-size: 3.5vh; position: absolute; right: 1vw; margin-top: 1.3vh;"></i>
+  <div class="background-image left18-5 width79 margin-left0" style="position: relative; margin-top: 12.5vh; margin-left: 5.5vw; width: 92.5vw; height: 13%; border-radius: 1vh; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+    <div class="flex-direction-column justify-content-center" style="position: relative; height: 100%; margin-bottom: 1vh; width: 100%; display: flex; flex-direction: row; align-items: center; margin-inline: 1vw;">
+      <a class="margin-left0 font-size2-5" style="font-size: 3.5vh; margin-left: 1.5vw; border-bottom: 0.1vh solid gray; padding-left: 1vw; padding-right: 2vw">Lista de Funcionários:</a>
+      <div class="position-static margin-top1" style="position: absolute; right: 3vw; display: flex; flex-direction: row; align-items: center;">
+        <fieldset class="width100p height5" title="Pesquise algum funcionario por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; margin-inline: 1%; padding-inline: 1%; width: 25vw;">
+          <legend class="font-size2" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
+          <input class="font-size2" onkeyup="searchBar(this, 'funcionario')" id="searchBar" placeholder="Pesquise aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 3.5vh; background: transparent; border: 0">
+        </fieldset>
+        <i onclick="searchBar({ id: 'searchBar' }, 'funcionario')" class="fa-regular fa-magnifying-glass-dollar top5 margin-left2" style="cursor: pointer; font-size: 3.5vh; right: 1vw; margin-top: 1.3vh;"></i>  
+      </div>
     </div>
   </div>
 
-  <div id="funcionarios" class="background-image margin-left18-5 width79 " style="margin-top: 2vh; margin-left: 5.5vw; width: 92.5vw; min-height: 68.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; padding-block: 2vh;">
+  <div id="funcionarios" class="background-image margin-left2-5 width79" style="margin-top: 2vh; margin-left: 5.5vw; width: 92.5vw; min-height: 68.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; padding-block: 2vh;">
   </div>
   
   <div id="menuFunc" class="background-reverse width35" style="display: none; position: absolute; width: 8vw; border-radius: 1.5vh; font-size: 2vh; flex-direction: column; text-align: center; padding-block: 0.8vh">
     <a onclick="openEdit('edit')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Editar</a>
     <a onclick="deleteFunc()" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Deletar</a>
   </div>
-  <div onclick="openEdit('create')" class="navbar-color width35" style="cursor: pointer; width: 3.5vw; height: 3.5vw; border-radius: 100%; position: fixed; bottom: 1vw; right: 3vw; font-size: 3vh; display: flex; justify-content: center; align-items: center;">
+  <div onclick="openEdit('create')" class="navbar-color width13 height13vw" style="cursor: pointer; width: 3.5vw; height: 3.5vw; border-radius: 100%; position: fixed; bottom: 1vw; right: 3vw; font-size: 3vh; display: flex; justify-content: center; align-items: center;">
     <i class="fa-regular fa-user-plus"></i>
   </div>
-  <div id="editFunc" class="background-reverse" style="display: none; position: fixed; left: 20vw; top: 20vh; width: 60vw; height: 70vh; border-radius: 3vh; flex-direction: row; justify-content: center; align-items: center;">
+  <div id="editFunc" class="background-reverse width90p margin-right left5 flex-direction-column height80p top15" style="display: none; position: fixed; left: 20vw; top: 20vh; width: 60vw; height: 70vh; border-radius: 3vh; flex-direction: row; justify-content: center; align-items: center;">
     <i onclick="openEdit('edit',true)" class="fa-solid fa-xmark" style="cursor: pointer; position: absolute; right: 1.6vw; top: 1vw; font-size: 4vh"></i>
-    <div style="width: 30%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="width70p" style="width: 30%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
       <img src="/public/images/iconFunc.png" style="width: 12vw; border-radius: 100%">
-      <a style="font-size: 3vh; font-weight: 400; margin-top: 4vh; max-width: 100%; overflow: hidden;">
+      <a class="font-size2" style="font-size: 3vh; font-weight: 400; margin-top: 4vh; max-width: 100%; overflow: hidden;">
         <span id="usuarioText">???</span>
         <span class="font-color-navbar" style="font-size: 2vh" id="codigoText">#???</span>
       </a>
       <a style="font-size: 2.2vh; margin-top: 1vh"><i class="fa-regular fa-suitcase font-color-navbar"></i> <span style="text-decoration: underline; padding-left: 0.3vw" id="roleText">???</span></a>
     </div>
-    <div style="margin-left: 1vw; width: 65%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-      <fieldset id="fieldset" title="Usuário" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%">
+    <div class="width80p" style="margin-left: 1vw; width: 65%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <fieldset class="width100p" id="fieldset" title="Usuário" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Usuário</legend>
         <input id="usuario" type="text" class="font-1 font-color-reverse" placeholder="..." style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
       </fieldset>
-      <fieldset id="fieldset" title="Senha" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
+      <fieldset class="width100p" id="fieldset" title="Senha" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Senha</legend>
         <input id="senha" type="password" class="font-1 font-color-reverse" placeholder="********" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
       </fieldset>
-      <fieldset id="fieldset" title="Email" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
+      <fieldset class="width100p" id="fieldset" title="Email" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Email</legend>
         <input id="email" type="text" class="font-1 font-color-reverse" placeholder="email@concreditoconsignados.com.br" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
       </fieldset>
-      <fieldset id="fieldset" title="Código" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
+      <fieldset class="width100p" id="fieldset" title="Código" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Código</legend>
         <input id="codigo" type="number" class="font-1 font-color-reverse" placeholder="00" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
       </fieldset>
-      <fieldset id="fieldset" title="Filial" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
+      <fieldset class="width100p" id="fieldset" title="Filial" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Filial</legend>
         <select id="filial" type="text" class="font-1 font-color-reverse" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
           <option style="color: black" value="matriz" selected>Matriz</option>
@@ -57,7 +59,7 @@
           <option style="color: black" value="cupula">Cupula</option>
         </select>
       </fieldset>
-      <fieldset id="fieldset" title="Cargo" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
+      <fieldset class="width100p" id="fieldset" title="Cargo" style="border-radius: 0.6vh; width: 80%; height: 7vh; padding: 0; padding-inline: 2%; margin: 0; text-align: left; margin-inline: 10%; margin-top: 1.5vh;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Cargo</legend>
         <select id="cargo" type="text" class="font-1 font-color-reverse" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
           <option style="color: black" value="" selected>Sem Permissão</option>
@@ -180,12 +182,14 @@
         document.getElementById('funcionarios').innerHTML = ``
         s.logins.forEach((element,index)=>{
           document.getElementById('funcionarios').innerHTML += `
-            <funcionario class="background-Propostas" style="position: relative; margin: 1vw; width: 12vw; height: 25vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <funcionario class="background-Propostas width30p" style="position: relative; margin: 1vw; width: 12vw; height: 25vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center">
               <a style="display: none">${element.user} ${element.codigo} ${element.cargo} ${element.filial} ${element.email} ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'online' : 'inativo'  : 'offline' }</a>
               <i onclick="openMenu(this,'${element.user}')" class="fa-regular fa-ellipsis-vertical" style="font-size: 2.5vh; cursor: pointer; position: absolute; top: 1vh; right: 0.65vw"></i>
-              <img src="${element.avatar ? element.avatar : '/public/images/iconFunc.png'}" style="width: 55%; border-radius: 100%">
-              <a style="font-size: 2.2vh; font-weight: 400; margin-top: 2.5vh; max-width: 100%; overflow: hidden;"><i class="fa-duotone fa-circle-dot" style="font-size: 1.9vh; margin-right: 0.2vw; color: ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'green' : 'orange'  : 'red' }"></i>${element.user.length >= 10 ? element.user.slice(0,10)+'.' : element.user}<span class="font-color-navbar" style="font-size: 1.5vh">#${element.codigo}</span></a>
-              <a style="font-size: 1.5vh; margin-top: 1vh"><i class="fa-regular fa-suitcase font-color-navbar"></i> <span style="text-decoration: underline">${element.role == 'default' ? 'Nenhum' : element.role}</span></a>
+              <img src="${element.avatar ? element.avatar : '/public/images/iconFunc.png'}" class="width50p; margin-top1" style="width: 55%; border-radius: 100%">
+              
+              <a class="font-size2" style="font-size: 2.2vh; font-weight: 400; margin-top: 2.5vh; max-width: 100%; overflow: hidden;"><i class="fa-duotone fa-circle-d  ot width100p" style="font-size: 1.9vh; margin-right: 0.2vw; color: ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'green' : 'orange'  : 'red' }"></i>${window.screen.width < 900 ? element.user.length >= 7 ? element.user.slice(0,7)+'...' : element.user : element.user.length >= 10 ? element.user.slice(0,10)+'...' : element.user}<span class="font-color-navbar" style="font-size: 1.5vh">#${element.codigo}</span></a>
+
+              <a style="font-size: 1.5vh; margin-top: 1vh"><i class="fa-regular fa-suitcase font-color-navbar width50p display-inline"></i> <span style="text-decoration: underline">${element.role == 'default' ? 'Nenhum' : element.role}</span></a>
             </funcionario>
           `
         })

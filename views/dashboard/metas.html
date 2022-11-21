@@ -5,17 +5,17 @@
 </div>
 
 <div style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-  <a class="font-1 font-color-reverse" style="font-size: 10vh; font-weight: 800">METAS DA CON</a>
-  <a onclick="openMetas('Consultor')" class="font-1 buttonLogin" style="margin-top: 5vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh; width: 13vw">Meta Consultor</a>
-  <a onclick="openMetas('Empresa')" class="font-1 buttonLogin" style="margin-top: 2vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh; width: 13vw">Meta Empresa</a>
-  <a onclick="openMetas('Equipes')" class="font-1 buttonLogin" style="margin-top: 2vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh; width: 13vw">Meta Equipes</a>
-  <a onclick="openMetas('Afs')" class="font-1 buttonLogin" style="margin-top: 2vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh; width: 13vw">Contador AF's</a>
+  <a class="font-1 font-color-reverse font-size6" style="font-size: 10vh; font-weight: 800">METAS DA CON</a>
+  <a onclick="openMetas('Consultor')" class="font-1 buttonLogin width40p" style="margin-top: 5vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh; width: 13vw">Meta Consultor</a>
+  <a onclick="openMetas('Empresa')" class="font-1 buttonLogin width40p" style="margin-top: 2vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh; width: 13vw">Meta Empresa</a>
+  <a onclick="openMetas('Equipes')" class="font-1 buttonLogin width40p" style="margin-top: 2vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh; width: 13vw">Meta Equipes</a>
+  <a onclick="openMetas('Afs')" class="font-1 buttonLogin width40p" style="margin-top: 2vh; padding-inline: 1.5vw; padding-block: 1.5vh; font-size: 3.5vh; font-weight: 600; border-radius: 1.5vh; width: 13vw">Contador AF's</a>
 </div>
 
-<div id="metas" class="navbar-color" style="display: none; position: fixed; top: 12vh; left: 30vw; width: 40vw; height: 88vh; border-top-left-radius: 5vh; border-top-right-radius: 5vh;">
+<div id="metas" class="navbar-color width90p left5" style="display: none; position: fixed; top: 12vh; left: 30vw; width: 40vw; height: 88vh; border-top-left-radius: 5vh; border-top-right-radius: 5vh;">
   <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;">
     <i onclick="openMetas()" class="far fa-times" style="cursor: pointer; position: absolute; font-size: 5vh; right: 2vw; top: 3vh"></i>
-    <a style="font-size: 5vh; margin-top: 3vh; font-weight: 800;" id="metaMenuName">?????</a>
+    <a class="font-size4" style="font-size: 5vh; margin-top: 3vh; font-weight: 800;" id="metaMenuName">?????</a>
     <div id="result" style="width: 92%; height: 96%; padding-inline: 4%; padding-block: 2vh; max-height: 96%; overflow-y: auto;">
 
     </div>
@@ -31,11 +31,11 @@
     document.getElementById('metaMenuName').innerHTML = `${menu == "Afs" ? "Contador AF's" : 'Metas '+menu}`
     document.getElementById('result').innerHTML = `<div style="margin-bottom: 1vh; display: flex; width: 100%; text-align: center;">
       <div style="width: 50%">
-        <a style="font-size: 2.8vh; font-weight: 400">Nome</a>
+        <a class="font-size2-5" style="font-size: 2.8vh; font-weight: 400">Nome</a>
       </div>
       <div style="width: 38%"></div>
       <div style="width: 22%; text-align: center">
-        <a style="font-size: 2.8vh; font-weight: 600">${menu == "Afs" ? 'D - S - M' : 'Meta'}</a>
+        <a class="font-size2-5" style="font-size: 2.8vh; font-weight: 600">${menu == "Afs" ? 'D - S - M' : 'Meta'}</a>
       </div>
     </div>
     <div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel-reverse"></div><div class="loader-text font-5"></div></div>`
@@ -52,11 +52,11 @@
         if (!s.result) return alert('Meta não encontrada...')
         document.getElementById('result').innerHTML = `<div style="margin-bottom: 1vh; display: flex; width: 100%; text-align: center;">
           <div style="width: 50%">
-            <a style="font-size: 2.8vh; font-weight: 400">Nome</a>
+            <a class="font-size2-5" style="font-size: 2.8vh; font-weight: 400">Nome</a>
           </div>
           <div style="width: 30%"></div>
           <div style="width: 20%; text-align: center">
-            <a style="font-size: 2.5vh; font-weight: 600">${menu == "Afs" ? 'D - S - M' : 'Meta'}</a>
+            <a class="font-size2-5" style="font-size: 2.5vh; font-weight: 600">${menu == "Afs" ? 'D - S - M' : 'Meta'}</a>
           </div>
         </div>`
         s.result.forEach((element,index)=>{
@@ -64,10 +64,10 @@
             <div style="display: flex; width: 75%; max-width: 75%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
               <nobr style="margin-right: 0.5vw">${index+1}º</nobr>
               <img src="/public/images/meta${ index < 3 ? index+1 : '' }.png" style=" width: 5vh; height: 5vh; margin-right: 0.5vh; margin-top: -1vh">
-              <nobr style="font-size: 2.8vh; font-weight: 400;">${element.nome}</nobr>
+              <nobr class="font-size2" style="font-size: 2.8vh; font-weight: 400;">${element.nome}</nobr>
             </div>
             <div style="width: 25%; text-align: center">
-              <a style="font-size: 2.5vh; font-weight: 600">${element.meta}</a>
+              <a class="font-size2" style="font-size: 2.5vh; font-weight: 600">${element.meta}</a>
             </div>
           </div>`
         })
@@ -80,5 +80,4 @@
     })
 
   }
-
 </script>
