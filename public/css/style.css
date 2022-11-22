@@ -245,8 +245,11 @@
   .width84p { width: 84%!important; }
   .width85 { width: 85vw!important; }
   .width90p { width: 90%!important; }
+  .width95p { width: 95%!important; }
   .width92-5 { width: 92.5vw!important }
+  .width97 { width: 97vw!important }
   .width100p { width: 100%!important }
+  .width100 { width: 100vw!important }
   .height5 { height: 5vh!important }
   .height3vw { height: 3vw!important }
   .height4vw { height: 17vw }
@@ -261,6 +264,7 @@
   .height30 { height: 30vh!important }
   .height45 { height: 45vh!important }
   .height50 { height: 50vh!important }
+  .height55 { height: 55vh!important }
   .height70 { height: 70vh!important }
   .height80p { height: 80%!important }
   .height90 { height: 90vh!important }
@@ -304,6 +308,7 @@
   .margin-left5 { margin-left: 5vw!important }
   .margin-left0 { margin-left: 0vw!important }
   .margin-left7-5 { margin-left: 7.5vw!important }
+  .margin-left10 { margin-left: 10vw!important }
   .margin-left10p { margin-left: 10%!important }
   .margin-left15p { margin-left: 15%!important }
   .margin-left18-5 { margin-left: 18.5vw!important }

@@ -344,8 +344,8 @@
     if (menuPropostaActual) menuProposta(false, menuPropostaActual)
     if (copyBlock) return alert('Aguarde...')
     if (!leads.find(r=>r.id == id)) return alert(`Lead: ${id} não encontrada...`)
-    if (leads.find(r=>r.id == element).flag_block == 1) return alert('Você não pode copiar uma lead bloqueada...') 
-    if (leads.find(r=>r.id == element).flag_copy == 1) return alert('Você não pode copiar uma lead já copiada...') 
+    if (leads.find(r=>r.id == id).flag_block == 1) return alert('Você não pode copiar uma lead bloqueada...') 
+    // if (leads.find(r=>r.id == id).flag_copy == 1) return alert('Você não pode copiar uma lead já copiada...') 
     copyBlock = true
     $.ajax({ type: "post",url: `${apiURL}/propostas/leads/edit`,
       data: JSON.stringify({

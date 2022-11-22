@@ -199,10 +199,10 @@
       csv+=`\n${element.cpf},${element.bank},${element.total ? element.total : 0},${element.liberado ? element.liberado : 0},${element.error ? element.error.replaceAll(`,`,'.') : 0},${element.telefone ? element.telefone : 'Vazio'},${element.data ? element.data : 0}`
     })
     if (window.clipboardData) {
-      window.clipboardData.setData("Text", csv);
+      await window.clipboardData.setData("Text", csv);
       alert('O resultado foi copiado com sucesso!')
     } else {
-      navigator.clipboard.writeText(csv).then(()=>{
+      await navigator.clipboard.writeText(csv).then(()=>{
         alert('O resultado foi copiado com sucesso!')
       }).catch(()=>{ alert('O seu navegador não suporta o sistema de copia...') })
     }

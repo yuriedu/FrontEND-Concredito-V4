@@ -139,7 +139,16 @@ const fasesName = {
       menuPropostaActual = false
     }
     menuPropostaActual = codAF
-    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="changeFase('${codAF}',1)" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Inclusão</a><a onclick="fgts('${codAF}',1)" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">FGTS</a></div></div>`
+    document.getElementById(`menuPropostas`).innerHTML = `
+      <div id="menuProposta">
+        <div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.8vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh">
+          <a onclick="changeFase('${codAF}',1)" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Inclusão</a>
+          <a onclick="changeFase('${codAF}',9923)" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Link Enviado</a>
+          <a onclick="whatsapp('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">WhatsApp</a>
+          <a onclick="fgts('${codAF}',1)" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Consultar FGTS</a>
+        </div>
+      </div>
+    `
   }
   var propostas = []
   function filter() {
@@ -231,6 +240,49 @@ const fasesName = {
     })
   }
 
+
+  async function whatsapp(codAF) {
+    var af = propostas.find(r=> r.codAF == codAF)
+    if (!af) return alert('Proposta não encontrada...')
+    if (af.codFase != 9232) return alert('A proposta tem que estar na fase "AGUARDANDO ASSINATURA DIGITAL"...')
+
+    var mensagem = `
+Olá ${af.nome}! Tudo bem? 
+Eu tenho uma *EXCELENTE NOTÍCIA*! 🤩
+
+Liberou novos valores pra você, e você tem *R$ ${String(af.valorAF).replace('.',',')}* para receber agora pela manhã, e por você já ser meu cliente vou conseguir uma *prioridade no seu pagamento!*
+
+Apenas assine pelo link abaixo:
+${af.link}
+    `
+    if (window.clipboardData) {
+      await window.clipboardData.setData("Text", mensagem);
+    } else {
+      await navigator.clipboard.writeText(mensagem).catch(()=>{ 
+        return alert('Seu navegador não suporta o nossos sistema de Copia...')
+      })
+    }
+    return window.open(`https://wa.me/55${String(af.telefone).replaceAll('(','').replaceAll(')','').replaceAll('-','').replaceAll(' ','')}`, '_blank');
+  }
+
+  async function whatsapp2(codAF) {
+
+
+    var csv = 'test'
+
+    if (window.clipboardData) {
+      window.clipboardData.setData("Text", 123);
+      return alert('Telefone da lead foi copiado com sucesso...')
+    } else {
+      navigator.clipboard.writeText(123).then(()=>{
+        return alert('Telefone da lead foi copiado com sucesso...')
+      }).catch(()=>{ 
+        return alert('Seu navegador não suporta o nossos sistema de Copia...')
+      })
+    }
+    return window.open(`https://wa.me/55${String(af.telefone).replaceAll('(','').replaceAll(')','').replaceAll('-','').replaceAll(' ','')}`, '_blank');
+  }
+
   var changeFaseActive = false
   function changeFase(codAF,fase) {
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
@@ -240,7 +292,7 @@ const fasesName = {
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF,
-      fase: 1,
+      fase: fase,
     }),contentType:"application/json; charset=utf-8",
       success: function(s) {
         changeFaseActive = false

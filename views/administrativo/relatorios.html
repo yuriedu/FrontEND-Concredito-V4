@@ -2,9 +2,9 @@
   <navbar id="navbar"></navbar>
   <script>$("#navbar").load(`/imports/navbar.html`)</script>
 
-  <div class="flex-direction-column margin-left38" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 12.5vh;">
-    <div class="background-image width40 height15" style="margin-bottom: 0.5vh; width: 65vw; border-radius: 2vh; height: 5vw; margin-inline: 0.6vw; display: flex; flex-direction: row; justify-content: center; align-items: center; padding-inline: 2vw">
-      <fieldset title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 19%; margin-inline: 1%; padding-inline: 1%;">
+  <div class="margin-left0 width79" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 12.5vh;">
+    <div class="background-image flex-direction-column height50 width79 margin-left5" style="margin-bottom: 0.5vh; width: 65vw; border-radius: 2vh; height: 5vw; margin-inline: 0.6vw; display: flex; flex-direction: row; justify-content: center; align-items: center; padding-inline: 2vw">
+      <fieldset class="width80p" title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 19%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Relatorio</legend>
         <select id="relatorio" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
           <option style="color: black" value="funcionarios">Meu Relatorio</option>
@@ -22,74 +22,82 @@
           </optgroup>
         </select>
       </fieldset>
-      <fieldset title="Coloque a data minima..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+      <fieldset class="width80p" title="Coloque a data minima..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Inicial</legend>
         <input type="date" id="dateIni" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
       </fieldset>
-      <fieldset title="Coloque a data maxima..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+      <fieldset class="width80p" title="Coloque a data maxima..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Final</legend>
         <input type="date" id="dateEnd" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
       </fieldset>
-      <fieldset title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 11%; margin-inline: 1%; padding-inline: 1%;">
+      <fieldset class="width80p" title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 11%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Objetivo</legend>
         <input onkeyup="changeComissao()" type="text" placeholder="100%" value="100%" id="objetivo" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
       </fieldset>
-      <fieldset title="Sua comissão conforme o objetivo..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+      <fieldset class="width80p" title="Sua comissão conforme o objetivo..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Comissão</legend>
         <input disabled value="R$ 800,00" id="comissaoObj" style="color: red; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
       </fieldset>
-      <i onclick="relatorio()" class="fa-regular fa-magnifying-glass-dollar font-color-navbar" style="font-size: 3.5vh; margin-left: 0.8vw; margin-top: 1vh; cursor: pointer"></i>
+      <i onclick="relatorio()" class="fa-regular fa-magnifying-glass-dollar font-color-navbar font-size5 margin-top2" style="font-size: 3.5vh; margin-left: 0.8vw; margin-top: 1vh; cursor: pointer"></i>
     </div>
   </div>
 
-  <div class="flex-direction-column margin-left38" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+  <div class="flex-direction-column margin-left0" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-comet font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Meta:</a>
       <a id="topMeta" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
       <a id="topComissao" class="font-color-navbar" style="padding-top: 0.5vh; font-size: 2.1vh; margin-top:0vh; font-weight: 600;"></a>
     </div>
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-regular fa-scale-balanced font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Med. AF's Dia:</a>
       <a id="topAFsDia" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
     </div>
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-ticket font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Tck. Médio:</a>
       <a id="topTicket" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
     </div>
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-projector font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Projeção:</a>
       <a id="topProjecao" class="font-color-navbar" style="font-size: 2.3vh; margin-top:1vh; font-weight: 600;">0</a>
       <a id="topProjecaoCom" class="font-color-navbar" style="padding-top: 0.5vh; font-size: 2.2vh; margin-top:0vh; font-weight: 600;"></a>
     </div>
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-      <i class="far fa-money-check-edit font-color-navbar" style="font-size: 6vh"></i>
-      <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">AF's Restante:</a>
-      <a id="topAFsRestante" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
-    </div>
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-      <i class="fa-solid fa-money-check-dollar font-color-navbar" style="font-size: 6vh"></i>
-      <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Valor Restante:</a>
-      <a id="topValorRestante" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
-    </div>
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-      <i class="fa-solid fa-sack-dollar font-color-navbar" style="font-size: 6vh"></i>
-      <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Valor Rest. Dia:</a>
-      <a id="topValorDia" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
-    </div>
-
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-cabinet-filing font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Cadastrado:</a>
+      <a id="topCadastrado" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      <a id="topCadastradoQnt" class="font-color-navbar" style="font-size: 1.6vh; font-weight: 600;"></a>
+    </div>
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i class="fa-solid fa-folder-open font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Pago:</a>
       <a id="topPago" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
       <a id="topPagoQnt" class="font-color-navbar" style="font-size: 1.6vh; font-weight: 600;"></a>
     </div>
   </div>
 
-  <div class="flex-direction-column margin-left18-5 width79" style="margin-block: 0.5vh; width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
+  <div class="flex-direction-column margin-left0" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i class="far fa-money-check-edit font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">AF's Restante:</a>
+      <a id="topAFsRestante" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+    </div>
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i class="fa-solid fa-money-check-dollar font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Valor Restante:</a>
+      <a id="topValorRestante" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+    </div>
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i class="fa-solid fa-sack-dollar font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Valor Rest. Dia:</a>
+      <a id="topValorDia" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+    </div>
+  </div>
+
+  <div class="flex-direction-column margin-left2-5 width79" style="margin-block: 0.5vh; width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
     <div id="grafico1" class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
     
     </div>
@@ -102,50 +110,50 @@
     <a id="calcFGTS" onclick="calcFGTS()" class="buttonLogin width50p buttonBlock" style="width: 20%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Calcular Consultas FGTS</a>
   </div>
 
-  <div class="flex-direction-column margin-left38" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 2vh;">
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+  <div class="flex-direction-column margin-left0" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 2vh;">
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-regular fa-money-bill-trend-up font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Liberado:</a>
       <a id="topLiberado" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
     </div>
-    <div class="background-image width40 height20" style="position: relative; margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="background-image width80 height20 margin-left10" style="position: relative; margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i onclick="lotes('sucessos')" class="fa-regular fa-magnifying-glass-dollar font-color-navbar" style="font-size: 2.5vh; cursor:pointer; position: absolute; right: 0.5vw; top: 0.5vw"></i>
       <i class="fa-solid fa-hexagon-check font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Sucessos:</a>
       <a onclick="downloadCSV('Sucessos')" id="topSucessos" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
       <a onclick="downloadTotalCSV('Sucessos')" id="topSucessosTotal" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.6vh; font-weight: 600;"></a>
     </div>
-    <div class="background-image width40 height20" style="position: relative; margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="background-image width80 height20 margin-left10" style="position: relative; margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i onclick="lotes('erros')" class="fa-regular fa-magnifying-glass-dollar font-color-navbar" style="font-size: 2.5vh; cursor:pointer; position: absolute; right: 0.5vw; top: 0.5vw"></i>
       <i class="fa-solid fa-hexagon-exclamation font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Erros:</a>
       <a onclick="downloadCSV('Erros')" id="topErros" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
       <a onclick="downloadTotalCSV('Erros')" id="topErrosTotal" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.6vh; font-weight: 600;"></a>
     </div>
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-ballot-check font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Total:</a>
       <a id="topTotal" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
       <a id="topTotalTotal" class="font-color-navbar" style="font-size: 1.6vh; font-weight: 600;"></a>
     </div>
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-chart-simple font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">MED. P/DIA QNT.</a>
       <a id="topMedAfPorDiaQnt" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
     </div>
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-regular fa-scale-balanced font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">MED. P/DIA VAL.</a>
       <a id="topMedAfPorDiaValor" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
     </div>
-    <div class="background-image width40 height20" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-ticket font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Tck. Médio:</a>
       <a id="topTicket2" class="font-color-navbar" style="font-size: 2.4vh; margin-top: 1vh; font-weight: 600;">0</a>
     </div>
   </div>
 
-  <div class="flex-direction-column margin-left18-5 width79" style="margin-block: 0.5vh; width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
+  <div class="flex-direction-column margin-left2-5 width79" style="margin-block: 0.5vh; width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
     <div id="grafico3" class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
     </div>
 
@@ -196,6 +204,8 @@
     document.getElementById('topValorDia').innerHTML = 'R$ 0,00'
     document.getElementById('topPago').innerHTML = 'R$ 0,00'
     document.getElementById('topPagoQnt').innerHTML = ``
+    document.getElementById('topCadastrado').innerHTML = 'R$ 0,00'
+    document.getElementById('topCadastradoQnt').innerHTML = ``
     document.getElementById('topLiberado').innerHTML = 'R$ 0,00'
     document.getElementById('topSucessos').innerHTML = 0
     document.getElementById('topErros').innerHTML = 0
@@ -266,6 +276,9 @@
         document.getElementById('topValorDia').innerHTML = valorDia && valorDia != "NaN" ? valorDia.replace('.',',') : "R$ 0,00"
         document.getElementById('topPago').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlFunc).replace('.',',') : "R$ 0,00"
         document.getElementById('topPagoQnt').innerHTML = "Qnt: "+s.afs.func
+      
+        document.getElementById('topCadastrado').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlCadastrado).replace('.',',') : "R$ 0,00"
+        document.getElementById('topCadastradoQnt').innerHTML = "Qnt: "+s.afs.cadastrado
 
         document.getElementById('grafico1').innerHTML = `
           <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Mídias</a>
@@ -305,8 +318,8 @@
           '12': 'Dezembro'
         }
         document.getElementById('grafico2').innerHTML = `
-          <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Pago por Dia</a>
-          <div id="graficoMeses" class="width85 height18" style="position: absolute; left: -1vw; top: 15vh; width:60vw; height: 23vw; margin-top: -6vh; font-weight: 600"></div>
+          <a class="font-size2-5" style="font-size: 4vh; margin-top: 4vh">Pago por Dia</a>
+          <div id="graficoMeses" class="width100 height18" style="position: absolute; left: -1vw; top: 15vh; width:60vw; height: 23vw; margin-top: -6vh; font-weight: 600"></div>
         `
         google.charts.load('current', {packages: ['corechart', 'line']});
         google.charts.setOnLoadCallback(drawCurveTypes);
@@ -576,7 +589,6 @@
         </div>
       </div>
     `
-    alert(menu)
     if (aux == 0) document.getElementById(`${menu}_list`).value = '1'
     if (aux == 1) document.getElementById(`${menu}_list`).value = '0'
     agilus.forEach((element,index)=>{
