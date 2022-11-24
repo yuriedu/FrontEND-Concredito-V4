@@ -244,39 +244,30 @@ const fasesName = {
   async function whatsapp(codAF) {
     var af = propostas.find(r=> r.codAF == codAF)
     if (!af) return alert('Proposta não encontrada...')
-    if (af.codFase != 9232) return alert('A proposta tem que estar na fase "AGUARDANDO ASSINATURA DIGITAL"...')
-
-    var mensagem = `
-Olá ${af.nome}! Tudo bem? 
+    var mensagem = `ConCredito Consignados`
+    if (af.codFase == 9232) {
+      mensagem = `
+Olá ${af.nome.toUpperCase()}! Tudo bem? 
 Eu tenho uma *EXCELENTE NOTÍCIA*! 🤩
 
-Liberou novos valores pra você, e você tem *R$ ${String(af.valorAF).replace('.',',')}* para receber agora pela manhã, e por você já ser meu cliente vou conseguir uma *prioridade no seu pagamento!*
+Liberou novos valores pra você, e você tem *R$${String(af.valorAF).replace('.',',')}* para receber agora pela manhã, e por você já ser meu cliente vou conseguir uma *prioridade no seu pagamento!*
 
 Apenas assine pelo link abaixo:
 ${af.link}
-    `
+      `   
+    } else if (af.codFase == 9923) {
+      mensagem = `
+Percebi que você não assinou o contrato ainda! 
+O banco me informou que se você assinar agora dá prioridade no seu pagamento! Consegue fazer agora e receber ainda hoje esses *R$${String(af.valorAF).replace('.',',')}*?
+
+Link: ${af.link}
+      `   
+    } else return alert('A proposta tem que estar na fase "AGUARDANDO ASSINATURA DIGITAL" ou "LINK DE ASSINATURA ENVIADO PARA O CLIENTE"...')
+  
     if (window.clipboardData) {
       await window.clipboardData.setData("Text", mensagem);
     } else {
       await navigator.clipboard.writeText(mensagem).catch(()=>{ 
-        return alert('Seu navegador não suporta o nossos sistema de Copia...')
-      })
-    }
-    return window.open(`https://wa.me/55${String(af.telefone).replaceAll('(','').replaceAll(')','').replaceAll('-','').replaceAll(' ','')}`, '_blank');
-  }
-
-  async function whatsapp2(codAF) {
-
-
-    var csv = 'test'
-
-    if (window.clipboardData) {
-      window.clipboardData.setData("Text", 123);
-      return alert('Telefone da lead foi copiado com sucesso...')
-    } else {
-      navigator.clipboard.writeText(123).then(()=>{
-        return alert('Telefone da lead foi copiado com sucesso...')
-      }).catch(()=>{ 
         return alert('Seu navegador não suporta o nossos sistema de Copia...')
       })
     }

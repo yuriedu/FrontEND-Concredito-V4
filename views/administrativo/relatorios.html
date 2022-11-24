@@ -273,7 +273,7 @@
         document.getElementById('topValorRestante').innerHTML = vlRestante && vlRestante != "NaN" ? `R$ `+vlRestante.replace('.',',') : 'R$ 0,00'
         s.days = s.days - Number(s.dates.max.slice(8,10))
         var valorDia = (vlRestante / s.days).toFixed(2)
-        document.getElementById('topValorDia').innerHTML = valorDia && valorDia != "NaN" ? valorDia.replace('.',',') : "R$ 0,00"
+        document.getElementById('topValorDia').innerHTML = valorDia && valorDia != "NaN" ? `R$ `+valorDia.replace('.',',') : "R$ 0,00"
         document.getElementById('topPago').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlFunc).replace('.',',') : "R$ 0,00"
         document.getElementById('topPagoQnt').innerHTML = "Qnt: "+s.afs.func
       
@@ -393,14 +393,14 @@
 
     total = result.fgts
     await total.forEach((element,index)=>{
-      if (element.user) element.user = element.user.toLowerCase()
+      if (element.user) element.user = element.user.replace(' ','').toLowerCase()
       if (element.liberado && !sucessos.find(r=> r.cpf == element.cpf)) {
         sucessos[sucessos.length] = element
         fgts.total += Number(element.liberado.replaceAll('R$ ','').replaceAll('.','').replaceAll(',','.'))
       }
       if (element.error && !erros.find(r=> r.cpf == element.cpf)) erros[erros.length] = element
 
-      var func = fgts.funcionarios.find(r=> r.user == element.user)
+      var func = fgts.funcionarios.find(r=> r.user.replace(' ','').toLowerCase() == element.user)
       if (func) {
         if (element.liberado && !func.sucessos.find(r=> r.cpf == element.cpf)) {
           func.sucessos[func.sucessos.length] = element
@@ -418,8 +418,8 @@
     })
 
     await result.afs.afs.forEach((element,index)=>{
-      if (element.user) element.user = element.user.toLowerCase()
-      var func = fgts.funcionarios.find(r=> r.user == element.user)
+      if (element.user) element.user = element.user.replace(' ','').toLowerCase()
+      var func = fgts.funcionarios.find(r=> r.user.replace(' ','').toLowerCase() == element.user)
       if (func && func.sucessos.find(r=> r.cpf == element.cpf) && !func.afs.find(r=> r.cpf == element.cpf)) {
         func.afs[func.afs.length] = element
         func.valorAfs += Number(element.valor)
