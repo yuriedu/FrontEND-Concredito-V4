@@ -60,17 +60,36 @@
     </div>
 
     <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; font-size: 1.7vh; font-size: 1.7vh;">
-      <fieldset title="CPF do cliente..." style="padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+      <fieldset title="CPF do cliente..." style="padding: 0; border-radius: 0.6vh; width: 20%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">CPF</legend>
         <input id="cpf" type="number" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="000.000.000.00">
       </fieldset>
-      <fieldset title="Codigo da AF..." style="padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+      <fieldset title="Codigo da AF..." style="padding: 0; border-radius: 0.6vh; width: 13%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Cod. AF</legend>
         <input id="codAF" type="number" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="000000">
       </fieldset>
-      <fieldset title="Codigo do Contrato..." style="padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+      <fieldset title="Codigo do Contrato..." style="padding: 0; border-radius: 0.6vh; width: 13%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Cod. Contr<span class="invisibleAndroid">ato</span></legend>
         <input id="codContrato" type="number" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0" placeholder="00000000">
+      </fieldset>
+      <fieldset title="Orgão do Contrato da proposta..." style="padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo de Mídia</legend>
+        <select id="midia" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
+          <option style="color: black" value="" selected>Todas</option>
+          <option value="27" style="color: black; font-weight: 600;">API</option>
+          <option value="1" style="color: black; font-weight: 600;">Fechado em Ligação</option>
+          <option value="2" style="color: black; font-weight: 600;">WhatsApp</option>
+          <option value="3" style="color: black; font-weight: 600;">MKT Digital</option>
+          <option value="4" style="color: black; font-weight: 600">Indicação</option>
+          <option value="5" style="color: black; font-weight: 600">Cliente da Carteira</option>
+          <option value="6" style="color: black; font-weight: 600">Radio</option>
+          <option value="7" style="color: black; font-weight: 600">Presencial</option>
+          <option value="8" style="color: black; font-weight: 600">Robo Whats</option>
+          <option value="9" style="color: black; font-weight: 600">Retorno SMS</option>
+          <option value="25" style="color: black; font-weight: 600">Repescagem</option>
+          <option value="26" style="color: black; font-weight: 600">Instagram</option>
+          <option value="28" style="color: black; font-weight: 600">Cap. por Lig. e Fec. Whats</option>
+        </select>
       </fieldset>
     </div>
     <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; font-size: 1.7vh;">
@@ -216,6 +235,7 @@
       cpf: document.getElementById('cpf').value,
       codAF: document.getElementById('codAF').value,
       codContrato: document.getElementById('codContrato').value,
+      midia: document.getElementById('midia').value,
       dateIni: document.getElementById('dateIni').value,
       dateEnd: document.getElementById('dateEnd').value,
       agente: document.getElementById('agente').value ? agentes.find(r=>r.user==document.getElementById('agente').value).codigo : false,

@@ -130,6 +130,12 @@
       <a onclick="downloadCSV('Erros')" id="topErros" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
       <a onclick="downloadTotalCSV('Erros')" id="topErrosTotal" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.6vh; font-weight: 600;"></a>
     </div>
+    <div class="background-image width80 height20 margin-left10" style="position: relative; margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <i onclick="lotes('oportunidades')" class="fa-regular fa-magnifying-glass-dollar font-color-navbar" style="font-size: 2.5vh; cursor:pointer; position: absolute; right: 0.5vw; top: 0.5vw"></i>
+      <i class="fa-solid fa-money-check-dollar-pen font-color-navbar" style="font-size: 6vh"></i>
+      <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Oportunidades:</a>
+      <a onclick="downloadCSV('Oportunidades')" id="topOportunidades" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+    </div>
     <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-ballot-check font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Total:</a>
@@ -171,6 +177,7 @@
 
   var fgts = {
     total: 0,
+    oportunidades: [],
     funcionarios: []
   }
 
@@ -189,6 +196,7 @@
     agilus = []
     fgts = {
       total: 0,
+      oportunidades: [],
       funcionarios: []
     }
     var date = new Date();
@@ -213,6 +221,7 @@
     document.getElementById('topErrosTotal').innerHTML = ``
     document.getElementById('topTotal').innerHTML = 0
     document.getElementById('topTotalTotal').innerHTML = ``
+    document.getElementById('topOportunidades').innerHTML = 0
     document.getElementById('topMedAfPorDiaQnt').innerHTML = 0
     document.getElementById('topMedAfPorDiaValor').innerHTML = 'R$ 0,00'
     document.getElementById('topTicket2').innerHTML = 'R$ 0,00'
@@ -385,6 +394,7 @@
     document.getElementById('topErrosTotal').innerHTML = ``
     document.getElementById('topTotal').innerHTML = 0
     document.getElementById('topTotalTotal').innerHTML = ``
+    document.getElementById('topOportunidades').innerHTML = 0
     document.getElementById('topMedAfPorDiaQnt').innerHTML = 0
     document.getElementById('topMedAfPorDiaValor').innerHTML = 'R$ 0,00'
     document.getElementById('topTicket2').innerHTML = 'R$ 0,00'
@@ -417,9 +427,20 @@
       }
     })
 
+    await sucessos.forEach((element,index)=>{
+      if (element.user) element.user = element.user.replace(' ','').toLowerCase()
+      if (!result.afs.afs.find(r=> r.cpf == element.cpf) && !fgts.oportunidades.find(r=> r.cpf == element.cpf)) {
+        fgts.oportunidades[fgts.oportunidades.length] = element
+      }
+    })
+
     await result.afs.afs.forEach((element,index)=>{
       if (element.user) element.user = element.user.replace(' ','').toLowerCase()
       var func = fgts.funcionarios.find(r=> r.user.replace(' ','').toLowerCase() == element.user)
+      if (func && func.sucessos.find(r=> r.cpf == element.cpf) && !func.afs.find(r=> r.cpf == element.cpf)) {
+        func.afs[func.afs.length] = element
+        func.valorAfs += Number(element.valor)
+      }
       if (func && func.sucessos.find(r=> r.cpf == element.cpf) && !func.afs.find(r=> r.cpf == element.cpf)) {
         func.afs[func.afs.length] = element
         func.valorAfs += Number(element.valor)
@@ -433,6 +454,7 @@
     document.getElementById('topErrosTotal').innerHTML = `Total: `+total.filter(r=>!r.liberado).length
     document.getElementById('topTotal').innerHTML = sucessos.length + erros.length
     document.getElementById('topTotalTotal').innerHTML = `Total: `+total.length
+    document.getElementById('topOportunidades').innerHTML = fgts.oportunidades.length
     var qntFGTS = Number(sucessos.length / result.dates.max.slice(8,10)).toFixed(0)
     document.getElementById('topMedAfPorDiaQnt').innerHTML = qntFGTS && qntFGTS != "NaN" ? qntFGTS : 0
     var valorFGTS = Number(fgts.total / result.dates.max.slice(8,10)).toFixed(2)
@@ -653,13 +675,19 @@
       await sucessos.map((element,index)=>{
         csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
-    } else {
+    } else if (type == 'Erros') {
       if (!erros || erros.length <= 0) return alert(`A lista de resultados está vazia...`)
       csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR`
       await erros.map((element,index)=>{
         csv+=`\n${element.cpf},${element.bank},${element.error.replaceAll(`,`,'.')},${element.telefone},${element.user}`
       })
-    }
+    } else if (type == 'Oportunidades') {
+      if (!fgts.oportunidades || fgts.oportunidades.length <= 0) return alert(`A lista de resultados está vazia...`)
+      csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
+      await fgts.oportunidades.map((element,index)=>{
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+      })
+    } else return alert('Menu não encontrado...')
     var a = document.createElement('a');
     a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
     a.target = '_blank';
@@ -718,6 +746,7 @@
   async function lotes(menu) {
     if (menu == "sucessos" && (!sucessos || sucessos.length <= 0)) return alert('Lista vazia...') 
     if (menu == "erros" && (!erros || erros.length <= 0)) return alert('Lista vazia...') 
+    if (menu == "oportunidades" && (!fgts.oportunidades || fgts.oportunidades.length <= 0)) return alert('Lista vazia...')
     var csv = ''
     if (menu == "sucessos") {
       await sucessos.map((element,index)=>{
@@ -727,7 +756,11 @@
       await erros.map((element,index)=>{
         csv+=`${index != 0 ? '\n' : ''}${element.cpf};${element.bank},`
       })
-    }
+    } else if (type == 'oportunidades') {
+      await fgts.oportunidades.map((element,index)=>{
+        csv+=`${index != 0 ? '\n' : ''}${element.cpf};${element.bank},`
+      })
+    } else return alert('Menu não encontrado...')
     if (window.clipboardData) {
       window.clipboardData.setData("Text", csv);
       return window.location = `/consultas/lotes`
