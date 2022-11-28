@@ -77,7 +77,7 @@
     <div style="display: flex; margin-inline: 3.5vw; margin-bottom: 1.5vh; align-items: center;">
       <div style="display: flex; width: 30%">
         <a style="font-size: 2.2vh">Selecionar</a>
-        <input id="qntActive" type="number" class="borderColor" max="50" placeholder="00" style="font-size: 1.8vh; width: 2.2vw; border-radius: 0.7vh; background: transparent; margin-inline: 0.8vh; padding-block: 0.3vh;"> 
+        <input id="qntActive" type="number" class="borderColor" max="100" placeholder="00" style="font-size: 1.8vh; width: 2.2vw; border-radius: 0.7vh; background: transparent; margin-inline: 0.8vh; padding-block: 0.3vh;"> 
         <a style="font-size: 2.2vh">Primeiras</a>
         <i title="Selecionar" onclick="activeSelect()" class="fa-regular fa-octagon-check font-color-navbar" style="font-size: 2.5vh; margin-left: 0.3vw; cursor: pointer;"></i>
         <i title="Copiar Selecionados" onclick="copyLotes()" class="fa-duotone fa-copy font-color-navbar" style="font-size: 2.4vh; margin-left: 2vw; cursor: pointer;"></i>
@@ -335,7 +335,7 @@
       if (checkboxes[i].checked) ids[ids.length] = checkboxes[i].id
     }
     if (ids.length <= 0) return alert('Não encontrei nenhuma lead selecionada...')
-    if (ids.length > 50) return alert('Você só pode selecionar no maximo 50 leads por vez...')
+    if (ids.length > 100) return alert('Você só pode selecionar no maximo 100 leads por vez...')
     copyBlock = true
     $.ajax({ type: "post",url: `${apiURL}/propostas/leads/edit`,
       data: JSON.stringify({
@@ -387,7 +387,7 @@
       if (checkboxes[i].checked) ids[ids.length] = checkboxes[i].id
     }
     if (ids.length <= 0) return alert('Não encontrei nenhuma lead selecionada...')
-    if (ids.length > 50) return alert('Você só pode selecionar no maximo 50 leads por vez...')   
+    if (ids.length > 100) return alert('Você só pode selecionar no maximo 100 leads por vez...')   
     var telefones = false
     await ids.forEach((element,index)=>{
       if (leads.find(r=>r.id == element) && leads.find(r=>r.id == element).flag_block == 0) {
@@ -490,7 +490,7 @@
     var checkboxes = document.getElementsByName('lead');
     if (!checkboxes) return alert('Lista vazia...')
     var qnt = document.getElementById('qntActive').value ? Number(document.getElementById('qntActive').value) : false
-    if (!qnt || qnt < 1 || qnt > 50) return alert('Coloque uma quantidade de 1 há 50')
+    if (!qnt || qnt < 1 || qnt > 100) return alert('Coloque uma quantidade de 1 há 100')
     var end = 0
     for(var i=0, n=checkboxes.length;i<n;i++) {
       var id = checkboxes[i].id

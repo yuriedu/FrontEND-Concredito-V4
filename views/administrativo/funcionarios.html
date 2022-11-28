@@ -1,7 +1,7 @@
 <div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; max-width:100vw">
   <navbar id="navbar"></navbar>
   <script>$("#navbar").load(`/imports/navbar.html`)</script>
-  <div class="background-image left18-5 width79 margin-left0" style="position: relative; margin-top: 12.5vh; margin-left: 5.5vw; width: 92.5vw; height: 13%; border-radius: 1vh; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+  <div class="background-image left18-5 width79 margin-left0" style="z-index: 2; position: relative; margin-top: 12.5vh; margin-left: 5.5vw; width: 92.5vw; height: 13%; border-radius: 1vh; display: flex; flex-direction: row; justify-content: center; align-items: center;">
     <div class="flex-direction-column justify-content-center" style="position: relative; height: 100%; margin-bottom: 1vh; width: 100%; display: flex; flex-direction: row; align-items: center; margin-inline: 1vw;">
       <a class="margin-left0 font-size2-5" style="font-size: 3.5vh; margin-left: 1.5vw; border-bottom: 0.1vh solid gray; padding-left: 1vw; padding-right: 2vw">Lista de Funcionários:</a>
       <div class="position-static margin-top1" style="position: absolute; right: 3vw; display: flex; flex-direction: row; align-items: center;">
@@ -12,7 +12,29 @@
         <i onclick="searchBar({ id: 'searchBar' }, 'funcionario')" class="fa-regular fa-magnifying-glass-dollar top5 margin-left2" style="cursor: pointer; font-size: 3.5vh; right: 1vw; margin-top: 1.3vh;"></i>  
       </div>
     </div>
+    <i onclick="openList()" class="fa-solid fa-list font-color-navbar" style="cursor: pointer; font-size: 3vh; position: absolute; top: 0.5vh; right: 0.8vw;"></i>
+    <div id="menuList" class="navbar-color" style="display: none; position: absolute; top: 2.5vh; right: 3vw; width: 25vw; height: 58vh; max-height: 58vh; overflow-y: scroll; border-bottom-left-radius: 5vh; border-bottom-right-radius: 5vh; border-top-left-radius: 3vh;">
+      <div style="display: flex; flex-direction: row; border-bottom: 0.1vh solid gray;">
+        <div onclick="redirect('status')" style="width: 2.5vw; height: 4.5vh; border-right: 0.1vh solid gray; display: flex; justify-content: center; align-items: center; cursor: pointer;">
+          <i class="fa-duotone fa-circle-dot width100p" style="font-size: 2vh;"></i>
+          <input type="hidden" id="status_list" value="0">
+        </div>
+        <div onclick="redirect('nome')" style="width: 17.5vw; height: 4.5vh; border-right: 0.1vh solid gray; display: flex; align-items: center; cursor: pointer;">
+          <a style="font-size: 2.2vh; font-weight: 600; margin-left: 1vw">Nome:</a>
+          <input type="hidden" id="nome_list" value="0">
+        </div>
+        <div onclick="redirect('codigo')" style="width: 5vw; height: 4.5vh; border-right: 0.1vh solid gray; display: flex; justify-content: center; align-items: center; cursor: pointer;">
+          <a style="font-size: 1.8vh; font-weight: 600">Codigo:</a>
+          <input type="hidden" id="codigo_list" value="0">
+        </div>
+      </div>
+      <div id="listFunc" style="display: flex; flex-direction: column">
+        <div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel-reverse"></div></div>
+      </div>
+    </div>
   </div>
+
+
 
   <div id="funcionarios" class="background-image margin-left2-5 width79" style="margin-top: 2vh; margin-left: 5.5vw; width: 92.5vw; min-height: 68.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; padding-block: 2vh;">
   </div>
@@ -144,6 +166,18 @@
       }
     })
   }
+
+  var menuList = false
+  function openList() {
+    if (menuList) {
+      menuList = false
+      document.getElementById('menuList').style.display = 'none'
+    } else {
+      menuList = true
+      document.getElementById('menuList').style.display = 'inline'
+    }
+  }
+
   var deleteBlock = false
   function deleteFunc() {
     if (menuOpen) openMenu(false,"close");
@@ -180,25 +214,76 @@
         if (s.error) return alert(s.error)
         users = s.logins
         document.getElementById('funcionarios').innerHTML = ``
+        document.getElementById('listFunc').innerHTML = ``
         s.logins.forEach((element,index)=>{
+          element.status = s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 1 : 2 : 3
           document.getElementById('funcionarios').innerHTML += `
             <funcionario class="background-Propostas width30p" style="position: relative; margin: 1vw; width: 12vw; height: 25vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center">
               <a style="display: none">${element.user} ${element.codigo} ${element.cargo} ${element.filial} ${element.email} ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'online' : 'inativo'  : 'offline' }</a>
               <i onclick="openMenu(this,'${element.user}')" class="fa-regular fa-ellipsis-vertical" style="font-size: 2.5vh; cursor: pointer; position: absolute; top: 1vh; right: 0.65vw"></i>
               <img src="${element.avatar ? element.avatar : '/public/images/iconFunc.png'}" class="width50p; margin-top1" style="width: 55%; border-radius: 100%">
               
-              <a class="font-size2" style="font-size: 2.2vh; font-weight: 400; margin-top: 2.5vh; max-width: 100%; overflow: hidden;"><i class="fa-duotone fa-circle-d  ot width100p" style="font-size: 1.9vh; margin-right: 0.2vw; color: ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'green' : 'orange'  : 'red' }"></i>${window.screen.width < 900 ? element.user.length >= 7 ? element.user.slice(0,7)+'...' : element.user : element.user.length >= 10 ? element.user.slice(0,10)+'...' : element.user}<span class="font-color-navbar" style="font-size: 1.5vh">#${element.codigo}</span></a>
+              <a class="font-size2" style="font-size: 2.2vh; font-weight: 400; margin-top: 2.5vh; max-width: 100%; overflow: hidden;"><i class="fa-duotone fa-circle-dot width100p" style="font-size: 1.9vh; margin-right: 0.2vw; color: ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'green' : 'orange'  : 'red' }"></i>${window.screen.width < 900 ? element.user.length >= 7 ? element.user.slice(0,7)+'...' : element.user : element.user.length >= 10 ? element.user.slice(0,10)+'...' : element.user}<span class="font-color-navbar" style="font-size: 1.5vh">#${element.codigo}</span></a>
 
               <a style="font-size: 1.5vh; margin-top: 1vh"><i class="fa-regular fa-suitcase font-color-navbar width50p display-inline"></i> <span style="text-decoration: underline">${element.role == 'default' ? 'Nenhum' : element.role}</span></a>
             </funcionario>
           `
+          document.getElementById('listFunc').innerHTML += `
+            <div style="display: flex; flex-direction: row; border-bottom: 0.1vh solid gray;">
+              <div style="width: 2.5vw; height: 3.5vh; border-right: 0.1vh solid gray; display: flex; justify-content: center; align-items: center">
+                <i class="fa-duotone fa-circle-dot width100p" style="font-size: 1.9vh; color: ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'green' : 'orange'  : 'red' }"></i>
+              </div>
+              <div style="width: 17.5vw; height: 3.5vh; border-right: 0.1vh solid gray; display: flex; align-items: center">
+                <a style="font-size: 1.9vh; font-weight: 400; margin-left: 0.6vw">${window.screen.width < 900 ? element.user.length >= 7 ? element.user.slice(0,7)+'...' : element.user : element.user.length >= 25 ? element.user.slice(0,25)+'...' : element.user}</a>
+              </div>
+              <div style="width: 5vw; height: 3.5vh; border-right: 0.1vh solid gray; display: flex; justify-content: center; align-items: center">
+                <a style="font-size: 1.8vh; font-weight: 400">#${element.codigo}</a>
+              </div>
+            </div>
+          `
         })
       },
-      error:  async function(s) {
+      error: async function(s) {
         funcBlock = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
+    })
+  }
+
+  function redirect(menu) {
+    if (!users || users.length < 1) return alert('Lista vazia...')
+    if (!menu) return alert('Campo não informado...')
+    var aux = 0
+    if (document.getElementById(`${menu}_list`) && document.getElementById(`${menu}_list`).value == '1') aux = 1
+    document.getElementById('listFunc').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel-reverse"></div></div>`
+    if (aux == 0) {
+      users.sort(function(a, b) {
+        var aux1 = String(a[menu]).replace(',','.')
+        var aux2 = String(b[menu]).replace(',','.')
+        if (aux1 == '0') aux1 = -1
+        if (aux2 == '0') aux2 = -1
+        if (Number(aux1) && Number(aux2)) return aux1-aux2
+        return aux2.localeCompare(aux1)
+      });
+    } else if (aux == 1) users.reverse()
+    if (aux == 0) document.getElementById(`${menu}_list`).value = '1'
+    if (aux == 1) document.getElementById(`${menu}_list`).value = '0'
+    document.getElementById('listFunc').innerHTML = ``
+    users.forEach((element,index)=>{
+      document.getElementById('listFunc').innerHTML += `
+        <div style="display: flex; flex-direction: row; border-bottom: 0.1vh solid gray;">
+          <div style="width: 2.5vw; height: 3.5vh; border-right: 0.1vh solid gray; display: flex; justify-content: center; align-items: center">
+            <i class="fa-duotone fa-circle-dot width100p" style="font-size: 1.9vh; color: ${ element.status == 1 ? 'green' : element.status == 2 ? 'orange' : 'red' }"></i>
+          </div>
+          <div style="width: 17.5vw; height: 3.5vh; border-right: 0.1vh solid gray; display: flex; align-items: center">
+            <a style="font-size: 1.9vh; font-weight: 400; margin-left: 0.6vw">${window.screen.width < 900 ? element.user.length >= 7 ? element.user.slice(0,7)+'...' : element.user : element.user.length >= 25 ? element.user.slice(0,25)+'...' : element.user}</a>
+          </div>
+          <div style="width: 5vw; height: 3.5vh; border-right: 0.1vh solid gray; display: flex; justify-content: center; align-items: center">
+            <a style="font-size: 1.8vh; font-weight: 400">#${element.codigo}</a>
+          </div>
+        </div>
+      `
     })
   }
 
