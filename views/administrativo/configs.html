@@ -4,9 +4,9 @@
   <div class="background-image margin-left2-5 width79 " style="margin-top: 12.5vh; margin-left: 6vw; width: 92.5vw; height: 20%; border-radius: 2vh;display: flex; flex-direction: column; justify-content: center; align-items: center;">
     <a style="font-size: 3vh">Configurações</a>
     <div style="display: flex; width: 100%; justify-content: center; align-items: center">
-      <a id="Configs" onclick="getMenu('Configs')" class="buttonLogin width30p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Configs</a>
-      <a id="Roles" onclick="getMenu('Roles')" class="buttonLogin width30p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Cargos</a>
-      <a id="Esteiras" onclick="getMenu('Esteiras')" class="buttonLogin width30p buttonBlock" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Esteiras</a>
+      <a id="Configs" onclick="loadMenu('Configs')" class="buttonLogin width30p" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Configs</a>
+      <a id="Roles" onclick="loadMenu('Roles')" class="buttonLogin width30p" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Cargos</a>
+      <a id="Bancos" onclick="loadMenu('Bancos')" class="buttonLogin width30p" style="width: 15%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Bancos</a>
     </div>
   </div>
   <div class="background-image margin-left2-5 width79 " style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; height: 13%; border-radius: 2vh;display: flex; flex-direction: row; justify-content: center; align-items: center;">
@@ -17,255 +17,278 @@
     <i onclick="searchBar({ id: 'searchBar' })" class="fa-regular fa-magnifying-glass-dollar" style="cursor: pointer; font-size: 3.5vh; margin-top: 1.3vh;"></i>
   </div>
 
-  <div id="result" class="background-image margin-left2-5 width79 " style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; min-height: 42.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: column; align-items: center; padding-block: 4vh">
-
-  </div>
-  <div id="menuPropostas"></div>
+  <div id="result" class="background-image margin-left2-5 width79 " style="margin-top: 2vh; margin-left: 6vw; width: 92.5vw; min-height: 42.5%; border-top-left-radius: 2vh; border-top-right-radius: 2vh; display: flex; flex-direction: column; align-items: center; padding-block: 4vh"></div>
+  <div id="subMenu"></div>
 </div>
 
 <script>
-  var menuPropostaActual = false
-  var getBlock = false
-  var menus = [ { menu: "Configs", block: true }, { menu: "Roles", block: true }, { menu: "Esteiras", block: true } ]
-  function getMenu(button) {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (getBlock) return alert('Aguarde...')
-    if (document.getElementById(button).classList.contains('buttonBlock') || getBlock) return alert('Sem permissão...')
-    menus.filter(r=> !r.block).forEach(r=>{ document.getElementById(r.menu).classList.add('buttonBlock') })
+  var menusBlock = {}
+  var menuActual = false
+  var subMenu = false
+  var result = false
+  var block = false
+  async function loadMenu(menu) {
+    if (subMenu) await subMenuRoles(false, subMenu)
+    if (block) return alert('Aguarde...')
+    if (menusBlock[menu]) return alert('Você não tem permissão para acessar esse menu...')
     document.getElementById('result').innerHTML = `<div class="loader-wheel"></div><div class="loader-text font-5"></div>`
-    getBlock = true
+    if (menuActual) document.getElementById(menuActual).classList.remove('buttonBlock')
+    document.getElementById(menu).classList.add('buttonBlock')
+    block = true
     $.ajax({ type: "post",url: `${apiURL}/administrativo/configs/get`,
-      data: JSON.stringify({ user: localStorage.getItem('user'), password: localStorage.getItem('password'), menu: button }),
-      contentType:"application/json; charset=utf-8",
+      data: JSON.stringify({
+        user: localStorage.getItem('user'), 
+        password: localStorage.getItem('password'), 
+        menu: menu 
+      }),contentType:"application/json; charset=utf-8",
       success: async function(s) {
-        getBlock = false
+        block = false
+        result = s
+        menuActual = menu
         document.getElementById('result').innerHTML = ``
-        menus.filter(r=> r.menu != button && !r.block).forEach(r=>{ document.getElementById(r.menu).classList.remove('buttonBlock') })
         if (s.error) return alert(s.error)
-        if (button == "Configs") {
-          s.configs.forEach((element,index)=>{
-            var menuSet = element.menu
-            if (!document.getElementById(element.menu)) document.getElementById('result').innerHTML += `<div id="${element.menu}" style="width: 100%; display: flex; flex-direction: row; justify-content: center"></div>`
-            if (element.type == 'checkbox') {
-              document.getElementById(menuSet).innerHTML += `<result class="width40p" style="width: 12%; margin-inline: 1%">
-                <fieldset class="width100p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
-                  <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
-                    <div style="width: 100%; display: flex; justify-content: center">
-                      <div id="${element.id}_activeS" onclick="inputChecked('${element.id}_active')" class="slider">
-                        <div id="${element.id}_activeB" class="sliderB"></div>
-                      </div>
-                    </div>
-                    <input id="${element.id}_active" value='0' type='hidden'>
-                  <i onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid fa-floppy-disk font-color-navbar"></i>
-                </fieldset>
-              </result>`
-              if (element.value == 1) inputChecked(`${element.id}_active`)
-            } else if (element.type == 'input') {
-              document.getElementById(menuSet).innerHTML += `<result class="width40p" style="width: 25%; margin-inline: 1%">
-                <fieldset class="width100p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
-                  <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
-                  <input id="${element.id}_active" type="text" class="font-1" value="${element.value}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
-                  <i title="Salvar" onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid ${ element.block ? 'fa-arrows-rotate' : 'fa-floppy-disk' } font-color-navbar"></i>
-                </fieldset>
-              </result>`
-            } else if (element.type == 'textarea') {
-              document.getElementById(menuSet).innerHTML += `<result class="width50p" style="width: 25%; margin-inline: 1%">
-                <fieldset class="width100p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
-                  <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
-                  <textarea id="${element.id}_active" rows="1" class="font-1" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">${String(element.value).replace('null','Não Definido...')}</textarea>
-                  <i title="Salvar" onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid ${ element.block ? 'fa-arrows-rotate' : 'fa-floppy-disk' } font-color-navbar"></i>
-                </fieldset>
-              </result>`
-            } else if (element.type == 'password') {
-              document.getElementById(menuSet).innerHTML += `<result class="width30p" style="width: 25%; margin-inline: 1%">
-                <fieldset class="width100p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
-                  <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
-                  <input id="${element.id}_active" type="password" class="font-1" value="${element.value}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
-                  <i title="Salvar" onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid ${ element.block ? 'fa-arrows-rotate' : 'fa-floppy-disk' } font-color-navbar"></i>
-                </fieldset>
-              </result>`
-            } else if (element.type == 'number') {
-              document.getElementById(menuSet).innerHTML += `<result class="width30p" style="width: 9%; margin-inline: 1%">
-                <fieldset class="width100p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
-                  <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
-                  <input id="${element.id}_active" type="number" class="font-1" value="${element.value}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0" ${element.block ? 'disabled' : ''}>
-                  <input type="hidden" id="${element.id}_active_aux">
-                  <i title="${element.block ? 'Zerar' : 'Salvar'}" onclick="document.getElementById('${element.id}_active${element.block ? `` : `_aux`}').value = 0; saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid ${ element.block ? 'fa-arrows-rotate' : 'fa-floppy-disk' } font-color-navbar"></i>
-                </fieldset>
-              </result>`
-            }
-          })
-        } else if (button == "Roles") {
-          document.getElementById('result').innerHTML += `<div class="font-color-navbar background-reverse" style="z-index: 5; cursor: pointer; position: fixed; bottom: 2vh; right: 3vw; padding-block: 1vh; display: flex; align-items: center; justify-content: center; border-radius: 2vh"><fieldset id="fieldset" title="Novo Cargo..." style="text-align: left; padding: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%; margin-right: 1vw;"><legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Novo Cargo</legend><input class="font-1 font-color-reverse" placeholder="Nome do Cargo" id="newRoleInput" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0"></fieldset><i class="fa-regular fa-file-circle-plus" style="font-size: 4vh; margin-top: 1vh" onclick="create('Roles', document.getElementById('newRoleInput').value)"></i></div></div>`
-          s.roles.forEach((element,index)=>{
-            document.getElementById('result').innerHTML += `<result style="width: 90%">
-              <div class="background-Propostas" style="border-radius: 1.5vh; margin-block: 1.5vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 0.8vh">
-                <div class="line-bottom navbar-font-color font-4" style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center; height: 6vh; font-size: 2.2vh">
-                  <a title="${element.role}" style="max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
-                    <i class="fa-regular fa-user-tag font-size2"></i>
-                    <span class="invisibleAndroid"> Cargo: </span>
-                    ${element.role}
-                  </a>
-                  <a title="${element.agente}" style="max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
-                    <i class="fa-regular fa-user-tag font-size2"></i>
-                    <span class="invisibleAndroid"> Criador: </span>
-                    ${element.agente}
-                  </a>
-                  <i style="position: absolute; right: 1.5vw; cursor: pointer" onclick="menuPropostas(this, '${index}','${element.role}')" class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-                <div class="flex-direction-column" style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                  <fieldset class="width70p" style="padding: 0; margin: 0; width: 11%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Funcionários</legend>
-                    <div id="${index}_administrativo_funcionariosS" onclick="inputChecked('${index}_administrativo_funcionarios')" class="slider">
-                      <div id="${index}_administrativo_funcionariosB" class="sliderB"></div>
-                    </div>
-                    <input id="${index}_administrativo_funcionarios" value='0' type='hidden'>
-                  </fieldset>
-                  <fieldset class="width70p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Configs</legend>
-                    <div id="${index}_administrativo_configsS" onclick="inputChecked('${index}_administrativo_configs')" class="slider">
-                      <div id="${index}_administrativo_configsB" class="sliderB"></div>
-                    </div>
-                    <input id="${index}_administrativo_configs" value='0' type='hidden'>
-                  </fieldset>
-                  <fieldset class="width70p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Logs</legend>
-                    <div id="${index}_administrativo_logsS" onclick="inputChecked('${index}_administrativo_logs')" class="slider">
-                      <div id="${index}_administrativo_logsB" class="sliderB"></div>
-                    </div>
-                    <input id="${index}_administrativo_logs" value='0' type='hidden'>
-                  </fieldset>
-                  <fieldset class="width70p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Cargos</legend>
-                    <div id="${index}_administrativo_rolesS" onclick="inputChecked('${index}_administrativo_roles')" class="slider">
-                      <div id="${index}_administrativo_rolesB" class="sliderB"></div>
-                    </div>
-                    <input id="${index}_administrativo_roles" value='0' type='hidden'>
-                  </fieldset>
-                  <fieldset class="width70p" style="padding: 0; margin: 0; width: 13%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Relatórios ADM</legend>
-                    <div id="${index}_administrativo_relatoriosS" onclick="inputChecked('${index}_administrativo_relatorios')" class="slider">
-                      <div id="${index}_administrativo_relatoriosB" class="sliderB"></div>
-                    </div>
-                    <input id="${index}_administrativo_relatorios" value='0' type='hidden'>
-                  </fieldset>
-                  <fieldset class="width70p" style="padding: 0; margin: 0; width: 13%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Relatór. Empresa</legend>
-                    <div id="${index}_administrativo_empresaS" onclick="inputChecked('${index}_administrativo_empresa')" class="slider">
-                      <div id="${index}_administrativo_empresaB" class="sliderB"></div>
-                    </div>
-                    <input id="${index}_administrativo_empresa" value='0' type='hidden'>
-                  </fieldset>
-                </div>
-                <div class="flex-direction-column" style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                  <fieldset class="width70p" style="padding: 0; margin: 0; width: 11.5%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Lista de Prop.</legend>
-                    <div id="${index}_propostas_listaS" onclick="inputChecked('${index}_propostas_lista')" class="slider">
-                      <div id="${index}_propostas_listaB" class="sliderB"></div>
-                    </div>
-                    <input id="${index}_propostas_lista" value='0' type='hidden'>
-                  </fieldset>
-                  <fieldset class="width70p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Nova Prop.</legend>
-                    <div id="${index}_propostas_cadastrarS" onclick="inputChecked('${index}_propostas_cadastrar')" class="slider">
-                      <div id="${index}_propostas_cadastrarB" class="sliderB"></div>
-                    </div>
-                    <input id="${index}_propostas_cadastrar" value='0' type='hidden'>
-                  </fieldset>
-                  <fieldset class="width70p" style="padding: 0; margin: 0; width: 11%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Lista de Leads</legend>
-                    <div id="${index}_propostas_leadsS" onclick="inputChecked('${index}_propostas_leads')" class="slider">
-                      <div id="${index}_propostas_leadsB" class="sliderB"></div>
-                    </div>
-                    <input id="${index}_propostas_leads" value='0' type='hidden'>
-                  </fieldset>
-                  <fieldset class="width70p" style="padding: 0; margin: 0; width: 13%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Consultas FGTS</legend>
-                    <div id="${index}_consultas_fgtsS" onclick="inputChecked('${index}_consultas_fgts')" class="slider">
-                      <div id="${index}_consultas_fgtsB" class="sliderB"></div>
-                    </div>
-                    <input id="${index}_consultas_fgts" value='0' type='hidden'>
-                  </fieldset>
-                  <fieldset class="width70p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Lotes</legend>
-                    <div id="${index}_consultas_lotesS" onclick="inputChecked('${index}_consultas_lotes')" class="slider">
-                      <div id="${index}_consultas_lotesB" class="sliderB"></div>
-                    </div>
-                    <input id="${index}_consultas_lotes" value='0' type='hidden'>
-                  </fieldset>
-                </div>
+        if (menu == "Configs") {
+          s.configs.forEach((element,index)=>{ Configs(element,index) })
+        } else if (menu == "Roles") {
+          document.getElementById('result').innerHTML += `<div class="font-color-navbar background-reverse" style="z-index: 5; cursor: pointer; position: fixed; bottom: 2vh; right: 3vw; padding-block: 1vh; display: flex; align-items: center; justify-content: center; border-radius: 2vh">
+            <fieldset id="fieldset" title="Novo Cargo..." style="text-align: left; padding: 0; border-radius: 0.6vh; width: 60%; margin-inline: 1%; padding-inline: 1%; margin-right: 1vw;">
+              <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Novo Cargo</legend>
+              <input class="font-1 font-color-reverse" placeholder="Nome do Cargo" id="newRoleInput" style="font-size: 2.4vh; width: 100%; height: 4vh; padding:0; margin:0; background: transparent; border: 0">
+            </fieldset>
+            <i class="fa-regular fa-file-circle-plus" style="font-size: 4vh; margin-top: 1vh" onclick="create('Roles', document.getElementById('newRoleInput').value)"></i>
+          </div>`
+          s.roles.forEach((element,index)=>{ Roles(element,index) })
+        } else if (menu == "Bancos") {
+          var banks = [ "FACTA FINANCEIRA","BANCO C6","PANAMERICANO","MERCANTIL","BMG","SAFRA","BANRISUL" ]
+          document.getElementById('result').innerHTML = `<div id="results" style="display: flex; flex-wrap: wrap; justify-content: center;"></div>`
+          banks.forEach((element,i) => {
+            document.getElementById('results').innerHTML += `
+              <div onclick="openBank('${element}')" class="background-reverse" style="width: 16vw; height: 37vh; cursor: pointer; margin-inline: 1vw; margin-block: 1.5vh; border-radius: 3vh; display: flex; flex-direction: column; justify-content: center; align-items: center">
+                <img src="/public/images/Bancos/${element}.png" style="width: 8vw; height: 8vw; border-radius: 100%">
+                <a style="font-size: 3vh; margin-top: 6vh; text-decoration: underline">${element}</a>
               </div>
-            </result>`
-            for (var key in s.roles[index]) {
-              if(s.roles[index][key] == 1 && document.getElementById(`${index}_${key}`)) {
-                inputChecked(`${index}_${key}`)
-              }
-            }
+            `
           })
-        } else if (button == "Esteiras") {
-          s.fases.forEach((element,index)=>{
-            document.getElementById('result').innerHTML += `<result style="width: 90%">
-              <div class="background-Propostas" style="border-radius: 1.5vh; margin-block: 1.5vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 1.5vh">
-                <div class="line-bottom navbar-font-color font-4" style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center; height: 6vh; font-size: 2.2vh">
-                  <a title="${element.bank}" style="max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
-                    <i class="fa-regular fa-user-tag font-size2"></i>
-                    <span class="invisibleAndroid"> Banco: </span>
-                    ${element.bank}
-                  </a>
-                  <a title="${element.situacao}" style="max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
-                    <i class="fa-regular fa-user-tag font-size2"></i>
-                    <span class="invisibleAndroid"> Situação: </span>
-                    ${element.situacao ? element.situacao : 'Nenhuma'}
-                  </a>
-                  <a title="${element.atividade}" style="max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
-                    <i class="fa-regular fa-user-tag font-size2"></i>
-                    <span class="invisibleAndroid"> Atividade: </span>
-                    ${element.atividade ? element.atividade : 'Nenhuma'}
-                  </a>
-                  <a title="${element.status}" style="max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
-                    <i class="fa-regular fa-user-tag font-size2"></i>
-                    <span class="invisibleAndroid"> Status: </span>
-                    ${element.status ? element.status : 'Nenhum'}
-                  </a>
-                  <i class="fa-solid fa-floppy-disk font-color-navbar" style="position: absolute; right: 1.5vw; cursor: pointer" 
-                  onclick="saveMenu('Esteiras','${element.id}',
-                    document.getElementById('${element.id}_newFase').value,
-                    document.getElementById('${element.id}_oldFase').value,
-                    document.getElementById('${element.id}_motivo').value,
-                    '${element.atividade}','${element.status}','${element.situacao}' )"></i>
-                </div>
-                <div class="font-4 width100p" style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center; height: 6vh; font-size: 2.2vh; padding-block: 1vh">
-                  <fieldset class="width40p" style="padding: 0; margin: 0; width: 20%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Nova Fase</legend>
-                    <input id="${element.id}_newFase" type="text" class="font-1" value="${element.newFase ? element.newFase : ''}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
-                  </fieldset>
-                  <fieldset class="width50p" style="padding: 0; margin: 0; width: 20%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Fases Antigas</legend>
-                    <input id="${element.id}_oldFase" type="text" class="font-1" value="${element.oldFase ? element.oldFase : ''}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
-                  </fieldset>
-                  <fieldset class="width50p" style="padding: 0; margin: 0; width: 40%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
-                    <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Motivo</legend>
-                    <input id="${element.id}_motivo" type="text" class="font-1" value="${element.motivo ? element.motivo : ''}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
-                  </fieldset>
-                </div>
-              </div>
-            </result>`
-          })
-        }
+        } else return alert('Menu não encontrado...')
       },
       error: async function(e) {
-        getBlock = false
-        menus.filter(r=>r.menu != button).forEach(r=>{ document.getElementById(r.menu).classList.remove('buttonBlock') })
+        block = false
+        document.getElementById(menu).classList.remove('buttonBlock')
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
+  (function () {
+    if (!login.perms.administrativo_configs) {
+      menusBlock.Configs = true
+      document.getElementById('Configs').classList.add('buttonBlock')
+      menusBlock.Bancos = true
+      document.getElementById('Bancos').classList.add('buttonBlock')
+    }
+    if (!login.perms.administrativo_roles) {
+      menusBlock.Roles = true
+      document.getElementById('Roles').classList.add('buttonBlock')
+    }
+    if (!login.perms.administrativo_configs) return alert('Clique em algum menu que você tenha permissão...') 
+    loadMenu('Configs')
+  })();
+</script>
+
+<script>
+  async function Configs(element,i) {
+    if (!document.getElementById(element.menu)) document.getElementById('result').innerHTML += `<div id="${element.menu}" style="width: 100%; display: flex; flex-direction: row; justify-content: center"></div>`
+    if (element.type == 'checkbox') {
+      document.getElementById(element.menu).innerHTML += `<result class="width40p" style="width: 12%; margin-inline: 1%">
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
+            <div style="width: 100%; display: flex; justify-content: center">
+              <div id="${element.id}_activeS" onclick="inputChecked('${element.id}_active')" class="slider">
+                <div id="${element.id}_activeB" class="sliderB"></div>
+              </div>
+            </div>
+            <input id="${element.id}_active" value='0' type='hidden'>
+          <i onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid fa-floppy-disk font-color-navbar"></i>
+        </fieldset>
+      </result>`
+      if (element.value == 1) inputChecked(`${element.id}_active`)
+    } else if (element.type == 'input') {
+      document.getElementById(element.menu).innerHTML += `<result class="width40p" style="width: 25%; margin-inline: 1%">
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
+          <input id="${element.id}_active" type="text" class="font-1" value="${element.value}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+          <i title="Salvar" onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid ${ element.block ? 'fa-arrows-rotate' : 'fa-floppy-disk' } font-color-navbar"></i>
+        </fieldset>
+      </result>`
+    } else if (element.type == 'textarea') {
+      document.getElementById(element.menu).innerHTML += `<result class="width50p" style="width: 25%; margin-inline: 1%">
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
+          <textarea id="${element.id}_active" rows="1" class="font-1" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">${String(element.value).replace('null','Não Definido...')}</textarea>
+          <i title="Salvar" onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid ${ element.block ? 'fa-arrows-rotate' : 'fa-floppy-disk' } font-color-navbar"></i>
+        </fieldset>
+      </result>`
+    } else if (element.type == 'password') {
+      document.getElementById(element.menu).innerHTML += `<result class="width30p" style="width: 25%; margin-inline: 1%">
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
+          <input id="${element.id}_active" type="password" class="font-1" value="${element.value}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+          <i title="Salvar" onclick="saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid ${ element.block ? 'fa-arrows-rotate' : 'fa-floppy-disk' } font-color-navbar"></i>
+        </fieldset>
+      </result>`
+    } else if (element.type == 'number') {
+      document.getElementById(element.menu).innerHTML += `<result class="width30p" style="width: 9%; margin-inline: 1%">
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
+          <input id="${element.id}_active" type="number" class="font-1" value="${element.value}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0" ${element.block ? 'disabled' : ''}>
+          <input type="hidden" id="${element.id}_active_aux">
+          <i title="${element.block ? 'Zerar' : 'Salvar'}" onclick="document.getElementById('${element.id}_active${element.block ? `` : `_aux`}').value = 0; saveMenu('Configs', '${element.config}', document.getElementById('${element.id}_active').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid ${ element.block ? 'fa-arrows-rotate' : 'fa-floppy-disk' } font-color-navbar"></i>
+        </fieldset>
+      </result>`
+    }
+  }
+  async function Roles(element,i) {
+    document.getElementById('result').innerHTML += `<result style="width: 90%">
+      <div class="background-Propostas" style="border-radius: 1.5vh; margin-block: 1.5vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 0.8vh">
+        <div class="line-bottom navbar-font-color font-4" style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center; height: 6vh; font-size: 2.2vh">
+          <a title="${element.role}" style="max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+            <i class="fa-regular fa-user-tag font-size2"></i>
+            <span class="invisibleAndroid"> Cargo: </span>
+            ${element.role}
+          </a>
+          <a title="${element.agente}" style="max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-inline: 2%;">
+            <i class="fa-regular fa-user-tag font-size2"></i>
+            <span class="invisibleAndroid"> Criador: </span>
+            ${element.agente}
+          </a>
+          <i style="position: absolute; right: 1.5vw; cursor: pointer" onclick="subMenuRoles(this, '${i}','${element.role}')" class="fa-solid fa-ellipsis-vertical"></i>
+        </div>
+        <div class="flex-direction-column" style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+          <fieldset class="width70p" style="padding: 0; margin: 0; width: 11%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Funcionários</legend>
+            <div id="${i}_administrativo_funcionariosS" onclick="inputChecked('${i}_administrativo_funcionarios')" class="slider">
+              <div id="${i}_administrativo_funcionariosB" class="sliderB"></div>
+            </div>
+            <input id="${i}_administrativo_funcionarios" value='0' type='hidden'>
+          </fieldset>
+          <fieldset class="width70p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Configs</legend>
+            <div id="${i}_administrativo_configsS" onclick="inputChecked('${i}_administrativo_configs')" class="slider">
+              <div id="${i}_administrativo_configsB" class="sliderB"></div>
+            </div>
+            <input id="${i}_administrativo_configs" value='0' type='hidden'>
+          </fieldset>
+          <fieldset class="width70p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Logs</legend>
+            <div id="${i}_administrativo_logsS" onclick="inputChecked('${i}_administrativo_logs')" class="slider">
+              <div id="${i}_administrativo_logsB" class="sliderB"></div>
+            </div>
+            <input id="${i}_administrativo_logs" value='0' type='hidden'>
+          </fieldset>
+          <fieldset class="width70p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Cargos</legend>
+            <div id="${i}_administrativo_rolesS" onclick="inputChecked('${i}_administrativo_roles')" class="slider">
+              <div id="${i}_administrativo_rolesB" class="sliderB"></div>
+            </div>
+            <input id="${i}_administrativo_roles" value='0' type='hidden'>
+          </fieldset>
+          <fieldset class="width70p" style="padding: 0; margin: 0; width: 13%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Relatórios ADM</legend>
+            <div id="${i}_administrativo_relatoriosS" onclick="inputChecked('${i}_administrativo_relatorios')" class="slider">
+              <div id="${i}_administrativo_relatoriosB" class="sliderB"></div>
+            </div>
+            <input id="${i}_administrativo_relatorios" value='0' type='hidden'>
+          </fieldset>
+          <fieldset class="width70p" style="padding: 0; margin: 0; width: 13%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Relatór. Empresa</legend>
+            <div id="${i}_administrativo_empresaS" onclick="inputChecked('${i}_administrativo_empresa')" class="slider">
+              <div id="${i}_administrativo_empresaB" class="sliderB"></div>
+            </div>
+            <input id="${i}_administrativo_empresa" value='0' type='hidden'>
+          </fieldset>
+        </div>
+        <div class="flex-direction-column" style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+          <fieldset class="width70p" style="padding: 0; margin: 0; width: 11.5%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Lista de Prop.</legend>
+            <div id="${i}_propostas_listaS" onclick="inputChecked('${i}_propostas_lista')" class="slider">
+              <div id="${i}_propostas_listaB" class="sliderB"></div>
+            </div>
+            <input id="${i}_propostas_lista" value='0' type='hidden'>
+          </fieldset>
+          <fieldset class="width70p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Nova Prop.</legend>
+            <div id="${i}_propostas_cadastrarS" onclick="inputChecked('${i}_propostas_cadastrar')" class="slider">
+              <div id="${i}_propostas_cadastrarB" class="sliderB"></div>
+            </div>
+            <input id="${i}_propostas_cadastrar" value='0' type='hidden'>
+          </fieldset>
+          <fieldset class="width70p" style="padding: 0; margin: 0; width: 11%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Lista de Leads</legend>
+            <div id="${i}_propostas_leadsS" onclick="inputChecked('${i}_propostas_leads')" class="slider">
+              <div id="${i}_propostas_leadsB" class="sliderB"></div>
+            </div>
+            <input id="${i}_propostas_leads" value='0' type='hidden'>
+          </fieldset>
+          <fieldset class="width70p" style="padding: 0; margin: 0; width: 13%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Consultas FGTS</legend>
+            <div id="${i}_consultas_fgtsS" onclick="inputChecked('${i}_consultas_fgts')" class="slider">
+              <div id="${i}_consultas_fgtsB" class="sliderB"></div>
+            </div>
+            <input id="${i}_consultas_fgts" value='0' type='hidden'>
+          </fieldset>
+          <fieldset class="width70p" style="padding: 0; margin: 0; width: 10%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center; margin-inline: 0.2vw">
+            <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Lotes</legend>
+            <div id="${i}_consultas_lotesS" onclick="inputChecked('${i}_consultas_lotes')" class="slider">
+              <div id="${i}_consultas_lotesB" class="sliderB"></div>
+            </div>
+            <input id="${i}_consultas_lotes" value='0' type='hidden'>
+          </fieldset>
+        </div>
+      </div>
+    </result>`
+    for (var key in element) {
+      if(element[key] == 1 && document.getElementById(`${i}_${key}`)) inputChecked(`${i}_${key}`)
+    }
+  }
+  async function openBank(bank, result) {
+    document.getElementById('result').innerHTML = ``
+    result.forEach((element,i)=>{
+      
+    })
+
+  }
+</script>
+<script>
+  function subMenuRoles(icon, cod, role) {
+    if (subMenu) {
+      document.getElementById(`subMenu`).innerHTML = ``
+      if (subMenu == cod) return subMenu = false
+      subMenu = false
+    }
+    subMenu = cod
+    document.getElementById(`subMenu`).innerHTML = `<div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh">
+      <a onclick="saveMenu('Roles','${role}',
+        document.getElementById('${cod}_administrativo_funcionarios').value,
+        document.getElementById('${cod}_administrativo_roles').value,
+        document.getElementById('${cod}_administrativo_configs').value,
+        document.getElementById('${cod}_administrativo_logs').value,
+        document.getElementById('${cod}_administrativo_relatorios').value,
+        document.getElementById('${cod}_propostas_lista').value,
+        document.getElementById('${cod}_propostas_cadastrar').value,
+        document.getElementById('${cod}_consultas_fgts').value,
+        document.getElementById('${cod}_consultas_lotes').value,
+        document.getElementById('${cod}_administrativo_empresa').value,
+        document.getElementById('${cod}_propostas_leads').value
+      )"
+      class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Salvar</a>
+      <a onclick="remove('Roles','${role}')" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Deletar</a>
+    </div>`
+  }
   function saveMenu(button, option, value1, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11) {
-    if (getBlock) return alert('Aguarde...')
-    getBlock = true
+    if (block) return alert('Aguarde...')
     if (option == 'aviso') value1 = String(value1).replaceAll('\n','<br/>')
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (subMenu) subMenuRoles(false, subMenu)
+    block = true
     $.ajax({ type: "post",url: `${apiURL}/administrativo/configs/save`,
       data: JSON.stringify({ 
         user: localStorage.getItem('user'), 
@@ -286,7 +309,7 @@
       }),
       contentType:"application/json; charset=utf-8",
       success: async function(s) {
-        getBlock = false
+        block = false
         if (s.error) return alert(s.error)
         if (button == "Configs") return alert('Configuração salva com sucesso...')
         if (button == "Roles") return alert('Cargo salvo com sucesso...')
@@ -294,15 +317,15 @@
         return alert('Configuração salva com sucesso...')
       },
       error: async function(e) {
-        getBlock = false
+        block = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
   function create(button, value) {
-    if (getBlock) return alert('Aguarde...')
-    getBlock = true
+    if (block) return alert('Aguarde...')
+    block = true
     $.ajax({ type: "post",url: `${apiURL}/administrativo/configs/create`,
       data: JSON.stringify({ 
         user: localStorage.getItem('user'), 
@@ -312,7 +335,7 @@
       }),
       contentType:"application/json; charset=utf-8",
       success: async function(s) {
-        getBlock = false
+        block = false
         if (s.error) return alert(s.error)
         if (button == "Configs") alert('Configuração criada com sucesso...')
         if (button == "Roles") alert('Cargo criado com sucesso...')
@@ -320,15 +343,15 @@
         return window.location.reload()
       },
       error: async function(e) {
-        getBlock = false
+        block = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
   function remove(button, value) {
-    if (getBlock) return alert('Aguarde...')
-    getBlock = true
+    if (block) return alert('Aguarde...')
+    block = true
     $.ajax({ type: "post",url: `${apiURL}/administrativo/configs/remove`,
       data: JSON.stringify({ 
         user: localStorage.getItem('user'), 
@@ -338,7 +361,7 @@
       }),
       contentType:"application/json; charset=utf-8",
       success: async function(s) {
-        getBlock = false
+        block = false
         if (s.error) return alert(s.error)
         if (button == "Configs") alert('Configuração deletada com sucesso...')
         if (button == "Roles") alert('Cargo deletado com sucesso...')
@@ -346,55 +369,12 @@
         return window.location.reload()
       },
       error: async function(e) {
-        getBlock = false
+        block = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
   }
-  function menuPropostas(icon, cod, role) {
-    if (menuPropostaActual) {
-      document.getElementById(`menuProposta`).innerHTML = ``
-      if (menuPropostaActual == cod) return menuPropostaActual = false
-      menuPropostaActual = false
-    }
-    menuPropostaActual = cod
-    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="saveMenu('Roles','${role}',
-        document.getElementById('${cod}_administrativo_funcionarios').value,
-        document.getElementById('${cod}_administrativo_roles').value,
-        document.getElementById('${cod}_administrativo_configs').value,
-        document.getElementById('${cod}_administrativo_logs').value,
-        document.getElementById('${cod}_administrativo_relatorios').value,
-        document.getElementById('${cod}_propostas_lista').value,
-        document.getElementById('${cod}_propostas_cadastrar').value,
-        document.getElementById('${cod}_consultas_fgts').value,
-        document.getElementById('${cod}_consultas_lotes').value,
-        document.getElementById('${cod}_administrativo_empresa').value,
-        document.getElementById('${cod}_propostas_leads').value
-      )
-    " class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Salvar</a><a onclick="remove('Roles','${role}')" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Deletar</a></div></div>`
-  }
-  (function () {
-    if (login.perms.administrativo_configs) {
-      if (menus.find(r=> r.menu == "Configs")) {
-        menus.find(r=> r.menu == "Configs").block = false
-        document.getElementById('Configs').classList.remove('buttonBlock')
-      }
-      if (menus.find(r=> r.menu == "Esteiras")) {
-        menus.find(r=> r.menu == "Esteiras").block = false
-        document.getElementById('Esteiras').classList.remove('buttonBlock')
-      }
-    }
-    if (login.perms.administrativo_roles) {
-      if (menus.find(r=> r.menu == "Roles")) {
-        menus.find(r=> r.menu == "Roles").block = false
-        document.getElementById('Roles').classList.remove('buttonBlock')
-      }
-    }
-    if (login.perms.administrativo_configs) getMenu('Configs')
-  })();
-</script>
-<script>
   function inputChecked(button) {
     if (document.getElementById(button).value == '1') {
       document.getElementById(button).value = '0'

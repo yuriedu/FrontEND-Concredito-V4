@@ -3,7 +3,7 @@
   <script>$("#navbar").load(`/imports/navbar.html`)</script>
 
   <div class="background-image left18-5 width79" style="position: relative; top: 12.5vh; left: 6vw; width: 92.5vw; height: 85.5vh; border-radius: 2vh; display: flex; justify-content: center; align-items: center;">
-    <div onclick="openAgencias()" id="agenciaButton" style="display: none; position: absolute; right: 1.5vw; top: 2vh; font-size: 3vh; color: rgb(200, 0, 0);">
+    <div onclick="openAgencias()" id="agenciaButton" style="position: absolute; right: 1.5vw; top: 2vh; font-size: 3vh; color: rgb(200, 0, 0);">
       <i title="Informações sobre agências" class="fa-solid fa-building-columns" style="cursor: pointer;"></i>
     </div>
     <img id="agenciaImg" src="/public/images/agencias.png" style="display: none; width: 60%; position: absolute; right: 4vw; top: 5vh; border-top-left-radius: 5vh; border-bottom-left-radius: 5vh; border-bottom-right-radius: 5vh;">
@@ -521,7 +521,6 @@
     if (!banksList || !banksList.find(r=> r.bcolib_descricao == document.getElementById('banco').value)) return alert('O banco inserido não foi encontrado na minha lista! Selecione o banco conforme a lista mostrada...')
     document.getElementById('clienteDados').style.display = `none`
     document.getElementById('agenciaImg').style.display = 'none'
-    document.getElementById('agenciaButton').style.display = 'none'
     document.getElementById('propostaDados').style.display = `flex`
   }
   var banksList = false
@@ -606,8 +605,6 @@
         document.getElementById('newConsultar').style.display = `none`
         document.getElementById('simularFGTS').style.display = `none`
         document.getElementById('agenciaImg').style.display = 'none'
-        document.getElementById('agenciaImg').style.display = 'none'
-        document.getElementById('agenciaButton').style.display = 'inline'
         document.getElementById('clienteDados').style.display = `flex`
       },
       error: function(e) {
@@ -722,7 +719,6 @@
     document.getElementById('simularFGTS').style.display = `none`
     document.getElementById('propostaDados').style.display = `none`
     document.getElementById('agenciaImg').style.display = 'none'
-    document.getElementById('agenciaButton').style.display = 'none'
     document.getElementById('newConsultar').style.display = `inline`
   }
 
@@ -734,7 +730,6 @@
     document.getElementById('newConsultar').style.display = `none`
     document.getElementById('clienteDados').style.display = `flex`
     document.getElementById('agenciaImg').style.display = 'none'
-    document.getElementById('agenciaButton').style.display = 'inline'
   }
 
   function copyLink() {
