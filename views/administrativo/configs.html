@@ -63,10 +63,10 @@
           document.getElementById('result').innerHTML = `<div id="results" style="display: flex; flex-wrap: wrap; justify-content: center;"></div>`
           banks.forEach((element,i) => {
             document.getElementById('results').innerHTML += `
-              <div onclick="openBank('${element}')" class="background-reverse" style="width: 16vw; height: 37vh; cursor: pointer; margin-inline: 1vw; margin-block: 1.5vh; border-radius: 3vh; display: flex; flex-direction: column; justify-content: center; align-items: center">
+              <result onclick="openBank('${element}')" class="background-Propostas" style="width: 16vw; height: 37vh; cursor: pointer; margin-inline: 1vw; margin-block: 1.5vh; border-radius: 3vh; display: flex; flex-direction: column; justify-content: center; align-items: center">
                 <img src="/public/images/Bancos/${element}.png" style="width: 8vw; height: 8vw; border-radius: 100%">
-                <a style="font-size: 3vh; margin-top: 6vh; text-decoration: underline">${element}</a>
-              </div>
+                <a style="font-size: 3vh; margin-top: 5vh; text-decoration: underline">${element}</a>
+              </result>
             `
           })
         } else return alert('Menu não encontrado...')
@@ -250,12 +250,39 @@
       if(element[key] == 1 && document.getElementById(`${i}_${key}`)) inputChecked(`${i}_${key}`)
     }
   }
-  async function openBank(bank, result) {
-    document.getElementById('result').innerHTML = ``
-    result.forEach((element,i)=>{
-      
+  async function openBank(bank) {
+    document.getElementById('result').innerHTML = `<div style="width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center">
+      <a style="font-size: 3.3vh; font-weight: 600">Fases: </a>
+      <div id="fases" style="margin-top: 2vh; width: 100%; text-algin: center; display: flex; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap"></div>
+    </div>`
+    result.fases.filter(r=> r.bank == bank).forEach((element,i)=>{
+      document.getElementById('fases').innerHTML += `<result class="background-Propostas width30p" style="position: relative; margin: 1vw; width: 16vw; height: 43vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center">
+        <i class="fa-solid fa-floppy-disk font-color-navbar" style="font-size: 2.5vh; position: absolute; top: 1.2vh; right: 0.8vw; cursor: pointer" 
+          onclick="saveMenu('Esteiras','${element.id}',
+            document.getElementById('${element.id}_newFase').value,
+            document.getElementById('${element.id}_oldFase').value,
+            document.getElementById('${element.id}_motivo').value,
+          '${element.atividade}','${element.status}','${element.situacao}' )">
+        </i>
+        <img src="/public/images/Bancos/${element.bank}.png" class="width50p; margin-top1" style="width: 6.5vw; height: 6.5vw; border-radius: 100%">
+        <a class="font-size2 font-color-navbar" style="font-weight: 600; font-size: 2vh; margin-top: 2vh; margin-bottom: 0.5vh; max-width: 100%; overflow: hidden;">${element.bank}</a>
+        <a style="font-size: 1.8vh; max-width: 95%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${element.situacao ? element.situacao : 'Vazio...'}"><span class="font-color-navbar">Situação:</span> ${element.situacao ? element.situacao : 'Vazio...'}</a>
+        <a style="font-size: 1.8vh; max-width: 95%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${element.atividade ? element.atividade : 'Vazio...'}"><span class="font-color-navbar">Atividade:</span> ${element.atividade ? element.atividade : 'Vazio...'}</a>
+        <a style="font-size: 1.8vh; max-width: 95%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${element.status ? element.status : 'Vazio...'}"><span class="font-color-navbar"">Status:</span> ${element.status ? element.status : 'Vazio...'}</a>
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 40%; margin-top: 1vh; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.7vh">Nova Fase</legend>
+          <input id="${element.id}_newFase" type="text" class="font-1" value="${!element.newFase || element.newFase == 'null' ? 'Vazio...' : element.newFase}" style="width: 100%; height: 2.5vh; margin: 0; font-size: 1.8vh; background: transparent; border: 0">
+        </fieldset>
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 80%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.7vh">Fases Antiga</legend>
+          <input id="${element.id}_oldFase" type="text" class="font-1" value="${!element.oldFase || element.oldFase == 'null' ? 'Vazio...' : element.oldFase}" style="width: 100%; height: 2.5vh; margin: 0; font-size: 1.8vh; background: transparent; border: 0">
+        </fieldset>
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 90%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.7vh">Motivo</legend>
+          <input id="${element.id}_motivo" type="text" class="font-1" value="${!element.motivo || element.motivo == 'null' ? 'Vazio...' : element.motivo}" style="width: 100%; height: 2.5vh; margin: 0; font-size: 1.8vh; background: transparent; border: 0">
+        </fieldset>
+      </result>`
     })
-
   }
 </script>
 <script>

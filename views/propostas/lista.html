@@ -217,7 +217,7 @@
       menuPropostaActual = false
     }
     menuPropostaActual = codAF
-    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="cadastrar('${codAF}','${bank}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastrar</a><a onclick="sendLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Enviar Link</a><a onclick="checkEsteira('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Esteira</a><a onclick="generator('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Gerar Cadastro</a><a onclick="changeFase('${codAF}',1)" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Inclusão</a></div></div>`
+    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="cadastrar('${codAF}','${bank}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastrar</a><a onclick="sendLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">WhatsApp</a><a onclick="getLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Pegar Link</a><a onclick="checkEsteira('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Esteira</a><a onclick="generator('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Gerar Cadastro</a><a onclick="changeFase('${codAF}',1)" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Inclusão</a></div></div>`
   }
   function filter() {
     if (document.getElementById('filter').classList.contains('buttonBlock')) return alert('Aguarde...')
@@ -373,7 +373,7 @@
     if (link) return alert('Aguarde...')
     link = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    $.ajax({ type: "post", url: `${apiURL}/propostas/link`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/whatsapp`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF
@@ -382,6 +382,27 @@
         link = false
         if (s.error) return alert(s.error)
         alert(`O link foi enviado com sucesso para o cliente!`)
+      },
+      error: function(e) {
+        link = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    });
+  }
+  function getLink(codAF,fase) {
+    if (link) return alert('Aguarde...')
+    link = true
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    $.ajax({ type: "post", url: `${apiURL}/propostas/link`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      proposta: codAF
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        link = false
+        if (s.error) return alert(s.error)
+        alert(`Link pego com sucesso:\n`+s.link)
       },
       error: function(e) {
         link = false

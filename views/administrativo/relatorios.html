@@ -280,7 +280,7 @@
         document.getElementById('topAFsRestante').innerHTML = afsRestante && afsRestante != "NaN" ? afsRestante.replace('.',',') : 0
         var vlRestante = (((Number(s.objetivo) * ( s.agentes ? s.agentes.length : 1 )) - Number( s.somaMeta ? s.somaMeta : s.meta)) * 1050).toFixed(2)
         document.getElementById('topValorRestante').innerHTML = vlRestante && vlRestante != "NaN" ? `R$ `+vlRestante.replace('.',',') : 'R$ 0,00'
-        s.days = s.days - Number(s.dates.max.slice(8,10))
+        s.days = (document.getElementById('dateEnd').value ? Number(s.dates.max.slice(8,10)) : s.days) - Number(s.dates.min.slice(8,10))
         var valorDia = (vlRestante / s.days).toFixed(2)
         document.getElementById('topValorDia').innerHTML = valorDia && valorDia != "NaN" ? `R$ `+valorDia.replace('.',',') : "R$ 0,00"
         document.getElementById('topPago').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlFunc).replace('.',',') : "R$ 0,00"
