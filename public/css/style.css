@@ -52,6 +52,7 @@
   --navbar-background: #ff9335;
 }
 .font-color { color: var(--color); }
+.font-color-important { color: var(--color)!important; }
 .font-color-reverse { color: var(--color-reverse); }
 .font-color-navbar { color: var(--navbar-background); }
 .font-color-navbar-reverse { color: var(--navbar-background-reverse); }

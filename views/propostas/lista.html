@@ -32,7 +32,10 @@
             <option style="color: black" value="1234">OP - CADASTRAR MANUAL</option>
             <option style="color: black" value="10293">OP - VERIFICAÇÃO MANUAL</option>
           </optgroup>
-        </select>
+          <optgroup id="fasesAll" style="color: black!important" label="Agilus">
+
+          </optgroup>
+          </select>
       </fieldset>
       <fieldset title="Banco do Contrato da proposta..." style="padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
@@ -154,61 +157,7 @@
 </div>
 
 <script>
-  const fasesName = {
-    '1': 'Inclusão sem conferência',
-    '2': 'AGUARDANDO AVERBAÇÃO',
-    '9': 'PENDENTE',
-    '11': 'Aguardando Retorno CIP',
-    '12': 'Pendência Resolvida',
-    '15': 'EM DIGITAÇÃO-ROBO',
-    '69': 'DAR ANUÊNCIA',
-    '323': 'AGUARDA AUMENTO INSS',
-    '692': 'PROPOSTA EM ANALISE BANCO',
-    '700': 'REPROVADO',
-    '822': 'AGUARDANDO DIGITAÇÃO AUTOMÁTICA - ROBÔ',
-    '823': 'DIGITADO SUCESSO - ROBÔ',
-    '824': 'NÃO DIGITADO --ERRO-- ROBÔ',
-    '1111': 'AGUARDANDO ATUAÇÃO MASTER',
-    '1234': 'OP - CADASTRAR MANUAL',
-    '2002': 'CLIENTE RECEBEU',
-    '3920': 'PROPOSTA PAGA',
-    '4002': 'ASSINADO / RESPONDIDO',
-    '9232': 'AGUARDANDO ASSINATURA DIGITAL',
-    '9923': 'LINK ENVIADO AO CLIENTE',
-    '90000': 'Aguarda Liberar Assinar',
-    '10293': 'Verificação manual OP',
-    '100023': 'PAGAMENTO DEVOLVIDO',
-    '120001': 'PENDENTE POR ASSINATURA',
-    '202552': 'Envia Requisição CIP',
-  }
-</script>
-<script>
-  var agentes = false
-  function getAgentes() {
-    if (agentes) return alert('Aguarde...')
-    agentes = true
-    $.ajax({ type: "post",url: `${apiURL}/logins/get`,
-      data: JSON.stringify({
-        user: localStorage.getItem('user'),
-        password: localStorage.getItem('password')
-      }), contentType:"application/json; charset=utf-8",
-      success: async function(s) {
-        if (s.error) return alert(s.error)
-        agentes = s.logins
-        s.logins.forEach((element,index) => {
-          document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
-        });
-        document.getElementById('agente').placeholder = 'Selecione o Agente...'
-      },
-      error: function(e) {
-        agentes = false
-        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
-      }
-    })
-  }(function () { getAgentes() })();
-</script>
-<script>
+  const fasesName = {}
   var menuPropostaActual = false
   function menuPropostas(icon, codAF, bank) {
     if (menuPropostaActual) {
@@ -217,7 +166,22 @@
       menuPropostaActual = false
     }
     menuPropostaActual = codAF
-    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta"><div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh"><a onclick="cadastrar('${codAF}','${bank}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastrar</a><a onclick="sendLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">WhatsApp</a><a onclick="getLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Pegar Link</a><a onclick="checkEsteira('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Esteira</a><a onclick="generator('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Gerar Cadastro</a><a onclick="changeFase('${codAF}',1)" class="navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Fase Inclusão</a></div></div>`
+    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta">
+      <div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh">
+        <a onclick="cadastrar('${codAF}','${bank}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastrar</a>
+        <a onclick="sendLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">WhatsApp</a>
+        <a onclick="getLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Pegar Link</a>
+        <a onclick="checkEsteira('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Esteira</a>
+        <a onclick="generator('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Gerar Cadastro</a>
+        <select onchange="changeFase('${codAF}',this.value)" class="font-color-reverse" style="padding: 0; margin: 0; cursor: pointer; padding-block: 0.6vh; background: transparent; border: none; text-align: center; display: flex; width: 100%; justify-content: center; align-items: center">
+          <option style="color: black" value="" selected>Trocar Fase</option>
+          <optgroup id="fasesMenu" label="Fases" style="color: black"></optgroup>
+        </select>
+      </div>
+    </div>`
+    fasesAgilus.forEach((element,i)=>{
+      document.getElementById('fasesMenu').innerHTML += `<option style="color: black" value="${element.codFase}" selected>${element.Fase}</option>`
+    })
   }
   function filter() {
     if (document.getElementById('filter').classList.contains('buttonBlock')) return alert('Aguarde...')
@@ -347,6 +311,7 @@
   var blockFase = false
   function changeFase(codAF,fase) {
     if (blockFase) return alert('Aguarde...')
+    if (!fase) return alert('Selecione alguma fase...')
     blockFase = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     $.ajax({ type: "post", url: `${apiURL}/propostas/afs/fase`, data: JSON.stringify({
@@ -359,6 +324,32 @@
         blockFase = false
         if (s.error) return alert(s.error)
         alert(`A proposta: ${codAF} teve sua fase alterada com sucesso!`)
+      },
+      error: function(e) {
+        blockFase = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    });
+  }
+
+  function getFases() {
+    if (blockFase) return alert('Aguarde...')
+    blockFase = true
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    $.ajax({ type: "post", url: `${apiURL}/propostas/afs/getFases`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      proposta: codAF,
+      fase: fase,
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        blockFase = false
+        fasesAgilus = s.fases
+        s.fases.forEach((element,i)=>{
+          fasesName[element.codFase] = element.Fase
+          document.getElementById('fasesAll').innerHTML += `<option value="${element.codFase}" style="color: black">${element.Fase}</option>`
+        })
       },
       error: function(e) {
         blockFase = false
@@ -475,6 +466,33 @@
       } else return alert('Não a nada aqui para ser copiado...')
     } else return alert('Não encontrei o codigo...')
   }
+</script>
+<script>
+  var fasesAgilus = false
+  var agentes = false
+  function getAgentes() {
+    if (agentes) return alert('Aguarde...')
+    agentes = true
+    $.ajax({ type: "post",url: `${apiURL}/logins/get`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password')
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        if (s.error) return alert(s.error)
+        agentes = s.logins
+        s.logins.forEach((element,index) => {
+          document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
+        });
+        document.getElementById('agente').placeholder = 'Selecione o Agente...'
+      },
+      error: function(e) {
+        agentes = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    })
+  }(function () { getAgentes(); getFases() })();
 </script>
 <script>
     function searchBar() {
