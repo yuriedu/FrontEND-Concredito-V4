@@ -252,9 +252,37 @@
   }
   async function openBank(bank) {
     document.getElementById('result').innerHTML = `<div style="width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center">
-      <a style="font-size: 3.3vh; font-weight: 600">Fases: </a>
+      <a style="font-size: 3.3vh; font-weight: 600">Erros: </a>
+      <div id="erros" style="margin-top: 2vh; width: 100%; text-algin: center; display: flex; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap"></div>
+      <a style="font-size: 3.3vh; font-weight: 600; margin-top: 8vh">Fases: </a>
       <div id="fases" style="margin-top: 2vh; width: 100%; text-algin: center; display: flex; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap"></div>
     </div>`
+    result.erros.filter(r=> r.bank == bank).forEach((element,i)=>{
+      document.getElementById('erros').innerHTML += `<result class="background-Propostas width30p" style="position: relative; margin: 1vw; width: 16vw; height: 42vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center">
+        <i class="fa-solid fa-floppy-disk font-color-navbar" style="font-size: 2.5vh; position: absolute; top: 1.2vh; right: 0.8vw; cursor: pointer" 
+          onclick="saveMenu('Erros','${element.id}',
+            document.getElementById('${element.id}_fase').value,
+            document.getElementById('${element.id}_codMotivo').value,
+            document.getElementById('${element.id}_motivo').value)">
+        </i>
+        <img src="/public/images/Bancos/${element.bank}.png" class="width50p; margin-top1" style="width: 6.5vw; height: 6.5vw; border-radius: 100%">
+        <a class="font-size2 font-color-navbar" style="font-weight: 600; font-size: 2vh; margin-top: 2vh; margin-bottom: 0.5vh; max-width: 100%; overflow: hidden;">${element.bank}</a>
+        <a style="font-size: 1.8vh; max-width: 95%; line-clamp: 2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" title="${element.error ? element.error : 'Vazio...'}"><span class="font-color-navbar">Erro:</span> ${element.error ? element.error : 'Vazio...'}</a>
+
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 45%; margin-top: 1vh; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.7vh">Fase</legend>
+          <input id="${element.id}_fase" type="text" class="font-1" value="${!element.fase || element.fase == 'null' ? 'Vazio...' : element.fase}" style="width: 100%; height: 2.5vh; margin: 0; font-size: 1.8vh; background: transparent; border: 0">
+        </fieldset>
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 60%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.7vh">Cod. Motivo</legend>
+          <input id="${element.id}_codMotivo" type="text" class="font-1" value="${!element.codMotivo || element.codMotivo == 'null' ? 'Vazio...' : element.codMotivo}" style="width: 100%; height: 2.5vh; margin: 0; font-size: 1.8vh; background: transparent; border: 0">
+        </fieldset>
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 80%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.7vh">Motivo</legend>
+          <input id="${element.id}_motivo" type="text" class="font-1" value="${!element.motivo || element.motivo == 'null' ? 'Vazio...' : element.motivo}" style="width: 100%; height: 2.5vh; margin: 0; font-size: 1.8vh; background: transparent; border: 0">
+        </fieldset>
+      </result>`
+    })
     result.fases.filter(r=> r.bank == bank).forEach((element,i)=>{
       document.getElementById('fases').innerHTML += `<result class="background-Propostas width30p" style="position: relative; margin: 1vw; width: 16vw; height: 43vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center">
         <i class="fa-solid fa-floppy-disk font-color-navbar" style="font-size: 2.5vh; position: absolute; top: 1.2vh; right: 0.8vw; cursor: pointer" 
@@ -322,17 +350,17 @@
         password: localStorage.getItem('password'), 
         menu: button, 
         option: option, 
-        value1: value1,
-        value2: value2,
-        value3: value3,
-        value4: value4,
-        value5: value5,
-        value6: value6,
-        value7: value7,
-        value8: value8,
-        value9: value9,
-        value10: value10,
-        value11: value11,
+        value1: String(value1).replace('Vazio...',''),
+        value2: String(value2).replace('Vazio...',''),
+        value3: String(value3).replace('Vazio...',''),
+        value4: String(value4).replace('Vazio...',''),
+        value5: String(value5).replace('Vazio...',''),
+        value6: String(value6).replace('Vazio...',''),
+        value7: String(value7).replace('Vazio...',''),
+        value8: String(value8).replace('Vazio...',''),
+        value9: String(value9).replace('Vazio...',''),
+        value10: String(value10).replace('Vazio...',''),
+        value11: String(value11).replace('Vazio...',''),
       }),
       contentType:"application/json; charset=utf-8",
       success: async function(s) {

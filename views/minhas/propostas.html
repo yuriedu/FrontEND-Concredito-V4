@@ -166,7 +166,7 @@ const fasesName = {
         <div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.8vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh">
           <a onclick="whatsapp('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">WhatsApp</a>
           <a onclick="fgts('${codAF}',1)" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Consultar FGTS</a>
-          <select onchange="changeFase('${codAF}',this.value)" class="font-color-reverse" style="padding: 0; margin: 0; cursor: pointer; padding-block: 0.6vh; background: transparent; border: none; text-align: center; display: flex; width: 100%; justify-content: center; align-items: center">
+          <select onchange="changeFase('${codAF}',this.value)" class="font-color-reverse navbar-color-select" style="font-weight: 500; font-size: 2vh;padding: 0; margin: 0; cursor: pointer; padding-block: 0.3vh; background: transparent; border: none; text-align: center; display: flex; width: 100%; justify-content: center; align-items: center">
             <option style="color: black" value="" selected>Trocar Fase</option>
             <option style="color: black" value="1">Inclusão sem conferência</option>
             <option style="color: black" value="9923">Link de assinatura enviado ao cliente</option>

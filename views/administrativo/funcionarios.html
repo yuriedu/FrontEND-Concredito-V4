@@ -216,6 +216,7 @@
         document.getElementById('funcionarios').innerHTML = ``
         document.getElementById('listFunc').innerHTML = ``
         s.logins.forEach((element,index)=>{
+          // if (element.codigo == 198) alert(JSON.stringify(s.online.find(r=>r.user==element.user)))
           element.status = s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 1 : 2 : 3
           document.getElementById('funcionarios').innerHTML += `
             <funcionario class="background-Propostas width30p" style="position: relative; margin: 1vw; width: 12vw; height: 25vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center">

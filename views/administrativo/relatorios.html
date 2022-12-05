@@ -494,35 +494,40 @@
     var graficoBanks = document.getElementById("graficoBanks").getContext("2d");
     new Chart(graficoBanks).Pie(banks);
 
-    document.getElementById('listLiberado').innerHTML = `<div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; max-height: 60vh; overflow-y: auto; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 40vw; max-width: 40vw; overflow-x: hidden; margin-right: 2vw">
-      <div id="listaLiberado" style="width: 100%; margin-top: 1.5vh">
-        <div style="display: flex; width: 94%; margin-top: 0.3vh; border-bottom: 0.1vh solid gray; margin-inline: 3%">
-          <div title="Nome Funcionário" style="width: 38%; max-width: 38%; padding-left: 2%">
+    document.getElementById('listLiberado').innerHTML = `<div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; max-height: 60vh; overflow-y: auto; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 55vw; max-width: 55vw; overflow-x: hidden; margin-right: 2vw">
+      <div id="listaLiberado" style="width: 100%">
+        <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
+          <div title="Nome Funcionário" style="width: 17vw; max-width: 17vw; padding-left: 2%; height: 100%; padding-block: 0.7vh">
             <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
             <i onclick="redirect('user')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="user_list" value="0">
           </div>
-          <div title="Valor Liberado" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+          <div title="Valor Liberado" style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">VL. S</a>
             <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="total_list" value="0">
           </div>
-          <div title="Quantidade de Sucessos" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+          <div title="Quantidade de Sucessos" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">S</a>
             <i onclick="redirect('sucessos')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="sucessos_list" value="0">
           </div>
-          <div title="Quantidade de Erros" style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
+          <div title="Quantidade de Erros" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">E</a>
             <i onclick="redirect('erros')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="erros_list" value="0">
           </div>
-          <div title="Quantidade de AFs(Consultados)" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
+          <div title="Quantidade Total" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+            <a style="font-size: 2.5vh; font-weight: 800">T</a>
+            <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+            <input type="hidden" id="total_list" value="0">
+          </div>
+          <div title="Quantidade de AFs(Consultados)" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">AF</a>
             <i onclick="redirect('afs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="afs_list" value="0">
           </div>
-          <div title="Valor das AFs(Consultados)" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
+          <div title="Valor das AFs(Consultados)" style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">VL. AFs</a>
             <i onclick="redirect('valorAfs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="valorAfs_list" value="0">
@@ -533,26 +538,29 @@
     agilus = fgts.funcionarios
     agilus.forEach((element,index)=>{
       document.getElementById('listaLiberado').innerHTML += `
-      <div style="display: flex; width: 94%; border-bottom: 0.1vh solid gray; margin-inline: 3%">
-        <div style="width: 38%; max-width: 38%; padding-left: 2%">
-          <a style="font-size: 2.3vh">${element.user}</a>
+        <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray">
+          <div style="width: 17vw; max-width: 17vw; padding-left: 2%">
+            <a style="font-size: 2.3vh">${element.user}</a>
+          </div>
+          <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">R$ ${String(element.total.toFixed(2)).replace('.',',').replace('null','0,00')}</a>
+          </div>
+          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">${element.sucessos.length}</a>
+          </div>
+          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">${element.erros.length}</a>
+          </div>
+          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">${element.sucessos.length + element.erros.length}</a>
+          </div>
+          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
+          </div>
+          <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">R$ ${element.valorAfs ? String(element.valorAfs.toFixed(2)).replace('.',',') : '0,00'}</a>
+          </div>
         </div>
-        <div style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2vh">${String(element.total.toFixed(2)).replace('.',',').replace('null','0,00')}</a>
-        </div>
-        <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2vh">${element.sucessos.length}</a>
-        </div>
-        <div style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2vh">${element.erros.length}</a>
-        </div>
-        <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
-        </div>
-        <div style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2vh">${element.valorAfs ? String(element.valorAfs.toFixed(2)).replace('.',',') : '0,00'}</a>
-        </div>
-      </div>
       `
     })
     document.getElementById('calcFGTS').classList.remove('buttonBlock')
@@ -578,63 +586,71 @@
       });
     } else if (aux == 1) agilus.reverse()
     document.getElementById('listaLiberado').innerHTML = `
-      <div style="display: flex; width: 94%; margin-top: 0.3vh; border-bottom: 0.1vh solid gray; margin-inline: 3%">
-        <div title="Nome Funcionário" style="width: 38%; max-width: 38%; padding-left: 2%">
-          <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
-          <i onclick="redirect('user')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
-          <input type="hidden" id="user_list" value="0">
-        </div>
-        <div title="Valor Liberado" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2.5vh; font-weight: 800">VL. S</a>
-          <i onclick="redirect('liberado')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
-          <input type="hidden" id="liberado_list" value="0">
-        </div>
-        <div title="Quantidade de Sucessos" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2.5vh; font-weight: 800">S</a>
-          <i onclick="redirect('sucessos')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
-          <input type="hidden" id="sucessos_list" value="0">
-        </div>
-        <div title="Quantidade de Erros" style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2.5vh; font-weight: 800">E</a>
-          <i onclick="redirect('erros')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
-          <input type="hidden" id="erros_list" value="0">
-        </div>
-        <div title="Quantidade de AFs(Consultados)" style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2.5vh; font-weight: 800">AF</a>
-          <i onclick="redirect('afs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
-          <input type="hidden" id="afs_list" value="0">
-        </div>
-        <div title="Valor das AFs(Consultados)" style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2.5vh; font-weight: 800">VL. AFs</a>
-          <i onclick="redirect('valorAfs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
-          <input type="hidden" id="valorAfs_list" value="0">
-        </div>
+    <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
+      <div title="Nome Funcionário" style="width: 17vw; max-width: 17vw; padding-left: 2%; height: 100%; padding-block: 0.7vh">
+        <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
+        <i onclick="redirect('user')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+        <input type="hidden" id="user_list" value="0">
       </div>
+      <div title="Valor Liberado" style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+        <a style="font-size: 2.5vh; font-weight: 800">VL. S</a>
+        <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+        <input type="hidden" id="total_list" value="0">
+      </div>
+      <div title="Quantidade de Sucessos" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+        <a style="font-size: 2.5vh; font-weight: 800">S</a>
+        <i onclick="redirect('sucessos')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+        <input type="hidden" id="sucessos_list" value="0">
+      </div>
+      <div title="Quantidade de Erros" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+        <a style="font-size: 2.5vh; font-weight: 800">E</a>
+        <i onclick="redirect('erros')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+        <input type="hidden" id="erros_list" value="0">
+      </div>
+      <div title="Quantidade Total" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+        <a style="font-size: 2.5vh; font-weight: 800">T</a>
+        <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+        <input type="hidden" id="total_list" value="0">
+      </div>
+      <div title="Quantidade de AFs(Consultados)" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+        <a style="font-size: 2.5vh; font-weight: 800">AF</a>
+        <i onclick="redirect('afs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+        <input type="hidden" id="afs_list" value="0">
+      </div>
+      <div title="Valor das AFs(Consultados)" style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+        <a style="font-size: 2.5vh; font-weight: 800">VL. AFs</a>
+        <i onclick="redirect('valorAfs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+        <input type="hidden" id="valorAfs_list" value="0">
+      </div>
+    </div>
     `
     if (aux == 0) document.getElementById(`${menu}_list`).value = '1'
     if (aux == 1) document.getElementById(`${menu}_list`).value = '0'
     agilus.forEach((element,index)=>{
       document.getElementById('listaLiberado').innerHTML += `
-      <div style="display: flex; width: 94%; border-bottom: 0.1vh solid gray; margin-inline: 3%">
-        <div style="width: 38%; max-width: 38%; padding-left: 2%">
-          <a style="font-size: 2.3vh">${element.user}</a>
+        <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray">
+          <div style="width: 17vw; max-width: 17vw; padding-left: 2%">
+            <a style="font-size: 2.3vh">${element.user}</a>
+          </div>
+          <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">R$ ${String(element.total.toFixed(2)).replace('.',',').replace('null','0,00')}</a>
+          </div>
+          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">${element.sucessos.length}</a>
+          </div>
+          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">${element.erros.length}</a>
+          </div>
+          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">${element.sucessos.length + element.erros.length}</a>
+          </div>
+          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
+          </div>
+          <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">R$ ${element.valorAfs ? String(element.valorAfs.toFixed(2)).replace('.',',') : '0,00'}</a>
+          </div>
         </div>
-        <div style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2vh">${String(element.total.toFixed(2)).replace('.',',').replace('null','0,00')}</a>
-        </div>
-        <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2vh">${element.sucessos.length}</a>
-        </div>
-        <div style="width: 8%; max-width: 8%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2vh">${element.erros.length}</a>
-        </div>
-        <div style="width: 7%; max-width: 7%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
-        </div>
-        <div style="width: 17%; max-width: 17%; text-align: center; border-left: 0.1vh solid gray">
-          <a style="font-size: 2vh">${element.valorAfs ? String(element.valorAfs.toFixed(2)).replace('.',',') : '0,00'}</a>
-        </div>
-      </div>
       `
     })
     blockRedirect = false
