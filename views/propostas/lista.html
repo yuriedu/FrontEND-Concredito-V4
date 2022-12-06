@@ -155,44 +155,12 @@
     </div>
   </div>
 
-  <div id="acomp" class="background-reverse left18-5 width79 font-color-reverse" style="z-index: 5; position: fixed; top: 20%; left: 20%; width: 60%; height: 60%; border-radius: 3vh;">
+  <div id="acomp" class="background-reverse left18-5 width79 font-color-reverse" style="display: none; z-index: 5; position: fixed; top: 15%; left: 20%; width: 60%; border-radius: 3vh;">
     <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; ">
-      <!-- <div style="position:absolute; top: 2vh; right: 3vh; cursor: pointer">
-        
-      </div> -->
-      <div id="listAcomp" style="width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
-          <div title="Data" style="width: 15%; max-width: 15%; padding-left: 2%; height: 100%; padding-block: 0.7vh">
-            <a style="font-size: 2.5vh; font-weight: 800">Data</a>
-          </div>
-          <div title="Nome" style="width: 25%; max-width: 25%; padding-left: 2%; border-left: 0.1vh solid gray; padding-block: 0.7vh">
-            <a style="font-size: 2.5vh; font-weight: 800">Nome</a>
-          </div>
-          <div title="Descrição" style="width: 50%; max-width: 50%; padding-left: 2%; border-left: 0.1vh solid gray; padding-block: 0.7vh">
-            <a style="font-size: 2.5vh; font-weight: 800">Descrição</a>
-          </div>
-          <div title="Fechar" style="width: 4%; max-width: 4%; border-left: 0.1vh solid gray; text-align: center; padding-block: 0.7vh;">
-            <i onclick="closeAcomp()" class="far fa-times" style="cursor: pointer; font-size: 3vh; color: red; font-weight: 600"></i>
-          </div>
-        </div>
-
-        <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
-          <div title="Data" style="width: 15%; max-width: 15%; overflow: hidden; padding-left: 2%; padding-block: 0.5vh; display: flex; align-items: center;">
-            <a style="font-size: 1.8vh">05/12/2022 15:23</a>
-          </div>
-          <div title="Nome" style="width: 25%; max-width: 25%; overflow: hidden; padding-left: 2%; border-left: 0.1vh solid gray; padding-block: 0.5vh; display: flex; align-items: center;">
-            <a style="font-size: 1.8vh; font-weight: 800">Yuri(ROBÔ)</a>
-          </div>
-          <div title="Descrição" style="width: 50%; max-width: 50%; overflow: hidden; padding-left: 2%; border-left: 0.1vh solid gray; padding-block: 0.5vh; display: flex; align-items: center;">
-            <a style="font-size: 1.8vh">SEI LA CARALHO! ESTOU CANÇADO E COM DOR DE CABEÇA NÃO ME ENCOMODE PORRA! VAI TOMAR NO CU CARALHO PORRA CACETE AFAGAGASGAG GASG AGASDGAG AGADSGAG</a>
-          </div>
-          <div title="Fechar" style="width: 4%; max-width: 4%; border-left: 0.1vh solid gray; text-align: center; padding-block: 0.5vh">
-            <i onclick="closeAcomp()" class="fa-solid fa-trash-xmark" style="cursor: pointer; font-size: 1.8vh; color: red; font-weight: 600"></i>
-          </div>
-        </div>
-
+      <div id="listAcomp" style="width: 100%; display: flex; flex-direction: column; align-items: center; max-height: 60vh; overflow: auto">
       </div>
-
+      <div id="textAcomp" style="width: 100%; display: flex; flex-direction: row; justify-content: center; max-height: 18%; overflow: hidden; margin-bottom: 2vh">
+      </div>
     </div>
   </div>
 
@@ -212,7 +180,7 @@
       <div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh">
         <a onclick="cadastrar('${codAF}','${bank}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastrar</a>
         <a onclick="getLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Pegar Link</a>
-        <a onclick="acomp('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Acompanhamento</a>
+        <a onclick="getAcomp('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Acompanhamento</a>
         <a onclick="sendLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">WhatsApp</a>
         <a onclick="checkEsteira('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Esteira</a>
         <a onclick="generator('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Gerar Cadastro</a>
@@ -469,12 +437,137 @@
     });
   }
 
+  var acompMenu = false
+  function closeAcomp() {
+    acompMenu = false
+    document.getElementById('acomp').style.display = 'none'
+  }
+
+  var getAcompBlock = false
+  function getAcomp(codAF) {
+    if (getAcompBlock || acompMenu) return alert('Aguarde...')
+    getAcompBlock = true
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    $.ajax({ type: "post", url: `${apiURL}/propostas/afs/acomp`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      proposta: codAF
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        getAcompBlock = false
+        if (s.error) return alert(s.error)
+        acompMenu = true
+        document.getElementById('textAcomp').innerHTML = `
+          <fieldset id="fieldset" title="Nova Descrição" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 85%; margin-inline: 1%; padding-inline: 1%;">
+            <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Novo Acompanhamento</legend>
+            <textarea rows="3" class="font-1 font-color-reverse" placeholder="Coloque um novo acompanhamento nessa proposta..." id="newAcomp" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
+          </fieldset>
+          <div title="Enviar" style="width: 4%; max-width: 4%; text-align: center; padding-block: 0.7vh; display: flex; justify-content: center; align-items: center;">
+            <i onclick="newAcomp('${codAF}')" class=" fa-solid fa-paper-plane-top font-color-navbar-reverse" style="cursor: pointer; font-size: 4vh; font-weight: 600; margin-top: 0.2vh"></i>
+          </div>
+        `
+        document.getElementById('listAcomp').innerHTML = `
+          <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray; padding-top: 0.3vh">
+            <div title="Data" style="width: 15%; max-width: 15%; padding-left: 2%; height: 100%; padding-block: 0.7vh">
+              <a style="font-size: 2.5vh; font-weight: 800">Data</a>
+            </div>
+            <div title="Nome" style="width: 25%; max-width: 25%; padding-left: 2%; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+              <a style="font-size: 2.5vh; font-weight: 800">Nome</a>
+            </div>
+            <div title="Descrição" style="width: 50%; max-width: 50%; padding-left: 2%; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+              <a style="font-size: 2.5vh; font-weight: 800">Descrição</a>
+            </div>
+            <div title="Fechar" style="width: 4%; max-width: 4%; border-left: 0.1vh solid gray; text-align: center; padding-block: 0.7vh;">
+              <i onclick="closeAcomp()" class="far fa-times" style="cursor: pointer; font-size: 3.2vh; color: red; font-weight: 600; margin-top: 0.2vh"></i>
+            </div>
+          </div>
+        `
+        s.acomps.forEach((element,i)=>{
+          document.getElementById('listAcomp').innerHTML += `
+          <div id="acomp_${element.id}" style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
+            <div title="Data" style="width: 15%; max-width: 15%; overflow: hidden; padding-left: 2%; padding-block: 0.5vh; display: flex; align-items: center;">
+              <a style="font-size: 1.8vh">${element.data.slice(8,10)}/${element.data.slice(5,7)}/${element.data.slice(0,4)} ${element.data.slice(11,16)}</a>
+            </div>
+            <div title="Nome" style="width: 25%; max-width: 25%; overflow: hidden; padding-left: 2%; border-left: 0.1vh solid gray; padding-block: 0.5vh; display: flex; align-items: center;">
+              <a style="font-size: 1.8vh; font-weight: 800">${element.agente}</a>
+            </div>
+            <div title="Descrição" style="width: 50%; max-width: 50%; overflow: hidden; padding-left: 2%; border-left: 0.1vh solid gray; padding-block: 0.5vh; display: flex; align-items: center;">
+              <a style="font-size: 1.8vh">${element.descricao.replaceAll('\n','<br/>')}</a>
+            </div>
+            <div title="Fechar" style="width: 4%; max-width: 4%; border-left: 0.1vh solid gray; text-align: center; padding-block: 0.5vh">
+              <i onclick="deleteAcomp('${codAF}','${element.id}')" class="fa-solid fa-trash-xmark" style="cursor: pointer; font-size: 1.8vh; color: red; font-weight: 600"></i>
+            </div>
+          </div>
+          `
+        })
+        document.getElementById('acomp').style.display = 'flex'
+      },
+      error: function(e) {
+        getAcompBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    });
+  }
+
+  var acompDeleteBlock = false
+  function deleteAcomp(codAF, codAcomp) {
+    if (acompDeleteBlock) return alert('Aguarde...')
+    if (!codAF || !codAcomp) return alert('Codigo de AF/Acomp não definido...')
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    acompDeleteBlock = true
+    $.ajax({ type: "post", url: `${apiURL}/propostas/afs/remAcomp`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      codAF: codAF,
+      codAcomp: codAcomp
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        acompDeleteBlock = false
+        if (s.error) return alert(s.error)
+        alert('Acompanhamento apagado com sucesso...')
+        document.getElementById(`acomp_${codAcomp}`).style.setProperty('color', 'red', 'important');
+      },
+      error: function(e) {
+        acompDeleteBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    })
+  }
+  function newAcomp(codAF) {
+    if (acompDeleteBlock) return alert('Aguarde...')
+    if (!codAF) return alert('Codigo de AF não definido...')
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (!document.getElementById('newAcomp').value) return alert('Escreva o que você desejas colocar no acompanhamento...')
+    acompDeleteBlock = true
+    $.ajax({ type: "post", url: `${apiURL}/propostas/afs/newAcomp`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      codAF: codAF,
+      descricao: document.getElementById('newAcomp').value
+    }),contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        acompDeleteBlock = false
+        if (s.error) return alert(s.error)
+        alert('Acompanhamento inserido com sucesso...')
+        await closeAcomp();
+        return getAcomp(codAF); 
+      },
+      error: function(e) {
+        acompDeleteBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    })
+  }
+
   var generatorMenu = false
   function closeGenerator() {
     generatorMenu = false
     document.getElementById('generator').style.display = 'none'
   }
-
+  
   var generatorCod = false
   function generator(codAF) {
     if (generatorCod || generatorMenu) return alert('Aguarde...')

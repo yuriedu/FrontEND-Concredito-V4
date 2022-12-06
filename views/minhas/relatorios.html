@@ -742,7 +742,7 @@
       await erros.map((element,index)=>{
         csv+=`${index != 0 ? '\n' : ''}${element.cpf};${element.bank},`
       })
-    } else if (type == 'oportunidades') {
+    } else if (menu == 'oportunidades') {
       await fgts.oportunidades.map((element,index)=>{
         csv+=`${index != 0 ? '\n' : ''}${element.cpf};${element.bank},`
       })
