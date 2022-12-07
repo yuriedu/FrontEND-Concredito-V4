@@ -324,7 +324,7 @@ const fasesName = {
             </div>
           </div>
         `
-        s.acomps.forEach((element,i)=>{
+        s.acomps.reverse().forEach((element,i)=>{
           document.getElementById('listAcomp').innerHTML += `
           <div id="acomp_${element.id}" style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
             <div title="Data" style="width: 15%; max-width: 15%; overflow: hidden; padding-left: 2%; padding-block: 0.5vh; display: flex; align-items: center;">

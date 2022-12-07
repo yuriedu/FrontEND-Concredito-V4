@@ -271,14 +271,14 @@
           if (s.afs.months.find(r2=>r2[0] == r.dia) && aux.find(r2=>r2==Number(r.mes))) s.afs.months.find(r2=>r2[0] == r.dia)[aux.findIndex(r2=>r2==Number(r.mes)) + 1] = r.valor
         })
         //META
-        document.getElementById('topMeta').innerHTML = `${s.meta ? s.meta.replace('.',',') : 0}%`
+        document.getElementById('topMeta').innerHTML = `${s.meta ? s.meta.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 0}%`
         var comissaoMeta = comissao.find(r=>s.meta >= r.min && s.meta < r.max)
         if (comissaoMeta) document.getElementById('topComissao').innerHTML = `R$ ${comissaoMeta.comissao},00`
         //AFs
         var afsDia = (s.afs.func / s.dates.max.slice(8,10) / ( s.agentes ? s.agentes.length : 1 )).toFixed(0)
         document.getElementById('topAFsDia').innerHTML = afsDia && afsDia != "NaN" ? afsDia : 0
         var ticket = (s.afs.vlFunc / s.afs.func).toFixed(2)
-        document.getElementById('topTicket').innerHTML = ticket ? ticket == "NaN" ? `R$ 0,00` : `R$ `+ticket.replace('.',',') : 0
+        document.getElementById('topTicket').innerHTML = ticket ? ticket == "NaN" ? `R$ 0,00` : `R$ `+ticket.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 0
         var metaDia = (Number(s.meta) / s.dates.max.slice(8,10)).toFixed(2)
         var metaMes = (metaDia * Number(s.days)).toFixed(2)
         document.getElementById('topProjecao').innerHTML = metaMes && metaMes != "NaN" ? `${metaMes ? metaMes : 0}%` : "0%"
@@ -286,16 +286,16 @@
         if (comissaoMeta) document.getElementById('topProjecaoCom').innerHTML = `R$ ${comissaoMeta.comissao},00`
         var ticketEmpresa = (s.afs.vlEmpresa / s.afs.empresa).toFixed(2)
         var afsRestante = ((((Number(s.objetivo) * ( s.agentes ? s.agentes.length : 1 )) - Number( s.somaMeta ? s.somaMeta : s.meta)) * 1050) / ticketEmpresa).toFixed(0)
-        document.getElementById('topAFsRestante').innerHTML = afsRestante && afsRestante != "NaN" ? afsRestante.replace('.',',') : 0
+        document.getElementById('topAFsRestante').innerHTML = afsRestante && afsRestante != "NaN" ? afsRestante.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 0
         var vlRestante = (((Number(s.objetivo) * ( s.agentes ? s.agentes.length : 1 )) - Number( s.somaMeta ? s.somaMeta : s.meta)) * 1050).toFixed(2)
-        document.getElementById('topValorRestante').innerHTML = vlRestante && vlRestante != "NaN" ? `R$ `+vlRestante.replace('.',',') : 'R$ 0,00'
+        document.getElementById('topValorRestante').innerHTML = vlRestante && vlRestante != "NaN" ? `R$ `+vlRestante.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 'R$ 0,00'
         s.days = (document.getElementById('dateEnd').value ? Number(s.dates.max.slice(8,10)) : s.days) - Number(s.dates.min.slice(8,10))
         var valorDia = (vlRestante / s.days).toFixed(2)
-        document.getElementById('topValorDia').innerHTML = valorDia && valorDia != "NaN" ? `R$ `+valorDia.replace('.',',') : "R$ 0,00"
-        document.getElementById('topPago').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlFunc).replace('.',',') : "R$ 0,00"
+        document.getElementById('topValorDia').innerHTML = valorDia && valorDia != "NaN" ? `R$ `+valorDia.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): "R$ 0,00"
+        document.getElementById('topPago').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlFunc).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): "R$ 0,00"
         document.getElementById('topPagoQnt').innerHTML = "Qnt: "+s.afs.func
       
-        document.getElementById('topCadastrado').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlCadastrado).replace('.',',') : "R$ 0,00"
+        document.getElementById('topCadastrado').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlCadastrado).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.') : "R$ 0,00"
         document.getElementById('topCadastradoQnt').innerHTML = "Qnt: "+s.afs.cadastrado
 
         document.getElementById('grafico1').innerHTML = `
@@ -305,14 +305,14 @@
             <div style="display: flex; flex-direction: column; min-width: 45%; text-align: left">
               ${s.afs.midias.slice(0,s.afs.midias.length/2).map(r=>
                 `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / s.afs.vlMidias) ? (r.value * 100 / s.afs.vlMidias).toFixed(2).replace('.',',') : '0'}%</span>
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / s.afs.vlMidias) ? (r.value * 100 / s.afs.vlMidias).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
                 </a>`
               ).join('')}
             </div>
             <div style="display: flex; flex-direction: column; width: 45% text-align: right; margin-left: 10%">
               ${s.afs.midias.slice(s.afs.midias.length/2,s.afs.midias.length).map(r=>
                 `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / s.afs.vlMidias) ? (r.value * 100 / s.afs.vlMidias).toFixed(2).replace('.',',') : '0'}%</span>
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / s.afs.vlMidias) ? (r.value * 100 / s.afs.vlMidias).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
                 </a>`
               ).join('')}
             </div>
@@ -489,7 +489,7 @@
       }
     })
 
-    document.getElementById('topLiberado').innerHTML = fgts.total ? `R$ `+String(fgts.total.toFixed(2)).replace('.',',') : 0
+    document.getElementById('topLiberado').innerHTML = fgts.total ? `R$ `+String(fgts.total.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 0
     document.getElementById('topSucessos').innerHTML = sucessos.length
     document.getElementById('topErros').innerHTML = erros.length
     document.getElementById('topSucessosTotal').innerHTML = `Total: `+total.filter(r=>!r.error).length
@@ -500,9 +500,9 @@
     var qntFGTS = Number(sucessos.length / result.dates.max.slice(8,10)).toFixed(0)
     document.getElementById('topMedAfPorDiaQnt').innerHTML = qntFGTS && qntFGTS != "NaN" ? qntFGTS : 0
     var valorFGTS = Number(fgts.total / result.dates.max.slice(8,10)).toFixed(2)
-    document.getElementById('topMedAfPorDiaValor').innerHTML = valorFGTS && valorFGTS != "NaN" ? `R$ ${valorFGTS.replace('.',',')}` : 'R$ 0,00'
+    document.getElementById('topMedAfPorDiaValor').innerHTML = valorFGTS && valorFGTS != "NaN" ? `R$ ${valorFGTS.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}` : 'R$ 0,00'
     var ticket = Number(fgts.total / erros.length).toFixed(2)
-    document.getElementById('topTicket2').innerHTML = ticket && ticket != "NaN" ? `R$ ${ticket.replace('.',',')}` : 'R$ 0,00'
+    document.getElementById('topTicket2').innerHTML = ticket && ticket != "NaN" ? `R$ ${ticket.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}` : 'R$ 0,00'
 
     var banks_sucessos = [
       { value: sucessos.filter(r=> r.bank == "FACTA FINANCEIRA").length, color:'#ffa500', highlight:"#ffa500", label:"FACTA FINANC." },
@@ -519,14 +519,14 @@
         <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
           ${banks_sucessos.slice(0,banks_sucessos.length/2).map(r=>
             `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / sucessos.length) ? (r.value * 100 / sucessos.length).toFixed(2).replace('.',',') : '0'}%</span>
+              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / sucessos.length) ? (r.value * 100 / sucessos.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
             </a>`
           ).join('')}
         </div>
         <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
           ${banks_sucessos.slice(banks_sucessos.length/2,banks_sucessos.length).map(r=>
             `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / sucessos.length) ? (r.value * 100 / sucessos.length).toFixed(2).replace('.',',') : '0'}%</span>
+              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / sucessos.length) ? (r.value * 100 / sucessos.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
             </a>`
           ).join('')}
         </div>
@@ -549,14 +549,14 @@
         <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
           ${banks_erros.slice(0,banks_erros.length/2).map(r=>
             `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / erros.length) ? (r.value * 100 / erros.length).toFixed(2).replace('.',',') : '0'}%</span>
+              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / erros.length) ? (r.value * 100 / erros.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
             </a>`
           ).join('')}
         </div>
         <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
           ${banks_erros.slice(banks_erros.length/2,banks_erros.length).map(r=>
             `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / erros.length) ? (r.value * 100 / erros.length).toFixed(2).replace('.',',') : '0'}%</span>
+              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / erros.length) ? (r.value * 100 / erros.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
             </a>`
           ).join('')}
         </div>
@@ -579,14 +579,14 @@
         <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
           ${banks_total.slice(0,banks_total.length/2).map(r=>
             `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / total.length) ? (r.value * 100 / total.length).toFixed(2).replace('.',',') : '0'}%</span>
+              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / total.length) ? (r.value * 100 / total.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
             </a>`
           ).join('')}
         </div>
         <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
           ${banks_total.slice(banks_total.length/2,banks_total.length).map(r=>
             `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / total.length) ? (r.value * 100 / total.length).toFixed(2).replace('.',',') : '0'}%</span>
+              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / total.length) ? (r.value * 100 / total.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
             </a>`
           ).join('')}
         </div>
@@ -594,13 +594,9 @@
     `
     new Chart(document.getElementById("graficoBanks6").getContext("2d")).Pie(banks_total);
 
-    var banks = [
-      { value: erros.filter(r=> r.bank == "FACTA FINANCEIRA").length, color:'#ffa500', highlight:"#ffa500", label:"FACTA FINANC." },
-      { value: erros.filter(r=> r.bank == "BANCO C6").length, color:'#FFFF00', highlight:"#FFFF00", label:"BANCO C6" },
-      { value: erros.filter(r=> r.bank == "PANAMERICANO").length, color:'#808080', highlight:"#808080", label:"PANAMERICANO" },
-      { value: erros.filter(r=> r.bank == "MERCANTIL").length, color:'#0000FF', highlight:"#0000FF", label:"MERCANTIL" },
-      { value: erros.filter(r=> r.bank == "BMG").length, color:'#FF0000', highlight:"#FF0000", label:"BMG" },
-      { value: erros.filter(r=> r.bank == "SAFRA").length, color:'#00FFFF', highlight:"#00FFFF", label:"SAFRA" },
+    var grafico3 = [
+      { value: sucessos.length, color:'#ffa500', highlight:"#ffa500", label:"Sucessos" },
+      { value: erros.length, color:'#FFFF00', highlight:"#FFFF00", label:"Erros" },
     ]
 
     document.getElementById('grafico3').innerHTML = `
@@ -608,23 +604,23 @@
       <canvas id="graficoBanks" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
       <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 90%; margin-inline: 10%">
         <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
-          ${banks.slice(0,banks.length/2).map(r=>
+          ${grafico3.slice(0,grafico3.length/2).map(r=>
             `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / sucessos.length) ? (r.value * 100 / sucessos.length).toFixed(2).replace('.',',') : '0'}%</span>
+              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / (sucessos.length + erros.length)) ? (r.value * 100 / (sucessos.length + erros.length)).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
             </a>`
           ).join('')}
         </div>
         <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
-          ${banks.slice(banks.length/2,banks.length).map(r=>
+          ${grafico3.slice(grafico3.length/2,grafico3.length).map(r=>
             `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / sucessos.length) ? (r.value * 100 / sucessos.length).toFixed(2).replace('.',',') : '0'}%</span>
+              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / (sucessos.length + erros.length)) ? (r.value * 100 / (sucessos.length + erros.length)).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
             </a>`
           ).join('')}
         </div>
       </div>
     `
     var graficoBanks = document.getElementById("graficoBanks").getContext("2d");
-    new Chart(graficoBanks).Pie(banks);
+    new Chart(graficoBanks).Pie(grafico3);
 
     document.getElementById('listLiberado').innerHTML = `<div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; max-height: 60vh; overflow-y: auto; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 55vw; max-width: 55vw; overflow-x: hidden; margin-right: 2vw">
       <div id="listaLiberado" style="width: 100%">
@@ -675,7 +671,7 @@
             <a style="font-size: 2.3vh">${element.user}</a>
           </div>
           <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
-            <a style="font-size: 2vh">R$ ${String(element.total.toFixed(2)).replace('.',',').replace('null','0,00')}</a>
+            <a style="font-size: 2vh">R$ ${String(element.total.toFixed(2)).replace('.',',').replace('null','0,00').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</a>
           </div>
           <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.sucessos.length}</a>
@@ -690,7 +686,7 @@
             <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
           </div>
           <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
-            <a style="font-size: 2vh">R$ ${element.valorAfs ? String(element.valorAfs.toFixed(2)).replace('.',',') : '0,00'}</a>
+            <a style="font-size: 2vh">R$ ${element.valorAfs ? String(element.valorAfs.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0,00'}</a>
           </div>
         </div>
       `
@@ -765,7 +761,7 @@
             <a style="font-size: 2.3vh">${element.user}</a>
           </div>
           <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
-            <a style="font-size: 2vh">R$ ${String(element.total.toFixed(2)).replace('.',',').replace('null','0,00')}</a>
+            <a style="font-size: 2vh">R$ ${String(element.total.toFixed(2)).replace('.',',').replace('null','0,00').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</a>
           </div>
           <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.sucessos.length}</a>
@@ -780,7 +776,7 @@
             <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
           </div>
           <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
-            <a style="font-size: 2vh">R$ ${element.valorAfs ? String(element.valorAfs.toFixed(2)).replace('.',',') : '0,00'}</a>
+            <a style="font-size: 2vh">R$ ${element.valorAfs ? String(element.valorAfs.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0,00'}</a>
           </div>
         </div>
       `
