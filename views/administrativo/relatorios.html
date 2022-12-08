@@ -822,7 +822,7 @@
       if (!sucessos || sucessos.length <= 0) return alert(`A lista de resultados está vazia...`)
       csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
       await sucessos.map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll('.','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll('.','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
     } else if (type == 'Erros') {
       if (!erros || erros.length <= 0) return alert(`A lista de resultados está vazia...`)
@@ -834,7 +834,7 @@
       if (!fgts.oportunidades || fgts.oportunidades.length <= 0) return alert(`A lista de resultados está vazia...`)
       csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
       await fgts.oportunidades.map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll('.','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll('.','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
     } else return alert('Menu não encontrado...')
     var a = document.createElement('a');
@@ -853,7 +853,7 @@
     if (type == 'Sucessos') {
       csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
       await total.filter(r=>r.liberado).map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll('.','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll('.','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
     } else {
       csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR`
