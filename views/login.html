@@ -71,6 +71,7 @@
         if (s.login) {
           localStorage.setItem('user', document.getElementById('user').value)
           localStorage.setItem('password', document.getElementById('password').value)
+          localStorage.setItem('expire', s.expire.slice(0,13))
           var url = window.location.pathname.split('/')
           if (url[1] == "login" || url[1] == "logout") return window.location = "/"
           if (url[1]) return location.reload();
@@ -78,6 +79,7 @@
         } else {
           localStorage.setItem('user', '')
           localStorage.setItem('password', '')
+          localStorage.setItem('expire', '')
           document.getElementById('loginMenu').style.display = 'none'
           document.getElementById('codeMenu').style.display = 'inline'
         }

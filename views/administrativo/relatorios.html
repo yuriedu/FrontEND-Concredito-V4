@@ -279,8 +279,8 @@
         document.getElementById('topAFsDia').innerHTML = afsDia && afsDia != "NaN" ? afsDia : 0
         var ticket = (s.afs.vlFunc / s.afs.func).toFixed(2)
         document.getElementById('topTicket').innerHTML = ticket ? ticket == "NaN" ? `R$ 0,00` : `R$ `+ticket.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 0
-        var metaDia = (Number(s.meta) / s.dates.max.slice(8,10)).toFixed(2)
-        var metaMes = (metaDia * Number(s.days)).toFixed(2)
+        var metaDia = (Number(s.meta) / s.dates.now.slice(8,10)).toFixed(2)
+        var metaMes = (metaDia * s.dates.max.slice(8,10)).toFixed(2)
         document.getElementById('topProjecao').innerHTML = metaMes && metaMes != "NaN" ? `${metaMes ? metaMes : 0}%` : "0%"
         var comissaoMeta = comissao.find(r=>metaMes >= r.min && metaMes < r.max)
         if (comissaoMeta) document.getElementById('topProjecaoCom').innerHTML = `R$ ${comissaoMeta.comissao},00`
@@ -647,8 +647,8 @@
           </div>
           <div title="Quantidade Total" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">T</a>
-            <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
-            <input type="hidden" id="total_list" value="0">
+            <i onclick="redirect('consultasTotal')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+            <input type="hidden" id="consultasTotal_list" value="0">
           </div>
           <div title="Quantidade de AFs(Consultados)" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">AF</a>
@@ -665,6 +665,7 @@
     </div>`
     agilus = fgts.funcionarios
     agilus.forEach((element,index)=>{
+      agilus[index].consultasTotal = element.sucessos.length + element.erros.length
       document.getElementById('listaLiberado').innerHTML += `
         <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray">
           <div style="width: 17vw; max-width: 17vw; padding-left: 2%">
@@ -680,7 +681,7 @@
             <a style="font-size: 2vh">${element.erros.length}</a>
           </div>
           <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
-            <a style="font-size: 2vh">${element.sucessos.length + element.erros.length}</a>
+            <a style="font-size: 2vh">${element.consultasTotal}</a>
           </div>
           <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
@@ -703,15 +704,19 @@
     var aux = 0
     if (document.getElementById(`${menu}_list`) && document.getElementById(`${menu}_list`).value == '1') aux = 1
     document.getElementById('listaLiberado').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+    // var test = ''
     if (aux == 0) {
       agilus.sort(function(a, b) {
-        var aux1 = String(a[menu]).replace(',','.')
-        var aux2 = String(b[menu]).replace(',','.')
-        if (aux1 == '0') aux1 = -1
-        if (aux2 == '0') aux2 = -1
-        if (Number(aux1) && Number(aux2)) return aux1-aux2
-        return aux2.localeCompare(aux1)
+        var one = String(a[menu]).replace('R$','').replaceAll(' ','')//.replaceAll('.','').replaceAll(',','.')
+        var two = String(b[menu]).replace('R$','').replaceAll(' ','')//.replaceAll('.','').replaceAll(',','.')
+        if (Number(one)) one = Number(one)
+        if (Number(two)) two = Number(two)
+        // test += '\n'+one+ ' - '+two
+        if (one < two) return -1;
+        if (one > two) return 1;
+        return 0;
       });
+      // alert(test)
     } else if (aux == 1) agilus.reverse()
     document.getElementById('listaLiberado').innerHTML = `
     <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
@@ -737,8 +742,8 @@
       </div>
       <div title="Quantidade Total" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
         <a style="font-size: 2.5vh; font-weight: 800">T</a>
-        <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
-        <input type="hidden" id="total_list" value="0">
+        <i onclick="redirect('consultasTotal')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+        <input type="hidden" id="consultasTotal_list" value="0">
       </div>
       <div title="Quantidade de AFs(Consultados)" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
         <a style="font-size: 2.5vh; font-weight: 800">AF</a>
@@ -770,7 +775,7 @@
             <a style="font-size: 2vh">${element.erros.length}</a>
           </div>
           <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
-            <a style="font-size: 2vh">${element.sucessos.length + element.erros.length}</a>
+            <a style="font-size: 2vh">${element.consultasTotal}</a>
           </div>
           <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
@@ -817,7 +822,7 @@
       if (!sucessos || sucessos.length <= 0) return alert(`A lista de resultados está vazia...`)
       csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
       await sucessos.map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll('.','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll('.','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
     } else if (type == 'Erros') {
       if (!erros || erros.length <= 0) return alert(`A lista de resultados está vazia...`)
@@ -829,7 +834,7 @@
       if (!fgts.oportunidades || fgts.oportunidades.length <= 0) return alert(`A lista de resultados está vazia...`)
       csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
       await fgts.oportunidades.map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll('.','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll('.','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
     } else return alert('Menu não encontrado...')
     var a = document.createElement('a');
@@ -848,7 +853,7 @@
     if (type == 'Sucessos') {
       csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
       await total.filter(r=>r.liberado).map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll('.','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll('.','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
     } else {
       csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR`

@@ -108,6 +108,33 @@
     </div>
   </div>
 
+  <div id="faseMotivo" class="background-reverse left18-5 width79 font-color-reverse" style="display: none; z-index: 5; position: fixed; top: 25%; left: 25%; width: 45%; border-radius: 3vh; padding-bottom: 3vh; padding-inline: 2.5%">
+    <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; ">
+      <div style="position:absolute; top: 2vh; right: 3vh; cursor: pointer">
+        <i onclick="closeMotivoFase()" class="far fa-times" style="cursor: pointer; font-size: 3.5vh;"></i>
+      </div>
+      <div style="width: 100%; display: flex; flex-direction: column; align-items: center; max-height: 60vh; overflow: auto">
+        <a style="font-size: 3vh; font-weight: 600; margin-top: 3vh;">Motivo da Fase:</a>
+        <input type="hidden" id="af_motivoFase" value="0">
+        <input type="hidden" id="fase_motivoFase" value="0">
+        <fieldset id="fieldset" title="Motivo Fase" style="margin-top: 2vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 40%; margin-inline: 1%; padding-inline: 1%;">
+          <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Motivo Fase</legend>
+          <select id="motivoFase" class="font-color-reverse navbar-color-select" style="font-weight: 500; font-size: 2vh; padding: 0; margin: 0; cursor: pointer; padding-block: 0.6vh; background: transparent; border: none; text-align: center; display: flex; width: 100%; justify-content: center; align-items: center">
+            <option style="color: black" value="" selected>Coloque o Motivo</option>
+            <optgroup id="motivosMenu" label="Motivos" style="color: black"></optgroup>
+          </select>
+        </fieldset>
+        <fieldset id="fieldset" title="Observação" style="margin-top: 1vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 95%; margin-inline: 1%; padding-inline: 1%;">
+          <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Observação</legend>
+          <textarea rows="4" class="font-1 font-color-reverse" placeholder="Coloque um Observação..." id="obsFase" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0"></textarea>
+        </fieldset>
+        <div id="filter" onclick="changeFase(document.getElementById('af_motivoFase').value, document.getElementById('fase_motivoFase').value, document.getElementById('motivoFase').value, document.getElementById('obsFase').value)" class="buttonLogin" style="width: 30%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">
+          <a>Mudar Fase</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="background-image margin-left2-5 width79" style="margin-top: 3vh; display: flex; margin-left: 6vw; width: 92.5vw; min-height: 12vh; border-radius: 2vh; text-align: center; justify-content: center; align-items: center; font-size: 1.7vh;">
     <fieldset class="width60p" title="Pesquise alguma proposta por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
       <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
@@ -162,6 +189,12 @@ const fasesName = {
   '120001': 'PENDENTE POR ASSINATURA',
   '202552': 'Envia Requisição CIP',
 }
+
+  var propostasAgilus = []
+  var fasesAgilus = false
+  var motivosAgilus = false
+  var origemAgilus = false
+  var agentes = false
 
   var menuPropostaActual = false
   function menuPropostas(icon, codAF, bank) {
@@ -441,29 +474,48 @@ Link: ${af.link}
   }
 
   var changeFaseActive = false
-  function changeFase(codAF,fase) {
+  var blockFase = false
+  function changeFase(codAF,fase,motivo,obs) {
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (!fase) return alert('Selecione alguma fase...')
-    if (changeFaseActive) return alert('Você já está alterando a fase de alguma proposta! Aguarde...')
-    changeFaseActive = true
+    if (blockFase) return alert('Aguarde...')
+    if (!fase && !motivo) return alert('Selecione alguma fase...')
+    if (motivosAgilus.find(r=> r.fase == fase) && !motivo) {
+      document.getElementById('af_motivoFase').value = codAF
+      document.getElementById('fase_motivoFase').value = fase
+      document.getElementById('motivosMenu').innerHTML = ``
+      motivosAgilus.filter(r=> r.fase == fase).forEach((element,i)=>{
+        document.getElementById('motivosMenu').innerHTML += `<option style="color: black" value="${element.codigo}">${element.motivo}</option>`
+      })
+      return document.getElementById('faseMotivo').style.display = 'flex'
+    }
+    var proposta = propostasAgilus.find(r=> r.codAF == codAF)
+    if (!proposta) return alert('Proposta não encontrada...')
+    document.getElementById('faseMotivo').style.display = 'none'
+    blockFase = true
     $.ajax({ type: "post", url: `${apiURL}/propostas/afs/fase`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
       proposta: codAF,
       fase: fase,
+      motivo: motivo,
+      motivoDesc: motivosAgilus.filter(r=> r.fase == fase).find(r=> r.codigo == motivo) ? motivosAgilus.filter(r=> r.fase == fase).find(r=> r.codigo == motivo).motivo : motivo,
+      obs: obs,
     }),contentType:"application/json; charset=utf-8",
       success: function(s) {
-        changeFaseActive = false
+        blockFase = false
         if (s.error) return alert(s.error)
+        proposta.codFase = fase
         alert(`A proposta: ${codAF} teve sua fase alterada com sucesso!`)
       },
       error: function(e) {
-        changeFaseActive = false
+        blockFase = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     });
   }
+
+  function closeMotivoFase() { document.getElementById('faseMotivo').style.display = 'none' }
 
   var banks = {
     "FACTA FINANCEIRA": { option1: "GOLD" },

@@ -654,6 +654,7 @@
     </div>`
     agilus = fgts.funcionarios
     agilus.forEach((element,index)=>{
+      agilus[index].consultasTotal = element.sucessos.length + element.erros.length
       document.getElementById('listaLiberado').innerHTML += `
         <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray">
           <div style="width: 17vw; max-width: 17vw; padding-left: 2%">
@@ -669,7 +670,7 @@
             <a style="font-size: 2vh">${element.erros.length}</a>
           </div>
           <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
-            <a style="font-size: 2vh">${element.sucessos.length + element.erros.length}</a>
+            <a style="font-size: 2vh">${element.consultasTotal}</a>
           </div>
           <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
@@ -694,12 +695,14 @@
     document.getElementById('listaLiberado').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     if (aux == 0) {
       agilus.sort(function(a, b) {
-        var aux1 = String(a[menu]).replace(',','.')
-        var aux2 = String(b[menu]).replace(',','.')
-        if (aux1 == '0') aux1 = -1
-        if (aux2 == '0') aux2 = -1
-        if (Number(aux1) && Number(aux2)) return aux1-aux2
-        return aux2.localeCompare(aux1)
+        var one = String(a[menu]).replace('R$','').replaceAll(' ','')//.replaceAll('.','').replaceAll(',','.')
+        var two = String(b[menu]).replace('R$','').replaceAll(' ','')//.replaceAll('.','').replaceAll(',','.')
+        if (Number(one)) one = Number(one)
+        if (Number(two)) two = Number(two)
+        // test += '\n'+one+ ' - '+two
+        if (one < two) return -1;
+        if (one > two) return 1;
+        return 0;
       });
     } else if (aux == 1) agilus.reverse()
     document.getElementById('listaLiberado').innerHTML = `
@@ -726,8 +729,8 @@
       </div>
       <div title="Quantidade Total" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
         <a style="font-size: 2.5vh; font-weight: 800">T</a>
-        <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
-        <input type="hidden" id="total_list" value="0">
+        <i onclick="redirect('consultasTotal')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+        <input type="hidden" id="consultasTotal_list" value="0">
       </div>
       <div title="Quantidade de AFs(Consultados)" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
         <a style="font-size: 2.5vh; font-weight: 800">AF</a>
@@ -759,7 +762,7 @@
             <a style="font-size: 2vh">${element.erros.length}</a>
           </div>
           <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
-            <a style="font-size: 2vh">${element.sucessos.length + element.erros.length}</a>
+            <a style="font-size: 2vh">${element.consultasTotal}</a>
           </div>
           <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
