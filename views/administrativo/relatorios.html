@@ -456,7 +456,7 @@
       if (func) {
         if (element.liberado && !func.sucessos.find(r=> r.cpf == element.cpf)) {
           func.sucessos[func.sucessos.length] = element
-          func.total += Number(element.liberado.replaceAll('R$ ','').replaceAll('.','').replaceAll(',','.'))
+          func.total += Number(element.liberado.replaceAll('R$ ','').replaceAll(',','.'))
         }
         if (element.error && !func.erros.find(r=> r.cpf == element.cpf)) func.erros[func.erros.length] = element
       } else fgts.funcionarios[fgts.funcionarios.length] = {
@@ -672,7 +672,7 @@
             <a style="font-size: 2.3vh">${element.user}</a>
           </div>
           <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
-            <a style="font-size: 2vh">R$ ${String(element.total.toFixed(2)).replace('.',',').replace('null','0,00').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</a>
+            <a style="font-size: 2vh">R$ ${element.total ? String(element.total.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '0,00'}</a>
           </div>
           <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.sucessos.length}</a>
