@@ -54,7 +54,10 @@
                 if (s.error) alert(s.error)
                 return logout();
               } else if (s.error) return alert(s.error)
-              if (!s.login || !s.login.expire || s.login.expire.slice(0,13) != localStorage.getItem('expire')) return logout();
+              if (!s.login || !s.login.expire || s.login.expire.slice(0,13) != localStorage.getItem('expire')) {
+                alert('Seu login expirou! Faça login novamente...')
+                return logout();
+              }
               if (s.alert) alert(s.alert)
               login = s
               if (url[2]) return $(document.body).load(`/views/${url[1]}/${url[2]}.html`)
