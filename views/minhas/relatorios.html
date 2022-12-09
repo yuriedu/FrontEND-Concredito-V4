@@ -268,8 +268,8 @@
         document.getElementById('topAFsDia').innerHTML = afsDia && afsDia != "NaN" ? afsDia : 0
         var ticket = (s.afs.vlFunc / s.afs.func).toFixed(2)
         document.getElementById('topTicket').innerHTML = ticket ? ticket == "NaN" ? `R$ 0,00` : `R$ `+ticket.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 0
-        var metaDia = (Number(s.meta) / s.dates.max.slice(8,10)).toFixed(2)
-        var metaMes = (metaDia * Number(s.days)).toFixed(2)
+        var metaDia = (Number(s.meta) / s.dates.now.slice(8,10)).toFixed(2)
+        var metaMes = (metaDia * s.dates.max.slice(8,10)).toFixed(2)
         document.getElementById('topProjecao').innerHTML = metaMes && metaMes != "NaN" ? `${metaMes ? metaMes : 0}%` : "0%"
         var comissaoMeta = comissao.find(r=>metaMes >= r.min && metaMes < r.max)
         if (comissaoMeta) document.getElementById('topProjecaoCom').innerHTML = `R$ ${comissaoMeta.comissao},00`
@@ -437,7 +437,7 @@
       if (element.user) element.user = element.user.replace(' ','').toLowerCase()
       if (element.liberado && !sucessos.find(r=> r.cpf == element.cpf)) {
         sucessos[sucessos.length] = element
-        fgts.total += Number(element.liberado.replaceAll('R$ ','').replaceAll('.','').replaceAll(',','.'))
+        fgts.total += Number(element.liberado.replaceAll('R$ ','').replaceAll(',','.'))
       }
       if (element.error && !erros.find(r=> r.cpf == element.cpf)) erros[erros.length] = element
 
@@ -445,7 +445,7 @@
       if (func) {
         if (element.liberado && !func.sucessos.find(r=> r.cpf == element.cpf)) {
           func.sucessos[func.sucessos.length] = element
-          func.total += Number(element.liberado.replaceAll('R$ ','').replaceAll('.','').replaceAll(',','.'))
+          func.total += Number(element.liberado.replaceAll('R$ ','').replaceAll(',','.'))
         }
         if (element.error && !func.erros.find(r=> r.cpf == element.cpf)) func.erros[func.erros.length] = element
       } else fgts.funcionarios[fgts.funcionarios.length] = {
@@ -490,7 +490,7 @@
     document.getElementById('topMedAfPorDiaQnt').innerHTML = qntFGTS && qntFGTS != "NaN" ? qntFGTS : 0
     var valorFGTS = Number(fgts.total / result.dates.max.slice(8,10)).toFixed(2)
     document.getElementById('topMedAfPorDiaValor').innerHTML = valorFGTS && valorFGTS != "NaN" ? `R$ ${valorFGTS.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}` : 'R$ 0,00'
-    var ticket = Number(fgts.total / erros.length).toFixed(2)
+    var ticket = Number(fgts.total / sucessos.length).toFixed(2)
     document.getElementById('topTicket2').innerHTML = ticket && ticket != "NaN" ? `R$ ${ticket.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}` : 'R$ 0,00'
 
     var banks_sucessos = [
@@ -636,8 +636,8 @@
           </div>
           <div title="Quantidade Total" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">T</a>
-            <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
-            <input type="hidden" id="total_list" value="0">
+            <i onclick="redirect('consultasTotal')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+            <input type="hidden" id="consultasTotal_list" value="0">
           </div>
           <div title="Quantidade de AFs(Consultados)" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">AF</a>
@@ -661,7 +661,7 @@
             <a style="font-size: 2.3vh">${element.user}</a>
           </div>
           <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
-            <a style="font-size: 2vh">R$ ${String(element.total.toFixed(2)).replace('.',',').replace('null','0,00').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</a>
+            <a style="font-size: 2vh">R$ ${element.total ? String(element.total.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '0,00'}</a>
           </div>
           <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.sucessos.length}</a>
@@ -693,6 +693,7 @@
     var aux = 0
     if (document.getElementById(`${menu}_list`) && document.getElementById(`${menu}_list`).value == '1') aux = 1
     document.getElementById('listaLiberado').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+    // var test = ''
     if (aux == 0) {
       agilus.sort(function(a, b) {
         var one = String(a[menu]).replace('R$','').replaceAll(' ','')//.replaceAll('.','').replaceAll(',','.')
@@ -704,6 +705,7 @@
         if (one > two) return 1;
         return 0;
       });
+      // alert(test)
     } else if (aux == 1) agilus.reverse()
     document.getElementById('listaLiberado').innerHTML = `
     <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
@@ -802,7 +804,7 @@
   }
 
   async function downloadCSV(type) {
-    return alert(`Você não pode utilizar esse sistema...`)
+    return alert('Você não pode fazer essa ação por aqui...')
     if (block) return alert('Aguarde...')
     block = true
     var csv = false
@@ -810,7 +812,7 @@
       if (!sucessos || sucessos.length <= 0) return alert(`A lista de resultados está vazia...`)
       csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
       await sucessos.map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
     } else if (type == 'Erros') {
       if (!erros || erros.length <= 0) return alert(`A lista de resultados está vazia...`)
@@ -822,7 +824,7 @@
       if (!fgts.oportunidades || fgts.oportunidades.length <= 0) return alert(`A lista de resultados está vazia...`)
       csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
       await fgts.oportunidades.map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
     } else return alert('Menu não encontrado...')
     var a = document.createElement('a');
@@ -834,7 +836,7 @@
   }
 
   async function downloadTotalCSV(type) {
-    return alert(`Você não pode utilizar esse sistema...`)
+    return alert('Você não pode fazer essa ação por aqui...')
     if (block) return alert('Aguarde...')
     if (!total || total.length <= 0) return alert(`A lista de resultados está vazia...`)
     block = true
@@ -842,7 +844,7 @@
     if (type == 'Sucessos') {
       csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
       await total.filter(r=>r.liberado).map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
       })
     } else {
       csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR`
@@ -858,8 +860,31 @@
     block = false
   }
 
+  var agentesBlock = false
+  function getAgentes() {
+    if (agentesBlock) return alert('Aguarde...')
+    agentesBlock = true
+    $.ajax({ type: "post",url: `${apiURL}/logins/get`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password')
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        agentesBlock = false
+        s.logins.forEach((element,index) => {
+          document.getElementById('funcs').innerHTML += `<option style="color: black" value="funcionarios-${element.user}">${element.user}</option>`
+        });
+      },
+      error: function(e) {
+        agentesBlock = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    })
+  }
+
   async function lotes(menu) {
-    return alert(`Você não pode utilizar esse sistema...`)
+    return alert('Você não pode fazer essa ação por aqui...')
     if (menu == "sucessos" && (!sucessos || sucessos.length <= 0)) return alert('Lista vazia...') 
     if (menu == "erros" && (!erros || erros.length <= 0)) return alert('Lista vazia...') 
     if (menu == "oportunidades" && (!fgts.oportunidades || fgts.oportunidades.length <= 0)) return alert('Lista vazia...')

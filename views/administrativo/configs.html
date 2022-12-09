@@ -253,12 +253,40 @@
   async function openBank(bank) {
     document.getElementById('result').innerHTML = `<div style="width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center">
       <a style="font-size: 3.3vh; font-weight: 600">Login's: </a>
-      <div id="logins" style="margin-top: 2vh; width: 100%; text-algin: center; display: flex; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap"></div>
+      <div id="logins" style="margin-top: 2vh; width: 100%; text-algin: center; display: flex; flex-direction: column; justify-content: center; align-items: center; flex-wrap: wrap">
+        <i onclick="create('Logins', '${bank}')" class="fa-solid fa-user-plus font-color-navbar" style="font-size: 4vh; cursor: pointer"></i>
+      </div>
       <a style="font-size: 3.3vh; font-weight: 600; margin-top: 8vh">Erros: </a>
       <div id="erros" style="margin-top: 2vh; width: 100%; text-algin: center; display: flex; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap"></div>
       <a style="font-size: 3.3vh; font-weight: 600; margin-top: 8vh">Fases: </a>
       <div id="fases" style="margin-top: 2vh; width: 100%; text-algin: center; display: flex; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap"></div>
     </div>`
+    result.logins.filter(r=> r.bank == bank).forEach((element,i)=>{
+      document.getElementById('logins').innerHTML += `<result class="width30p" style="width: 90%; margin-inline: 1%; display: flex; justify-content
+      : center; align-items: center">
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 25%; margin-inline: 0.5vw; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">User</legend>
+          <input id="${element.id}_user" type="text" class="font-1" value="${String(element.user).replace('null','Não definido...')}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+          <i title="Salvar" onclick="saveMenu('Logins', '${element.id}', document.getElementById('${element.id}_user').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid fa-floppy-disk font-color-navbar"></i>
+        </fieldset>
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 25%; margin-inline: 0.5vw; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Password</legend>
+          <input id="${element.id}_password" type="password" class="font-1" placeholder="********" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+          <i title="Salvar" onclick="saveMenu('Logins', '${element.id}', false, document.getElementById('${element.id}_password').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid fa-floppy-disk font-color-navbar"></i>
+        </fieldset>
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 15%; margin-inline: 0.5vw; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Token</legend>
+          <input id="${element.id}_token" value="${String(element.token).replace('null','Não definido...')}" class="font-1" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
+          <i title="Salvar" onclick="saveMenu('Logins', '${element.id}', false, false, document.getElementById('${element.id}_token').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid fa-floppy-disk font-color-navbar"></i>
+        </fieldset>
+        <fieldset class="width100p" style="padding: 0; margin: 0; width: 12%; margin-inline: 0.5vw; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Limite</legend>
+          <input id="${element.id}_limit" value="${element.limit}" type="number" class="font-1" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0" disabled>
+          <i title="Resetar" onclick="saveMenu('Logins', '${element.id}', false, false, false, 0)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid fa-arrows-rotate font-color-navbar"></i>
+        </fieldset>
+        <i onclick="remove('Logins','${element.id}')" class="fa-solid fa-trash-xmark" style="cursor: pointer; font-size: 3.2vh; color: red; margin-top: 1vh"></i>
+      </result>`
+    })
     result.erros.filter(r=> r.bank == bank).forEach((element,i)=>{
       document.getElementById('erros').innerHTML += `<result class="background-Propostas width30p" style="position: relative; margin: 1vw; width: 16vw; height: 42vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center">
         <i class="fa-solid fa-floppy-disk font-color-navbar" style="font-size: 2.5vh; position: absolute; top: 1.2vh; right: 0.8vw; cursor: pointer" 
@@ -396,7 +424,10 @@
         if (s.error) return alert(s.error)
         if (button == "Configs") alert('Configuração criada com sucesso...')
         if (button == "Roles") alert('Cargo criado com sucesso...')
-        if (button == "Esteiras") alert('Fase criada com sucesso...')
+        if (button == "Logins") {
+          alert('Login criado com sucesso...')
+          return loadMenu('Bancos')
+        }
         return window.location.reload()
       },
       error: async function(e) {
@@ -422,7 +453,10 @@
         if (s.error) return alert(s.error)
         if (button == "Configs") alert('Configuração deletada com sucesso...')
         if (button == "Roles") alert('Cargo deletado com sucesso...')
-        if (button == "Esteiras") alert('Fase deletada com sucesso...')
+        if (button == "Logins") {
+          alert('Login deletado com sucesso...')
+          return loadMenu('Bancos')
+        }
         return window.location.reload()
       },
       error: async function(e) {

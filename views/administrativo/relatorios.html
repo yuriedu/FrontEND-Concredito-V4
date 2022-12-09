@@ -448,7 +448,7 @@
       if (element.user) element.user = element.user.replace(' ','').toLowerCase()
       if (element.liberado && !sucessos.find(r=> r.cpf == element.cpf)) {
         sucessos[sucessos.length] = element
-        fgts.total += Number(element.liberado.replaceAll('R$ ','').replaceAll('.','').replaceAll(',','.'))
+        fgts.total += Number(element.liberado.replaceAll('R$ ','').replaceAll(',','.'))
       }
       if (element.error && !erros.find(r=> r.cpf == element.cpf)) erros[erros.length] = element
 
@@ -501,7 +501,7 @@
     document.getElementById('topMedAfPorDiaQnt').innerHTML = qntFGTS && qntFGTS != "NaN" ? qntFGTS : 0
     var valorFGTS = Number(fgts.total / result.dates.max.slice(8,10)).toFixed(2)
     document.getElementById('topMedAfPorDiaValor').innerHTML = valorFGTS && valorFGTS != "NaN" ? `R$ ${valorFGTS.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}` : 'R$ 0,00'
-    var ticket = Number(fgts.total / erros.length).toFixed(2)
+    var ticket = Number(fgts.total / sucessos.length).toFixed(2)
     document.getElementById('topTicket2').innerHTML = ticket && ticket != "NaN" ? `R$ ${ticket.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}` : 'R$ 0,00'
 
     var banks_sucessos = [
