@@ -8,6 +8,7 @@
         <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Relatorio</legend>
         <select id="relatorio" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
           <option style="color: black" value="funcionarios">Meu Relatorio</option>
+          <option style="color: black" value="equipe">Minha Equipe</option>
           <option style="color: black" value="empresa">Empresa</option>
           <optgroup id="equipes" label="Equipes">
             <option style="color: black" value="equipe-MARCIA">TROPA DE ELITE</option>
@@ -17,9 +18,7 @@
             <option style="color: black" value="equipe-DEBORA">ONDE A MAGIA ACONTECE</option>
             <option style="color: black" value="equipe-JESSICA">CONSTRUINDO SONHOS</option>
           </optgroup>
-          <optgroup id="funcs" label="Funcionários">
-            
-          </optgroup>
+          <optgroup id="funcs" label="Funcionários"></optgroup>
         </select>
       </fieldset>
       <fieldset class="width80p" title="Coloque a data minima..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
@@ -815,6 +814,7 @@
   }
 
   async function downloadCSV(type) {
+    if (!login.perms.administrativo_relatorios) return alert('Você não possui permissão para acessar esse sistema...')
     if (block) return alert('Aguarde...')
     block = true
     var csv = false
@@ -846,6 +846,7 @@
   }
 
   async function downloadTotalCSV(type) {
+    if (!login.perms.administrativo_relatorios) return alert('Você não possui permissão para acessar esse sistema...')
     if (block) return alert('Aguarde...')
     if (!total || total.length <= 0) return alert(`A lista de resultados está vazia...`)
     block = true
@@ -880,6 +881,7 @@
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
         agentesBlock = false
+        if (s.error) return false;
         s.logins.forEach((element,index) => {
           document.getElementById('funcs').innerHTML += `<option style="color: black" value="funcionarios-${element.user}">${element.user}</option>`
         });
@@ -893,6 +895,7 @@
   }
 
   async function lotes(menu) {
+    if (!login.perms.consultas_lotes) return alert('Você não possui permissão para acessar esse sistema...')
     if (menu == "sucessos" && (!sucessos || sucessos.length <= 0)) return alert('Lista vazia...') 
     if (menu == "erros" && (!erros || erros.length <= 0)) return alert('Lista vazia...') 
     if (menu == "oportunidades" && (!fgts.oportunidades || fgts.oportunidades.length <= 0)) return alert('Lista vazia...')

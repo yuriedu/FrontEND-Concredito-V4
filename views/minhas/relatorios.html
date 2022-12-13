@@ -9,6 +9,16 @@
         <select id="relatorio" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
           <option style="color: black" value="funcionarios">Meu Relatorio</option>
           <option style="color: black" value="equipe">Minha Equipe</option>
+          <option style="color: black" value="empresa">Empresa</option>
+          <optgroup id="equipes" label="Equipes">
+            <option style="color: black" value="equipe-MARCIA">TROPA DE ELITE</option>
+            <option style="color: black" value="equipe-RAFAELA">ALFAS DO LITORAL</option>
+            <option style="color: black" value="equipe-CARLOSRACHI">REIS DA SAVANA</option>
+            <option style="color: black" value="equipe-VANDREI">SOBRENOME SUCESSO</option>
+            <option style="color: black" value="equipe-DEBORA">ONDE A MAGIA ACONTECE</option>
+            <option style="color: black" value="equipe-JESSICA">CONSTRUINDO SONHOS</option>
+          </optgroup>
+          <optgroup id="funcs" label="Funcionários"></optgroup>
         </select>
       </fieldset>
       <fieldset class="width80p" title="Coloque a data minima..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
@@ -804,27 +814,27 @@
   }
 
   async function downloadCSV(type) {
-    return alert('Você não pode fazer essa ação por aqui...')
+    if (!login.perms.administrativo_relatorios) return alert('Você não possui permissão para acessar esse sistema...')
     if (block) return alert('Aguarde...')
     block = true
     var csv = false
     if (type == 'Sucessos') {
       if (!sucessos || sucessos.length <= 0) return alert(`A lista de resultados está vazia...`)
-      csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
+      csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR,TABELA,EQUIPE`
       await sucessos.map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user},${element.table},${element.equipe}`
       })
     } else if (type == 'Erros') {
       if (!erros || erros.length <= 0) return alert(`A lista de resultados está vazia...`)
-      csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR`
+      csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR,TABELA,EQUIPE`
       await erros.map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${element.error.replaceAll(`,`,'.')},${element.telefone},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${element.error.replaceAll(`,`,'.')},${element.telefone},${element.user},${element.table},${element.equipe}`
       })
     } else if (type == 'Oportunidades') {
       if (!fgts.oportunidades || fgts.oportunidades.length <= 0) return alert(`A lista de resultados está vazia...`)
-      csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
+      csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR,TABELA,EQUIPE`
       await fgts.oportunidades.map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user},${element.table},${element.equipe}`
       })
     } else return alert('Menu não encontrado...')
     var a = document.createElement('a');
@@ -836,20 +846,20 @@
   }
 
   async function downloadTotalCSV(type) {
-    return alert('Você não pode fazer essa ação por aqui...')
+    if (!login.perms.administrativo_relatorios) return alert('Você não possui permissão para acessar esse sistema...')
     if (block) return alert('Aguarde...')
     if (!total || total.length <= 0) return alert(`A lista de resultados está vazia...`)
     block = true
     var csv = false
     if (type == 'Sucessos') {
-      csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR`
+      csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR,TABELA,EQUIPE`
       await total.filter(r=>r.liberado).map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user},${element.table},${element.equipe}`
       })
     } else {
-      csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR`
+      csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR,TABELA,EQUIPE`
       await total.filter(r=>r.error).map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${element.error.replaceAll(`,`,'.')},${element.telefone},${element.user}`
+        csv+=`\n${element.cpf},${element.bank},${element.error.replaceAll(`,`,'.')},${element.telefone},${element.user},${element.table},${element.equipe}`
       })
     }
     var a = document.createElement('a');
@@ -871,6 +881,7 @@
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
         agentesBlock = false
+        if (s.error) return false;
         s.logins.forEach((element,index) => {
           document.getElementById('funcs').innerHTML += `<option style="color: black" value="funcionarios-${element.user}">${element.user}</option>`
         });
@@ -884,7 +895,7 @@
   }
 
   async function lotes(menu) {
-    return alert('Você não pode fazer essa ação por aqui...')
+    if (!login.perms.consultas_lotes) return alert('Você não possui permissão para acessar esse sistema...')
     if (menu == "sucessos" && (!sucessos || sucessos.length <= 0)) return alert('Lista vazia...') 
     if (menu == "erros" && (!erros || erros.length <= 0)) return alert('Lista vazia...') 
     if (menu == "oportunidades" && (!fgts.oportunidades || fgts.oportunidades.length <= 0)) return alert('Lista vazia...')
@@ -923,6 +934,7 @@
   (async function () {
     var date = new Date();
     document.getElementById('dateIni').value = date.toISOString().slice(0, 10)
+    await getAgentes()
     return relatorio()
   })();
 </script>

@@ -1,5 +1,26 @@
 <div style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
   <navbar id="navbar"></navbar>
   <script>$("#navbar").load(`/imports/navbar.html`)</script>
-  <div style="width: 100vw; height: 100vh; background: url('/public/images/destaque.png'); background-position: center; background-size: cover; color: var(--color-reverse)">
+  <div id="destaque" style="width: 100vw; height: 100vh; background-position: center; color: var(--color-reverse)">
 </div>
+<script>
+  function getImage() {
+    $.ajax({ type: "post",url: `${apiURL}/administrativo/configs/get`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        menu: 'Configs',
+        destaque: true
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        if (s.error) return alert(s.error)
+        document.getElementById('destaque').style.background = `url('${s.configs.find(r=>r.config == 'destaque').value}')`
+        document.getElementById('destaque').style.backgroundSize = `cover`
+      },
+      error: function(e) {
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    })
+  }(function () { getImage(); })();
+</script>

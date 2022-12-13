@@ -210,12 +210,17 @@
     if (!proposta) return alert('Proposta não encontrada...')
     document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta">
       <div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh">
-        <a onclick="cadastrar('${codAF}','${bank}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastrar</a>
-        <a onclick="getLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Pegar Link</a>
+
         <a onclick="getAcomp('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Acompanham.</a>
-        <a onclick="sendLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">WhatsApp</a>
-        <a onclick="checkEsteira('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Esteira</a>
-        <a onclick="generator('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Gerar Cadastro</a>
+        ${login.perms.propostas_lista ? `
+          <a onclick="cadastrar('${codAF}','${bank}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastrar</a>
+          <a onclick="getLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Pegar Link</a>
+          <a onclick="checkEsteira('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Esteira</a>
+          <a onclick="generator('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Gerar Cadastro</a>
+        ` : ''}
+        <a onclick="whatsapp('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">WhatsApp</a>
+        <a onclick="sendLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">FGTS</a>
+        
         <select onchange="changeFase('${codAF}',this.value)" class="font-color-reverse navbar-color-select" style="font-weight: 500; font-size: 2vh; padding: 0; margin: 0; cursor: pointer; padding-block: 0.6vh; background: transparent; border: none; text-align: center; display: flex; width: 100%; justify-content: center; align-items: center">
           <option style="color: black" value="" selected>Trocar Fase</option>
           <optgroup id="fasesMenu" label="Fases" style="color: black"></optgroup>
@@ -275,6 +280,47 @@
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
+  }
+
+  function fgts(codAF,fase) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (changeFaseActive) return alert('Você já está com algo em andamento! Aguarde...')
+    var proposta = propostas.find(r=>r.codAF == codAF)
+    if (!proposta) return alert('Proposta não encontrado...')
+    return window.open(`/consultas/fgts?cpf=${proposta.cpf}&bank=${proposta.bancoAF}`, '_blank');
+  }
+
+  async function whatsapp(codAF) {
+    var af = propostas.find(r=> r.codAF == codAF)
+    if (!af) return alert('Proposta não encontrada...')
+    var mensagem = `ConCredito Consignados`
+    if (af.codFase == 9232) {
+      mensagem = `
+Olá ${af.nome.toUpperCase()}! Tudo bem? 
+Eu tenho uma *EXCELENTE NOTÍCIA*! 🤩
+
+Liberou novos valores pra você, e você tem *R$${String(af.valorAF).replace('.',',')}* para receber agora pela manhã, e por você já ser meu cliente vou conseguir uma *prioridade no seu pagamento!*
+
+Apenas assine pelo link abaixo:
+${af.link}
+      `   
+    } else if (af.codFase == 9923) {
+      mensagem = `
+Percebi que você não assinou o contrato ainda! 
+O banco me informou que se você assinar agora dá prioridade no seu pagamento! Consegue fazer agora e receber ainda hoje esses *R$${String(af.valorAF).replace('.',',')}*?
+
+Link: ${af.link}
+      `   
+    } else return alert('A proposta tem que estar na fase "AGUARDANDO ASSINATURA DIGITAL" ou "LINK DE ASSINATURA ENVIADO PARA O CLIENTE"...')
+  
+    if (window.clipboardData) {
+      await window.clipboardData.setData("Text", mensagem);
+    } else {
+      await navigator.clipboard.writeText(mensagem).catch(()=>{ 
+        return alert('Seu navegador não suporta o nossos sistema de Copia...')
+      })
+    }
+    return window.open(`https://wa.me/55${String(af.telefone).replaceAll('(','').replaceAll(')','').replaceAll('-','').replaceAll(' ','')}`, '_blank');
   }
 
   function cadastrar(codAF, bankAF) {

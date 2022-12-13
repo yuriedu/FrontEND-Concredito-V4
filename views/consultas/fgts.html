@@ -214,13 +214,13 @@
         if (s.error) return alert(s.error) 
         if (s.cpf != document.getElementById('cpf').value) alert(`O CPF consultado é diferente do inserido! Verifique e tente novamente...\nCPF Inserido: ${document.getElementById('cpf').value}\nCPF Consultado: ${s.cpf}`)
         document.getElementById('cpfResult').value = s.cpf
-        document.getElementById('totalResult').value = s.saldoTotal
-        document.getElementById('liberadoResult').value = s.saldoLiberado
+        document.getElementById('totalResult').value = String(s.saldoTotal).replace('.',',')
+        document.getElementById('liberadoResult').value = String(s.saldoLiberado).replace('.',',')
         document.getElementById('dataResult').value = s.data
         document.getElementById('parcelasResult').value = s.parcelas.length
         document.getElementById('parcs').innerHTML = `<div class="line-bottom" style="width: 100%; display: flex; justify-content: center; text-align: center; padding-block: 0.8vh; font-size: 2.5vh; align-items: center;"><input type="checkbox" style="width: 10%; height: 2vh; margin: 0"><a style="width: 50%;">Data</a><a style="width: 40%;">Valor</a></div>`
         s.parcelas.forEach((element)=>{
-          document.getElementById('parcs').innerHTML += `<div class="line-top" style="width: 100%; display: flex; justify-content: center; text-align: center; padding-block: 0.8vh; font-size: 2.5vh; align-items: center;"><input name="checks" type="checkbox" style="width: 10%; height: 2vh; margin: 0"><a class="font-size2" style="width: 50%;">${element.data}</a><a class="font-size2" style="width: 40%;">${element.valor}</a></div>`
+          document.getElementById('parcs').innerHTML += `<div class="line-top" style="width: 100%; display: flex; justify-content: center; text-align: center; padding-block: 0.8vh; font-size: 2.5vh; align-items: center;"><input name="checks" type="checkbox" style="width: 10%; height: 2vh; margin: 0"><a class="font-size2" style="width: 50%;">${element.data}</a><a class="font-size2" style="width: 40%;">${String(element.valor).replace('.',',')}</a></div>`
         })
         document.getElementById('newConsultar').style.display = `none`
         document.getElementById('result').style.display = `inline`
