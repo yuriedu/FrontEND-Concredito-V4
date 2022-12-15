@@ -10,10 +10,11 @@
           <option style="color: black" value="funcionarios">Meu Relatorio</option>
           <option style="color: black" value="equipe">Minha Equipe</option>
           <option style="color: black" value="empresa">Empresa</option>
+          <option style="color: black" value="api">API's</option>
           <optgroup id="equipes" label="Equipes">
             <option style="color: black" value="equipe-MARCIA">TROPA DE ELITE</option>
             <option style="color: black" value="equipe-RAFAELA">ALFAS DO LITORAL</option>
-            <option style="color: black" value="equipe-CARLOSRACHI">REIS DA SAVANA</option>
+            <option style="color: black" value="equipe-CARLOS">REIS DA SAVANA</option>
             <option style="color: black" value="equipe-VANDREI">SOBRENOME SUCESSO</option>
             <option style="color: black" value="equipe-DEBORA">ONDE A MAGIA ACONTECE</option>
             <option style="color: black" value="equipe-JESSICA">CONSTRUINDO SONHOS</option>
@@ -97,10 +98,10 @@
   </div>
 
   <div class="flex-direction-column margin-left2-5 width79" style="margin-block: 0.5vh; width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
-    <div id="grafico1" class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
+    <div id="Graphc_Midias" class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
     
     </div>
-    <div id="grafico2" class="background-image width79 height30" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 55vw; overflow-x: hidden">
+    <div id="Graphc_Afs_Dia" class="background-image width79 height30" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 55vw; overflow-x: hidden">
       
     </div>
   </div>
@@ -134,6 +135,7 @@
       <i class="fa-solid fa-money-check-dollar-pen font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Oportunidades:</a>
       <a onclick="downloadCSV('Oportunidades')" id="topOportunidades" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      <a id="topOportunidadesPorc" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.6vh; font-weight: 600;"></a>
     </div>
     <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-ballot-check font-color-navbar" style="font-size: 6vh"></i>
@@ -158,20 +160,12 @@
     </div>
   </div>
 
-  <div class="flex-direction-column margin-left2-5 width79" style="margin-block: 0.5vh; width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
-    <div id="grafico4" class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
+  <div id="graphcs_banks" class="flex-direction-column margin-left2-5 width79" style="margin-block: 0.5vh; display: flex; align-items: center; justify-content: center; margin-top: 1vh; width: 92vw; margin-left: 7.3vw"></div>
+  <div id="graphc_list_func" class="flex-direction-column margin-left2-5 width79" style="margin-block: 0.5vh; display: flex; align-items: center; justify-content: center; margin-top: 1vh; width: 92vw; margin-left: 7.3vw"></div>
+  <div id="graphc_errors" class="flex-direction-column margin-left2-5 width79" style="margin-block: 0.5vh; width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
+    <div class="background-image width79 height30" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 55vw; overflow-x: hidden">
+      
     </div>
-    <div id="grafico5" class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
-    </div>
-    <div id="grafico6" class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
-    </div>
-  </div>
-
-  <div class="flex-direction-column margin-left2-5 width79" style="margin-block: 0.5vh; width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
-    <div id="grafico3" class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
-    </div>
-
-    <div id="listLiberado"></div>
   </div>
 
 </div>
@@ -230,13 +224,15 @@
     document.getElementById('topTotal').innerHTML = 0
     document.getElementById('topTotalTotal').innerHTML = ``
     document.getElementById('topOportunidades').innerHTML = 0
+    document.getElementById('topOportunidadesPorc').innerHTML = ``
     document.getElementById('topMedAfPorDiaQnt').innerHTML = 0
     document.getElementById('topMedAfPorDiaValor').innerHTML = 'R$ 0,00'
     document.getElementById('topTicket2').innerHTML = 'R$ 0,00'
-    document.getElementById('listLiberado').innerHTML = ``
-    document.getElementById('grafico1').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
-    document.getElementById('grafico2').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
-    document.getElementById('grafico3').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+    document.getElementById('graphcs_banks').innerHTML = ``
+    document.getElementById('graphc_list_func').innerHTML = ``
+    document.getElementById('graphc_errors').innerHTML = ``
+    document.getElementById('Graphc_Midias').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+    document.getElementById('Graphc_Afs_Dia').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     document.getElementById('calcFGTS').classList.add('buttonBlock')
     block = true
     var url = document.getElementById('relatorio').value
@@ -256,10 +252,11 @@
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
         block = false
-        document.getElementById('grafico1').innerHTML = ``
-        document.getElementById('grafico2').innerHTML = ``
-        document.getElementById('grafico3').innerHTML = ``
-        if (s.error) return alert(s.error)
+        if (s.error) {
+          document.getElementById('Graphc_Midias').innerHTML = ``
+          document.getElementById('Graphc_Afs_Dia').innerHTML = ``
+          return alert(s.error)
+        }
         result = s
         total = s.fgts
         //CALCULOS
@@ -280,7 +277,7 @@
         document.getElementById('topTicket').innerHTML = ticket ? ticket == "NaN" ? `R$ 0,00` : `R$ `+ticket.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 0
         var metaDia = (Number(s.meta) / s.dates.now.slice(8,10)).toFixed(2)
         var metaMes = (metaDia * s.dates.max.slice(8,10)).toFixed(2)
-        document.getElementById('topProjecao').innerHTML = metaMes && metaMes != "NaN" ? `${metaMes ? metaMes : 0}%` : "0%"
+        document.getElementById('topProjecao').innerHTML = metaMes && metaMes != "NaN" ? `${metaMes ? String(metaMes).replace('.',',') : 0}%` : "0%"
         var comissaoMeta = comissao.find(r=>metaMes >= r.min && metaMes < r.max)
         if (comissaoMeta) document.getElementById('topProjecaoCom').innerHTML = `R$ ${comissaoMeta.comissao},00`
         var ticketEmpresa = (s.afs.vlEmpresa / s.afs.empresa).toFixed(2)
@@ -297,7 +294,7 @@
         document.getElementById('topCadastrado').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlCadastrado).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.') : "R$ 0,00"
         document.getElementById('topCadastradoQnt').innerHTML = "Qnt: "+s.afs.cadastrado
 
-        document.getElementById('grafico1').innerHTML = `
+        document.getElementById('Graphc_Midias').innerHTML = `
           <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Mídias</a>
           <canvas id="graficoMidias" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
           <div class="margin-top25" style="display: flex; margin-top: 34vh; width: 80%; margin-inline: 10%">
@@ -320,23 +317,10 @@
         var graficoMidias = document.getElementById("graficoMidias").getContext("2d");
         new Chart(graficoMidias).Doughnut(s.afs.midias);
 
-        var months = {
-          '1': 'Janeiro',
-          '2': 'Fevereiro',
-          '3': 'Março',
-          '4': 'Abril',
-          '5': 'Maio',
-          '6': 'Junho',
-          '7': 'Julho',
-          '8': 'Agosto',
-          '9': 'Setembro',
-          '10': 'Outubro',
-          '11': 'Novembro',
-          '12': 'Dezembro'
-        }
-        document.getElementById('grafico2').innerHTML = `
+        var months = { '1': 'Janeiro', '2': 'Fevereiro', '3': 'Março', '4': 'Abril', '5': 'Maio', '6': 'Junho', '7': 'Julho', '8': 'Agosto', '9': 'Setembro', '10': 'Outubro', '11': 'Novembro', '12': 'Dezembro' }
+        document.getElementById('Graphc_Afs_Dia').innerHTML = `
           <a class="font-size2-5" style="font-size: 4vh; margin-top: 4vh">Pago por Dia</a>
-          <div id="graficoMeses" class="width100 height18" style="position: absolute; left: -1vw; top: 15vh; width:60vw; height: 23vw; margin-top: -6vh; font-weight: 600"></div>
+          <div id="Graphc_Afs_Dia_2" class="width100 height18" style="position: absolute; left: -1vw; top: 15vh; width:60vw; height: 23vw; margin-top: -6vh; font-weight: 600"></div>
         `
         google.charts.load('current', {packages: ['corechart', 'line']});
         google.charts.setOnLoadCallback(drawCurveTypes);
@@ -359,7 +343,7 @@
             },
             backgroundColor: 'transparent',
           };
-          var graficoMeses = new google.visualization.LineChart(document.getElementById('graficoMeses'));
+          var graficoMeses = new google.visualization.LineChart(document.getElementById('Graphc_Afs_Dia_2'));
           graficoMeses.draw(data, optionsGraficoMeses);
         }
         document.getElementById('calcFGTS').classList.remove('buttonBlock')
@@ -367,53 +351,10 @@
         var banks = [
           { value: 1, color:'#FF0000', highlight:"#FF0000", label:"Calcule o FGTS..." }
         ]
-
-        document.getElementById('grafico3').innerHTML = `
-          <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Bancos</a>
-          <canvas id="graficoBanks" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
-          <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 90%; justify-content: center; margin-inline: 10%">
-              <a style="font-size: 4vh; font-weight: 600">Calcule o FGTS...</a>
-          </div>
-        `
-        var graficoBanks = document.getElementById("graficoBanks").getContext("2d");
-        new Chart(graficoBanks).Pie(banks);
-        document.getElementById('grafico4').innerHTML = `
-          <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Bancos - Sucessos</a>
-          <canvas id="graficoBanks4" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
-          <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 90%; justify-content: center; margin-inline: 10%">
-              <a style="font-size: 4vh; font-weight: 600">Calcule o FGTS...</a>
-          </div>
-        `
-        var graficoBanks = document.getElementById("graficoBanks4").getContext("2d");
-        new Chart(graficoBanks).Pie(banks);
-        document.getElementById('grafico5').innerHTML = `
-          <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Bancos - Erros</a>
-          <canvas id="graficoBanks5" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
-          <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 90%; justify-content: center; margin-inline: 10%">
-              <a style="font-size: 4vh; font-weight: 600">Calcule o FGTS...</a>
-          </div>
-        `
-        var graficoBanks = document.getElementById("graficoBanks5").getContext("2d");
-        new Chart(graficoBanks).Pie(banks);
-        document.getElementById('grafico6').innerHTML = `
-          <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Bancos - Total</a>
-          <canvas id="graficoBanks6" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
-          <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 90%; justify-content: center; margin-inline: 10%">
-              <a style="font-size: 4vh; font-weight: 600">Calcule o FGTS...</a>
-          </div>
-        `
-        var graficoBanks = document.getElementById("graficoBanks6").getContext("2d");
-        new Chart(graficoBanks).Pie(banks);
-
       },
       error: function(e) {
         block = false
-        document.getElementById('grafico1').innerHTML = ``
-        document.getElementById('grafico2').innerHTML = ``
-        document.getElementById('grafico3').innerHTML = ``
-        document.getElementById('grafico4').innerHTML = ``
-        document.getElementById('grafico5').innerHTML = ``
-        document.getElementById('grafico6').innerHTML = ``
+
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
@@ -433,14 +374,13 @@
     document.getElementById('topTotal').innerHTML = 0
     document.getElementById('topTotalTotal').innerHTML = ``
     document.getElementById('topOportunidades').innerHTML = 0
+    document.getElementById('topOportunidadesPorc').innerHTML = ``
     document.getElementById('topMedAfPorDiaQnt').innerHTML = 0
     document.getElementById('topMedAfPorDiaValor').innerHTML = 'R$ 0,00'
     document.getElementById('topTicket2').innerHTML = 'R$ 0,00'
-    document.getElementById('listLiberado').innerHTML = ``
-    document.getElementById('grafico3').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
-    document.getElementById('grafico4').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
-    document.getElementById('grafico5').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
-    document.getElementById('grafico6').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+    document.getElementById('graphcs_banks').innerHTML = ``
+    document.getElementById('graphc_list_func').innerHTML = ``
+    document.getElementById('graphc_errors').innerHTML = ``
 
     total = result.fgts
     await total.forEach((element,index)=>{
@@ -496,6 +436,8 @@
     document.getElementById('topTotal').innerHTML = sucessos.length + erros.length
     document.getElementById('topTotalTotal').innerHTML = `Total: `+total.length
     document.getElementById('topOportunidades').innerHTML = fgts.oportunidades.length
+    var oportunidadesPorc = (fgts.oportunidades.length * 100) / sucessos.length
+    document.getElementById('topOportunidadesPorc').innerHTML = `${String(oportunidadesPorc.toFixed(2)).replace('.',',')}%`
     var qntFGTS = Number(sucessos.length / result.dates.max.slice(8,10)).toFixed(0)
     document.getElementById('topMedAfPorDiaQnt').innerHTML = qntFGTS && qntFGTS != "NaN" ? qntFGTS : 0
     var valorFGTS = Number(fgts.total / result.dates.max.slice(8,10)).toFixed(2)
@@ -503,158 +445,166 @@
     var ticket = Number(fgts.total / sucessos.length).toFixed(2)
     document.getElementById('topTicket2').innerHTML = ticket && ticket != "NaN" ? `R$ ${ticket.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}` : 'R$ 0,00'
 
-    var banks_sucessos = [
-      { value: sucessos.filter(r=> r.bank == "FACTA FINANCEIRA").length, color:'#ffa500', highlight:"#ffa500", label:"FACTA FINANC." },
-      { value: sucessos.filter(r=> r.bank == "BANCO C6").length, color:'#FFFF00', highlight:"#FFFF00", label:"BANCO C6" },
-      { value: sucessos.filter(r=> r.bank == "PANAMERICANO").length, color:'#808080', highlight:"#808080", label:"PANAMERICANO" },
-      { value: sucessos.filter(r=> r.bank == "MERCANTIL").length, color:'#0000FF', highlight:"#0000FF", label:"MERCANTIL" },
-      { value: sucessos.filter(r=> r.bank == "BMG").length, color:'#FF0000', highlight:"#FF0000", label:"BMG" },
-      { value: sucessos.filter(r=> r.bank == "SAFRA").length, color:'#00FFFF', highlight:"#00FFFF", label:"SAFRA" },
-    ]
-    document.getElementById('grafico4').innerHTML = `
-      <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Bancos - Sucessos</a>
-      <canvas id="graficoBanks4" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
-      <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 90%; margin-inline: 10%">
-        <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
-          ${banks_sucessos.slice(0,banks_sucessos.length/2).map(r=>
-            `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / sucessos.length) ? (r.value * 100 / sucessos.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
-            </a>`
-          ).join('')}
-        </div>
-        <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
-          ${banks_sucessos.slice(banks_sucessos.length/2,banks_sucessos.length).map(r=>
-            `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / sucessos.length) ? (r.value * 100 / sucessos.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
-            </a>`
-          ).join('')}
-        </div>
-      </div>
-    `
-    new Chart(document.getElementById("graficoBanks4").getContext("2d")).Pie(banks_sucessos);
-
-    var banks_erros = [
-      { value: erros.filter(r=> r.bank == "FACTA FINANCEIRA").length, color:'#ffa500', highlight:"#ffa500", label:"FACTA FINANC." },
-      { value: erros.filter(r=> r.bank == "BANCO C6").length, color:'#FFFF00', highlight:"#FFFF00", label:"BANCO C6" },
-      { value: erros.filter(r=> r.bank == "PANAMERICANO").length, color:'#808080', highlight:"#808080", label:"PANAMERICANO" },
-      { value: erros.filter(r=> r.bank == "MERCANTIL").length, color:'#0000FF', highlight:"#0000FF", label:"MERCANTIL" },
-      { value: erros.filter(r=> r.bank == "BMG").length, color:'#FF0000', highlight:"#FF0000", label:"BMG" },
-      { value: erros.filter(r=> r.bank == "SAFRA").length, color:'#00FFFF', highlight:"#00FFFF", label:"SAFRA" },
-    ]
-    document.getElementById('grafico5').innerHTML = `
-      <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Bancos - Erros</a>
-      <canvas id="graficoBanks5" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
-      <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 90%; margin-inline: 10%">
-        <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
-          ${banks_erros.slice(0,banks_erros.length/2).map(r=>
-            `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / erros.length) ? (r.value * 100 / erros.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
-            </a>`
-          ).join('')}
-        </div>
-        <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
-          ${banks_erros.slice(banks_erros.length/2,banks_erros.length).map(r=>
-            `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / erros.length) ? (r.value * 100 / erros.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
-            </a>`
-          ).join('')}
-        </div>
-      </div>
-    `
-    new Chart(document.getElementById("graficoBanks5").getContext("2d")).Pie(banks_erros);
-
-    var banks_total = [
-      { value: total.filter(r=> r.bank == "FACTA FINANCEIRA").length, color:'#ffa500', highlight:"#ffa500", label:"FACTA FINANC." },
-      { value: total.filter(r=> r.bank == "BANCO C6").length, color:'#FFFF00', highlight:"#FFFF00", label:"BANCO C6" },
-      { value: total.filter(r=> r.bank == "PANAMERICANO").length, color:'#808080', highlight:"#808080", label:"PANAMERICANO" },
-      { value: total.filter(r=> r.bank == "MERCANTIL").length, color:'#0000FF', highlight:"#0000FF", label:"MERCANTIL" },
-      { value: total.filter(r=> r.bank == "BMG").length, color:'#FF0000', highlight:"#FF0000", label:"BMG" },
-      { value: total.filter(r=> r.bank == "SAFRA").length, color:'#00FFFF', highlight:"#00FFFF", label:"SAFRA" },
-    ]
-    document.getElementById('grafico6').innerHTML = `
-      <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Bancos - Total</a>
-      <canvas id="graficoBanks6" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
-      <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 90%; margin-inline: 10%">
-        <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
-          ${banks_total.slice(0,banks_total.length/2).map(r=>
-            `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / total.length) ? (r.value * 100 / total.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
-            </a>`
-          ).join('')}
-        </div>
-        <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
-          ${banks_total.slice(banks_total.length/2,banks_total.length).map(r=>
-            `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / total.length) ? (r.value * 100 / total.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
-            </a>`
-          ).join('')}
-        </div>
-      </div>
-    `
-    new Chart(document.getElementById("graficoBanks6").getContext("2d")).Pie(banks_total);
-
-    var grafico3 = [
+    var graphc_count = [
       { value: sucessos.length, color:'#ffa500', highlight:"#ffa500", label:"Sucessos" },
       { value: erros.length, color:'#FFFF00', highlight:"#FFFF00", label:"Erros" },
     ]
-
-    document.getElementById('grafico3').innerHTML = `
-      <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Consultados</a>
-      <canvas id="graficoBanks" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
-      <div class="margin-top25" style="display: flex; margin-top: 36vh; width: 90%; margin-inline: 10%">
-        <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
-          ${grafico3.slice(0,grafico3.length/2).map(r=>
-            `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / (sucessos.length + erros.length)) ? (r.value * 100 / (sucessos.length + erros.length)).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
-            </a>`
-          ).join('')}
-        </div>
-        <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
-          ${grafico3.slice(grafico3.length/2,grafico3.length).map(r=>
-            `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
-              ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / (sucessos.length + erros.length)) ? (r.value * 100 / (sucessos.length + erros.length)).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
-            </a>`
-          ).join('')}
+    document.getElementById('graphcs_banks').innerHTML += `
+      <div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 50vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 23vw; max-width: 23vw; overflow-x: hidden; margin-right: 2vw">
+        <a class="font-1" style="font-size: 4vh; margin-top: 2vh">Consultas</a>
+        <canvas id="graphcs_banks_count" class="width80" style="position: absolute; top: 3vh; width: 22vw; margin-top: 6vh"></canvas>
+        <div class="margin-top25" style="display: flex; margin-top: 32vh; width: 90%; margin-inline: 10%">
+          <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
+            ${graphc_count.slice(0,graphc_count.length/2).map(r=>
+              `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / (sucessos.length + erros.length)) ? (r.value * 100 / (sucessos.length + erros.length)).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+              </a>`
+            ).join('')}
+          </div>
+          <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
+            ${graphc_count.slice(graphc_count.length/2,graphc_count.length).map(r=>
+              `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / (erros.length + sucessos.length)) ? (r.value * 100 / (erros.length + sucessos.length)).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+              </a>`
+            ).join('')}
+          </div>
         </div>
       </div>
     `
-    var graficoBanks = document.getElementById("graficoBanks").getContext("2d");
-    new Chart(graficoBanks).Pie(grafico3);
+    var banks_sucessos = [
+      { value: sucessos.filter(r=> r.bank == "FACTA FINANCEIRA").length, color:'#ffa500', highlight:"#ffa500", label:"FACTA FIN." },
+      { value: sucessos.filter(r=> r.bank == "BANCO C6").length, color:'#FFFF00', highlight:"#FFFF00", label:"BANCO C6" },
+      { value: sucessos.filter(r=> r.bank == "PANAMERICANO").length, color:'#808080', highlight:"#808080", label:"PANAMERI." },
+      { value: sucessos.filter(r=> r.bank == "MERCANTIL").length, color:'#0000FF', highlight:"#0000FF", label:"MERC." },
+      { value: sucessos.filter(r=> r.bank == "BMG").length, color:'#FF0000', highlight:"#FF0000", label:"BMG" },
+      { value: sucessos.filter(r=> r.bank == "SAFRA").length, color:'#00FFFF', highlight:"#00FFFF", label:"SAFRA" },
+    ]
+    document.getElementById('graphcs_banks').innerHTML += `
+      <div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 50vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 23vw; max-width: 23vw; overflow-x: hidden; margin-right: 2vw">
+        <a class="font-1" style="font-size: 4vh; margin-top: 2vh">Sucessos</a>
+        <canvas id="graphcs_banks_sucess" class="width80" style="position: absolute; top: 3vh; width: 22vw; margin-top: 6vh"></canvas>
+        <div class="margin-top25" style="display: flex; margin-top: 30vh; width: 90%; margin-inline: 10%">
+          <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
+            ${banks_sucessos.slice(0,banks_sucessos.length/2).map(r=>
+              `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / sucessos.length) ? (r.value * 100 / sucessos.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+              </a>`
+            ).join('')}
+          </div>
+          <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
+            ${banks_sucessos.slice(banks_sucessos.length/2,banks_sucessos.length).map(r=>
+              `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / sucessos.length) ? (r.value * 100 / sucessos.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+              </a>`
+            ).join('')}
+          </div>
+        </div>
+      </div>
+    `
+    var banks_erros = [
+      { value: erros.filter(r=> r.bank == "FACTA FINANCEIRA").length, color:'#ffa500', highlight:"#ffa500", label:"FACTA FIN." },
+      { value: erros.filter(r=> r.bank == "BANCO C6").length, color:'#FFFF00', highlight:"#FFFF00", label:"BANCO C6" },
+      { value: erros.filter(r=> r.bank == "PANAMERICANO").length, color:'#808080', highlight:"#808080", label:"PANAMERI." },
+      { value: erros.filter(r=> r.bank == "MERCANTIL").length, color:'#0000FF', highlight:"#0000FF", label:"MERC." },
+      { value: erros.filter(r=> r.bank == "BMG").length, color:'#FF0000', highlight:"#FF0000", label:"BMG" },
+      { value: erros.filter(r=> r.bank == "SAFRA").length, color:'#00FFFF', highlight:"#00FFFF", label:"SAFRA" },
+    ]
+    document.getElementById('graphcs_banks').innerHTML += `
+      <div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 50vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 23vw; max-width: 23vw; overflow-x: hidden; margin-right: 2vw">
+        <a class="font-1" style="font-size: 4vh; margin-top: 2vh">Bancos - Erros</a>
+        <canvas id="graphcs_banks_errors" class="width80" style="position: absolute; top: 3vh; width: 22vw; margin-top: 6vh"></canvas>
+        <div class="margin-top25" style="display: flex; margin-top: 30vh; width: 90%; margin-inline: 10%">
+          <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
+            ${banks_erros.slice(0,banks_erros.length/2).map(r=>
+              `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / erros.length) ? (r.value * 100 / erros.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+              </a>`
+            ).join('')}
+          </div>
+          <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
+            ${banks_erros.slice(banks_erros.length/2,banks_erros.length).map(r=>
+              `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / erros.length) ? (r.value * 100 / erros.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+              </a>`
+            ).join('')}
+          </div>
+        </div>
+      </div>
+    `
+    var banks_total = [
+      { value: total.filter(r=> r.bank == "FACTA FINANCEIRA").length, color:'#ffa500', highlight:"#ffa500", label:"FACTA FIN." },
+      { value: total.filter(r=> r.bank == "BANCO C6").length, color:'#FFFF00', highlight:"#FFFF00", label:"BANCO C6" },
+      { value: total.filter(r=> r.bank == "PANAMERICANO").length, color:'#808080', highlight:"#808080", label:"PANAMERI." },
+      { value: total.filter(r=> r.bank == "MERCANTIL").length, color:'#0000FF', highlight:"#0000FF", label:"MERC." },
+      { value: total.filter(r=> r.bank == "BMG").length, color:'#FF0000', highlight:"#FF0000", label:"BMG" },
+      { value: total.filter(r=> r.bank == "SAFRA").length, color:'#00FFFF', highlight:"#00FFFF", label:"SAFRA" },
+    ]
+    document.getElementById('graphcs_banks').innerHTML += `
+      <div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 50vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 23vw; max-width: 23vw; overflow-x: hidden; margin-right: 2vw">
+        <a class="font-1" style="font-size: 4vh; margin-top: 2vh">Bancos - Total</a>
+        <canvas id="graphcs_banks_total" class="width80" style="position: absolute; top: 3vh; width: 22vw; margin-top: 6vh"></canvas>
+        <div class="margin-top25" style="display: flex; margin-top: 30vh; width: 90%; margin-inline: 10%">
+          <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
+            ${banks_total.slice(0,banks_total.length/2).map(r=>
+              `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / total.length) ? (r.value * 100 / total.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+              </a>`
+            ).join('')}
+          </div>
+          <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
+            ${banks_total.slice(banks_total.length/2,banks_total.length).map(r=>
+              `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / total.length) ? (r.value * 100 / total.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+              </a>`
+            ).join('')}
+          </div>
+        </div>
+      </div>
+    `
+    new Chart(document.getElementById("graphcs_banks_count").getContext("2d")).Pie(graphc_count);
+    new Chart(document.getElementById("graphcs_banks_sucess").getContext("2d")).Pie(banks_sucessos);
+    new Chart(document.getElementById("graphcs_banks_errors").getContext("2d")).Pie(banks_erros);
+    new Chart(document.getElementById("graphcs_banks_total").getContext("2d")).Pie(banks_total);
 
-    document.getElementById('listLiberado').innerHTML = `<div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; max-height: 60vh; overflow-y: auto; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 55vw; max-width: 55vw; overflow-x: hidden; margin-right: 2vw">
-      <div id="listaLiberado" style="width: 100%">
+    document.getElementById('graphc_list_func').innerHTML = `<div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; max-height: 50vh; overflow-y: auto; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 80vw; max-width: 79vw; overflow-x: hidden; margin-right: 2vw; padding-block: 0.5vh">
+      <div id="graphc_list_funcs" style="width: 100%">
         <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
-          <div title="Nome Funcionário" style="width: 17vw; max-width: 17vw; padding-left: 2%; height: 100%; padding-block: 0.7vh">
+          <div title="Nome Funcionário" style="width: 20vw; max-width: 20vw; padding-left: 2%; height: 100%; padding-block: 0.7vh">
             <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
             <i onclick="redirect('user')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="user_list" value="0">
           </div>
-          <div title="Valor Liberado" style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <div title="Valor Liberado" style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">VL. S</a>
             <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="total_list" value="0">
           </div>
-          <div title="Quantidade de Sucessos" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <div title="Quantidade de Sucessos" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">S</a>
             <i onclick="redirect('sucessos')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="sucessos_list" value="0">
           </div>
-          <div title="Quantidade de Erros" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <div title="Quantidade de Erros" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">E</a>
             <i onclick="redirect('erros')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="erros_list" value="0">
           </div>
-          <div title="Quantidade Total" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <div title="Quantidade Total" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">T</a>
             <i onclick="redirect('consultasTotal')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="consultasTotal_list" value="0">
           </div>
-          <div title="Quantidade de AFs(Consultados)" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <div title="Porcentagem" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+            <a style="font-size: 2.5vh; font-weight: 800">%</a>
+            <i onclick="redirect('porcentagem')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+            <input type="hidden" id="porcentagem_list" value="0">
+          </div>
+          <div title="Quantidade de AFs(Consultados)" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">AF</a>
             <i onclick="redirect('afs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="afs_list" value="0">
           </div>
-          <div title="Valor das AFs(Consultados)" style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <div title="Valor das AFs(Consultados)" style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
             <a style="font-size: 2.5vh; font-weight: 800">VL. AFs</a>
             <i onclick="redirect('valorAfs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
             <input type="hidden" id="valorAfs_list" value="0">
@@ -665,32 +615,64 @@
     agilus = fgts.funcionarios
     agilus.forEach((element,index)=>{
       agilus[index].consultasTotal = element.sucessos.length + element.erros.length
-      document.getElementById('listaLiberado').innerHTML += `
-        <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray">
-          <div style="width: 17vw; max-width: 17vw; padding-left: 2%">
+      // agilus[index].porcentagem = ((result.afs.afs.filter(r=> element.user == r.user).length / element.sucessos.length) * 100).toFixed(2)
+      agilus[index].porcentagem = ((element.afs.length / element.sucessos.length) * 100).toFixed(2)
+      document.getElementById('graphc_list_funcs').innerHTML += `
+        <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
+          <div style="width: 20vw; max-width: 20vw; padding-left: 2%">
             <a style="font-size: 2.3vh">${element.user}</a>
           </div>
-          <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
+          <div style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">R$ ${element.total ? String(element.total.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '0,00'}</a>
           </div>
-          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+          <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.sucessos.length}</a>
           </div>
-          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+          <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.erros.length}</a>
           </div>
-          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+          <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.consultasTotal}</a>
           </div>
-          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+          <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">${String(element.porcentagem).replace('.',',')}%</a>
+          </div>
+          <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
           </div>
-          <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
+          <div style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">R$ ${element.valorAfs ? String(element.valorAfs.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0,00'}</a>
           </div>
         </div>
       `
     })
+
+    var banks_errors_top = [
+      { value: erros.filter(r=> r.error.toUpperCase().includes('CEF')).length, color:'#FFA500', highlight:"#FFA500", label:"CEF com instabilidades" },
+      { value: erros.filter(r=> r.error.toUpperCase().includes('INSTABILIDADE') || r.error.toUpperCase().includes('INSTAVEL')).length, color:'#FFFF00', highlight:"#FFFF00", label:"API do banco com instabilidades" },
+      { value: erros.filter(r=> r.error.toUpperCase().includes('INSTITUIÇÃO') ).length, color:'#808080', highlight:"#808080", label:"Sem Autorização do Cliente" },
+      { value: erros.filter(r=> r.error.toUpperCase().includes('SALDO') || r.error.toUpperCase().includes('EMPRÉSTIMO')).length, color:'#0000FF', highlight:"#0000FF", label:"Cliente não possui Saldo disponivel" },
+      { value: erros.filter(r=> r.error.toUpperCase().includes('ERRORRRR')).length, color:'#00FFFF', highlight:"#00FFFF", label:"Outro erro não definido" },
+    ]
+    var banks_errors_top_total = erros.filter(r=> r.error.toUpperCase().includes('CEF') || r.error.toUpperCase().includes('INSTABILIDADE') || r.error.toUpperCase().includes('INSTAVEL') || r.error.toUpperCase().includes('INSTITUIÇÃO') || r.error.toUpperCase().includes('SALDO') || r.error.toUpperCase().includes('EMPRÉSTIMO') || r.error.toUpperCase().includes('ERRORRRR')).length
+    document.getElementById('graphc_errors').innerHTML += `
+      <div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
+        <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Principais Erros</a>
+        <canvas id="graphc_errors_top" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
+        <div class="margin-top25" style="display: flex; margin-top: 34vh; width: 80%; margin-inline: 10%">
+          <div style="display: flex; flex-direction: column; min-width: 95%; text-align: left">
+            ${banks_errors_top.map(r=>
+              `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / banks_errors_top_total) ? (r.value * 100 / banks_errors_top_total).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+              </a>`
+            ).join('')}
+          </div>
+          
+        </div>
+      </div>
+    `
+    new Chart(document.getElementById("graphc_errors_top").getContext("2d")).Doughnut(banks_errors_top);
+
     document.getElementById('calcFGTS').classList.remove('buttonBlock')
   }
 
@@ -702,54 +684,56 @@
     blockRedirect = true
     var aux = 0
     if (document.getElementById(`${menu}_list`) && document.getElementById(`${menu}_list`).value == '1') aux = 1
-    document.getElementById('listaLiberado').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
-    // var test = ''
+    document.getElementById('graphc_list_funcs').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     if (aux == 0) {
       agilus.sort(function(a, b) {
-        var one = String(a[menu]).replace('R$','').replaceAll(' ','')//.replaceAll('.','').replaceAll(',','.')
-        var two = String(b[menu]).replace('R$','').replaceAll(' ','')//.replaceAll('.','').replaceAll(',','.')
+        var one = String(a[menu]).replace('R$','').replaceAll(' ','')
+        var two = String(b[menu]).replace('R$','').replaceAll(' ','')
         if (Number(one)) one = Number(one)
         if (Number(two)) two = Number(two)
-        // test += '\n'+one+ ' - '+two
         if (one < two) return -1;
         if (one > two) return 1;
         return 0;
       });
-      // alert(test)
     } else if (aux == 1) agilus.reverse()
-    document.getElementById('listaLiberado').innerHTML = `
+    document.getElementById('graphc_list_funcs').innerHTML = `
     <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
-      <div title="Nome Funcionário" style="width: 17vw; max-width: 17vw; padding-left: 2%; height: 100%; padding-block: 0.7vh">
+      <div title="Nome Funcionário" style="width: 20vw; max-width: 20vw; padding-left: 2%; height: 100%; padding-block: 0.7vh">
         <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
         <i onclick="redirect('user')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
         <input type="hidden" id="user_list" value="0">
       </div>
-      <div title="Valor Liberado" style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+      <div title="Valor Liberado" style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
         <a style="font-size: 2.5vh; font-weight: 800">VL. S</a>
         <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
         <input type="hidden" id="total_list" value="0">
       </div>
-      <div title="Quantidade de Sucessos" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+      <div title="Quantidade de Sucessos" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
         <a style="font-size: 2.5vh; font-weight: 800">S</a>
         <i onclick="redirect('sucessos')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
         <input type="hidden" id="sucessos_list" value="0">
       </div>
-      <div title="Quantidade de Erros" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+      <div title="Quantidade de Erros" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
         <a style="font-size: 2.5vh; font-weight: 800">E</a>
         <i onclick="redirect('erros')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
         <input type="hidden" id="erros_list" value="0">
       </div>
-      <div title="Quantidade Total" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+      <div title="Quantidade Total" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
         <a style="font-size: 2.5vh; font-weight: 800">T</a>
         <i onclick="redirect('consultasTotal')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
         <input type="hidden" id="consultasTotal_list" value="0">
       </div>
-      <div title="Quantidade de AFs(Consultados)" style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+      <div title="Porcentagem" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+        <a style="font-size: 2.5vh; font-weight: 800">%</a>
+        <i onclick="redirect('porcentagem')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+        <input type="hidden" id="porcentagem_list" value="0">
+      </div>
+      <div title="Quantidade de AFs(Consultados)" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
         <a style="font-size: 2.5vh; font-weight: 800">AF</a>
         <i onclick="redirect('afs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
         <input type="hidden" id="afs_list" value="0">
       </div>
-      <div title="Valor das AFs(Consultados)" style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+      <div title="Valor das AFs(Consultados)" style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
         <a style="font-size: 2.5vh; font-weight: 800">VL. AFs</a>
         <i onclick="redirect('valorAfs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
         <input type="hidden" id="valorAfs_list" value="0">
@@ -759,27 +743,30 @@
     if (aux == 0) document.getElementById(`${menu}_list`).value = '1'
     if (aux == 1) document.getElementById(`${menu}_list`).value = '0'
     agilus.forEach((element,index)=>{
-      document.getElementById('listaLiberado').innerHTML += `
+      document.getElementById('graphc_list_funcs').innerHTML += `
         <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray">
-          <div style="width: 17vw; max-width: 17vw; padding-left: 2%">
+          <div style="width: 20vw; max-width: 20vw; padding-left: 2%">
             <a style="font-size: 2.3vh">${element.user}</a>
           </div>
-          <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
+          <div style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">R$ ${String(element.total.toFixed(2)).replace('.',',').replace('null','0,00').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</a>
           </div>
-          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+          <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.sucessos.length}</a>
           </div>
-          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+          <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.erros.length}</a>
           </div>
-          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+          <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.consultasTotal}</a>
           </div>
-          <div style="width: 5vw; max-width: 5vw; text-align: center; border-left: 0.1vh solid gray">
+          <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
+            <a style="font-size: 2vh">${String(element.porcentagem).replace('.',',')}%</a>
+          </div>
+          <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
           </div>
-          <div style="width: 9vw; max-width: 9vw; text-align: center; border-left: 0.1vh solid gray">
+          <div style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray">
             <a style="font-size: 2vh">R$ ${element.valorAfs ? String(element.valorAfs.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0,00'}</a>
           </div>
         </div>

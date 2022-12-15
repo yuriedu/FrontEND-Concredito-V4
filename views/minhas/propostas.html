@@ -28,9 +28,14 @@
             <option style="color: black" value="9923">Link Enviado ao Cliente</option>
             <option style="color: black" value="9232">Aguarda Assinatura Digital</option>
           </optgroup>
-          <optgroup id="fasesAll" style="color: black!important" label="Agilus">
+          <optgroup style="color: black!important" label="Manual">
+            <option style="color: black" value="1234">OP - CADASTRAR MANUAL</option>
+            <option style="color: black" value="10293">OP - VERIFICAÇÃO MANUAL</option>
           </optgroup>
-        </select>
+          <optgroup id="fasesAll" style="color: black!important" label="Agilus">
+
+          </optgroup>
+          </select>
       </fieldset>
       <fieldset title="Banco do Contrato da proposta..." style="padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
         <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Banco</legend>
@@ -74,8 +79,8 @@
         <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Tipo de Mídia</legend>
         <select id="midia" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
           <option style="color: black" value="" selected>Todas</option>
-          <option value="menos27" style="color: black; font-weight: 600;">Todas menos API</option>
           <option value="27" style="color: black; font-weight: 600;">API</option>
+          <option value="menos27" style="color: black; font-weight: 600;">Todas menos API</option>
           <option value="1" style="color: black; font-weight: 600;">Fechado em Ligação</option>
           <option value="2" style="color: black; font-weight: 600;">WhatsApp</option>
           <option value="3" style="color: black; font-weight: 600;">MKT Digital</option>
@@ -100,10 +105,62 @@
         <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Data Final</legend>
         <input id="dateEnd" type="date" style="font-size: 2.1vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
       </fieldset>
+      <fieldset id="agentesInput" title="Coloque o Agente aqui..." style="padding: 0; border-radius: 0.6vh; width: 25%; margin-inline: 1%; padding-inline: 1%;">
+        <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Agentes</legend>
+        <input class="font-1" list="agentesList" id="agente" placeholder="Carregando..." style="font-size: 2.4vh; width: 100%; height: 3vh; padding:0; margin:0; background: transparent; border: 0">
+        <datalist id="agentesList"></datalist>
+      </fieldset>
     </div>
     <div style="width: 100%; display: flex; justify-content: center">
       <div id="filter" onclick="filter()" class="buttonLogin" style="width: 30%; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">
         <a>Filtrar</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="background-image margin-left2-5 width79" style="margin-top: 3vh; display: flex; margin-left: 6vw; width: 92.5vw; min-height: 12vh; border-radius: 2vh; text-align: center; justify-content: center; align-items: center; font-size: 1.7vh;">
+    <fieldset class="width60p" title="Pesquise alguma proposta por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
+      <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
+      <input onkeyup="searchBar()" id="searchBar" placeholder="Pesquise alguma proposta aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+    </fieldset>
+    <i onclick="searchBar()" class="fa-regular fa-magnifying-glass-dollar" style="font-size: 3.5vh; margin-top: 1.5vh; cursor: pointer"></i>
+  </div>
+
+  <div class="background-image margin-left2-5 width79 min-height36-5" style="margin-top: 3vh; margin-left: 6vw; width: 92.5vw; min-height: 32.5vh; border-top-left-radius: 2vh; border-top-right-radius: 2vh; position: relative;">
+    <i title="Copiar Telefones" onclick="copyPhones()" class="fa-duotone fa-copy font-color-navbar" style="position: absolute; font-size: 3vh; top: 2vh; right: 1.2vw; cursor: pointer;"></i>
+    <div id="propostas-lista" style="margin-inline: 3%; padding-block: 2%;">
+      <a class="line-bottom font-size2" style="font-size: 3vh; display: flex; margin-inline: 20%; width: 60%; justify-content: center">Nenhuma proposta encontrada...</a>
+    </div>
+  </div>
+  <div id="menuPropostas"></div>
+  <div id="generator" class="background-reverse left18-5 width79 font-color-reverse" style="z-index: 5;display: none; position: fixed; top: 20%; left: 20%; width: 60%; height: 60%; border-radius: 5vh;">
+    <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <div style="position:absolute; top: 2vh; right: 3vh; cursor: pointer">
+        <i onclick="closeGenerator()" class="far fa-times" style="cursor: pointer; font-size: 3.5vh;"></i>
+      </div>
+      <a style="font-size: 4vh">Gerador de Cadastros:</a>
+      <div style="display: flex; width: 65%;">
+        <fieldset id="fieldset" title="Codigo 2" style="margin-top: 5vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 95%; margin-inline: 1%; padding-inline: 1%;">
+          <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Codigo 1</legend>
+          <textarea rows="4" class="font-1 font-color-reverse" placeholder="Nenhum codigo gerado..." id="code1" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0" disabled></textarea>
+        </fieldset>
+        <i onclick="copyGenerator('code1')" class="fas fa-copy" style="margin-top:7vh; cursor: pointer; font-size: 3vh;"></i>
+      </div>
+      <div style="display: flex; width: 65%;">
+        <fieldset id="fieldset" title="Codigo 1" style="margin-top: 3vh; text-align: left; padding: 0; border-radius: 0.6vh; width: 95%; margin-inline: 1%; padding-inline: 1%;">
+          <legend class="font-4 font-size1-5" style="margin: 0; padding: 0; font-size: 2.3vh">Codigo 2</legend>
+          <textarea rows="4" class="font-1 font-color-reverse" placeholder="Nenhum codigo gerado..." id="code2" style="font-size: 2.4vh; width: 100%; padding:0; margin:0; background: transparent; border: 0" disabled></textarea>
+        </fieldset>
+        <i onclick="copyGenerator('code2')" class="fas fa-copy" style="margin-top: 6vh; cursor: pointer; font-size: 3vh;"></i>
+      </div>
+    </div>
+  </div>
+
+  <div id="acomp" class="background-reverse left18-5 width79 font-color-reverse" style="display: none; z-index: 5; position: fixed; top: 15%; left: 20%; width: 60%; border-radius: 3vh;">
+    <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; ">
+      <div id="listAcomp" style="width: 100%; display: flex; flex-direction: column; align-items: center; max-height: 60vh; overflow: auto">
+      </div>
+      <div id="textAcomp" style="width: 100%; display: flex; flex-direction: row; justify-content: center; max-height: 18%; overflow: hidden; margin-bottom: 2vh">
       </div>
     </div>
   </div>
@@ -135,67 +192,10 @@
     </div>
   </div>
 
-  <div class="background-image margin-left2-5 width79" style="margin-top: 3vh; display: flex; margin-left: 6vw; width: 92.5vw; min-height: 12vh; border-radius: 2vh; text-align: center; justify-content: center; align-items: center; font-size: 1.7vh;">
-    <fieldset class="width60p" title="Pesquise alguma proposta por aqui..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 50%; margin-inline: 1%; padding-inline: 1%;">
-      <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Pesquisar</legend>
-      <input onkeyup="searchBar()" id="searchBar" placeholder="Pesquise alguma proposta aqui..." style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
-    </fieldset>
-    <i onclick="searchBar()" class="fa-regular fa-magnifying-glass-dollar" style="font-size: 3.5vh; margin-top: 1.5vh; cursor: pointer"></i>
-  </div>
-
-  <div class="background-image margin-left2-5 width79 min-height36-5" style="margin-top: 3vh; margin-left: 6vw; width: 92.5vw; min-height: 32.5vh; border-top-left-radius: 2vh; border-top-right-radius: 2vh;">
-    <div id="propostas-lista" style="margin-inline: 3%; padding-block: 2%;">
-      <a class="line-bottom font-size2" style="font-size: 3vh; display: flex; margin-inline: 20%; width: 60%; justify-content: center">Nenhuma proposta encontrada...</a>
-    </div>
-  </div>
-  <div id="menuPropostas"></div>
-
-  <div id="acomp" class="background-reverse left18-5 width79 font-color-reverse" style="display: none; z-index: 5; position: fixed; top: 15%; left: 20%; width: 60%; border-radius: 3vh;">
-    <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; ">
-      <div id="listAcomp" style="width: 100%; display: flex; flex-direction: column; align-items: center; max-height: 60vh; overflow: auto">
-      </div>
-      <div id="textAcomp" style="width: 100%; display: flex; flex-direction: row; justify-content: center; max-height: 18%; overflow: hidden; margin-bottom: 2vh">
-      </div>
-    </div>
-  </div>
-
 </div>
 
 <script>
-const fasesName = {
-  '1': 'Inclusão sem conferência',
-  '2': 'AGUARDANDO AVERBAÇÃO',
-  '9': 'PENDENTE',
-  '11': 'Aguardando Retorno CIP',
-  '12': 'Pendência Resolvida',
-  '15': 'EM DIGITAÇÃO-ROBO',
-  '69': 'DAR ANUÊNCIA',
-  '323': 'AGUARDA AUMENTO INSS',
-  '692': 'PROPOSTA EM ANALISE BANCO',
-  '700': 'REPROVADO',
-  '822': 'AGUARDANDO DIGITAÇÃO AUTOMÁTICA - ROBÔ',
-  '823': 'DIGITADO SUCESSO - ROBÔ',
-  '824': 'NÃO DIGITADO --ERRO-- ROBÔ',
-  '1111': 'AGUARDANDO ATUAÇÃO MASTER',
-  '1234': 'OP - CADASTRAR MANUAL',
-  '2002': 'CLIENTE RECEBEU',
-  '3920': 'PROPOSTA PAGA',
-  '4002': 'ASSINADO / RESPONDIDO',
-  '9232': 'AGUARDANDO ASSINATURA DIGITAL',
-  '9923': 'LINK ENVIADO AO CLIENTE',
-  '90000': 'Aguarda Liberar Assinar',
-  '10293': 'Verificação manual OP',
-  '100023': 'PAGAMENTO DEVOLVIDO',
-  '120001': 'PENDENTE POR ASSINATURA',
-  '202552': 'Envia Requisição CIP',
-}
-
-  var propostasAgilus = []
-  var fasesAgilus = false
-  var motivosAgilus = []
-  var origemAgilus = false
-  var agentes = false
-
+  const fasesName = {}
   var menuPropostaActual = false
   function menuPropostas(icon, codAF, bank) {
     if (menuPropostaActual) {
@@ -204,60 +204,78 @@ const fasesName = {
       menuPropostaActual = false
     }
     menuPropostaActual = codAF
-    document.getElementById(`menuPropostas`).innerHTML = `
-      <div id="menuProposta">
-        <div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.8vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh">
-          <a onclick="getAcomp('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Acompanham.</a>
-          <a onclick="whatsapp('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">WhatsApp</a>
-          <a onclick="fgts('${codAF}',1)" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Consultar FGTS</a>
-          <select onchange="changeFase('${codAF}',this.value)" class="font-color-reverse navbar-color-select" style="font-weight: 500; font-size: 2vh;padding: 0; margin: 0; cursor: pointer; padding-block: 0.3vh; background: transparent; border: none; text-align: center; display: flex; width: 100%; justify-content: center; align-items: center">
-            <option style="color: black" value="" selected>Trocar Fase</option>
-            <option style="color: black" value="1">Inclusão sem conferência</option>
-            <option style="color: black" value="9923">Link de assinatura enviado ao cliente</option>
-            <option style="color: black" value="4002">Assinado/Respondido</option>
-            <option style="color: black" value="2002">Cliente Recebeu</option>
-          </select>
-        </div>
+    var proposta = propostasAgilus.find(r=> r.codAF == codAF)
+    if (!proposta) return alert('Proposta não encontrada...')
+    document.getElementById(`menuPropostas`).innerHTML = `<div id="menuProposta">
+      <div class="background-reverse width35" style="z-index: 2; width: 8vw; border-radius: 1.5vh; font-size: 2vh; position: absolute; top: ${$(icon).offset().top+document.getElementById('propostasPage').scrollTop}px; left: calc(${$(icon).offset().left}px - (${window.screen.width < 900 ? '35.2vw' : '8.2vw'}) ); display: flex; flex-direction: column; text-align: center; padding-block: 0.8vh">
+
+        <a onclick="getAcomp('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Acompanham.</a>
+        ${login.perms.propostas_lista ? `
+          <a onclick="cadastrar('${codAF}','${bank}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastrar</a>
+          <a onclick="getLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Pegar Link</a>
+          <a onclick="checkEsteira('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Esteira</a>
+          <a onclick="generator('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Gerar Cadastro</a>
+        ` : ''}
+        <a onclick="whatsapp('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">WhatsApp</a>
+        <a onclick="fgts('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">FGTS</a>
+        
+        <select onchange="changeFase('${codAF}',this.value)" class="font-color-reverse navbar-color-select" style="font-weight: 500; font-size: 2vh; padding: 0; margin: 0; cursor: pointer; padding-block: 0.6vh; background: transparent; border: none; text-align: center; display: flex; width: 100%; justify-content: center; align-items: center">
+          <option style="color: black" value="" selected>Trocar Fase</option>
+          <optgroup id="fasesMenu" label="Fases" style="color: black">
+            ${!login.perms.propostas_lista ? `
+              <option style="color: black" value="" selected>Trocar Fase</option>
+              <option style="color: black" value="1">Inclusão sem conferência</option>
+              <option style="color: black" value="9923">Link de assinatura enviado ao cliente</option>
+              <option style="color: black" value="4002">Assinado/Respondido</option>
+              <option style="color: black" value="2002">Cliente Recebeu</option>
+            ` : ''}
+          </optgroup>
+        </select>
       </div>
-    `
+    </div>`
+    fasesAgilus.forEach((element,i)=>{
+      if (element.origem || !origemAgilus.find(r=> r.origem == proposta.codFase) || origemAgilus.find(r=> r.origem == proposta.codFase && r.fase == element.codFase)) {
+        if (login.perms.propostas_lista) document.getElementById('fasesMenu').innerHTML += `<option style="color: black" value="${element.codFase}">${element.Fase}</option>`
+      }
+    })
   }
-  var propostas = []
   function filter() {
     if (document.getElementById('filter').classList.contains('buttonBlock')) return alert('Aguarde...')
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (agentes && document.getElementById('agente').value && !agentes.find(r=>r.user==document.getElementById('agente').value)) return alert('Agente não encontrado...')
+    if (agentes && document.getElementById('agente').value && !agentes.find(r=>r.user==document.getElementById('agente').value && r.codigo)) return alert('Codigo do Agente é invalido, peça para o "Breno" configurar...')
+    document.getElementById('propostas-lista').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     document.getElementById('filter').innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById('filter').classList.add("buttonBlock");
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    document.getElementById('propostas-lista').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
     $.ajax({ type: "post", url: `${apiURL}/propostas/afs/lista`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
-      agente: localStorage.getItem('user'),
-      fase: document.getElementById('fase') && document.getElementById('fase').value ? document.getElementById('fase').value : false,
-      bank: document.getElementById('bank') && document.getElementById('bank').value ? document.getElementById('bank').value : false,
-      orgao: document.getElementById('orgao') && document.getElementById('orgao').value ? document.getElementById('orgao').value : false,
-      cpf: document.getElementById('cpf') && document.getElementById('cpf').value ? document.getElementById('cpf').value : false,
-      codAF: document.getElementById('codAF') && document.getElementById('codAF').value ? document.getElementById('codAF').value : false,
-      codContrato: document.getElementById('codContrato') && document.getElementById('codContrato').value ? document.getElementById('codContrato').value : false,
-      midia: document.getElementById('midia') && document.getElementById('midia').value ? document.getElementById('midia').value : false,
-      dateIni: document.getElementById('dateIni') && document.getElementById('dateIni').value ? document.getElementById('dateIni').value : false,
-      dateEnd: document.getElementById('dateEnd') && document.getElementById('dateEnd').value ? document.getElementById('dateEnd').value : false,
+      fase: document.getElementById('fase').value,
+      bank: document.getElementById('bank').value,
+      orgao: document.getElementById('orgao').value,
+      cpf: document.getElementById('cpf').value,
+      codAF: document.getElementById('codAF').value,
+      codContrato: document.getElementById('codContrato').value,
+      midia: document.getElementById('midia').value,
+      dateIni: document.getElementById('dateIni').value,
+      dateEnd: document.getElementById('dateEnd').value,
+      agente: login.perms.propostas_lista ? document.getElementById('agente').value ? agentes.find(r=>r.user==document.getElementById('agente').value).codigo : false : localStorage.getItem('user'),
     }),contentType:"application/json; charset=utf-8",
       success: function(s) {
         document.getElementById('filter').innerHTML = `<p class="font-1">Filtrar</p>`
         document.getElementById('filter').classList.remove("buttonBlock");
         document.getElementById('propostas-lista').innerHTML = `<a class="line-bottom" style="font-size: 3vh; display: flex; margin-inline: 20%; width: 60%; justify-content: center">Nenhuma proposta encontrada...</a>`
         if (s.error) return alert(s.error)
-        propostasAgilus = s.propostas
         if (s.propostas && s.propostas.length >= 1) {
+          propostasAgilus = s.propostas
           document.getElementById('propostas-lista').innerHTML = ``
-          propostas = s.propostas
           s.propostas.forEach((element,index)=>{
-            if (element.codOrgaoAF == 23) element.orgaoName = "FGTS"
+          if (element.codOrgaoAF == 23) element.orgaoName = "FGTS"
             if (element.codOrgaoAF == 1) element.orgaoName = "INSS"
             if (element.codOrgaoAF == 7) element.orgaoName = "CARTÃO INSS"
             if (!element.orgaoName) element.orgaoName = "???"
             document.getElementById('propostas-lista').innerHTML += `<proposta><a style="display:none">${JSON.stringify(element)}</a><div id="proposta_${element.codAF}" class="background-Propostas" style="z-index: 1; position: relative; border-radius: 1.5vh; margin-block: 2.5vh"><div class="line-bottom navbar-font-color font-4" style="display: flex; flex-direction: row; align-items: center; height: 6vh; font-size: 2.2vh; padding-inline: 1%;"><a class="max-width30p" title="${element.bancoAF}" style="max-width: 15%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="far fa-landmark font-size2"></i><span class="invisibleAndroid"> BANCO: </span>${element.bancoAF}</a><a class="max-width30p" title="${element.orgaoName}" style="max-width: 15%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="far fa-bookmark font-size2"></i><span class="invisibleAndroid"> ORGÃO: </span>${element.orgaoName}</a><a class="invisibleAndroid" title="${element.valorAF}" style="max-width: 15%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="far fa-sack-dollar font-size2"></i><span class="invisibleAndroid"> VL. AF: </span>${element.valorAF}</a><a class="invisibleAndroid" title="${element.parcela}" style="max-width: 15%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fal fa-table font-size2"></i><span class="invisibleAndroid"> PARCELAS: </span>${element.parcela}</a><a class="max-width30p" title="${element.codAF}" style="max-width: 15%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="far fa-file-code font-size2"></i><span class="invisibleAndroid"> COD. AF: </span>${element.codAF}</a><a class="invisibleAndroid" title="${element.Tabela}" style="max-width: 15%; margin-left: 0.8%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="far fa-table font-size2"></i><span class="invisibleAndroid"> TABELA: </span>${element.Tabela}</a><i id="menu_${element.codAF}" onclick="menuPropostas(this, ${element.codAF}, '${element.bancoAF}')" class="fa-solid fa-ellipsis-vertical font-size2 navbar-color-select" style="padding-inline: 1vw; cursor: pointer; position: absolute; right: 1%"></i></div><div style="display: flex; flex-direction: row; align-items: center; height: 9.5vh; font-size: 2.2vh; padding-inline: 1%;"><fieldset class="width30p" title="${element.nome}" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 18%; margin-left: 0.5%; padding-inline: 1%;"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Nome</legend><input disabled value="${element.nome}" style="font-size: 2.1vh; width: 100%; height: 3.5vh; padding:0; margin:0; background: transparent; border: 0"></fieldset><fieldset class="width30p" title="${element.cpf}" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 8%; margin-left: 0.5%; padding-inline: 1%;"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">CPF</legend><input disabled value="${element.cpf}" style="font-size: 2.1vh; width: 100%; height: 3.5vh; padding:0; margin:0; background: transparent; border: 0"></fieldset><fieldset class="invisibleAndroid" title="${element.rg}" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 5%; margin-left: 0.5%; padding-inline: 1%;"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">RG</legend><input disabled value="${element.rg}" style="font-size: 2.1vh; width: 100%; height: 3.5vh; padding:0; margin:0; background: transparent; border: 0"></fieldset><fieldset class="invisibleAndroid" title="${element.cep}" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 6%; margin-left: 0.5%; padding-inline: 1%;"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">CEP</legend><input disabled value="${element.cep}" style="font-size: 2.1vh; width: 100%; height: 3.5vh; padding:0; margin:0; background: transparent; border: 0"></fieldset><fieldset class="invisibleAndroid" title="${element.codBanco}" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 10%; margin-left: 0.5%; padding-inline: 1%;"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Banco</legend><input disabled value="${element.codBanco}" style="font-size: 2.1vh; width: 100%; height: 3.5vh; padding:0; margin:0; background: transparent; border: 0"></fieldset><fieldset class="invisibleAndroid" title="${element.agencia}" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 3%; margin-left: 0.5%; padding-inline: 1%;"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Agência</legend><input disabled value="${element.agencia}" style="font-size: 2.1vh; width: 100%; height: 3.5vh; padding:0; margin:0; background: transparent; border: 0"></fieldset><fieldset class="invisibleAndroid" title="${element.contaCorrente}" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 5%; margin-left: 0.5%; padding-inline: 1%;"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Conta</legend><input disabled value="${element.contaCorrente}" style="font-size: 2.1vh; width: 100%; height: 3.5vh; padding:0; margin:0; background: transparent; border: 0"></fieldset><fieldset class="width30p" id="title_${element.codAF}" title="Fase: ${fasesName[element.codFase] ? fasesName[element.codFase] : element.codFase}" style="padding: 0; margin: 0; border-radius: 0.6vh; width: 20.5%; margin-left: 0.5%; padding-inline: 1%;"><legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Situação</legend><input id="situation_${element.codAF}" disabled value="Fase: ${fasesName[element.codFase] ? fasesName[element.codFase] : element.codFase}" style="font-size: 2.1vh; width: 100%; height: 3.5vh; padding:0; margin:0; background: transparent; border: 0"></fieldset></div></proposta>`
-            if (element.codFase == 15) return situation(element.codAF, element.bancoAF)
+            if (element.codFase == 15) return situation(element.codAF, true, element.bancoAF)
           })
         }
       },
@@ -267,8 +285,100 @@ const fasesName = {
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
+    })
+  }
+
+  function fgts(codAF,fase) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (changeFaseActive) return alert('Você já está com algo em andamento! Aguarde...')
+    var proposta = propostas.find(r=>r.codAF == codAF)
+    if (!proposta) return alert('Proposta não encontrado...')
+    return window.open(`/consultas/fgts?cpf=${proposta.cpf}&bank=${proposta.bancoAF}`, '_blank');
+  }
+
+  async function copyPhones() {
+    if (!propostasAgilus || propostasAgilus.length <= 0) return alert('Nenhum proposta encontrada...')
+    var phones = ``
+    await propostasAgilus.map((element,i)=>{ return phones += `${i != 0? '\n' : ''}${element.telefone}` })
+    if (window.clipboardData) {
+      await window.clipboardData.setData("Text", phones);
+    } else {
+      await navigator.clipboard.writeText(phones).catch(()=>{ 
+        return alert('Seu navegador não suporta o nossos sistema de Copia...')
+      })
+    }
+    return alert('Telefones copiados com sucesso...')
+  }
+
+  async function whatsapp(codAF) {
+    var af = propostasAgilus.find(r=> r.codAF == codAF)
+    if (!af.nome) return alert('nãao encontrei o nome do cliente desta proposta...')
+    if (!af.valorAF) return alert('nãao encontrei o valor desta proposta...')
+    if (!af.link) return alert('nãao encontrei o link de formalização desta proposta...')
+    if (!af) return alert('Proposta não encontrada...')
+    var mensagem = `ConCredito Consignados`
+    if (af.codFase == 9232) {
+      mensagem = `
+Olá ${af.nome.toUpperCase()}! Tudo bem? 
+Eu tenho uma *EXCELENTE NOTÍCIA*! 🤩
+
+Liberou novos valores pra você, e você tem *R$${String(af.valorAF).replace('.',',')}* para receber agora pela manhã, e por você já ser meu cliente vou conseguir uma *prioridade no seu pagamento!*
+
+Apenas assine pelo link abaixo:
+${af.link}
+      `   
+    } else if (af.codFase == 9923) {
+      mensagem = `
+Percebi que você não assinou o contrato ainda! 
+O banco me informou que se você assinar agora dá prioridade no seu pagamento! Consegue fazer agora e receber ainda hoje esses *R$${String(af.valorAF).replace('.',',')}*?
+
+Link: ${af.link}
+      `   
+    } else return alert('A proposta tem que estar na fase "AGUARDANDO ASSINATURA DIGITAL" ou "LINK DE ASSINATURA ENVIADO PARA O CLIENTE"...')
+  
+    if (window.clipboardData) {
+      await window.clipboardData.setData("Text", mensagem);
+    } else {
+      await navigator.clipboard.writeText(mensagem).catch(()=>{ 
+        return alert('Seu navegador não suporta o nossos sistema de Copia...')
+      })
+    }
+    return window.open(`https://wa.me/55${String(af.telefone).replaceAll('(','').replaceAll(')','').replaceAll('-','').replaceAll(' ','')}`, '_blank');
+  }
+
+  function cadastrar(codAF, bankAF) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (document.getElementById(`situation_${codAF}`).style.color == `blue`) return alert('Aguarde...')
+    document.getElementById(`situation_${codAF}`).style.color = `blue`
+    document.getElementById(`situation_${codAF}`).value = 'Entrando na fila...'
+    setTimeout(function(){ situation(codAF, bankAF) }, 1500)
+    $.ajax({ type: "post", url: `${apiURL}/propostas/cadastrar`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      proposta: codAF
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        if (s.error) {
+          document.getElementById(`situation_${codAF}`).style.color = `red`
+          document.getElementById(`situation_${codAF}`).value = s.error
+          return document.getElementById(`title_${codAF}`).title = s.error
+        }
+        document.getElementById(`situation_${codAF}`).style.color = `green`
+        document.getElementById(`situation_${codAF}`).value = s.data
+        return document.getElementById(`title_${codAF}`).title = s.data
+      },
+      error: function(e) {
+        if (e.responseJSON && e.responseJSON.error) {
+          document.getElementById(`situation_${codAF}`).style.color = `red`
+          document.getElementById(`situation_${codAF}`).value = e.responseJSON.error
+          return document.getElementById(`title_${codAF}`).title = e.responseJSON.error
+        }
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
     });
   }
+
   function situation(codAF, bank) {
     if (document.getElementById(`situation_${codAF}`).style.color == 'red' || document.getElementById(`situation_${codAF}`).style.color == "green" || document.getElementById(`situation_${codAF}`).style.color == "orange") return;
     $.ajax({ type: "post", url: `${apiURL}/propostas/situation`, data: JSON.stringify({
@@ -311,6 +421,144 @@ const fasesName = {
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     })
+  }
+
+  var blockFase = false
+  function changeFase(codAF,fase,motivo,obs) {
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    if (blockFase) return alert('Aguarde...')
+    if (!fase && !motivo) return alert('Selecione alguma fase...')
+    if (motivosAgilus.find(r=> r.fase == fase) && !motivo) {
+      document.getElementById('af_motivoFase').value = codAF
+      document.getElementById('fase_motivoFase').value = fase
+      document.getElementById('motivosMenu').innerHTML = ``
+      motivosAgilus.filter(r=> r.fase == fase).forEach((element,i)=>{
+        document.getElementById('motivosMenu').innerHTML += `<option style="color: black" value="${element.codigo}">${element.motivo}</option>`
+      })
+      return document.getElementById('faseMotivo').style.display = 'flex'
+    }
+    var proposta = propostasAgilus.find(r=> r.codAF == codAF)
+    if (!proposta) return alert('Proposta não encontrada...')
+    document.getElementById('faseMotivo').style.display = 'none'
+    blockFase = true
+    $.ajax({ type: "post", url: `${apiURL}/propostas/afs/fase`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      proposta: codAF,
+      fase: fase,
+      motivo: motivo,
+      motivoDesc: motivosAgilus.filter(r=> r.fase == fase).find(r=> r.codigo == motivo) ? motivosAgilus.filter(r=> r.fase == fase).find(r=> r.codigo == motivo).motivo : motivo,
+      obs: obs,
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        blockFase = false
+        if (s.error) return alert(s.error)
+        proposta.codFase = fase
+        alert(`A proposta: ${codAF} teve sua fase alterada com sucesso!`)
+      },
+      error: function(e) {
+        blockFase = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    });
+  }
+
+  function closeMotivoFase() { document.getElementById('faseMotivo').style.display = 'none' }
+
+  function getFases() {
+    if (blockFase) return alert('Aguarde...')
+    blockFase = true
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    $.ajax({ type: "post", url: `${apiURL}/propostas/afs/getFases`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      proposta: codAF,
+      fase: fase,
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        blockFase = false
+        fasesAgilus = s.fases
+        motivosAgilus = s.motivos
+        origemAgilus = s.origem
+        s.fases.forEach((element,i)=>{
+          fasesName[element.codFase] = element.Fase
+          document.getElementById('fasesAll').innerHTML += `<option value="${element.codFase}" style="color: black">${element.Fase}</option>`
+        })
+      },
+      error: function(e) {
+        blockFase = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    });
+  }
+
+  var link = false
+  function sendLink(codAF,fase) {
+    if (link) return alert('Aguarde...')
+    link = true
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    $.ajax({ type: "post", url: `${apiURL}/propostas/whatsapp`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      proposta: codAF
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        link = false
+        if (s.error) return alert(s.error)
+        alert(`O link foi enviado com sucesso para o cliente!`)
+      },
+      error: function(e) {
+        link = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    });
+  }
+  function getLink(codAF,fase) {
+    if (link) return alert('Aguarde...')
+    link = true
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    $.ajax({ type: "post", url: `${apiURL}/propostas/link`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      proposta: codAF
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        link = false
+        if (s.error) return alert(s.error)
+        alert(`Link pego com sucesso:\n`+s.link)
+      },
+      error: function(e) {
+        link = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    });
+  }
+
+  var esteira = false
+  function checkEsteira(codAF) {
+    if (esteira) return alert('Aguarde...')
+    esteira = true
+    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
+    $.ajax({ type: "post", url: `${apiURL}/propostas/esteira`, data: JSON.stringify({
+      user: localStorage.getItem('user'), 
+      password: localStorage.getItem('password'),
+      proposta: codAF
+    }),contentType:"application/json; charset=utf-8",
+      success: function(s) {
+        esteira = false
+        if (s.error) return alert(s.error)
+        return alert(s.data)
+      },
+      error: function(e) {
+        esteira = false
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+      }
+    });
   }
 
   var acompMenu = false
@@ -438,150 +686,77 @@ const fasesName = {
     })
   }
 
-
-
-
-  async function whatsapp(codAF) {
-    var af = propostas.find(r=> r.codAF == codAF)
-    if (!af) return alert('Proposta não encontrada...')
-    var mensagem = `ConCredito Consignados`
-    if (af.codFase == 9232) {
-      mensagem = `
-Olá ${af.nome.toUpperCase()}! Tudo bem? 
-Eu tenho uma *EXCELENTE NOTÍCIA*! 🤩
-
-Liberou novos valores pra você, e você tem *R$${String(af.valorAF).replace('.',',')}* para receber agora pela manhã, e por você já ser meu cliente vou conseguir uma *prioridade no seu pagamento!*
-
-Apenas assine pelo link abaixo:
-${af.link}
-      `   
-    } else if (af.codFase == 9923) {
-      mensagem = `
-Percebi que você não assinou o contrato ainda! 
-O banco me informou que se você assinar agora dá prioridade no seu pagamento! Consegue fazer agora e receber ainda hoje esses *R$${String(af.valorAF).replace('.',',')}*?
-
-Link: ${af.link}
-      `   
-    } else return alert('A proposta tem que estar na fase "AGUARDANDO ASSINATURA DIGITAL" ou "LINK DE ASSINATURA ENVIADO PARA O CLIENTE"...')
+  var generatorMenu = false
+  function closeGenerator() {
+    generatorMenu = false
+    document.getElementById('generator').style.display = 'none'
+  }
   
-    if (window.clipboardData) {
-      await window.clipboardData.setData("Text", mensagem);
-    } else {
-      await navigator.clipboard.writeText(mensagem).catch(()=>{ 
-        return alert('Seu navegador não suporta o nossos sistema de Copia...')
-      })
-    }
-    return window.open(`https://wa.me/55${String(af.telefone).replaceAll('(','').replaceAll(')','').replaceAll('-','').replaceAll(' ','')}`, '_blank');
-  }
-
-  var changeFaseActive = false
-  var blockFase = false
-  function changeFase(codAF,fase,motivo,obs) {
+  var generatorCod = false
+  function generator(codAF) {
+    if (generatorCod || generatorMenu) return alert('Aguarde...')
+    generatorCod = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (blockFase) return alert('Aguarde...')
-    if (!fase && !motivo) return alert('Selecione alguma fase...')
-    if (motivosAgilus.find(r=> r.fase == fase) && !motivo) {
-      document.getElementById('af_motivoFase').value = codAF
-      document.getElementById('fase_motivoFase').value = fase
-      document.getElementById('motivosMenu').innerHTML = ``
-      motivosAgilus.filter(r=> r.fase == fase).forEach((element,i)=>{
-        document.getElementById('motivosMenu').innerHTML += `<option style="color: black" value="${element.codigo}">${element.motivo}</option>`
-      })
-      return document.getElementById('faseMotivo').style.display = 'flex'
-    }
-    var proposta = propostasAgilus.find(r=> r.codAF == codAF)
-    if (!proposta) return alert('Proposta não encontrada...')
-    document.getElementById('faseMotivo').style.display = 'none'
-    blockFase = true
-    $.ajax({ type: "post", url: `${apiURL}/propostas/afs/fase`, data: JSON.stringify({
+    $.ajax({ type: "post", url: `${apiURL}/propostas/generator`, data: JSON.stringify({
       user: localStorage.getItem('user'), 
       password: localStorage.getItem('password'),
-      proposta: codAF,
-      fase: fase,
-      motivo: motivo,
-      motivoDesc: motivosAgilus.filter(r=> r.fase == fase).find(r=> r.codigo == motivo) ? motivosAgilus.filter(r=> r.fase == fase).find(r=> r.codigo == motivo).motivo : motivo,
-      obs: obs,
+      proposta: codAF
     }),contentType:"application/json; charset=utf-8",
       success: function(s) {
-        blockFase = false
+        generatorCod = false
         if (s.error) return alert(s.error)
-        proposta.codFase = fase
-        alert(`A proposta: ${codAF} teve sua fase alterada com sucesso!`)
+        generatorMenu = true
+        document.getElementById('code1').value = s.code1
+        document.getElementById('code2').value = s.code2
+        document.getElementById('generator').style.display = 'flex'
       },
       error: function(e) {
-        blockFase = false
+        generatorCod = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
     });
   }
 
-  function closeMotivoFase() { document.getElementById('faseMotivo').style.display = 'none' }
-
-  var banks = {
-    "FACTA FINANCEIRA": { option1: "GOLD" },
-    "BANCO C6": { option1: 'POR_VALOR_TOTAL' },
-    "PANAMERICANO": { option1: 'POR_VALOR_TOTAL', option3: '900001' },
-    "SAFRA": { option1: 'POR_VALOR_TOTAL', option1: '1' },
-    "MERCANTIL": { option1: 'POR_VALOR_TOTAL' },
-    "BMG": { option1: 'POR_VALOR_TOTAL' },
+  function copyGenerator(code) {
+    if (document.getElementById(code)) {
+      if (document.getElementById(code).value) {
+        navigator.clipboard.writeText(document.getElementById(code).value);
+        return alert('Codigo copiado com sucesso!')
+      } else return alert('Não a nada aqui para ser copiado...')
+    } else return alert('Não encontrei o codigo...')
   }
-
-  function fgts(codAF,fase) {
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    if (changeFaseActive) return alert('Você já está com algo em andamento! Aguarde...')
-    var proposta = propostas.find(r=>r.codAF == codAF)
-    if (!proposta || !banks[proposta.bancoAF]) return alert('Banco não encontrado em minha API...')
-    return window.open(`/consultas/fgts?cpf=${proposta.cpf}&bank=${proposta.bancoAF}`, '_blank');
-    // changeFaseActive = true
-    // $.ajax({ type: "post", url: `${apiURL}/consultas/fgts`, data: JSON.stringify({
-    //   user: localStorage.getItem('user'),
-    //     password: localStorage.getItem('password'),
-    //     cpf: proposta.cpf,
-    //     bank: proposta.bancoAF,
-    //     option1: banks[proposta.bancoAF].option1 ? banks[proposta.bancoAF].option1 : false,
-    //     option2: banks[proposta.bancoAF].option2 ? banks[proposta.bancoAF].option2 : false,
-    //     option3: banks[proposta.bancoAF].option3 ? banks[proposta.bancoAF].option3 : false,
-    // }),contentType:"application/json; charset=utf-8",
-    //   success: function(s) {
-    //     changeFaseActive = false
-    //     if (s.error) return alert(s.error)
-    //     alert(`CPF consultado com sucesso...\nSaldo Liberado: ${s.saldoLiberado}\nSaldo Total: ${s.saldoTotal}`)
-    //   },
-    //   error: function(e) {
-    //     changeFaseActive = false
-    //     if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-    //     return alert(`A minha API demorou muito para retornar uma resposta valida...`)
-    //   }
-    // });
-  }
-
-  var blockFase = false
-  function getFases() {
-    if (blockFase) return alert('Aguarde...')
-    blockFase = true
-    if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
-    $.ajax({ type: "post", url: `${apiURL}/propostas/afs/getFases`, data: JSON.stringify({
-      user: localStorage.getItem('user'), 
-      password: localStorage.getItem('password'),
-      proposta: codAF,
-      fase: fase,
-    }),contentType:"application/json; charset=utf-8",
-      success: function(s) {
-        blockFase = false
-        s.fases.forEach((element,i)=>{
-          document.getElementById('fasesAll').innerHTML += `<option value="${element.codFase}" style="color: black">${element.Fase}</option>`
-        })
+</script>
+<script>
+  var propostasAgilus = []
+  var fasesAgilus = false
+  var motivosAgilus = false
+  var origemAgilus = false
+  var agentes = false
+  function getAgentes() {
+    if (agentes) return alert('Aguarde...')
+    agentes = true
+    $.ajax({ type: "post",url: `${apiURL}/logins/get`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password')
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        if (s.error) return document.getElementById('agentesInput').style.display = 'none'
+        agentes = s.logins
+        s.logins.forEach((element,index) => {
+          document.getElementById('agentesList').innerHTML += `<option value="${element.user}">`
+        });
+        document.getElementById('agente').placeholder = 'Selecione o Agente...'
       },
       error: function(e) {
-        blockFase = false
+        agentes = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return document.getElementById('agentesInput').style.display = 'none'
         return alert(`A minha API demorou muito para retornar uma resposta valida...`)
       }
-    });
-  }
-
-  (function () { getFases(); filter() })();
+    })
+  }(function () { getAgentes(); getFases() })();
 </script>
 <script>
     function searchBar() {
