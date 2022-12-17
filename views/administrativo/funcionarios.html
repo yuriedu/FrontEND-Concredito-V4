@@ -13,23 +13,23 @@
       </div>
     </div>
     <i onclick="openList()" class="fa-solid fa-list font-color-navbar" style="cursor: pointer; font-size: 3vh; position: absolute; top: 0.5vh; right: 0.8vw;"></i>
-    <div id="menuList" class="navbar-color" style="display: none; position: absolute; top: 2.5vh; right: 3vw; width: 25vw; height: 58vh; max-height: 58vh; overflow-y: scroll; border-bottom-left-radius: 5vh; border-bottom-right-radius: 5vh; border-top-left-radius: 3vh;">
-      <div style="display: flex; flex-direction: row; border-bottom: 0.1vh solid gray;">
-        <div onclick="redirect('status')" style="width: 2.5vw; height: 4.5vh; border-right: 0.1vh solid gray; display: flex; justify-content: center; align-items: center; cursor: pointer;">
+    <div id="menuList" class="navbar-color width95p max-height80 height80" style="display: none; position: absolute; top: 2.5vh; right: 3vw; width: 25vw; height: 58vh; max-height: 58vh; overflow-y: scroll; border-bottom-left-radius: 5vh; border-bottom-right-radius: 5vh; border-top-left-radius: 3vh;">
+      <div class="" style="display: flex; flex-direction: row; border-bottom: 0.1vh solid gray;">
+        <div class="padding-inline5" onclick="redirect('status')" style="width: 2.5vw; height: 4.5vh; border-right: 0.1vh solid gray; display: flex; justify-content: center; align-items: center; cursor: pointer;">
           <i class="fa-duotone fa-circle-dot width100p" style="font-size: 2vh;"></i>
           <input type="hidden" id="status_list" value="0">
         </div>
-        <div onclick="redirect('nome')" style="width: 17.5vw; height: 4.5vh; border-right: 0.1vh solid gray; display: flex; align-items: center; cursor: pointer;">
-          <a style="font-size: 2.2vh; font-weight: 600; margin-left: 1vw">Nome:</a>
+        <div class="width50p" onclick="redirect('nome')" style="width: 17.5vw; height: 4.5vh; border-right: 0.1vh solid gray; display: flex; align-items: center; cursor: pointer;">
+          <a class="margin-left2" style="font-size: 2.2vh; font-weight: 600; margin-left: 1vw">Nome:</a>
           <input type="hidden" id="nome_list" value="0">
         </div>
-        <div onclick="redirect('codigo')" style="width: 5vw; height: 4.5vh; border-right: 0.1vh solid gray; display: flex; justify-content: center; align-items: center; cursor: pointer;">
-          <a style="font-size: 1.8vh; font-weight: 600">Codigo:</a>
+        <div class="width30p" onclick="redirect('codigo')" style="width: 5vw; height: 4.5vh; display: flex; justify-content: center; align-items: center; cursor: pointer;">
+          <a style="font-size: 1.8vh; font-weight: 600">Código:</a>
           <input type="hidden" id="codigo_list" value="0">
         </div>
       </div>
       <div id="listFunc" style="display: flex; flex-direction: column">
-        <div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel-reverse"></div></div>
+        <div class="width50p" style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel-reverse"></div></div>
       </div>
     </div>
   </div>
@@ -231,13 +231,13 @@
           `
           document.getElementById('listFunc').innerHTML += `
             <div style="display: flex; flex-direction: row; border-bottom: 0.1vh solid gray;">
-              <div style="width: 2.5vw; height: 3.5vh; border-right: 0.1vh solid gray; display: flex; justify-content: center; align-items: center">
+              <div class="padding-inline5" style="width: 2.5vw; height: 3.5vh; border-right: 0.1vh solid gray; display: flex; justify-content: center; align-items: center">
                 <i class="fa-duotone fa-circle-dot width100p" style="font-size: 1.9vh; color: ${ s.online.find(r=>r.user==element.user) ? s.online.find(r=>r.user==element.user).data ? 'green' : 'orange'  : 'red' }"></i>
               </div>
-              <div style="width: 17.5vw; height: 3.5vh; border-right: 0.1vh solid gray; display: flex; align-items: center">
-                <a style="font-size: 1.9vh; font-weight: 400; margin-left: 0.6vw">${window.screen.width < 900 ? element.user.length >= 7 ? element.user.slice(0,7)+'...' : element.user : element.user.length >= 25 ? element.user.slice(0,25)+'...' : element.user}</a>
+              <div class="width50p" style="width: 17.5vw; height: 3.5vh; border-right: 0.1vh solid gray; display: flex; align-items: center">
+                <a class="margin-left2" style="font-size: 1.9vh; font-weight: 400; margin-left: 0.6vw">${window.screen.width < 900 ? element.user.length >= 99 ? element.user.slice(0,99)+'...' : element.user : element.user.length >= 25 ? element.user.slice(0,25)+'...' : element.user}</a>
               </div>
-              <div style="width: 5vw; height: 3.5vh; border-right: 0.1vh solid gray; display: flex; justify-content: center; align-items: center">
+              <div class="width30p" style="width: 5vw; height: 3.5vh; display: flex; justify-content: center; align-items: center">
                 <a style="font-size: 1.8vh; font-weight: 400">#${element.codigo}</a>
               </div>
             </div>

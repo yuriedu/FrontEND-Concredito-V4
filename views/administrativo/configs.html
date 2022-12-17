@@ -60,12 +60,12 @@
           s.roles.forEach((element,index)=>{ Roles(element,index) })
         } else if (menu == "Bancos") {
           var banks = [ "FACTA FINANCEIRA","BANCO C6","PANAMERICANO","MERCANTIL","BMG","SAFRA","BANRISUL" ]
-          document.getElementById('result').innerHTML = `<div id="results" style="display: flex; flex-wrap: wrap; justify-content: center;"></div>`
+          document.getElementById('result').innerHTML = `<div id="results" class="flex-direction-column" style="display: flex; flex-wrap: wrap; justify-content: center;"></div>`
           banks.forEach((element,i) => {
             document.getElementById('results').innerHTML += `
-              <result onclick="openBank('${element}')" class="background-Propostas" style="width: 16vw; height: 37vh; cursor: pointer; margin-inline: 1vw; margin-block: 1.5vh; border-radius: 3vh; display: flex; flex-direction: column; justify-content: center; align-items: center">
-                <img src="/public/images/Bancos/${element}.png" style="width: 8vw; height: 8vw; border-radius: 100%">
-                <a style="font-size: 3vh; margin-top: 5vh; text-decoration: underline">${element}</a>
+              <result onclick="openBank('${element}')" class="background-Propostas width60 height60vw" style="width: 16vw; height: 37vh; cursor: pointer; margin-inline: 1vw; margin-block: 1.5vh; border-radius: 3vh; display: flex; flex-direction: column; justify-content: center; align-items: center">
+                <img src="/public/images/Bancos/${element}.png" class="width25 height25vw" style="width: 8vw; height: 8vw; border-radius: 100%">
+                <a class="font-size2-5 margin-top2" style="font-size: 3vh; margin-top: 5vh; text-decoration: underline">${element}</a>
               </result>
             `
           })
@@ -97,9 +97,9 @@
 
 <script>
   async function Configs(element,i) {
-    if (!document.getElementById(element.menu)) document.getElementById('result').innerHTML += `<div id="${element.menu}" style="width: 100%; display: flex; flex-direction: row; justify-content: center"></div>`
+    if (!document.getElementById(element.menu)) document.getElementById('result').innerHTML += `<div id="${element.menu}" class="flex-direction-column align-items-center justify-content-center" style="width: 100%; display: flex; flex-direction: row; justify-content: center"></div>`
     if (element.type == 'checkbox') {
-      document.getElementById(element.menu).innerHTML += `<result class="width40p" style="width: 12%; margin-inline: 1%">
+      document.getElementById(element.menu).innerHTML += `<result class="width50p" style="width: 12%; margin-inline: 1%">
         <fieldset class="width100p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
           <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
             <div style="width: 100%; display: flex; justify-content: center">
@@ -137,7 +137,7 @@
         </fieldset>
       </result>`
     } else if (element.type == 'number') {
-      document.getElementById(element.menu).innerHTML += `<result class="width30p" style="width: 9%; margin-inline: 1%">
+      document.getElementById(element.menu).innerHTML += `<result class="width50p" style="width: 9%; margin-inline: 1%">
         <fieldset class="width100p" style="padding: 0; margin: 0; width: 100%; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
           <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">${element.name}</legend>
           <input id="${element.id}_active" type="number" class="font-1" value="${element.value}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0" ${element.block ? 'disabled' : ''}>
@@ -262,24 +262,23 @@
       <div id="fases" style="margin-top: 2vh; width: 100%; text-algin: center; display: flex; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap"></div>
     </div>`
     result.logins.filter(r=> r.bank == bank).forEach((element,i)=>{
-      document.getElementById('logins').innerHTML += `<result class="width30p" style="width: 90%; margin-inline: 1%; display: flex; justify-content
-      : center; align-items: center">
-        <fieldset class="width100p" style="padding: 0; margin: 0; width: 25%; margin-inline: 0.5vw; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+      document.getElementById('logins').innerHTML += `<result class="flex-direction-column" style="width: 90%; margin-inline: 1%; display: flex; justify-content: center; align-items: center">
+        <fieldset class="width80p" style="padding: 0; margin: 0; width: 25%; margin-inline: 0.5vw; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
           <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">User</legend>
           <input id="${element.id}_user" type="text" class="font-1" value="${String(element.user).replace('null','Não definido...')}" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
           <i title="Salvar" onclick="saveMenu('Logins', '${element.id}', document.getElementById('${element.id}_user').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid fa-floppy-disk font-color-navbar"></i>
         </fieldset>
-        <fieldset class="width100p" style="padding: 0; margin: 0; width: 25%; margin-inline: 0.5vw; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+        <fieldset class="width80p" style="padding: 0; margin: 0; width: 25%; margin-inline: 0.5vw; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
           <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Password</legend>
           <input id="${element.id}_password" type="password" class="font-1" placeholder="********" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
           <i title="Salvar" onclick="saveMenu('Logins', '${element.id}', false, document.getElementById('${element.id}_password').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid fa-floppy-disk font-color-navbar"></i>
         </fieldset>
-        <fieldset class="width100p" style="padding: 0; margin: 0; width: 15%; margin-inline: 0.5vw; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+        <fieldset class="width80p" style="padding: 0; margin: 0; width: 15%; margin-inline: 0.5vw; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
           <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Token</legend>
           <input id="${element.id}_token" value="${String(element.token).replace('null','Não definido...')}" class="font-1" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0">
           <i title="Salvar" onclick="saveMenu('Logins', '${element.id}', false, false, document.getElementById('${element.id}_token').value)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid fa-floppy-disk font-color-navbar"></i>
         </fieldset>
-        <fieldset class="width100p" style="padding: 0; margin: 0; width: 12%; margin-inline: 0.5vw; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
+        <fieldset class="width80p" style="padding: 0; margin: 0; width: 12%; margin-inline: 0.5vw; border-radius: 0.6vh; padding-inline: 0.4%; height: 7.7vh; display: flex; flex-direction: row; justify-content: center">
           <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Limite</legend>
           <input id="${element.id}_limit" value="${element.limit}" type="number" class="font-1" style="width: 100%; height: 3vh; margin: 0; font-size: 2.3vh; background: transparent; border: 0" disabled>
           <i title="Resetar" onclick="saveMenu('Logins', '${element.id}', false, false, false, 0)" style="font-size: 3vh; cursor: pointer; margin-right: 0.5vw" class="fa-solid fa-arrows-rotate font-color-navbar"></i>
@@ -288,7 +287,7 @@
       </result>`
     })
     result.erros.filter(r=> r.bank == bank).forEach((element,i)=>{
-      document.getElementById('erros').innerHTML += `<result class="background-Propostas width30p" style="position: relative; margin: 1vw; width: 16vw; height: 42vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center">
+      document.getElementById('erros').innerHTML += `<result class="background-Propostas width45p" style="position: relative; margin: 1vw; width: 16vw; height: 42vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center">
         <i class="fa-solid fa-floppy-disk font-color-navbar" style="font-size: 2.5vh; position: absolute; top: 1.2vh; right: 0.8vw; cursor: pointer" 
           onclick="saveMenu('Erros','${element.id}',
             document.getElementById('${element.id}_fase').value,
@@ -297,24 +296,24 @@
         </i>
         <img src="/public/images/Bancos/${element.bank}.png" class="width50p; margin-top1" style="width: 6.5vw; height: 6.5vw; border-radius: 100%">
         <a class="font-size2 font-color-navbar" style="font-weight: 600; font-size: 2vh; margin-top: 2vh; margin-bottom: 0.5vh; max-width: 100%; overflow: hidden;">${element.bank}</a>
-        <a style="font-size: 1.8vh; max-width: 95%; line-clamp: 2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" title="${element.error ? element.error : 'Vazio...'}"><span class="font-color-navbar">Erro:</span> ${element.error ? element.error : 'Vazio...'}</a>
+        <a class="font-size2" style="font-size: 1.8vh; max-width: 95%; line-clamp: 2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" title="${element.error ? element.error : 'Vazio...'}"><span class="font-color-navbar">Erro:</span> ${element.error ? element.error : 'Vazio...'}</a>
 
-        <fieldset class="width100p" style="padding: 0; margin: 0; width: 45%; margin-top: 1vh; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
+        <fieldset class="width90p" style="padding: 0; margin: 0; width: 45%; margin-top: 1vh; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
           <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.7vh">Fase</legend>
           <input id="${element.id}_fase" type="text" class="font-1" value="${!element.fase || element.fase == 'null' ? 'Vazio...' : element.fase}" style="width: 100%; height: 2.5vh; margin: 0; font-size: 1.8vh; background: transparent; border: 0">
         </fieldset>
-        <fieldset class="width100p" style="padding: 0; margin: 0; width: 60%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
+        <fieldset class="width90p" style="padding: 0; margin: 0; width: 60%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
           <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.7vh">Cod. Motivo</legend>
           <input id="${element.id}_codMotivo" type="text" class="font-1" value="${!element.codMotivo || element.codMotivo == 'null' ? 'Vazio...' : element.codMotivo}" style="width: 100%; height: 2.5vh; margin: 0; font-size: 1.8vh; background: transparent; border: 0">
         </fieldset>
-        <fieldset class="width100p" style="padding: 0; margin: 0; width: 80%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
+        <fieldset class="width90p" style="padding: 0; margin: 0; width: 80%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
           <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.7vh">Motivo</legend>
           <input id="${element.id}_motivo" type="text" class="font-1" value="${!element.motivo || element.motivo == 'null' ? 'Vazio...' : element.motivo}" style="width: 100%; height: 2.5vh; margin: 0; font-size: 1.8vh; background: transparent; border: 0">
         </fieldset>
       </result>`
     })
     result.fases.filter(r=> r.bank == bank).forEach((element,i)=>{
-      document.getElementById('fases').innerHTML += `<result class="background-Propostas width30p" style="position: relative; margin: 1vw; width: 16vw; height: 43vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center">
+      document.getElementById('fases').innerHTML += `<result class="background-Propostas width45p" style="position: relative; margin: 1vw; width: 16vw; height: 43vh; border-radius: 1.5vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center">
         <i class="fa-solid fa-floppy-disk font-color-navbar" style="font-size: 2.5vh; position: absolute; top: 1.2vh; right: 0.8vw; cursor: pointer" 
           onclick="saveMenu('Esteiras','${element.id}',
             document.getElementById('${element.id}_newFase').value,
@@ -327,15 +326,15 @@
         <a style="font-size: 1.8vh; max-width: 95%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${element.situacao ? element.situacao : 'Vazio...'}"><span class="font-color-navbar">Situação:</span> ${element.situacao ? element.situacao : 'Vazio...'}</a>
         <a style="font-size: 1.8vh; max-width: 95%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${element.atividade ? element.atividade : 'Vazio...'}"><span class="font-color-navbar">Atividade:</span> ${element.atividade ? element.atividade : 'Vazio...'}</a>
         <a style="font-size: 1.8vh; max-width: 95%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${element.status ? element.status : 'Vazio...'}"><span class="font-color-navbar"">Status:</span> ${element.status ? element.status : 'Vazio...'}</a>
-        <fieldset class="width100p" style="padding: 0; margin: 0; width: 40%; margin-top: 1vh; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
+        <fieldset class="width90p" style="padding: 0; margin: 0; width: 40%; margin-top: 1vh; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
           <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.7vh">Nova Fase</legend>
           <input id="${element.id}_newFase" type="text" class="font-1" value="${!element.newFase || element.newFase == 'null' ? 'Vazio...' : element.newFase}" style="width: 100%; height: 2.5vh; margin: 0; font-size: 1.8vh; background: transparent; border: 0">
         </fieldset>
-        <fieldset class="width100p" style="padding: 0; margin: 0; width: 80%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
+        <fieldset class="width90p" style="padding: 0; margin: 0; width: 80%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
           <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.7vh">Fases Antiga</legend>
           <input id="${element.id}_oldFase" type="text" class="font-1" value="${!element.oldFase || element.oldFase == 'null' ? 'Vazio...' : element.oldFase}" style="width: 100%; height: 2.5vh; margin: 0; font-size: 1.8vh; background: transparent; border: 0">
         </fieldset>
-        <fieldset class="width100p" style="padding: 0; margin: 0; width: 90%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
+        <fieldset class="width90p" style="padding: 0; margin: 0; width: 90%; border-radius: 0.6vh; padding-inline: 0.4%; height: 5vh; display: flex; flex-direction: row; justify-content: center">
           <legend class="font-4" style="margin: 0; padding: 0; font-size: 1.7vh">Motivo</legend>
           <input id="${element.id}_motivo" type="text" class="font-1" value="${!element.motivo || element.motivo == 'null' ? 'Vazio...' : element.motivo}" style="width: 100%; height: 2.5vh; margin: 0; font-size: 1.8vh; background: transparent; border: 0">
         </fieldset>

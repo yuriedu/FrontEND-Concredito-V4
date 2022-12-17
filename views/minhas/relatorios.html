@@ -651,10 +651,14 @@
       { value: erros.filter(r=> r.error.toUpperCase().includes('CEF')).length, color:'#FFA500', highlight:"#FFA500", label:"CEF com instabilidades" },
       { value: erros.filter(r=> r.error.toUpperCase().includes('INSTABILIDADE') || r.error.toUpperCase().includes('INSTAVEL')).length, color:'#FFFF00', highlight:"#FFFF00", label:"API do banco com instabilidades" },
       { value: erros.filter(r=> r.error.toUpperCase().includes('INSTITUIÇÃO') ).length, color:'#808080', highlight:"#808080", label:"Sem Autorização do Cliente" },
-      { value: erros.filter(r=> r.error.toUpperCase().includes('SALDO') || r.error.toUpperCase().includes('EMPRÉSTIMO')).length, color:'#0000FF', highlight:"#0000FF", label:"Cliente não possui Saldo disponivel" },
-      { value: erros.filter(r=> r.error.toUpperCase().includes('ERRORRRR')).length, color:'#00FFFF', highlight:"#00FFFF", label:"Outro erro não definido" },
+      { value: erros.filter(r=> r.error.toUpperCase().includes('SALDO') || r.error.toUpperCase().includes('VALOR') || r.error.toUpperCase().includes('EMPRÉSTIMO') || r.error.toUpperCase().includes('PARCELAS') || r.error.toUpperCase().includes('PARCELA')).length, color:'#0000FF', highlight:"#0000FF", label:"Cliente não possui Saldo disponivel" },
     ]
-    var banks_errors_top_total = erros.filter(r=> r.error.toUpperCase().includes('CEF') || r.error.toUpperCase().includes('INSTABILIDADE') || r.error.toUpperCase().includes('INSTAVEL') || r.error.toUpperCase().includes('INSTITUIÇÃO') || r.error.toUpperCase().includes('SALDO') || r.error.toUpperCase().includes('EMPRÉSTIMO') || r.error.toUpperCase().includes('ERRORRRR')).length
+    var banks_errors_top_total = erros.filter(r=> 
+      r.error.toUpperCase().includes('CEF') ||
+      r.error.toUpperCase().includes('INSTABILIDADE') || r.error.toUpperCase().includes('INSTAVEL') || 
+      r.error.toUpperCase().includes('INSTITUIÇÃO') || 
+      r.error.toUpperCase().includes('SALDO') || r.error.toUpperCase().includes('VALOR') || r.error.toUpperCase().includes('EMPRÉSTIMO') || r.error.toUpperCase().includes('PARCELAS') || r.error.toUpperCase().includes('PARCELA')
+    ).length
     document.getElementById('graphc_errors').innerHTML += `
       <div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
         <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Principais Erros</a>
