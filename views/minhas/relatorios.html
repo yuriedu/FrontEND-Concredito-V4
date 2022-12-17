@@ -615,7 +615,6 @@
     agilus = fgts.funcionarios
     agilus.forEach((element,index)=>{
       agilus[index].consultasTotal = element.sucessos.length + element.erros.length
-      // agilus[index].porcentagem = ((result.afs.afs.filter(r=> element.user == r.user).length / element.sucessos.length) * 100).toFixed(2)
       agilus[index].porcentagem = ((element.afs.length / element.sucessos.length) * 100).toFixed(2)
       document.getElementById('graphc_list_funcs').innerHTML += `
         <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
@@ -676,6 +675,50 @@
       </div>
     `
     new Chart(document.getElementById("graphc_errors_top").getContext("2d")).Doughnut(banks_errors_top);
+
+    for (var i = 1, n = 31; i <= n; ++i) { errors_list[i-1] = [i,0,0,0,0] }
+    var errors_list = []
+    await result.errors.map(r=>{
+      if (errors_list.find(r2=>r2[0] == r.dia)) {
+        errors_list.find(r2=> r2[0] == r.dia)[aux.findIndex(r2=>r2==r['1'])] = r['1']
+        errors_list.find(r2=> r2[0] == r.dia)[aux.findIndex(r2=>r2==r['2'])] = r['2']
+        errors_list.find(r2=> r2[0] == r.dia)[aux.findIndex(r2=>r2==r['3'])] = r['3']
+        errors_list.find(r2=> r2[0] == r.dia)[aux.findIndex(r2=>r2==r['4'])] = r['4']
+      }
+    })
+    alert(JSON.stringify(errors_list))
+
+    // var months = { '1': 'Janeiro', '2': 'Fevereiro', '3': 'Março', '4': 'Abril', '5': 'Maio', '6': 'Junho', '7': 'Julho', '8': 'Agosto', '9': 'Setembro', '10': 'Outubro', '11': 'Novembro', '12': 'Dezembro' }
+    //     document.getElementById('Graphc_Afs_Dia').innerHTML = `
+    //       <a class="font-size2-5" style="font-size: 4vh; margin-top: 4vh">Pago por Dia</a>
+    //       <div id="Graphc_Afs_Dia_2" class="width100 height18" style="position: absolute; left: -1vw; top: 15vh; width:60vw; height: 23vw; margin-top: -6vh; font-weight: 600"></div>
+    //     `
+    //     google.charts.load('current', {packages: ['corechart', 'line']});
+    //     google.charts.setOnLoadCallback(drawCurveTypes);
+    //     function drawCurveTypes() {
+    //       var data = new google.visualization.DataTable();
+    //       data.addColumn('number', 'X');
+    //       data.addColumn('number', months[s.mes-2]);
+    //       data.addColumn('number', months[s.mes-1]);
+    //       data.addColumn('number', months[s.mes]);
+    //       data.addRows(s.afs.months);
+    //       var optionsGraficoMeses = {
+    //         legend: { position: 'bottom', textStyle: {color: '#01579b'} },
+    //         hAxis: { 
+    //           textStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+    //           titleTextStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+    //         },
+    //         vAxis: {
+    //           textStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+    //           titleTextStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+    //         },
+    //         backgroundColor: 'transparent',
+    //       };
+    //       var graficoMeses = new google.visualization.LineChart(document.getElementById('Graphc_Afs_Dia_2'));
+    //       graficoMeses.draw(data, optionsGraficoMeses);
+    //     }
+
+
 
     document.getElementById('calcFGTS').classList.remove('buttonBlock')
   }
