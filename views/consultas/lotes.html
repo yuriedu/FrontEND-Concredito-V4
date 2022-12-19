@@ -169,11 +169,12 @@
     if (type == "Erros" && results.filter(r=>r.error).length <= 0) return alert('Essa lista está vazia...')
     document.getElementById(`${type}_button`).innerHTML = `<i class="fad fa-spinner-third fa-spin"></i>`
     document.getElementById(`${type}_button`).classList.add("buttonBlock");
+    alert(1)
     var csv = false
     if (type == 'Sucessos') {
       csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA`
       await results.filter(r=>r.liberado).map((element,index)=>{
-        csv+=`\n${element.cpf},${element.bank},${element.total.replaceAll(',','.')},${element.liberado.replaceAll(',','.')},${element.telefone},${element.data}`
+        csv+=`\n${element.cpf},${element.bank},${String(element.total).replaceAll(',','.')},${String(element.liberado).replaceAll(',','.')},${element.telefone},${element.data}`
       })
     } else {
       csv = `CPF,BANCO,ERRO,TELEFONE`
