@@ -45,6 +45,7 @@
           $.ajax({ 
             type: "post", 
             url: `${apiURL}/logins/verify`,
+            // url: `${apiURL}/test`,
             data: JSON.stringify({
               user: localStorage.getItem('user'),
               password: localStorage.getItem('password')
@@ -64,7 +65,8 @@
               if (url[1]) return $(document.body).load(`/views/${url[1]}.html`)
               return $(document.body).load(`/views/dashboard/destaques.html`)
             },
-            error: function(e) { return $(document.body).load(`/views/login.html`) }
+            error: function(e) { alert(JSON.stringify(e)) }
+            // error: function(e) { return $(document.body).load(`/views/login.html`) }
           })
         }
         function logout() {
