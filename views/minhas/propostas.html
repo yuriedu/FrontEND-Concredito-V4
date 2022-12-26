@@ -212,10 +212,10 @@
         <a onclick="getAcomp('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Acompanham.</a>
         ${login.perms.propostas_lista ? `
           <a onclick="cadastrar('${codAF}','${bank}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Cadastrar</a>
-          <a onclick="getLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Pegar Link</a>
           <a onclick="checkEsteira('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Esteira</a>
           <a onclick="generator('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Gerar Cadastro</a>
         ` : ''}
+        <a onclick="getLink('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">Atualizar Link</a>
         <a onclick="whatsapp('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">WhatsApp</a>
         <a onclick="fgts('${codAF}')" class="line-bottom-reverse navbar-color-select" style="cursor: pointer; padding-block: 0.6vh">FGTS</a>
         
@@ -518,6 +518,8 @@ Link: ${af.link}
   }
   function getLink(codAF,fase) {
     if (link) return alert('Aguarde...')
+    var proposta = propostasAgilus.find(r=> r.codAF == codAF)
+    if (!proposta) return alert('Proposta não encontrada...')
     link = true
     if (menuPropostaActual) menuPropostas(false, menuPropostaActual)
     $.ajax({ type: "post", url: `${apiURL}/propostas/link`, data: JSON.stringify({
@@ -528,7 +530,13 @@ Link: ${af.link}
       success: function(s) {
         link = false
         if (s.error) return alert(s.error)
-        alert(`Link pego com sucesso:\n`+s.link)
+        if (window.clipboardData) {
+          window.clipboardData.setData("Text", s.link)
+        } else {
+          navigator.clipboard.writeText(s.link).then(()=>{}).catch(()=>{ })
+        }
+        proposta.link = s.link
+        alert(`Link atualizado e copiado com sucesso...\nLink: `+s.link)
       },
       error: function(e) {
         link = false
