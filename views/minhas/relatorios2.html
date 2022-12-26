@@ -1,0 +1,974 @@
+<div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; max-width: 100vw; overflow-x: hidden;">
+    <navbar id="navbar"></navbar>
+    <script>$("#navbar").load(`/imports/navbar.html`)</script>
+  
+    <div class="margin-left0 width79" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 12.5vh;">
+      <div class="background-image flex-direction-column height50 width79 margin-left5" style="margin-bottom: 0.5vh; width: 65vw; border-radius: 2vh; height: 5vw; margin-inline: 0.6vw; display: flex; flex-direction: row; justify-content: center; align-items: center; padding-inline: 2vw">
+        <fieldset class="width80p" title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 19%; margin-inline: 1%; padding-inline: 1%;">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Relatorio</legend>
+          <select id="relatorio" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+            <option style="color: black" value="funcionarios">Meu Relatorio</option>
+            <option style="color: black" value="equipe">Minha Equipe</option>
+            <option style="color: black" value="empresa">Empresa</option>
+            <option style="color: black" value="api">API's</option>
+            <optgroup id="equipes" label="Equipes">
+              <option style="color: black" value="equipe-MARCIA">TROPA DE ELITE</option>
+              <option style="color: black" value="equipe-RAFAELA">ALFAS DO LITORAL</option>
+              <option style="color: black" value="equipe-CARLOS">REIS DA SAVANA</option>
+              <option style="color: black" value="equipe-VANDREI">SOBRENOME SUCESSO</option>
+              <option style="color: black" value="equipe-DEBORA">ONDE A MAGIA ACONTECE</option>
+              <option style="color: black" value="equipe-JESSICA">CONSTRUINDO SONHOS</option>
+            </optgroup>
+            <optgroup id="funcs" label="Funcionários"></optgroup>
+          </select>
+        </fieldset>
+        <fieldset class="width80p" title="Coloque a data minima..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Inicial</legend>
+          <input type="date" id="dateIni" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+        </fieldset>
+        <fieldset class="width80p" title="Coloque a data maxima..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Data Final</legend>
+          <input type="date" id="dateEnd" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+        </fieldset>
+        <fieldset class="width80p" title="Coloque o objetivo em porcentagem..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 11%; margin-inline: 1%; padding-inline: 1%;">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Objetivo</legend>
+          <input onkeyup="changeComissao()" type="text" placeholder="100%" value="100%" id="objetivo" style="padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+        </fieldset>
+        <fieldset class="width80p" title="Sua comissão conforme o objetivo..." style="padding: 0; margin: 0; border-radius: 0.6vh; width: 15%; margin-inline: 1%; padding-inline: 1%;">
+          <legend class="font-4" style="margin: 0; padding: 0; font-size: 2.3vh">Comissão</legend>
+          <input disabled value="R$ 800,00" id="comissaoObj" style="color: red; padding:0; margin:0; font-size: 2.5vh; width: 100%; height: 4vh; background: transparent; border: 0">
+        </fieldset>
+        <i onclick="relatorio()" class="fa-regular fa-magnifying-glass-dollar font-color-navbar font-size5 margin-top2" style="font-size: 3.5vh; margin-left: 0.8vw; margin-top: 1vh; cursor: pointer"></i>
+      </div>
+    </div>
+  
+    <div class="flex-direction-column margin-left0" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-comet font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Meta:</a>
+        <a id="topMeta" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+        <a id="topComissao" class="font-color-navbar" style="padding-top: 0.5vh; font-size: 2.1vh; margin-top:0vh; font-weight: 600;"></a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-regular fa-scale-balanced font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Med. AF's Dia:</a>
+        <a id="topAFsDia" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-ticket font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Tck. Médio:</a>
+        <a id="topTicket" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-projector font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Projeção:</a>
+        <a id="topProjecao" class="font-color-navbar" style="font-size: 2.3vh; margin-top:1vh; font-weight: 600;">0</a>
+        <a id="topProjecaoCom" class="font-color-navbar" style="padding-top: 0.5vh; font-size: 2.2vh; margin-top:0vh; font-weight: 600;"></a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-cabinet-filing font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Cadastrado:</a>
+        <a id="topCadastrado" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+        <a id="topCadastradoQnt" class="font-color-navbar" style="font-size: 1.6vh; font-weight: 600;"></a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-folder-open font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Pago:</a>
+        <a id="topPago" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+        <a id="topPagoQnt" class="font-color-navbar" style="font-size: 1.6vh; font-weight: 600;"></a>
+      </div>
+    </div>
+  
+    <div class="flex-direction-column margin-left0" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="far fa-money-check-edit font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">AF's Restante:</a>
+        <a id="topAFsRestante" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-money-check-dollar font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Valor Restante:</a>
+        <a id="topValorRestante" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-sack-dollar font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Valor Rest. Dia:</a>
+        <a id="topValorDia" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      </div>
+    </div>
+  
+    <div class="flex-direction-column margin-left2-5 width79" style="margin-block: 0.5vh; width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;">
+      <div id="Graphc_Midias" class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
+      
+      </div>
+      <div id="Graphc_Afs_Dia" class="background-image width79 height30" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 55vw; overflow-x: hidden">
+        
+      </div>
+    </div>
+  
+    <div style="width: 100%; display: flex; justify-content: center">
+      <a id="calcFGTS" onclick="calcFGTS()" class="buttonLogin width50p buttonBlock" style="width: 20%; margin-inline: 0.5vw; margin-top: 3vh; font-size: 2.8vh; padding-block: 1.5vh; border-radius: 1.5vh">Calcular Consultas FGTS</a>
+    </div>
+  
+    <div class="flex-direction-column margin-left0" style="width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 2vh;">
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-regular fa-money-bill-trend-up font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Liberado:</a>
+        <a id="topLiberado" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="position: relative; margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i onclick="lotes('sucessos')" class="fa-regular fa-magnifying-glass-dollar font-color-navbar" style="font-size: 2.5vh; cursor:pointer; position: absolute; right: 0.5vw; top: 0.5vw"></i>
+        <i class="fa-solid fa-hexagon-check font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Sucessos:</a>
+        <a onclick="downloadCSV('Sucessos')" id="topSucessos" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+        <a onclick="downloadTotalCSV('Sucessos')" id="topSucessosTotal" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.6vh; font-weight: 600;"></a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="position: relative; margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i onclick="lotes('erros')" class="fa-regular fa-magnifying-glass-dollar font-color-navbar" style="font-size: 2.5vh; cursor:pointer; position: absolute; right: 0.5vw; top: 0.5vw"></i>
+        <i class="fa-solid fa-hexagon-exclamation font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Erros:</a>
+        <a onclick="downloadCSV('Erros')" id="topErros" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+        <a onclick="downloadTotalCSV('Erros')" id="topErrosTotal" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.6vh; font-weight: 600;"></a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="position: relative; margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i onclick="lotes('oportunidades')" class="fa-regular fa-magnifying-glass-dollar font-color-navbar" style="font-size: 2.5vh; cursor:pointer; position: absolute; right: 0.5vw; top: 0.5vw"></i>
+        <i class="fa-solid fa-money-check-dollar-pen font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Oportunidades:</a>
+        <a onclick="downloadCSV('Oportunidades')" id="topOportunidades" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+        <a id="topOportunidadesPorc" class="font-color-navbar" style="cursor: pointer; text-decoration: underline; font-size: 1.6vh; font-weight: 600;"></a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-ballot-check font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Total:</a>
+        <a id="topTotal" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+        <a id="topTotalTotal" class="font-color-navbar" style="font-size: 1.6vh; font-weight: 600;"></a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-chart-simple font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">MED. P/DIA QNT.</a>
+        <a id="topMedAfPorDiaQnt" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-regular fa-scale-balanced font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">MED. P/DIA VAL.</a>
+        <a id="topMedAfPorDiaValor" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      </div>
+      <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-ticket font-color-navbar" style="font-size: 6vh"></i>
+        <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Tck. Médio:</a>
+        <a id="topTicket2" class="font-color-navbar" style="font-size: 2.4vh; margin-top: 1vh; font-weight: 600;">0</a>
+      </div>
+    </div>
+  
+    <div id="graphcs_banks" class="flex-direction-column margin-left2-5 width79" style="margin-block: 0.5vh; display: flex; align-items: center; justify-content: center; margin-top: 1vh; width: 92vw; margin-left: 7.3vw"></div>
+    <div id="graphc_list_func" class="flex-direction-column margin-left2-5 width79" style="margin-block: 0.5vh; display: flex; align-items: center; justify-content: center; margin-top: 1vh; width: 92vw; margin-left: 7.3vw"></div>
+    <div id="graphc_errors" class="flex-direction-column margin-left2-5 width79" style="margin-block: 0.5vh; width: 92.5vw; display: flex; justify-content: center; margin-left: 6vw; margin-top: 1vh;"></div>
+  
+  </div>
+  <script>
+  
+    var result = false
+    var total = []
+    var sucessos = []
+    var erros = []
+    var agilus = []
+  
+    var fgts = {
+      total: 0,
+      oportunidades: [],
+      funcionarios: []
+    }
+  
+    var block = false
+    function relatorio() {
+      if (block) return alert('Aguarde...')
+      var objetivoReq = false
+      if (!document.getElementById('objetivo').value) document.getElementById('objetivo').value = '100'
+      objetivoReq = document.getElementById('objetivo').value.replace('%','')
+      if (!Number(objetivoReq)) return alert('O objetivo deve ser um numero...')
+      if (objetivoReq && !Number(objetivoReq)) return alert('O objetivo deve ser um numero...')
+      result = false
+      total = []
+      sucessos = []
+      erros = []
+      agilus = []
+      fgts = {
+        total: 0,
+        oportunidades: [],
+        funcionarios: []
+      }
+      var date = new Date();
+      if (!document.getElementById('dateIni').value) document.getElementById('dateIni').value = date.toISOString().slice(0, 10)
+      document.getElementById('topMeta').innerHTML = `0%`
+      document.getElementById('topComissao').innerHTML = ``
+      document.getElementById('topAFsDia').innerHTML = 0
+      document.getElementById('topTicket').innerHTML = 'R$ 0,00'
+      document.getElementById('topProjecao').innerHTML = `0%`
+      document.getElementById('topProjecaoCom').innerHTML = ``
+      document.getElementById('topAFsRestante').innerHTML = 0
+      document.getElementById('topValorRestante').innerHTML = 'R$ 0,00'
+      document.getElementById('topValorDia').innerHTML = 'R$ 0,00'
+      document.getElementById('topPago').innerHTML = 'R$ 0,00'
+      document.getElementById('topPagoQnt').innerHTML = ``
+      document.getElementById('topCadastrado').innerHTML = 'R$ 0,00'
+      document.getElementById('topCadastradoQnt').innerHTML = ``
+      document.getElementById('topLiberado').innerHTML = 'R$ 0,00'
+      document.getElementById('topSucessos').innerHTML = 0
+      document.getElementById('topErros').innerHTML = 0
+      document.getElementById('topSucessosTotal').innerHTML = ``
+      document.getElementById('topErrosTotal').innerHTML = ``
+      document.getElementById('topTotal').innerHTML = 0
+      document.getElementById('topTotalTotal').innerHTML = ``
+      document.getElementById('topOportunidades').innerHTML = 0
+      document.getElementById('topOportunidadesPorc').innerHTML = ``
+      document.getElementById('topMedAfPorDiaQnt').innerHTML = 0
+      document.getElementById('topMedAfPorDiaValor').innerHTML = 'R$ 0,00'
+      document.getElementById('topTicket2').innerHTML = 'R$ 0,00'
+      document.getElementById('graphcs_banks').innerHTML = ``
+      document.getElementById('graphc_list_func').innerHTML = ``
+      document.getElementById('graphc_errors').innerHTML = ``
+      document.getElementById('Graphc_Midias').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+      document.getElementById('Graphc_Afs_Dia').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+      document.getElementById('calcFGTS').classList.add('buttonBlock')
+      block = true
+      var url = document.getElementById('relatorio').value
+      var funcionario = localStorage.getItem('user')
+      if (document.getElementById('relatorio').value && document.getElementById('relatorio').value.includes('-')) {
+        url = document.getElementById('relatorio').value.split('-')[0]
+        funcionario = document.getElementById('relatorio').value.split('-')[1]
+      }
+      $.ajax({ type: "post",url: `${apiURL}/administrativo/relatorios/${url}`,
+        data: JSON.stringify({
+          user: localStorage.getItem('user'),
+          password: localStorage.getItem('password'),
+          dataMin: document.getElementById('dateIni').value,
+          dataMax: document.getElementById('dateEnd').value,
+          objetivo: objetivoReq,
+          funcionario: funcionario,
+        }), contentType:"application/json; charset=utf-8",
+        success: async function(s) {
+          block = false
+          if (s.error) {
+            document.getElementById('Graphc_Midias').innerHTML = ``
+            document.getElementById('Graphc_Afs_Dia').innerHTML = ``
+            return alert(s.error)
+          }
+          result = s
+          total = s.fgts
+          //CALCULOS
+          for (var i = 1, n = 31; i <= n; ++i) { s.afs.months[i-1] = [i,0,0,0] }
+          await s.calcular.midias.map(r=>{ s.afs.midias.find(r2=> r.midia == r2.midia).value = r.valor })
+          var aux = [ s.mes-2, s.mes-1, s.mes ]
+          await s.calcular.dias.map(r=>{
+            if (s.afs.months.find(r2=>r2[0] == r.dia) && aux.find(r2=>r2==Number(r.mes))) s.afs.months.find(r2=>r2[0] == r.dia)[aux.findIndex(r2=>r2==Number(r.mes)) + 1] = r.valor
+          })
+          //META
+          document.getElementById('topMeta').innerHTML = `${s.meta ? s.meta.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 0}%`
+          var comissaoMeta = comissao.find(r=>s.meta >= r.min && s.meta < r.max)
+          if (comissaoMeta) document.getElementById('topComissao').innerHTML = `R$ ${comissaoMeta.comissao},00`
+          //AFs
+          var afsDia = (s.afs.func / s.dates.max.slice(8,10) / ( s.agentes ? s.agentes.length : 1 )).toFixed(0)
+          document.getElementById('topAFsDia').innerHTML = afsDia && afsDia != "NaN" ? afsDia : 0
+          var ticket = (s.afs.vlFunc / s.afs.func).toFixed(2)
+          document.getElementById('topTicket').innerHTML = ticket ? ticket == "NaN" ? `R$ 0,00` : `R$ `+ticket.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 0
+          var metaDia = (Number(s.meta) / s.dates.now.slice(8,10)).toFixed(2)
+          var metaMes = (metaDia * s.dates.max.slice(8,10)).toFixed(2)
+          document.getElementById('topProjecao').innerHTML = metaMes && metaMes != "NaN" ? `${metaMes ? String(metaMes).replace('.',',') : 0}%` : "0%"
+          var comissaoMeta = comissao.find(r=>metaMes >= r.min && metaMes < r.max)
+          if (comissaoMeta) document.getElementById('topProjecaoCom').innerHTML = `R$ ${comissaoMeta.comissao},00`
+          var ticketEmpresa = (s.afs.vlEmpresa / s.afs.empresa).toFixed(2)
+          var afsRestante = ((((Number(s.objetivo) * ( s.agentes ? s.agentes.length : 1 )) - Number( s.somaMeta ? s.somaMeta : s.meta)) * 1050) / ticketEmpresa).toFixed(0)
+          document.getElementById('topAFsRestante').innerHTML = afsRestante && afsRestante != "NaN" ? afsRestante.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 0
+          var vlRestante = (((Number(s.objetivo) * ( s.agentes ? s.agentes.length : 1 )) - Number( s.somaMeta ? s.somaMeta : s.meta)) * 1050).toFixed(2)
+          document.getElementById('topValorRestante').innerHTML = vlRestante && vlRestante != "NaN" ? `R$ `+vlRestante.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 'R$ 0,00'
+          s.days = (document.getElementById('dateEnd').value ? Number(s.dates.max.slice(8,10)) : s.days) - Number(s.dates.min.slice(8,10))
+          var valorDia = (vlRestante / s.days).toFixed(2)
+          document.getElementById('topValorDia').innerHTML = valorDia && valorDia != "NaN" ? `R$ `+valorDia.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): "R$ 0,00"
+          document.getElementById('topPago').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlFunc).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): "R$ 0,00"
+          document.getElementById('topPagoQnt').innerHTML = "Qnt: "+s.afs.func
+        
+          document.getElementById('topCadastrado').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlCadastrado).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.') : "R$ 0,00"
+          document.getElementById('topCadastradoQnt').innerHTML = "Qnt: "+s.afs.cadastrado
+  
+          document.getElementById('Graphc_Midias').innerHTML = `
+            <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Mídias</a>
+            <canvas id="graficoMidias" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
+            <div class="margin-top25" style="display: flex; margin-top: 34vh; width: 80%; margin-inline: 10%">
+              <div style="display: flex; flex-direction: column; min-width: 45%; text-align: left">
+                ${s.afs.midias.slice(0,s.afs.midias.length/2).map(r=>
+                  `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                    ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / s.afs.vlMidias) ? (r.value * 100 / s.afs.vlMidias).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+                  </a>`
+                ).join('')}
+              </div>
+              <div style="display: flex; flex-direction: column; width: 45% text-align: right; margin-left: 10%">
+                ${s.afs.midias.slice(s.afs.midias.length/2,s.afs.midias.length).map(r=>
+                  `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                    ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / s.afs.vlMidias) ? (r.value * 100 / s.afs.vlMidias).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+                  </a>`
+                ).join('')}
+              </div>
+            </div>
+          `
+          var graficoMidias = document.getElementById("graficoMidias").getContext("2d");
+          new Chart(graficoMidias).Doughnut(s.afs.midias);
+  
+          var months = { '1': 'Janeiro', '2': 'Fevereiro', '3': 'Março', '4': 'Abril', '5': 'Maio', '6': 'Junho', '7': 'Julho', '8': 'Agosto', '9': 'Setembro', '10': 'Outubro', '11': 'Novembro', '12': 'Dezembro' }
+          document.getElementById('Graphc_Afs_Dia').innerHTML = `
+            <a class="font-size2-5" style="font-size: 4vh; margin-top: 4vh">Pago por Dia</a>
+            <div id="Graphc_Afs_Dia_2" class="width100 height18" style="position: absolute; left: -1vw; top: 15vh; width:60vw; height: 23vw; margin-top: -6vh; font-weight: 600"></div>
+          `
+          google.charts.load('current', {packages: ['corechart', 'line']});
+          google.charts.setOnLoadCallback(drawCurveTypes);
+          function drawCurveTypes() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'X');
+            data.addColumn('number', months[s.mes-2]);
+            data.addColumn('number', months[s.mes-1]);
+            data.addColumn('number', months[s.mes]);
+            data.addRows(s.afs.months);
+            var optionsGraficoMeses = {
+              legend: { position: 'bottom', textStyle: {color: '#01579b'} },
+              hAxis: { 
+                textStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+                titleTextStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+              },
+              vAxis: {
+                textStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+                titleTextStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+              },
+              backgroundColor: 'transparent',
+            };
+            var graficoMeses = new google.visualization.LineChart(document.getElementById('Graphc_Afs_Dia_2'));
+            graficoMeses.draw(data, optionsGraficoMeses);
+          }
+          document.getElementById('calcFGTS').classList.remove('buttonBlock')
+  
+          var banks = [
+            { value: 1, color:'#FF0000', highlight:"#FF0000", label:"Calcule o FGTS..." }
+          ]
+        },
+        error: function(e) {
+          block = false
+  
+          if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+          return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        }
+      })
+    }
+  
+    async function calcFGTS() {
+      if (document.getElementById('calcFGTS').classList.contains('buttonBlock')) return alert('Aguarde...')
+      if (!result) return alert('Puxe algum relatorio primeiro...')
+      if (!result.fgts || result.fgts < 1) return alert('Lista de consultas FGTS está vazia...')
+      document.getElementById('calcFGTS').classList.add('buttonBlock')
+      document.getElementById('topLiberado').innerHTML = 'R$ 0,00'
+      document.getElementById('topSucessos').innerHTML = 0
+      document.getElementById('topErros').innerHTML = 0
+      document.getElementById('topSucessosTotal').innerHTML = ``
+      document.getElementById('topErrosTotal').innerHTML = ``
+      document.getElementById('topTotal').innerHTML = 0
+      document.getElementById('topTotalTotal').innerHTML = ``
+      document.getElementById('topOportunidades').innerHTML = 0
+      document.getElementById('topOportunidadesPorc').innerHTML = ``
+      document.getElementById('topMedAfPorDiaQnt').innerHTML = 0
+      document.getElementById('topMedAfPorDiaValor').innerHTML = 'R$ 0,00'
+      document.getElementById('topTicket2').innerHTML = 'R$ 0,00'
+      document.getElementById('graphcs_banks').innerHTML = ``
+      document.getElementById('graphc_list_func').innerHTML = ``
+      document.getElementById('graphc_errors').innerHTML = ``
+  
+      total = result.fgts
+      await total.forEach((element,index)=>{
+        if (!element.user) {
+          total[index].user = "Desconhecido"
+          result.fgts[index].user = "Desconhecido"
+          element.user = "Desconhecido"
+        }
+        if (element.user) element.user = element.user.replace(' ','').toLowerCase()
+        if (element.liberado && !sucessos.find(r=> r.cpf == element.cpf)) {
+          sucessos[sucessos.length] = element
+          fgts.total += Number(element.liberado.replaceAll('R$ ','').replaceAll(',','.'))
+        }
+        if (element.error && !erros.find(r=> r.cpf == element.cpf)) erros[erros.length] = element
+  
+        var func = fgts.funcionarios.find(r=> r.user.replace(' ','').toLowerCase() == element.user)
+        if (func) {
+          if (element.liberado && !func.sucessos.find(r=> r.cpf == element.cpf)) {
+            func.sucessos[func.sucessos.length] = element
+            func.total += Number(element.liberado.replaceAll('R$ ','').replaceAll(',','.'))
+          }
+          if (element.error && !func.erros.find(r=> r.cpf == element.cpf)) func.erros[func.erros.length] = element
+        } else fgts.funcionarios[fgts.funcionarios.length] = {
+          user: element.user,
+          sucessos: element.liberado ? [element] : [],
+          erros: element.error ? [element] : [],
+          total: 0,
+          afs: [],
+          valorAfs: 0,
+        }
+      })
+      await sucessos.forEach((element,index)=>{
+        if (element.user) element.user = element.user.replace(' ','').toLowerCase()
+        if (!result.afs.afs.find(r=> r.cpf == element.cpf) && !fgts.oportunidades.find(r=> r.cpf == element.cpf)) {
+          fgts.oportunidades[fgts.oportunidades.length] = element
+        }
+      })
+  
+      await result.afs.afs.forEach((element,index)=>{
+        if (element.user) element.user = element.user.replace(' ','').toLowerCase()
+        var func = fgts.funcionarios.find(r=> r.user.replace(' ','').toLowerCase() == element.user)
+        if (func && func.sucessos.find(r=> r.cpf == element.cpf) && !func.afs.find(r=> r.cpf == element.cpf)) {
+          func.afs[func.afs.length] = element
+          func.valorAfs += Number(element.valor)
+        }
+        if (func && func.sucessos.find(r=> r.cpf == element.cpf) && !func.afs.find(r=> r.cpf == element.cpf)) {
+          func.afs[func.afs.length] = element
+          func.valorAfs += Number(element.valor)
+        }
+      })
+  
+      document.getElementById('topLiberado').innerHTML = fgts.total ? `R$ `+String(fgts.total.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): 0
+      document.getElementById('topSucessos').innerHTML = sucessos.length
+      document.getElementById('topErros').innerHTML = erros.length
+      document.getElementById('topSucessosTotal').innerHTML = `Total: `+total.filter(r=>!r.error).length
+      document.getElementById('topErrosTotal').innerHTML = `Total: `+total.filter(r=>!r.liberado).length
+      document.getElementById('topTotal').innerHTML = sucessos.length + erros.length
+      document.getElementById('topTotalTotal').innerHTML = `Total: `+total.length
+      document.getElementById('topOportunidades').innerHTML = fgts.oportunidades.length
+      var oportunidadesPorc = (fgts.oportunidades.length * 100) / sucessos.length
+      document.getElementById('topOportunidadesPorc').innerHTML = `${String(oportunidadesPorc.toFixed(2)).replace('.',',')}%`
+      var qntFGTS = Number(sucessos.length / result.dates.max.slice(8,10)).toFixed(0)
+      document.getElementById('topMedAfPorDiaQnt').innerHTML = qntFGTS && qntFGTS != "NaN" ? qntFGTS : 0
+      var valorFGTS = Number(fgts.total / result.dates.max.slice(8,10)).toFixed(2)
+      document.getElementById('topMedAfPorDiaValor').innerHTML = valorFGTS && valorFGTS != "NaN" ? `R$ ${valorFGTS.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}` : 'R$ 0,00'
+      var ticket = Number(fgts.total / sucessos.length).toFixed(2)
+      document.getElementById('topTicket2').innerHTML = ticket && ticket != "NaN" ? `R$ ${ticket.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}` : 'R$ 0,00'
+  
+      var graphc_count = [
+        { value: sucessos.length, color:'#ffa500', highlight:"#ffa500", label:"Sucessos" },
+        { value: erros.length, color:'#FFFF00', highlight:"#FFFF00", label:"Erros" },
+      ]
+      document.getElementById('graphcs_banks').innerHTML += `
+        <div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 50vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 23vw; max-width: 23vw; overflow-x: hidden; margin-right: 2vw">
+          <a class="font-1" style="font-size: 4vh; margin-top: 2vh">Consultas</a>
+          <canvas id="graphcs_banks_count" class="width80" style="position: absolute; top: 3vh; width: 22vw; margin-top: 6vh"></canvas>
+          <div class="margin-top25" style="display: flex; margin-top: 32vh; width: 90%; margin-inline: 10%">
+            <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
+              ${graphc_count.slice(0,graphc_count.length/2).map(r=>
+                `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / (sucessos.length + erros.length)) ? (r.value * 100 / (sucessos.length + erros.length)).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+                </a>`
+              ).join('')}
+            </div>
+            <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
+              ${graphc_count.slice(graphc_count.length/2,graphc_count.length).map(r=>
+                `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / (erros.length + sucessos.length)) ? (r.value * 100 / (erros.length + sucessos.length)).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+                </a>`
+              ).join('')}
+            </div>
+          </div>
+        </div>
+      `
+      var banks_sucessos = [
+        { value: sucessos.filter(r=> r.bank == "FACTA FINANCEIRA").length, color:'#ffa500', highlight:"#ffa500", label:"FACTA FIN." },
+        { value: sucessos.filter(r=> r.bank == "BANCO C6").length, color:'#FFFF00', highlight:"#FFFF00", label:"BANCO C6" },
+        { value: sucessos.filter(r=> r.bank == "PANAMERICANO").length, color:'#808080', highlight:"#808080", label:"PANAMERI." },
+        { value: sucessos.filter(r=> r.bank == "MERCANTIL").length, color:'#0000FF', highlight:"#0000FF", label:"MERC." },
+        { value: sucessos.filter(r=> r.bank == "BMG").length, color:'#FF0000', highlight:"#FF0000", label:"BMG" },
+        { value: sucessos.filter(r=> r.bank == "SAFRA").length, color:'#00FFFF', highlight:"#00FFFF", label:"SAFRA" },
+      ]
+      document.getElementById('graphcs_banks').innerHTML += `
+        <div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 50vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 23vw; max-width: 23vw; overflow-x: hidden; margin-right: 2vw">
+          <a class="font-1" style="font-size: 4vh; margin-top: 2vh">Sucessos</a>
+          <canvas id="graphcs_banks_sucess" class="width80" style="position: absolute; top: 3vh; width: 22vw; margin-top: 6vh"></canvas>
+          <div class="margin-top25" style="display: flex; margin-top: 30vh; width: 90%; margin-inline: 10%">
+            <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
+              ${banks_sucessos.slice(0,banks_sucessos.length/2).map(r=>
+                `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / sucessos.length) ? (r.value * 100 / sucessos.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+                </a>`
+              ).join('')}
+            </div>
+            <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
+              ${banks_sucessos.slice(banks_sucessos.length/2,banks_sucessos.length).map(r=>
+                `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / sucessos.length) ? (r.value * 100 / sucessos.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+                </a>`
+              ).join('')}
+            </div>
+          </div>
+        </div>
+      `
+      var banks_erros = [
+        { value: erros.filter(r=> r.bank == "FACTA FINANCEIRA").length, color:'#ffa500', highlight:"#ffa500", label:"FACTA FIN." },
+        { value: erros.filter(r=> r.bank == "BANCO C6").length, color:'#FFFF00', highlight:"#FFFF00", label:"BANCO C6" },
+        { value: erros.filter(r=> r.bank == "PANAMERICANO").length, color:'#808080', highlight:"#808080", label:"PANAMERI." },
+        { value: erros.filter(r=> r.bank == "MERCANTIL").length, color:'#0000FF', highlight:"#0000FF", label:"MERC." },
+        { value: erros.filter(r=> r.bank == "BMG").length, color:'#FF0000', highlight:"#FF0000", label:"BMG" },
+        { value: erros.filter(r=> r.bank == "SAFRA").length, color:'#00FFFF', highlight:"#00FFFF", label:"SAFRA" },
+      ]
+      document.getElementById('graphcs_banks').innerHTML += `
+        <div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 50vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 23vw; max-width: 23vw; overflow-x: hidden; margin-right: 2vw">
+          <a class="font-1" style="font-size: 4vh; margin-top: 2vh">Bancos - Erros</a>
+          <canvas id="graphcs_banks_errors" class="width80" style="position: absolute; top: 3vh; width: 22vw; margin-top: 6vh"></canvas>
+          <div class="margin-top25" style="display: flex; margin-top: 30vh; width: 90%; margin-inline: 10%">
+            <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
+              ${banks_erros.slice(0,banks_erros.length/2).map(r=>
+                `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / erros.length) ? (r.value * 100 / erros.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+                </a>`
+              ).join('')}
+            </div>
+            <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
+              ${banks_erros.slice(banks_erros.length/2,banks_erros.length).map(r=>
+                `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / erros.length) ? (r.value * 100 / erros.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+                </a>`
+              ).join('')}
+            </div>
+          </div>
+        </div>
+      `
+      var banks_total = [
+        { value: total.filter(r=> r.bank == "FACTA FINANCEIRA").length, color:'#ffa500', highlight:"#ffa500", label:"FACTA FIN." },
+        { value: total.filter(r=> r.bank == "BANCO C6").length, color:'#FFFF00', highlight:"#FFFF00", label:"BANCO C6" },
+        { value: total.filter(r=> r.bank == "PANAMERICANO").length, color:'#808080', highlight:"#808080", label:"PANAMERI." },
+        { value: total.filter(r=> r.bank == "MERCANTIL").length, color:'#0000FF', highlight:"#0000FF", label:"MERC." },
+        { value: total.filter(r=> r.bank == "BMG").length, color:'#FF0000', highlight:"#FF0000", label:"BMG" },
+        { value: total.filter(r=> r.bank == "SAFRA").length, color:'#00FFFF', highlight:"#00FFFF", label:"SAFRA" },
+      ]
+      document.getElementById('graphcs_banks').innerHTML += `
+        <div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 50vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 23vw; max-width: 23vw; overflow-x: hidden; margin-right: 2vw">
+          <a class="font-1" style="font-size: 4vh; margin-top: 2vh">Bancos - Total</a>
+          <canvas id="graphcs_banks_total" class="width80" style="position: absolute; top: 3vh; width: 22vw; margin-top: 6vh"></canvas>
+          <div class="margin-top25" style="display: flex; margin-top: 30vh; width: 90%; margin-inline: 10%">
+            <div style="display: flex; flex-direction: column; width: 50%; text-align: left">
+              ${banks_total.slice(0,banks_total.length/2).map(r=>
+                `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / total.length) ? (r.value * 100 / total.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+                </a>`
+              ).join('')}
+            </div>
+            <div style="display: flex; flex-direction: column; width: 50% text-align: right; margin-left: 10%">
+              ${banks_total.slice(banks_total.length/2,banks_total.length).map(r=>
+                `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / total.length) ? (r.value * 100 / total.length).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+                </a>`
+              ).join('')}
+            </div>
+          </div>
+        </div>
+      `
+      new Chart(document.getElementById("graphcs_banks_count").getContext("2d")).Pie(graphc_count);
+      new Chart(document.getElementById("graphcs_banks_sucess").getContext("2d")).Pie(banks_sucessos);
+      new Chart(document.getElementById("graphcs_banks_errors").getContext("2d")).Pie(banks_erros);
+      new Chart(document.getElementById("graphcs_banks_total").getContext("2d")).Pie(banks_total);
+  
+      document.getElementById('graphc_list_func').innerHTML = `<div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; max-height: 50vh; overflow-y: auto; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 80vw; max-width: 79vw; overflow-x: hidden; margin-right: 2vw; padding-block: 0.5vh">
+        <div id="graphc_list_funcs" style="width: 100%">
+          <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
+            <div title="Nome Funcionário" style="width: 20vw; max-width: 20vw; padding-left: 2%; height: 100%; padding-block: 0.7vh">
+              <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
+              <i onclick="redirect('user')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+              <input type="hidden" id="user_list" value="0">
+            </div>
+            <div title="Valor Liberado" style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+              <a style="font-size: 2.5vh; font-weight: 800">VL. S</a>
+              <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+              <input type="hidden" id="total_list" value="0">
+            </div>
+            <div title="Quantidade de Sucessos" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+              <a style="font-size: 2.5vh; font-weight: 800">S</a>
+              <i onclick="redirect('sucessos')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+              <input type="hidden" id="sucessos_list" value="0">
+            </div>
+            <div title="Quantidade de Erros" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+              <a style="font-size: 2.5vh; font-weight: 800">E</a>
+              <i onclick="redirect('erros')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+              <input type="hidden" id="erros_list" value="0">
+            </div>
+            <div title="Quantidade Total" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+              <a style="font-size: 2.5vh; font-weight: 800">T</a>
+              <i onclick="redirect('consultasTotal')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+              <input type="hidden" id="consultasTotal_list" value="0">
+            </div>
+            <div title="Porcentagem" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+              <a style="font-size: 2.5vh; font-weight: 800">%</a>
+              <i onclick="redirect('porcentagem')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+              <input type="hidden" id="porcentagem_list" value="0">
+            </div>
+            <div title="Quantidade de AFs(Consultados)" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+              <a style="font-size: 2.5vh; font-weight: 800">AF</a>
+              <i onclick="redirect('afs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+              <input type="hidden" id="afs_list" value="0">
+            </div>
+            <div title="Valor das AFs(Consultados)" style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+              <a style="font-size: 2.5vh; font-weight: 800">VL. AFs</a>
+              <i onclick="redirect('valorAfs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+              <input type="hidden" id="valorAfs_list" value="0">
+            </div>
+          </div>
+        </div>
+      </div>`
+      agilus = fgts.funcionarios
+      agilus.forEach((element,index)=>{
+        agilus[index].consultasTotal = element.sucessos.length + element.erros.length
+        agilus[index].porcentagem = ((element.afs.length / element.sucessos.length) * 100).toFixed(2)
+        document.getElementById('graphc_list_funcs').innerHTML += `
+          <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
+            <div style="width: 20vw; max-width: 20vw; padding-left: 2%">
+              <a style="font-size: 2.3vh">${element.user}</a>
+            </div>
+            <div style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">R$ ${element.total ? String(element.total.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '0,00'}</a>
+            </div>
+            <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">${element.sucessos.length}</a>
+            </div>
+            <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">${element.erros.length}</a>
+            </div>
+            <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">${element.consultasTotal}</a>
+            </div>
+            <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">${String(element.porcentagem).replace('.',',').replace('NaN','0,00')}%</a>
+            </div>
+            <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
+            </div>
+            <div style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">R$ ${element.valorAfs ? String(element.valorAfs.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0,00'}</a>
+            </div>
+          </div>
+        `
+      })
+  
+      var banks_errors_top = [
+        { value: erros.filter(r=> r.error.toUpperCase().includes('CEF')).length, color:'#FFA500', highlight:"#FFA500", label:"CEF com instabilidades" },
+        { value: erros.filter(r=> r.error.toUpperCase().includes('INSTABILIDADE') || r.error.toUpperCase().includes('INSTAVEL')).length, color:'#FFFF00', highlight:"#FFFF00", label:"API do banco com instabilidades" },
+        { value: erros.filter(r=> r.error.toUpperCase().includes('INSTITUIÇÃO') ).length, color:'#808080', highlight:"#808080", label:"Sem Autorização do Cliente" },
+        { value: erros.filter(r=> r.error.toUpperCase().includes('SALDO') || r.error.toUpperCase().includes('VALOR') || r.error.toUpperCase().includes('EMPRÉSTIMO') || r.error.toUpperCase().includes('PARCELAS') || r.error.toUpperCase().includes('PARCELA')).length, color:'#0000FF', highlight:"#0000FF", label:"Cliente não possui Saldo disponivel" },
+      ]
+      var banks_errors_top_total = erros.filter(r=> 
+        r.error.toUpperCase().includes('CEF') ||
+        r.error.toUpperCase().includes('INSTABILIDADE') || r.error.toUpperCase().includes('INSTAVEL') || 
+        r.error.toUpperCase().includes('INSTITUIÇÃO') || 
+        r.error.toUpperCase().includes('SALDO') || r.error.toUpperCase().includes('VALOR') || r.error.toUpperCase().includes('EMPRÉSTIMO') || r.error.toUpperCase().includes('PARCELAS') || r.error.toUpperCase().includes('PARCELA')
+      ).length
+      document.getElementById('graphc_errors').innerHTML += `
+        <div class="background-image width79 height50" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 28vw; max-width: 28vw; overflow-x: hidden; margin-right: 2vw">
+          <a class="font-1" style="font-size: 4vh; margin-top: 4vh">Principais Erros</a>
+          <canvas id="graphc_errors_top" class="width80" style="position: absolute; top: 5.5vh; width: 26vw; margin-top: 6vh"></canvas>
+          <div class="margin-top25" style="display: flex; margin-top: 34vh; width: 80%; margin-inline: 10%">
+            <div style="display: flex; flex-direction: column; min-width: 95%; text-align: left">
+              ${banks_errors_top.map(r=>
+                `<a style="border-left: 0.8vh solid ${r.color}; border-radius: 0.3vh; margin-block: 0.4vh; padding-left: 0.6vw; font-size: 1.8vh;">
+                  ${r.label} <span style="font-size: 1.6vh">${Number(r.value * 100 / banks_errors_top_total) ? (r.value * 100 / banks_errors_top_total).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0'}%</span>
+                </a>`
+              ).join('')}
+            </div>
+            
+          </div>
+        </div>
+      `
+  
+      var errors_list = []
+      for (var i = 1, n = 31; i <= n; ++i) { errors_list[i-1] = [i,0,0,0,0] }
+      await result.errors.map(r=>{
+        if (errors_list.find(r2=>r2[0] == r.dia)) {
+          errors_list.find(r2=> r2[0] == r.dia)[1] = r['1']
+          errors_list.find(r2=> r2[0] == r.dia)[2] = r['2']
+          errors_list.find(r2=> r2[0] == r.dia)[3] = r['3']
+          errors_list.find(r2=> r2[0] == r.dia)[4] = r['4']
+        }
+      })
+  
+      document.getElementById('graphc_errors').innerHTML += `
+        <div class="background-image width79 height30" style="margin-block: 0.5vh; position: relative; height: 60vh; border-radius: 2vh; display: flex; flex-direction: column; align-items: center; width: 55vw; overflow-x: hidden">
+          <a class="font-size2-5" style="font-size: 4vh; margin-top: 4vh">Erros por Dia</a>
+            <div id="Graphc_Errors_Dia" class="width100 height18" style="position: absolute; left: -1vw; top: 15vh; width:60vw; height: 23vw; margin-top: -6vh; font-weight: 600"></div>
+        </div>
+      `
+          google.charts.load('current', {packages: ['corechart', 'line']});
+          google.charts.setOnLoadCallback(drawCurveTypes2);
+          function drawCurveTypes2() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'X');
+            data.addColumn('number', 'CEF');
+            data.addColumn('number', 'API Instavel');
+            data.addColumn('number', 'Sem Autorização');
+            data.addColumn('number', 'Sem Saldo');
+            data.addRows(errors_list);
+            var optionsGraficoMeses = {
+              legend: { position: 'bottom', textStyle: {color: '#01579b'} },
+              hAxis: { 
+                textStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+                titleTextStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+              },
+              vAxis: {
+                textStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+                titleTextStyle: { color: '#01579b', fontName: 'Arial', bold: true, italic: true },
+              },
+              backgroundColor: 'transparent',
+            };
+            var graficoMeses = new google.visualization.LineChart(document.getElementById('Graphc_Errors_Dia'));
+            graficoMeses.draw(data, optionsGraficoMeses);
+          }
+  
+  
+      new Chart(document.getElementById("graphc_errors_top").getContext("2d")).Doughnut(banks_errors_top);
+      document.getElementById('calcFGTS').classList.remove('buttonBlock')
+    }
+  
+    var blockRedirect = false
+    function redirect(menu) {
+      if (blockRedirect) return alert('Aguarde...')
+      if (!agilus || agilus.length < 1) return alert('Lista vazia...')
+      if (!menu) return alert('Campo não informado...')
+      blockRedirect = true
+      var aux = 0
+      if (document.getElementById(`${menu}_list`) && document.getElementById(`${menu}_list`).value == '1') aux = 1
+      document.getElementById('graphc_list_funcs').innerHTML = `<div style="width: 100%; height: 30vh; display: flex; justify-content: center; align-items: center"><div class="loader-wheel"></div><div class="loader-text font-5"></div></div>`
+      if (aux == 0) {
+        agilus.sort(function(a, b) {
+          var one = String(a[menu]).replace('R$','').replaceAll(' ','')
+          var two = String(b[menu]).replace('R$','').replaceAll(' ','')
+          if (Number(one)) one = Number(one)
+          if (Number(two)) two = Number(two)
+          if (one < two) return -1;
+          if (one > two) return 1;
+          return 0;
+        });
+      } else if (aux == 1) agilus.reverse()
+      document.getElementById('graphc_list_funcs').innerHTML = `
+      <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray;">
+        <div title="Nome Funcionário" style="width: 20vw; max-width: 20vw; padding-left: 2%; height: 100%; padding-block: 0.7vh">
+          <a style="font-size: 2.8vh; font-weight: 800">Nome</a>
+          <i onclick="redirect('user')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="user_list" value="0">
+        </div>
+        <div title="Valor Liberado" style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <a style="font-size: 2.5vh; font-weight: 800">VL. S</a>
+          <i onclick="redirect('total')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="total_list" value="0">
+        </div>
+        <div title="Quantidade de Sucessos" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <a style="font-size: 2.5vh; font-weight: 800">S</a>
+          <i onclick="redirect('sucessos')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="sucessos_list" value="0">
+        </div>
+        <div title="Quantidade de Erros" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <a style="font-size: 2.5vh; font-weight: 800">E</a>
+          <i onclick="redirect('erros')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="erros_list" value="0">
+        </div>
+        <div title="Quantidade Total" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <a style="font-size: 2.5vh; font-weight: 800">T</a>
+          <i onclick="redirect('consultasTotal')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="consultasTotal_list" value="0">
+        </div>
+        <div title="Porcentagem" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <a style="font-size: 2.5vh; font-weight: 800">%</a>
+          <i onclick="redirect('porcentagem')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="porcentagem_list" value="0">
+        </div>
+        <div title="Quantidade de AFs(Consultados)" style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <a style="font-size: 2.5vh; font-weight: 800">AF</a>
+          <i onclick="redirect('afs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="afs_list" value="0">
+        </div>
+        <div title="Valor das AFs(Consultados)" style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray; padding-block: 0.7vh">
+          <a style="font-size: 2.5vh; font-weight: 800">VL. AFs</a>
+          <i onclick="redirect('valorAfs')" class="fa-regular fa-arrows-up-down font-color-navbar" style="font-size: 2vh; cursor: pointer"></i>
+          <input type="hidden" id="valorAfs_list" value="0">
+        </div>
+      </div>
+      `
+      if (aux == 0) document.getElementById(`${menu}_list`).value = '1'
+      if (aux == 1) document.getElementById(`${menu}_list`).value = '0'
+      agilus.forEach((element,index)=>{
+        document.getElementById('graphc_list_funcs').innerHTML += `
+          <div style="display: flex; width: 100%; border-bottom: 0.1vh solid gray">
+            <div style="width: 20vw; max-width: 20vw; padding-left: 2%">
+              <a style="font-size: 2.3vh">${element.user}</a>
+            </div>
+            <div style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">R$ ${String(element.total.toFixed(2)).replace('.',',').replace('null','0,00').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</a>
+            </div>
+            <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">${element.sucessos.length}</a>
+            </div>
+            <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">${element.erros.length}</a>
+            </div>
+            <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">${element.consultasTotal}</a>
+            </div>
+            <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">${String(element.porcentagem).replace('.',',').replace('NaN','0,00')}%</a>
+            </div>
+            <div style="width: 7.2vw; max-width: 7.2vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">${element.afs ? element.afs.length : 0}</a>
+            </div>
+            <div style="width: 12vw; max-width: 12vw; text-align: center; border-left: 0.1vh solid gray">
+              <a style="font-size: 2vh">R$ ${element.valorAfs ? String(element.valorAfs.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): '0,00'}</a>
+            </div>
+          </div>
+        `
+      })
+      blockRedirect = false
+    }
+  
+    var comissao = [
+      { min: 50, max: 70, comissao: 200 },
+      { min: 70, max: 100, comissao: 300 },
+      { min: 100, max: 130, comissao: 800 },
+      { min: 130, max: 150, comissao: 1600 },
+      { min: 150, max: 180, comissao: 2000 },
+      { min: 180, max: 200, comissao: 3000 },
+      { min: 200, max: 250, comissao: 3500 },
+      { min: 250, max: 300, comissao: 5000 },
+      { min: 300, max: 330, comissao: 6000 },
+      { min: 330, max: 360, comissao: 7000 },
+      { min: 360, max: 400, comissao: 8000 },
+      { min: 400, max: 9999999, comissao: 10000 },
+    ]
+    function changeComissao() {
+      if (document.getElementById('objetivo').value) {
+        var meta = document.getElementById('objetivo').value.replace('%','')
+        if (!meta || !Number(meta)) return document.getElementById('comissaoObj').value = `R$ 00,00`;
+        var comissaoMeta = comissao.find(r=>meta >= r.min && meta < r.max)
+        if (comissaoMeta) {
+          document.getElementById('comissaoObj').value = `R$ ${comissaoMeta.comissao},00`
+        } else document.getElementById('comissaoObj').value = `R$ 00,00`
+      } else document.getElementById('comissaoObj').value = `R$ 00,00`
+    }
+  
+    async function downloadCSV(type) {
+      if (!login.perms.administrativo_relatorios) return alert('Você não possui permissão para acessar esse sistema...')
+      if (block) return alert('Aguarde...')
+      block = true
+      var csv = false
+      if (type == 'Sucessos') {
+        if (!sucessos || sucessos.length <= 0) return alert(`A lista de resultados está vazia...`)
+        csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR,TABELA,EQUIPE`
+        await sucessos.map((element,index)=>{
+          csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user},${element.table},${element.equipe}`
+        })
+      } else if (type == 'Erros') {
+        if (!erros || erros.length <= 0) return alert(`A lista de resultados está vazia...`)
+        csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR,TABELA,EQUIPE`
+        await erros.map((element,index)=>{
+          csv+=`\n${element.cpf},${element.bank},${element.error.replaceAll(`,`,'.')},${element.telefone},${element.user},${element.table},${element.equipe}`
+        })
+      } else if (type == 'Oportunidades') {
+        if (!fgts.oportunidades || fgts.oportunidades.length <= 0) return alert(`A lista de resultados está vazia...`)
+        csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR,TABELA,EQUIPE`
+        await fgts.oportunidades.map((element,index)=>{
+          csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user},${element.table},${element.equipe}`
+        })
+      } else return alert('Menu não encontrado...')
+      var a = document.createElement('a');
+      a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+      a.target = '_blank';
+      a.download = `relatoriosFGTS-${type}.csv`;
+      a.click();
+      block = false
+    }
+  
+    async function downloadTotalCSV(type) {
+      if (!login.perms.administrativo_relatorios) return alert('Você não possui permissão para acessar esse sistema...')
+      if (block) return alert('Aguarde...')
+      if (!total || total.length <= 0) return alert(`A lista de resultados está vazia...`)
+      block = true
+      var csv = false
+      if (type == 'Sucessos') {
+        csv = `CPF,BANCO,TOTAL,LIBERADO,TELEFONE,DATA,AUTOR,TABELA,EQUIPE`
+        await total.filter(r=>r.liberado).map((element,index)=>{
+          csv+=`\n${element.cpf},${element.bank},${String(element.total).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${String(element.liberado).replace('R$','').replaceAll(' ','').replaceAll(',','.')},${element.telefone},${element.data},${element.user},${element.table},${element.equipe}`
+        })
+      } else {
+        csv = `CPF,BANCO,ERRO,TELEFONE,AUTOR,TABELA,EQUIPE`
+        await total.filter(r=>r.error).map((element,index)=>{
+          csv+=`\n${element.cpf},${element.bank},${element.error.replaceAll(`,`,'.')},${element.telefone},${element.user},${element.table},${element.equipe}`
+        })
+      }
+      var a = document.createElement('a');
+      a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+      a.target = '_blank';
+      a.download = `relatoriosFGTS-${type}.csv`;
+      a.click();
+      block = false
+    }
+  
+    var agentesBlock = false
+    function getAgentes() {
+      if (agentesBlock) return alert('Aguarde...')
+      agentesBlock = true
+      $.ajax({ type: "post",url: `${apiURL}/logins/get`,
+        data: JSON.stringify({
+          user: localStorage.getItem('user'),
+          password: localStorage.getItem('password')
+        }), contentType:"application/json; charset=utf-8",
+        success: async function(s) {
+          agentesBlock = false
+          if (s.error) return false;
+          s.logins.forEach((element,index) => {
+            document.getElementById('funcs').innerHTML += `<option style="color: black" value="funcionarios-${element.user}">${element.user}</option>`
+          });
+        },
+        error: function(e) {
+          agentesBlock = false
+          if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+          return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        }
+      })
+    }
+  
+    async function lotes(menu) {
+      if (!login.perms.consultas_lotes) return alert('Você não possui permissão para acessar esse sistema...')
+      if (menu == "sucessos" && (!sucessos || sucessos.length <= 0)) return alert('Lista vazia...') 
+      if (menu == "erros" && (!erros || erros.length <= 0)) return alert('Lista vazia...') 
+      if (menu == "oportunidades" && (!fgts.oportunidades || fgts.oportunidades.length <= 0)) return alert('Lista vazia...')
+      var csv = ''
+      if (menu == "sucessos") {
+        await sucessos.map((element,index)=>{
+          csv+=`${index != 0 ? '\n' : ''}${element.cpf};${element.bank},`
+        })
+      } else if (menu == "erros") {
+        await erros.map((element,index)=>{
+          csv+=`${index != 0 ? '\n' : ''}${element.cpf};${element.bank},`
+        })
+      } else if (menu == 'oportunidades') {
+        await fgts.oportunidades.map((element,index)=>{
+          csv+=`${index != 0 ? '\n' : ''}${element.cpf};${element.bank},`
+        })
+      } else return alert('Menu não encontrado...')
+      if (window.clipboardData) {
+        window.clipboardData.setData("Text", csv);
+        return window.location = `/consultas/lotes`
+      } else {
+        navigator.clipboard.writeText(csv).then(()=>{
+          return window.location = `/consultas/lotes`
+        }).catch(()=>{ 
+          alert('Não foi possivel copiar os CPFs e os bancos! Então sera baixado em CSV...')
+          var a = document.createElement('a');
+          a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+          a.target = '_blank';
+          a.download = `CPFs-Consultas.csv`;
+          a.click();
+          return window.location = `/consultas/lotes`
+        })
+      }
+    }
+  
+    (async function () {
+      var date = new Date();
+      document.getElementById('dateIni').value = date.toISOString().slice(0, 10)
+      await getAgentes()
+      return relatorio()
+    })();
+  </script>
