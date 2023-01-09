@@ -68,13 +68,13 @@
     <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-cabinet-filing font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Cadastrado:</a>
-      <a id="topCadastrado" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      <a id="topCadastrado" class="font-color-navbar" style="font-size: 2.2vh; margin-top:1vh; font-weight: 600;">0</a>
       <a id="topCadastradoQnt" class="font-color-navbar" style="font-size: 1.6vh; font-weight: 600;"></a>
     </div>
     <div class="background-image width80 height20 margin-left10" style="margin-bottom: 0.5vh; width: 10vw; border-radius: 2vh; height: 10vw; margin-inline: 0.6vw; display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <i class="fa-solid fa-folder-open font-color-navbar" style="font-size: 6vh"></i>
       <a style="font-size: 2.3vh; margin-top: 2vh; font-weight: 600;">Pago:</a>
-      <a id="topPago" class="font-color-navbar" style="font-size: 2.4vh; margin-top:1vh; font-weight: 600;">0</a>
+      <a id="topPago" class="font-color-navbar" style="font-size: 2.2vh; margin-top:1vh; font-weight: 600;">0</a>
       <a id="topPagoQnt" class="font-color-navbar" style="font-size: 1.6vh; font-weight: 600;"></a>
     </div>
   </div>
@@ -285,10 +285,10 @@
         s.days = (document.getElementById('dateEnd').value ? Number(s.dates.max.slice(8,10)) : s.days) - Number(s.dates.min.slice(8,10))
         var valorDia = (vlRestante / s.days).toFixed(2)
         document.getElementById('topValorDia').innerHTML = valorDia && valorDia != "NaN" ? `R$ `+valorDia.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): "R$ 0,00"
-        document.getElementById('topPago').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlFunc).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'): "R$ 0,00"
+        document.getElementById('topPago').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlFunc.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.') : "R$ 0,00"
         document.getElementById('topPagoQnt').innerHTML = "Qnt: "+s.afs.func
       
-        document.getElementById('topCadastrado').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlCadastrado).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.') : "R$ 0,00"
+        document.getElementById('topCadastrado').innerHTML = s.afs.vlFunc ? `R$ `+String(s.afs.vlCadastrado.toFixed(2)).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g, '.') : "R$ 0,00"
         document.getElementById('topCadastradoQnt').innerHTML = "Qnt: "+s.afs.cadastrado
 
         document.getElementById('Graphc_Midias').innerHTML = `
@@ -351,9 +351,8 @@
       },
       error: function(e) {
         block = false
-
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -402,8 +401,13 @@
         menu: "FGTS"
       }), contentType:"application/json; charset=utf-8",
       success: async function(s) {
+        if (s.error || !s.fgts || s.fgts < 1) {
+          document.getElementById('calcFGTS').classList.remove('buttonBlock')
+          document.getElementById('calcFGTS').innerHTML = `<p class="font-1">Calcular Consultas FGTS</p>`
+          block = false
+          return alert(s.error ? s.error : 'A lista de FGTS está vazia...')
+        }
         total = s.fgts
-        if (!total || total < 1) return alert('Lista de consultas FGTS está vazia...')
         await total.forEach((element,index)=>{
           if (!element.user) {
             total[index].user = "Desconhecido"
@@ -744,13 +748,14 @@
         new Chart(document.getElementById("graphc_errors_top").getContext("2d")).Doughnut(banks_errors_top);
         document.getElementById('calcFGTS').classList.remove('buttonBlock')
         document.getElementById('calcFGTS').innerHTML = `<p class="font-1">Calcular Consultas FGTS</p>`
+        block = false
       },
       error: function(e) {
         block = false
         document.getElementById('calcFGTS').classList.remove('buttonBlock')
         document.getElementById('calcFGTS').innerHTML = `<p class="font-1">Calcular Consultas FGTS</p>`
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -955,7 +960,7 @@
       error: function(e) {
         agentesBlock = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }

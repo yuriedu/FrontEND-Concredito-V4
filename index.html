@@ -17,9 +17,12 @@
     <script src="/public/js/jquery.min.js"></script>
     <script>
       var login = false
-      var urlAPI = 'https://api.concredito.com.br'
-      var urlLocal = 'http://localhost:3000'
-      var apiURL = urlLocal
+      var apiURL = 'https://api.concredito.com.br'
+      var whatsURL = 'https://whats.concredito.com.br'
+      $.ajax({ type: "get", url: `http://localhost:3000`, success: function(s) {
+        apiURL = 'http://localhost:3000'
+        whatsURL = "http://localhost:3001"
+      }})
     </script>
   </head>
   <body style="margin: 0">
@@ -32,7 +35,7 @@
         var pages = {
           dashboard: ['metas'],
           administrativo: ['funcionarios','configs','logs'],
-          minhas: ['propostas','relatorios','leads'],
+          minhas: ['propostas','relatorios','leads',"whatsapp"],
           propostas: ['cadastrar','lista','leads'],
           consultas: ['dados','fgts','lotes'],
         }

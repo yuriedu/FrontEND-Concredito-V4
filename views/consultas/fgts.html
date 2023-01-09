@@ -232,7 +232,7 @@
         document.getElementById('consultar').innerHTML = `<p class="font-1">Consultar</p>`
         document.getElementById('consultar').classList.remove("buttonBlock");
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -257,7 +257,7 @@
       error: function(e) {
         document.getElementById(`queueText`).innerHTML = ''
         if (e.responseJSON && e.responseJSON.error) return document.getElementById(`queueText`).innerHTML = s.error
-        return document.getElementById(`queueText`).innerHTML = `A minha API demorou muito para retornar uma resposta valida...`
+        return document.getElementById(`queueText`).innerHTML = `A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`
       }
     });
   }

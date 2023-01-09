@@ -75,7 +75,7 @@
         block = false
         document.getElementById(menu).classList.remove('buttonBlock')
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -403,7 +403,7 @@
       error: async function(e) {
         block = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -432,7 +432,7 @@
       error: async function(e) {
         block = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -461,7 +461,7 @@
       error: async function(e) {
         block = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }

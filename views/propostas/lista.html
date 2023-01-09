@@ -283,7 +283,7 @@
         document.getElementById('filter').innerHTML = `<p class="font-1">Filtrar</p>`
         document.getElementById('filter').classList.remove("buttonBlock");
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -374,7 +374,7 @@ Link: ${af.link}
           return document.getElementById(`title_${codAF}`).title = e.responseJSON.error
         }
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     });
   }
@@ -418,7 +418,7 @@ Link: ${af.link}
           return document.getElementById(`title_${codAF}`).title = e.responseJSON.error
         }
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -459,7 +459,7 @@ Link: ${af.link}
       error: function(e) {
         blockFase = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     });
   }
@@ -489,7 +489,7 @@ Link: ${af.link}
       error: function(e) {
         blockFase = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     });
   }
@@ -512,7 +512,7 @@ Link: ${af.link}
       error: function(e) {
         link = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     });
   }
@@ -541,7 +541,7 @@ Link: ${af.link}
       error: function(e) {
         link = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     });
   }
@@ -564,7 +564,7 @@ Link: ${af.link}
       error: function(e) {
         esteira = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     });
   }
@@ -637,7 +637,7 @@ Link: ${af.link}
       error: function(e) {
         getAcompBlock = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     });
   }
@@ -663,7 +663,7 @@ Link: ${af.link}
       error: function(e) {
         acompDeleteBlock = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -689,7 +689,7 @@ Link: ${af.link}
       error: function(e) {
         acompDeleteBlock = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -721,7 +721,7 @@ Link: ${af.link}
       error: function(e) {
         generatorCod = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     });
   }
@@ -761,7 +761,7 @@ Link: ${af.link}
         agentes = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
         return document.getElementById('agentesInput').style.display = 'none'
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }(function () { getAgentes(); getFases() })();

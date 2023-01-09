@@ -1,0 +1,112 @@
+<div id="propostasPage" style="max-height: 100vh; overflow: auto; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh">
+  <navbar id="navbar"></navbar>
+  <script>$("#navbar").load(`/imports/navbar.html`)</script>
+
+  <div class="background-image margin-left18-5 width79 min-height33" style="margin-top: 12.5vh; margin-left: 6vw; width: 92.5vw; min-height: 87.5vh; border-top-left-radius: 2vh; border-top-right-radius: 2vh;">
+    <div style="width: 100%; height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <img id="qrCode" src="https://pcsupport.lenovo.com/esv4/images/loading.gif" style="width: 250px; height: 250px; padding: 3vh; border-radius: 3vh; background: white; margin-bottom: 4vh">
+      <a onclick="Connect()" class="font-color-navbar" style="font-size: 3vh; text-decoration: underline; cursor: pointer;"><i class="fa-solid fa-arrows-rotate"></i> Atualizar Conexão</a>
+      <a onclick="Desconnect()" style="margin-top: 1.5vh; font-size: 3vh; text-decoration: underline; color: red; cursor: pointer"><i class="fa-solid fa-arrow-right-from-bracket"></i> Desconectar-se</a>
+
+      <textarea id="message" rows="3" placeholder="Coloque uma mensagem que será enviada..." style="margin-top: 2.5vh; font-size: 2vh; width: 30vw; background: transparent; border-radius: 1vh;">[API WHATS]=> Mensagem de teste! IGNORE...</textarea>
+      <input id="phone" placeholder="(51) 9 9551-9735" value="(51) 9 9551-9735" style="margin-top: 1vh; font-size: 2vh; width: 18vw; background: transparent; border-radius: 1vh; height: 3vh">
+      <a onclick="Message()" style="margin-top: 1.5vh; font-size: 2.5vh; text-decoration: underline; color: green; cursor: pointer"><i class="fa-solid fa-paper-plane-top"></i> Enviar Mensagem</a>
+
+    </div>
+  </div>
+
+
+</div>
+
+<script>
+  async function timeout(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+  let block = false;
+  async function Connect() {
+    if (block) return;
+    block = true
+    document.getElementById('qrCode').src = "https://pcsupport.lenovo.com/esv4/images/loading.gif"
+    $.ajax({ type: "post",url: `${whatsURL}/whatsapp/connect`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password')
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        block = false
+        if (s.error) {
+          document.getElementById('qrCode').src = "https://cdn-icons-png.flaticon.com/512/5219/5219070.png"
+          return alert(s.error)
+        } else if (s.qr) {
+          document.getElementById('qrCode').src = s.qr
+          await timeout(3000)
+          return Check();
+        } else if (s.connected) return document.getElementById('qrCode').src = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Eo_circle_light-blue_checkmark.svg/2048px-Eo_circle_light-blue_checkmark.svg.png"
+        return document.getElementById('qrCode').src = "https://cdn-icons-png.flaticon.com/512/5219/5219070.png"
+      },
+      error: async function(e) {
+        block = false
+        document.getElementById('qrCode').src = "https://cdn-icons-png.flaticon.com/512/5219/5219070.png"
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
+      }
+    })
+  }
+  async function Check() {
+    if (block) return false;
+    block = true
+    $.ajax({ type: "post",url: `${whatsURL}/whatsapp/waitqr`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        qr: document.getElementById('qrCode').src
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        block = false
+        if (s.qr) {
+          document.getElementById('qrCode').src = s.qr
+          await timeout(3000)
+          return Check();
+        } else if (s.connected) return document.getElementById('qrCode').src = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Eo_circle_light-blue_checkmark.svg/2048px-Eo_circle_light-blue_checkmark.svg.png"
+      },
+      error: async function(e) { block = false }
+    })
+  }
+  async function Desconnect() {
+    $.ajax({ type: "post",url: `${whatsURL}/whatsapp/disconnect`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password')
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        if (s.error) return alert(s.error)
+        document.getElementById('qrCode').src = "https://cdn-icons-png.flaticon.com/512/5219/5219070.png"
+        return alert('Você se desconectou do WhatsApp com sucesso...')
+      },
+      error: async function(e) {
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
+      }
+    })
+  }
+  async function Message() {
+    if (!document.getElementById('phone').value || document.getElementById('phone').value.value < 11) return alert('Número de telefone invalido! Verifique e tente novamente...\nEXEMPLO: (51) 9 1234-1234')
+    if (!document.getElementById('message').value) return alert('Coloque a mensagem que será enviada...')
+    $.ajax({ type: "post",url: `${whatsURL}/whatsapp/message`,
+      data: JSON.stringify({
+        user: localStorage.getItem('user'),
+        password: localStorage.getItem('password'),
+        phone: document.getElementById('phone').value,
+        message: document.getElementById('message').value,
+      }), contentType:"application/json; charset=utf-8",
+      success: async function(s) {
+        if (s.error) return alert(s.error)
+        return alert('A mensagem foi enviada com sucesso!')
+      },
+      error: async function(e) {
+        if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
+      }
+    })
+  }
+  (async function () { return Connect(); })();
+</script>

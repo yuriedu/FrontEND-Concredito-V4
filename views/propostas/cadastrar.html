@@ -563,7 +563,7 @@
         document.getElementById('consultar').innerHTML = `<p class="font-1">Simular FGTS</p>`
         document.getElementById('consultar').classList.remove("buttonBlock");
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -681,7 +681,7 @@
         document.getElementById('nextClient2').innerHTML = `<p class="font-1">Proximo</p>`
         document.getElementById('nextClient2').classList.remove("buttonBlock");
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -776,7 +776,7 @@
         document.getElementById('cadastrar').classList.remove("buttonBlock");
         if (e.error) return alert(e.error)
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
@@ -833,7 +833,7 @@
       error: function(e) {
         agentesBlock = false
         if (e.responseJSON && e.responseJSON.error) return alert(e.responseJSON.error)
-        return alert(`A minha API demorou muito para retornar uma resposta valida...`)
+        return alert(`A minha API está Reiniciando! Aguarde até voltar...\n${JSON.stringify(e)}`)
       }
     })
   }
